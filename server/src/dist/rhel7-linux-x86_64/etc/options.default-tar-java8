@@ -1,0 +1,15 @@
+-Xmx2g
+-XX:+UseG1GC
+-XX:+PrintGCDetails
+-XX:+PrintGCDateStamps
+-XX:+PrintGCTimeStamps
+-XX:+PrintAdaptiveSizePolicy
+-Xloggc:${dir}/../logs/gc.log
+-Djava.security.egd=file:/dev/./urandom
+-Djava.awt.headless=true
+-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager
+-Dlog4j2.disableJmx=true
+-Dlog4j.configurationFile=${dir}/../config/elasticsearch-default-log4j2.properties
+-Dlog4j.level=info
+-Dlog4j.path=${dir}/../logs
+-Dio.netty.recycler.maxCapacity=0

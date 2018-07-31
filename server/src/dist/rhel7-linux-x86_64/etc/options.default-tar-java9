@@ -1,0 +1,7 @@
+-Djava.security.egd=file:/dev/./urandom
+-Djava.awt.headless=true
+-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager
+-Dlog4j.configurationFile=${dir}/../var/lib/elasticsearch/log4j2.xml
+-Dlog4j.level=info
+-Dlog4j.path=${dir}/../var/log/elasticsearch
+-Dio.netty.recycler.maxCapacity=0

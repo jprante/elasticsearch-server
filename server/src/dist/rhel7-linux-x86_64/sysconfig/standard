@@ -1,0 +1,2 @@
+# Elasticsearch server environment variables
+ES_OPTS=""
