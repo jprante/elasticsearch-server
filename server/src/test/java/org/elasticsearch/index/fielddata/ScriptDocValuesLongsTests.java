@@ -19,6 +19,7 @@
 
 package org.elasticsearch.index.fielddata;
 
+import org.apache.lucene.search.AbstractSortedNumericDocValues;
 import org.elasticsearch.index.fielddata.ScriptDocValues.Longs;
 import org.elasticsearch.test.ESTestCase;
 import org.joda.time.DateTime;

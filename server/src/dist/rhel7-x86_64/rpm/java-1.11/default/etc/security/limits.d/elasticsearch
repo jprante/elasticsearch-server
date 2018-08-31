@@ -1,0 +1,6 @@
+es soft nofile 65536
+es hard nofile 65536
+es soft nproc 4096
+es hard nproc 16384
+es soft memlock unlimited
+es hard memlock unlimited

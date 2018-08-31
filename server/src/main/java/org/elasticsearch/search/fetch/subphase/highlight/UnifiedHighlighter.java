@@ -26,7 +26,6 @@ import org.apache.lucene.search.uhighlight.Snippet;
 import org.apache.lucene.search.uhighlight.BoundedBreakIteratorScanner;
 import org.apache.lucene.search.uhighlight.CustomPassageFormatter;
 import org.apache.lucene.search.uhighlight.CustomSeparatorBreakIterator;
-import org.apache.lucene.search.uhighlight.CustomUnifiedHighlighter;
 import org.apache.lucene.search.uhighlight.UnifiedHighlighter.OffsetSource;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.CollectionUtil;
@@ -50,7 +49,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static org.apache.lucene.search.uhighlight.CustomUnifiedHighlighter.MULTIVAL_SEP_CHAR;
+import static org.elasticsearch.search.fetch.subphase.highlight.CustomUnifiedHighlighter.MULTIVAL_SEP_CHAR;
 
 public class UnifiedHighlighter implements Highlighter {
     private static final DeprecationLogger deprecationLogger = new DeprecationLogger(Loggers.getLogger(UnifiedHighlighter.class));

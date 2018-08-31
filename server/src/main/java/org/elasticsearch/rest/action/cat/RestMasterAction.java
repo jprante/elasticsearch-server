@@ -56,7 +56,7 @@ public class RestMasterAction extends AbstractCatAction {
         clusterStateRequest.local(request.paramAsBoolean("local", clusterStateRequest.local()));
         clusterStateRequest.masterNodeTimeout(request.paramAsTime("master_timeout", clusterStateRequest.masterNodeTimeout()));
 
-        return channel -> client.admin().cluster().state(clusterStateRequest, new RestResponseListener<ClusterStateResponse>(channel) {
+        return channel -> client.admin().cluster().state(clusterStateRequest, new RestResponseListener<>(channel) {
             @Override
             public RestResponse buildResponse(final ClusterStateResponse clusterStateResponse) throws Exception {
                 return RestTable.buildResponse(buildTable(request, clusterStateResponse), channel);

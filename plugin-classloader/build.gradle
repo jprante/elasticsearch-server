@@ -1,8 +1,0 @@
-
-apply plugin: 'org.xbib.gradle.plugin.elasticsearch.build'
-
-test.enabled = false
-esTest.enabled = false
-forbiddenApisMain.enabled = false
-dependencyLicenses.enabled = false
-jarHell.enabled = false

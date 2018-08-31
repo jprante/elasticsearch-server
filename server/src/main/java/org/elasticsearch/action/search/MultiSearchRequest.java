@@ -27,7 +27,7 @@ import org.elasticsearch.common.CheckedBiConsumer;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
-import org.elasticsearch.common.xcontent.LoggingDeprecationHandler;
+import org.elasticsearch.common.LoggingDeprecationHandler;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContent;
@@ -44,9 +44,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.elasticsearch.action.ValidateActions.addValidationError;
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeBooleanValue;
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeStringArrayValue;
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeStringValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeBooleanValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeStringArrayValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeStringValue;
 
 /**
  * A multi search API request.

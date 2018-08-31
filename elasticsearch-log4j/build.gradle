@@ -1,0 +1,143 @@
+
+ext {
+    moduleName = 'org.xbib.elasticsearch.log4j'
+}
+
+configurations {
+    source
+    binary
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDir "$buildDir/generated-src"
+        }
+        output.dir("$buildDir/generated-src", builtBy: 'sourceDownload')
+    }
+    main {
+        java {
+            srcDirs += sourceSets.generated.java.srcDirs
+        }
+    }
+}
+
+dependencies {
+    source "org.apache.logging.log4j:log4j-core:${property('log4j.version')}:sources"
+    source "org.apache.logging.log4j:log4j-api:${property('log4j.version')}:sources"
+    source "org.apache.logging.log4j:log4j-1.2-api:${property('log4j.version')}:sources"
+    source "org.apache.logging.log4j:log4j-jul:${property('log4j.version')}:sources"
+
+    compile project(':elasticsearch-jackson')
+
+    // internal compile-only dependencies
+    compileOnly "javax.annotation:javax.annotation-api:1.3.2"
+    compileOnly "org.codehaus.woodstox:stax2-api:${property('stax2.version')}"
+    compileOnly "javax.jms:javax.jms-api:2.0.1"
+    compileOnly "com.lmax:disruptor:3.4.2"
+    compileOnly "org.zeromq:jeromq:0.4.3"
+    compileOnly "org.apache.commons:commons-compress:1.17"
+    compileOnly "org.apache.commons:commons-csv:1.5"
+    compileOnly "org.jctools:jctools-core:2.1.2"
+    compileOnly "org.osgi:org.osgi.core:6.0.0"
+    compileOnly "org.fusesource.jansi:jansi:1.17.1"
+}
+
+task unpackSource(type: Copy) {
+    configurations.source.each {
+        if (it.toString().endsWith('sources.jar')) {
+            from zipTree(it)
+            into "$buildDir/generated-src/java"
+            // remove com.conversantmedia disruptor based code to avoid ambigous module import
+            exclude '**/DisruptorBlockingQueueFactory.java'
+            exclude '**/SmtpAppender.java' // dropped because of forbidden com.sun dependencies (activation)
+            exclude '**/SmtpManager.java'
+            exclude '**/MimeMessageBuilder.java'
+            exclude '**/kafka/*' // dropped because kafka client can not use our jackson
+        }
+    }
+}
+
+task unpackResources(type: Copy) {
+    dependsOn unpackSource
+    configurations.binary.each {
+        from zipTree(it)
+        into "$buildDir/resources/main"
+    }
+}
+
+afterEvaluate {
+    compileJava {
+        dependsOn unpackSource, unpackResources
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.compilerArgs = ['--module-path', classpath.asPath]
+            classpath = files()
+        }
+    }
+    javadoc {
+        /*
+        javadoc: error - An internal exception has occurred.
+	(java.lang.IllegalArgumentException: "<main class>")
+Please file a bug against the javadoc tool via the Java bug reporting page
+(http://bugreport.java.com) after checking the Bug Database (http://bugs.java.com)
+for duplicates. Include error messages and the following diagnostic in your report. Thank you.
+java.lang.IllegalArgumentException: "<main class>"
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.check(HtmlDocletWriter.java:1306)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.getDocLink(HtmlDocletWriter.java:1300)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.getDocLink(HtmlDocletWriter.java:1277)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.getDocLink(HtmlDocletWriter.java:1260)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.TagletWriterImpl.valueTagOutput(TagletWriterImpl.java:409)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.taglets.ValueTaglet.getTagletOutput(ValueTaglet.java:161)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.taglets.TagletWriter.getInlineTagOutput(TagletWriter.java:274)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter$2.defaultAction(HtmlDocletWriter.java:1921)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter$2.defaultAction(HtmlDocletWriter.java:1716)
+	at jdk.compiler/com.sun.source.util.SimpleDocTreeVisitor.visitValue(SimpleDocTreeVisitor.java:499)
+	at jdk.compiler/com.sun.tools.javac.tree.DCTree$DCValue.accept(DCTree.java:1050)
+	at jdk.compiler/com.sun.source.util.SimpleDocTreeVisitor.visit(SimpleDocTreeVisitor.java:79)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.commentTagsToContent(HtmlDocletWriter.java:1930)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.addCommentTags(HtmlDocletWriter.java:1621)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.addCommentTags(HtmlDocletWriter.java:1602)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDocletWriter.addInlineComment(HtmlDocletWriter.java:1588)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.MethodWriterImpl.addComments(MethodWriterImpl.java:180)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.builders.MethodBuilder.buildMethodComments(MethodBuilder.java:196)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.builders.MethodBuilder.buildMethodDoc(MethodBuilder.java:152)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.builders.MethodBuilder.build(MethodBuilder.java:128)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.builders.ClassBuilder.buildMethodDetails(ClassBuilder.java:393)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.builders.ClassBuilder.buildMemberDetails(ClassBuilder.java:341)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.builders.ClassBuilder.buildClassDoc(ClassBuilder.java:145)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.builders.ClassBuilder.build(ClassBuilder.java:120)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.formats.html.HtmlDoclet.generateClassFiles(HtmlDoclet.java:267)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.AbstractDoclet.generateClassFiles(AbstractDoclet.java:290)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.AbstractDoclet.generateClassFiles(AbstractDoclet.java:272)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.AbstractDoclet.startGeneration(AbstractDoclet.java:211)
+	at jdk.javadoc/jdk.javadoc.internal.doclets.toolkit.AbstractDoclet.run(AbstractDoclet.java:117)
+	at jdk.javadoc/jdk.javadoc.doclet.StandardDoclet.run(StandardDoclet.java:72)
+	at jdk.javadoc/jdk.javadoc.internal.tool.Start.parseAndExecute(Start.java:581)
+	at jdk.javadoc/jdk.javadoc.internal.tool.Start.begin(Start.java:430)
+	at jdk.javadoc/jdk.javadoc.internal.tool.Start.begin(Start.java:343)
+	at jdk.javadoc/jdk.javadoc.internal.tool.Main.execute(Main.java:63)
+	at jdk.javadoc/jdk.javadoc.internal.tool.Main.main(Main.java:52)
+         */
+        enabled = false
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.addStringOption('-module-path', classpath.asPath)
+            classpath = files()
+        }
+    }
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier 'sources'
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}

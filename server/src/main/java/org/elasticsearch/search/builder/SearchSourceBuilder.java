@@ -19,8 +19,6 @@
 
 package org.elasticsearch.search.builder;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.Version;
 import org.elasticsearch.common.Nullable;
@@ -1124,7 +1122,7 @@ public final class SearchSourceBuilder implements Writeable, ToXContentObject, R
             try {
                 token = parser.nextToken();
                 success = token == null;
-            } catch (JsonParseException exc) {
+            } catch (Exception exc) {
                 success = false;
             }
             if (success == false) {

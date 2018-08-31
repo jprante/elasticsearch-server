@@ -53,7 +53,7 @@ public class RestHealthAction extends AbstractCatAction {
     public RestChannelConsumer doCatRequest(final RestRequest request, final NodeClient client) {
         ClusterHealthRequest clusterHealthRequest = new ClusterHealthRequest();
 
-        return channel -> client.admin().cluster().health(clusterHealthRequest, new RestResponseListener<ClusterHealthResponse>(channel) {
+        return channel -> client.admin().cluster().health(clusterHealthRequest, new RestResponseListener<>(channel) {
             @Override
             public RestResponse buildResponse(final ClusterHealthResponse health) throws Exception {
                 return RestTable.buildResponse(buildTable(health, request), channel);

@@ -22,6 +22,8 @@ package org.elasticsearch.index.fielddata;
 import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.NumericDocValues;
 import org.apache.lucene.index.SortedNumericDocValues;
+import org.apache.lucene.search.AbstractNumericDocValues;
+import org.apache.lucene.search.AbstractSortedNumericDocValues;
 import org.apache.lucene.util.NumericUtils;
 import org.elasticsearch.test.ESTestCase;
 

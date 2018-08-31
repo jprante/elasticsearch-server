@@ -294,7 +294,7 @@ public class XContentHelper {
      * auto-detection
      */
     @Deprecated
-    public static void writeRawField(String field, BytesReference source, XContentBuilder builder, ToXContent.Params params) throws IOException {
+    public static void writeRawField(String field, BytesReference source, XContentBuilder builder, Params params) throws IOException {
         Compressor compressor = CompressorFactory.compressor(source);
         if (compressor != null) {
             try (InputStream compressedStreamInput = compressor.streamInput(source.streamInput())) {
@@ -312,7 +312,7 @@ public class XContentHelper {
      * {@link XContentBuilder#rawField(String, InputStream, XContentType)}.
      */
     public static void writeRawField(String field, BytesReference source, XContentType xContentType, XContentBuilder builder,
-                                     ToXContent.Params params) throws IOException {
+                                     Params params) throws IOException {
         Objects.requireNonNull(xContentType);
         Compressor compressor = CompressorFactory.compressor(source);
         if (compressor != null) {

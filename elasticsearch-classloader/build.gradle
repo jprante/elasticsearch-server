@@ -1,0 +1,35 @@
+
+ext {
+    moduleName = 'org.xbib.elasticsearch.classloader'
+}
+
+afterEvaluate {
+    compileJava {
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.compilerArgs = ['--module-path', classpath.asPath]
+            classpath = files()
+        }
+    }
+    javadoc {
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.addStringOption('-module-path', classpath.asPath)
+            classpath = files()
+        }
+    }
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier 'sources'
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}

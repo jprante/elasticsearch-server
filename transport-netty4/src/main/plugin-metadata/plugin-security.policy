@@ -23,10 +23,28 @@ grant codeBase "${codebase.netty-common}" {
 
    // netty makes and accepts socket connections
    permission java.net.SocketPermission "*", "accept,connect";
+
+   // GlobalEventExecutor (4.1.28) uses class loader get/set
+   permission java.lang.RuntimePermission "getClassLoader";
+   permission java.lang.RuntimePermission "setContextClassLoader";
+
+   // allow native epoll library loading by io.netty.util.internal.NativeLibraryLoader
+   permission java.lang.RuntimePermission "loadLibrary.*";
+   permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+   permission java.lang.RuntimePermission "accessClassInPackage.sun.nio.ch";
+   // Java 10: allow sun.misc.Unsafe
+   permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
+   permission java.lang.RuntimePermission "accessDeclaredMembers";
+   permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.misc";
 };
 
 grant codeBase "${codebase.netty-transport}" {
    // Netty NioEventLoop wants to change this, because of https://bugs.openjdk.java.net/browse/JDK-6427854
    // the bug says it only happened rarely, and that its fixed, but apparently it still happens rarely!
    permission java.util.PropertyPermission "sun.nio.ch.bugLevel", "write";
+};
+
+grant codeBase "${codebase.netty-transport-native-epoll}" {
+   permission java.lang.RuntimePermission "loadLibrary.*";
+   permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 };

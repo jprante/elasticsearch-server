@@ -20,6 +20,7 @@
 package org.elasticsearch.index.fielddata;
 
 import org.apache.lucene.index.SortedNumericDocValues;
+import org.apache.lucene.search.AbstractSortedNumericDocValues;
 import org.apache.lucene.util.NumericUtils;
 
 import java.io.IOException;

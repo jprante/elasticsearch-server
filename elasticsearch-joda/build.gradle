@@ -1,0 +1,78 @@
+
+ext {
+    moduleName = 'org.xbib.elasticsearch.joda'
+}
+
+configurations {
+    source
+    binary
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDir "$buildDir/generated-src"
+        }
+        output.dir("$buildDir/generated-src", builtBy: 'sourceDownload')
+    }
+    main {
+        java {
+            srcDirs += sourceSets.generated.java.srcDirs
+        }
+    }
+}
+
+dependencies {
+    source "joda-time:joda-time:${property('joda-time.version')}:sources"
+    source "org.joda:joda-convert:${property('joda-convert.version')}:sources"
+    // only for extracting timezone data
+    binary "joda-time:joda-time:${property('joda-time.version')}"
+}
+
+task unpackSource(type: Copy) {
+    configurations.source.each {
+        from zipTree(it)
+        into "$buildDir/generated-src/java"
+    }
+}
+
+task unpackResources(type: Copy) {
+    dependsOn unpackSource
+    configurations.binary.each {
+        from zipTree(it)
+        into "$buildDir/resources/main"
+        include 'org/joda/time/tz/data/**'
+    }
+}
+
+afterEvaluate {
+    compileJava {
+        dependsOn unpackSource, unpackResources
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.compilerArgs = ['--module-path', classpath.asPath]
+            classpath = files()
+        }
+    }
+    javadoc {
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.addStringOption('-module-path', classpath.asPath)
+            classpath = files()
+        }
+    }
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier 'sources'
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}

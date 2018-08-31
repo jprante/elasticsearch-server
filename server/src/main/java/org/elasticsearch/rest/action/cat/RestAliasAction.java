@@ -27,6 +27,7 @@ import org.elasticsearch.cluster.metadata.AliasMetaData;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -55,13 +56,8 @@ public class RestAliasAction extends AbstractCatAction {
                 new GetAliasesRequest();
         getAliasesRequest.local(request.paramAsBoolean("local", getAliasesRequest.local()));
 
-        return channel -> client.admin().indices().getAliases(getAliasesRequest, new RestResponseListener<GetAliasesResponse>(channel) {
-            @Override
-            public RestResponse buildResponse(GetAliasesResponse response) throws Exception {
-                Table tab = buildTable(request, response);
-                return RestTable.buildResponse(tab, channel);
-            }
-        });
+        return channel -> client.admin().indices().getAliases(getAliasesRequest,
+                new MyRestResponseListener(channel, request));
     }
 
     @Override
@@ -104,4 +100,19 @@ public class RestAliasAction extends AbstractCatAction {
         return table;
     }
 
+    private class MyRestResponseListener extends RestResponseListener<GetAliasesResponse> {
+
+        private final RestRequest request;
+
+        MyRestResponseListener(RestChannel channel, final RestRequest request) {
+            super(channel);
+            this.request = request;
+        }
+
+        @Override
+        public RestResponse buildResponse(GetAliasesResponse response) throws Exception {
+            Table tab = buildTable(request, response);
+            return RestTable.buildResponse(tab, channel);
+        }
+    }
 }

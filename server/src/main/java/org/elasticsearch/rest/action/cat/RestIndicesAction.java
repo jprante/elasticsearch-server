@@ -40,6 +40,7 @@ import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.Index;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -88,46 +89,8 @@ public class RestIndicesAction extends AbstractCatAction {
         final IndicesOptions strictExpandIndicesOptions = IndicesOptions.strictExpand();
         clusterStateRequest.indicesOptions(strictExpandIndicesOptions);
 
-        return channel -> client.admin().cluster().state(clusterStateRequest, new RestActionListener<ClusterStateResponse>(channel) {
-            @Override
-            public void processResponse(final ClusterStateResponse clusterStateResponse) {
-                final ClusterState state = clusterStateResponse.getState();
-                final Index[] concreteIndices = indexNameExpressionResolver.concreteIndices(state, strictExpandIndicesOptions, indices);
-                // concreteIndices should contain exactly the indices in state.metaData() that were selected by clusterStateRequest using
-                // IndicesOptions.strictExpand(). We select the indices again here so that they can be displayed in the resulting table
-                // in the requesting order.
-                assert concreteIndices.length == state.metaData().getIndices().size();
-
-                // Indices that were successfully resolved during the cluster state request might be deleted when the subsequent cluster
-                // health and indices stats requests execute. We have to distinguish two cases:
-                // 1) the deleted index was explicitly passed as parameter to the /_cat/indices request. In this case we want the subsequent
-                //    requests to fail.
-                // 2) the deleted index was resolved as part of a wildcard or _all. In this case, we want the subsequent requests not to
-                //    fail on the deleted index (as we want to ignore wildcards that cannot be resolved).
-                // This behavior can be ensured by letting the cluster health and indices stats requests re-resolve the index names with the
-                // same indices options that we used for the initial cluster state request (strictExpand). Unfortunately cluster health
-                // requests hard-code their indices options and the best we can do is apply strictExpand to the indices stats request.
-                ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest(indices);
-                clusterHealthRequest.local(request.paramAsBoolean("local", clusterHealthRequest.local()));
-                client.admin().cluster().health(clusterHealthRequest, new RestActionListener<ClusterHealthResponse>(channel) {
-                    @Override
-                    public void processResponse(final ClusterHealthResponse clusterHealthResponse) {
-                        IndicesStatsRequest indicesStatsRequest = new IndicesStatsRequest();
-                        indicesStatsRequest.indices(indices);
-                        indicesStatsRequest.indicesOptions(strictExpandIndicesOptions);
-                        indicesStatsRequest.all();
-                        client.admin().indices().stats(indicesStatsRequest, new RestResponseListener<IndicesStatsResponse>(channel) {
-                            @Override
-                            public RestResponse buildResponse(IndicesStatsResponse indicesStatsResponse) throws Exception {
-                                Table tab = buildTable(request, concreteIndices, clusterHealthResponse, indicesStatsResponse, state.metaData());
-                                return RestTable.buildResponse(tab, channel);
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
+        return channel -> client.admin().cluster().state(clusterStateRequest,
+                new MyRestActionListener(channel, indices, client, request));
     }
 
     private static final Set<String> RESPONSE_PARAMS;
@@ -559,5 +522,62 @@ public class RestIndicesAction extends AbstractCatAction {
         }
 
         return table;
+    }
+
+    private class MyRestActionListener extends RestActionListener<ClusterStateResponse> {
+
+        private  final String[] indices;
+
+        private final NodeClient client;
+
+        private final RestRequest request;
+
+        MyRestActionListener(RestChannel channel, final String[] indices, final NodeClient client, final RestRequest request) {
+            super(channel);
+            this.indices = indices;
+            this.client = client;
+            this.request = request;
+        }
+
+        @Override
+        protected void processResponse(ClusterStateResponse clusterStateResponse) {
+            final IndicesOptions strictExpandIndicesOptions = IndicesOptions.strictExpand();
+
+            final ClusterState state = clusterStateResponse.getState();
+            final Index[] concreteIndices = indexNameExpressionResolver.concreteIndices(state, strictExpandIndicesOptions, indices);
+            // concreteIndices should contain exactly the indices in state.metaData() that were selected by clusterStateRequest using
+            // IndicesOptions.strictExpand(). We select the indices again here so that they can be displayed in the resulting table
+            // in the requesting order.
+            assert concreteIndices.length == state.metaData().getIndices().size();
+
+            // Indices that were successfully resolved during the cluster state request might be deleted when the subsequent cluster
+            // health and indices stats requests execute. We have to distinguish two cases:
+            // 1) the deleted index was explicitly passed as parameter to the /_cat/indices request. In this case we want the subsequent
+            //    requests to fail.
+            // 2) the deleted index was resolved as part of a wildcard or _all. In this case, we want the subsequent requests not to
+            //    fail on the deleted index (as we want to ignore wildcards that cannot be resolved).
+            // This behavior can be ensured by letting the cluster health and indices stats requests re-resolve the index names with the
+            // same indices options that we used for the initial cluster state request (strictExpand). Unfortunately cluster health
+            // requests hard-code their indices options and the best we can do is apply strictExpand to the indices stats request.
+            ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest(indices);
+            clusterHealthRequest.local(request.paramAsBoolean("local", clusterHealthRequest.local()));
+            client.admin().cluster().health(clusterHealthRequest, new RestActionListener<>(channel) {
+                @Override
+                public void processResponse(final ClusterHealthResponse clusterHealthResponse) {
+                    IndicesStatsRequest indicesStatsRequest = new IndicesStatsRequest();
+                    indicesStatsRequest.indices(indices);
+                    indicesStatsRequest.indicesOptions(strictExpandIndicesOptions);
+                    indicesStatsRequest.all();
+                    client.admin().indices().stats(indicesStatsRequest, new RestResponseListener<>(channel) {
+                        @Override
+                        public RestResponse buildResponse(IndicesStatsResponse indicesStatsResponse) throws Exception {
+                            Table tab = buildTable(request, concreteIndices, clusterHealthResponse, indicesStatsResponse, state.metaData());
+                            return RestTable.buildResponse(tab, channel);
+                        }
+                    });
+
+                }
+            });
+        }
     }
 }

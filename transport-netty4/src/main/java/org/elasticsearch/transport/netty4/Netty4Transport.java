@@ -28,9 +28,16 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.FixedRecvByteBufAllocator;
 import io.netty.channel.RecvByteBufAllocator;
+import io.netty.channel.epoll.Epoll;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
+import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.ServerSocketChannel;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
@@ -84,6 +91,9 @@ public class Netty4Transport extends TcpTransport {
     static {
         Netty4Utils.setup();
     }
+
+    public static final Setting<Boolean> NETTY_EPOLL_ENABLE = Setting.boolSetting(
+      "transport.netty.epoll", Boolean.TRUE, Property.NodeScope);
 
     public static final Setting<Integer> WORKER_COUNT =
         new Setting<>("transport.netty.worker_count",
@@ -146,8 +156,23 @@ public class Netty4Transport extends TcpTransport {
 
     private Bootstrap createBootstrap() {
         final Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(new NioEventLoopGroup(workerCount, daemonThreadFactory(settings, TRANSPORT_CLIENT_BOSS_THREAD_NAME_PREFIX)));
-        bootstrap.channel(NioSocketChannel.class);
+
+        boolean isEpoll = Epoll.isAvailable() && NETTY_EPOLL_ENABLE.get(settings);
+
+        logger.debug("epoll: " + isEpoll + " (available: " + Epoll.isAvailable() + ",config:" +
+                NETTY_EPOLL_ENABLE.get(settings) + ")");
+        if (!isEpoll && NETTY_EPOLL_ENABLE.get(settings)) {
+            logger.debug("epoll: reason", Epoll.unavailabilityCause());
+        }
+
+        EventLoopGroup eventLoopGroup = isEpoll ?
+                new EpollEventLoopGroup(workerCount, daemonThreadFactory(settings, TRANSPORT_CLIENT_BOSS_THREAD_NAME_PREFIX)) :
+                new NioEventLoopGroup(workerCount, daemonThreadFactory(settings, TRANSPORT_CLIENT_BOSS_THREAD_NAME_PREFIX));
+        Class<? extends SocketChannel> socketChannel = Epoll.isAvailable() && NETTY_EPOLL_ENABLE.get(settings) ?
+                EpollSocketChannel.class : NioSocketChannel.class;
+
+        bootstrap.group(eventLoopGroup);
+        bootstrap.channel(socketChannel);
 
         bootstrap.handler(getClientChannelInitializer());
 
@@ -195,8 +220,14 @@ public class Netty4Transport extends TcpTransport {
 
         final ServerBootstrap serverBootstrap = new ServerBootstrap();
 
-        serverBootstrap.group(new NioEventLoopGroup(workerCount, workerFactory));
-        serverBootstrap.channel(NioServerSocketChannel.class);
+        EventLoopGroup eventLoopGroup = Epoll.isAvailable() && NETTY_EPOLL_ENABLE.get(settings) ?
+                new EpollEventLoopGroup(workerCount, workerFactory) :
+                new NioEventLoopGroup(workerCount, workerFactory);
+        Class<? extends ServerSocketChannel> socketChannel = Epoll.isAvailable() && NETTY_EPOLL_ENABLE.get(settings) ?
+                EpollServerSocketChannel.class : NioServerSocketChannel.class;
+
+        serverBootstrap.group(eventLoopGroup);
+        serverBootstrap.channel(socketChannel);
 
         serverBootstrap.childHandler(getServerChannelInitializer(name));
 

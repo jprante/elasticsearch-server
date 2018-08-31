@@ -31,6 +31,7 @@ import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.indices.recovery.RecoveryState;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -71,13 +72,8 @@ public class RestRecoveryAction extends AbstractCatAction {
         recoveryRequest.detailed(request.paramAsBoolean("detailed", false));
         recoveryRequest.activeOnly(request.paramAsBoolean("active_only", false));
         recoveryRequest.indicesOptions(IndicesOptions.fromRequest(request, recoveryRequest.indicesOptions()));
-
-        return channel -> client.admin().indices().recoveries(recoveryRequest, new RestResponseListener<RecoveryResponse>(channel) {
-            @Override
-            public RestResponse buildResponse(final RecoveryResponse response) throws Exception {
-                return RestTable.buildResponse(buildRecoveryTable(request, response), channel);
-            }
-        });
+        return channel -> client.admin().indices().recoveries(recoveryRequest,
+                new MyRestResponseListener(channel, request));
     }
 
     @Override
@@ -176,5 +172,20 @@ public class RestRecoveryAction extends AbstractCatAction {
         }
 
         return t;
+    }
+
+    private class MyRestResponseListener extends RestResponseListener<RecoveryResponse> {
+
+        private final RestRequest request;
+
+        MyRestResponseListener(RestChannel channel, RestRequest request) {
+            super(channel);
+            this.request = request;
+        }
+
+        @Override
+        public RestResponse buildResponse(RecoveryResponse response) throws Exception {
+            return RestTable.buildResponse(buildRecoveryTable(request, response), channel);
+        }
     }
 }

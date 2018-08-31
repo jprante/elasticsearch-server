@@ -26,7 +26,7 @@ import org.apache.lucene.util.Accountables;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.RamUsageEstimator;
 import org.apache.lucene.util.packed.PackedInts;
-import org.elasticsearch.index.fielddata.AbstractSortedDocValues;
+import org.apache.lucene.search.AbstractSortedDocValues;
 
 import java.io.IOException;
 import java.util.Collection;

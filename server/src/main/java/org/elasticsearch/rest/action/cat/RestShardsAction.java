@@ -35,6 +35,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.engine.CommitStats;
 import org.elasticsearch.index.engine.Engine;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -70,20 +71,8 @@ public class RestShardsAction extends AbstractCatAction {
         clusterStateRequest.local(request.paramAsBoolean("local", clusterStateRequest.local()));
         clusterStateRequest.masterNodeTimeout(request.paramAsTime("master_timeout", clusterStateRequest.masterNodeTimeout()));
         clusterStateRequest.clear().nodes(true).metaData(true).routingTable(true).indices(indices);
-        return channel -> client.admin().cluster().state(clusterStateRequest, new RestActionListener<ClusterStateResponse>(channel) {
-            @Override
-            public void processResponse(final ClusterStateResponse clusterStateResponse) {
-                IndicesStatsRequest indicesStatsRequest = new IndicesStatsRequest();
-                indicesStatsRequest.all();
-                indicesStatsRequest.indices(indices);
-                client.admin().indices().stats(indicesStatsRequest, new RestResponseListener<IndicesStatsResponse>(channel) {
-                    @Override
-                    public RestResponse buildResponse(IndicesStatsResponse indicesStatsResponse) throws Exception {
-                        return RestTable.buildResponse(buildTable(request, clusterStateResponse, indicesStatsResponse), channel);
-                    }
-                });
-            }
-        });
+        return channel -> client.admin().cluster().state(clusterStateRequest,
+                new MyRestActionListener(channel, indices, client, request));
     }
 
     @Override
@@ -316,5 +305,35 @@ public class RestShardsAction extends AbstractCatAction {
         }
 
         return table;
+    }
+
+    private class MyRestActionListener extends RestActionListener<ClusterStateResponse> {
+
+        private final String[] indices;
+
+        private final NodeClient client;
+
+        private final RestRequest request;
+
+        MyRestActionListener(RestChannel channel, final String[] indices,  final NodeClient client,
+                                       final RestRequest request) {
+            super(channel);
+            this.indices = indices;
+            this.client = client;
+            this.request = request;
+        }
+
+        @Override
+        protected void processResponse(ClusterStateResponse clusterStateResponse) {
+            IndicesStatsRequest indicesStatsRequest = new IndicesStatsRequest();
+            indicesStatsRequest.all();
+            indicesStatsRequest.indices(indices);
+            client.admin().indices().stats(indicesStatsRequest, new RestResponseListener<>(channel) {
+                @Override
+                public RestResponse buildResponse(IndicesStatsResponse indicesStatsResponse) throws Exception {
+                    return RestTable.buildResponse(buildTable(request, clusterStateResponse, indicesStatsResponse), channel);
+                }
+            });
+        }
     }
 }

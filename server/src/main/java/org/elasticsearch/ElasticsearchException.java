@@ -23,6 +23,7 @@ import org.elasticsearch.action.support.replication.ReplicationOperation;
 import org.elasticsearch.cluster.action.shard.ShardStateAction;
 import org.elasticsearch.common.CheckedFunction;
 import org.elasticsearch.common.Nullable;
+import org.elasticsearch.common.UnknownNamedObjectException;
 import org.elasticsearch.common.ParseField;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.io.stream.StreamInput;
@@ -762,7 +763,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
                 org.elasticsearch.common.util.CancellableThreads.ExecutionCancelledException::new, 2, UNKNOWN_VERSION_ADDED),
         MASTER_NOT_DISCOVERED_EXCEPTION(org.elasticsearch.discovery.MasterNotDiscoveredException.class,
                 org.elasticsearch.discovery.MasterNotDiscoveredException::new, 3, UNKNOWN_VERSION_ADDED),
-        ELASTICSEARCH_SECURITY_EXCEPTION(org.elasticsearch.ElasticsearchSecurityException.class,
+        ELASTICSEARCH_SECURITY_EXCEPTION(ElasticsearchSecurityException.class,
                 org.elasticsearch.ElasticsearchSecurityException::new, 4, UNKNOWN_VERSION_ADDED),
         INDEX_SHARD_RESTORE_EXCEPTION(org.elasticsearch.index.snapshots.IndexShardRestoreException.class,
                 org.elasticsearch.index.snapshots.IndexShardRestoreException::new, 5, UNKNOWN_VERSION_ADDED),
@@ -792,11 +793,11 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
                 org.elasticsearch.cluster.routing.IllegalShardRoutingStateException::new, 17, UNKNOWN_VERSION_ADDED),
         BROADCAST_SHARD_OPERATION_FAILED_EXCEPTION(org.elasticsearch.action.support.broadcast.BroadcastShardOperationFailedException.class,
                 org.elasticsearch.action.support.broadcast.BroadcastShardOperationFailedException::new, 18, UNKNOWN_VERSION_ADDED),
-        RESOURCE_NOT_FOUND_EXCEPTION(org.elasticsearch.ResourceNotFoundException.class,
+        RESOURCE_NOT_FOUND_EXCEPTION(ResourceNotFoundException.class,
                 org.elasticsearch.ResourceNotFoundException::new, 19, UNKNOWN_VERSION_ADDED),
         ACTION_TRANSPORT_EXCEPTION(org.elasticsearch.transport.ActionTransportException.class,
                 org.elasticsearch.transport.ActionTransportException::new, 20, UNKNOWN_VERSION_ADDED),
-        ELASTICSEARCH_GENERATION_EXCEPTION(org.elasticsearch.ElasticsearchGenerationException.class,
+        ELASTICSEARCH_GENERATION_EXCEPTION(ElasticsearchGenerationException.class,
                 org.elasticsearch.ElasticsearchGenerationException::new, 21, UNKNOWN_VERSION_ADDED),
         //      22 was CreateFailedEngineException
         INDEX_SHARD_STARTED_EXCEPTION(org.elasticsearch.index.shard.IndexShardStartedException.class,
@@ -822,7 +823,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
                 org.elasticsearch.indices.IndexPrimaryShardNotAllocatedException::new, 33, UNKNOWN_VERSION_ADDED),
         TRANSPORT_EXCEPTION(org.elasticsearch.transport.TransportException.class,
                 org.elasticsearch.transport.TransportException::new, 34, UNKNOWN_VERSION_ADDED),
-        ELASTICSEARCH_PARSE_EXCEPTION(org.elasticsearch.ElasticsearchParseException.class,
+        ELASTICSEARCH_PARSE_EXCEPTION(ElasticsearchParseException.class,
                 org.elasticsearch.ElasticsearchParseException::new, 35, UNKNOWN_VERSION_ADDED),
         SEARCH_EXCEPTION(org.elasticsearch.search.SearchException.class,
                 org.elasticsearch.search.SearchException::new, 36, UNKNOWN_VERSION_ADDED),
@@ -970,7 +971,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
                 org.elasticsearch.cluster.metadata.ProcessClusterEventTimeoutException::new, 116, UNKNOWN_VERSION_ADDED),
         RETRY_ON_PRIMARY_EXCEPTION(ReplicationOperation.RetryOnPrimaryException.class,
                 ReplicationOperation.RetryOnPrimaryException::new, 117, UNKNOWN_VERSION_ADDED),
-        ELASTICSEARCH_TIMEOUT_EXCEPTION(org.elasticsearch.ElasticsearchTimeoutException.class,
+        ELASTICSEARCH_TIMEOUT_EXCEPTION(ElasticsearchTimeoutException.class,
                 org.elasticsearch.ElasticsearchTimeoutException::new, 118, UNKNOWN_VERSION_ADDED),
         QUERY_PHASE_EXECUTION_EXCEPTION(org.elasticsearch.search.query.QueryPhaseExecutionException.class,
                 org.elasticsearch.search.query.QueryPhaseExecutionException::new, 119, UNKNOWN_VERSION_ADDED),
@@ -1018,14 +1019,14 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
             UNKNOWN_VERSION_ADDED),
         NOT_MASTER_EXCEPTION(org.elasticsearch.cluster.NotMasterException.class, org.elasticsearch.cluster.NotMasterException::new, 144,
             UNKNOWN_VERSION_ADDED),
-        STATUS_EXCEPTION(org.elasticsearch.ElasticsearchStatusException.class, org.elasticsearch.ElasticsearchStatusException::new, 145,
+        STATUS_EXCEPTION(ElasticsearchStatusException.class, org.elasticsearch.ElasticsearchStatusException::new, 145,
             UNKNOWN_VERSION_ADDED),
         TASK_CANCELLED_EXCEPTION(org.elasticsearch.tasks.TaskCancelledException.class,
             org.elasticsearch.tasks.TaskCancelledException::new, 146, Version.V_5_1_1),
         SHARD_LOCK_OBTAIN_FAILED_EXCEPTION(org.elasticsearch.env.ShardLockObtainFailedException.class,
                                            org.elasticsearch.env.ShardLockObtainFailedException::new, 147, Version.V_5_0_2),
-        UNKNOWN_NAMED_OBJECT_EXCEPTION(org.elasticsearch.common.xcontent.UnknownNamedObjectException.class,
-                org.elasticsearch.common.xcontent.UnknownNamedObjectException::new, 148, Version.V_5_2_0),
+        UNKNOWN_NAMED_OBJECT_EXCEPTION(UnknownNamedObjectException.class,
+                UnknownNamedObjectException::new, 148, Version.V_5_2_0),
         TOO_MANY_BUCKETS_EXCEPTION(MultiBucketConsumerService.TooManyBucketsException.class,
                                    MultiBucketConsumerService.TooManyBucketsException::new, 149,
             Version.V_6_2_0);

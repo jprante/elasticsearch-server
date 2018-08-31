@@ -22,7 +22,6 @@ package org.elasticsearch.indices.recovery;
 import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.indices.recovery.RecoverySettings;
 import org.elasticsearch.test.ESTestCase;
 
 import java.util.concurrent.TimeUnit;

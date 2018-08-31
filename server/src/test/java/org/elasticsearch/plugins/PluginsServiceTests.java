@@ -33,7 +33,7 @@ import org.hamcrest.Matchers;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -437,8 +437,8 @@ public class PluginsServiceTests extends ESTestCase {
         Path pluginDir = createTempDir();
         Path dupJar = pluginDir.resolve("dup.jar");
         makeJar(dupJar);
-        Map<String, Set<URL>> transitiveDeps = new HashMap<>();
-        transitiveDeps.put("dep", Collections.singleton(dupJar.toUri().toURL()));
+        Map<String, Set<URI>> transitiveDeps = new HashMap<>();
+        transitiveDeps.put("dep", Collections.singleton(dupJar.toUri()));
         PluginInfo info1 = new PluginInfo("myplugin", "desc", "1.0", Version.CURRENT, "1.8",
             "MyPlugin", Collections.singletonList("dep"), false);
         PluginsService.Bundle bundle = new PluginsService.Bundle(info1, pluginDir);
@@ -455,9 +455,9 @@ public class PluginsServiceTests extends ESTestCase {
         Path otherDir = createTempDir();
         Path dupJar = otherDir.resolve("dup.jar");
         makeJar(dupJar, DummyClass2.class);
-        Map<String, Set<URL>> transitiveDeps = new HashMap<>();
-        transitiveDeps.put("dep1", Collections.singleton(dupJar.toUri().toURL()));
-        transitiveDeps.put("dep2", Collections.singleton(dupJar.toUri().toURL()));
+        Map<String, Set<URI>> transitiveDeps = new HashMap<>();
+        transitiveDeps.put("dep1", Collections.singleton(dupJar.toUri()));
+        transitiveDeps.put("dep2", Collections.singleton(dupJar.toUri()));
         PluginInfo info1 = new PluginInfo("myplugin", "desc", "1.0", Version.CURRENT, "1.8",
             "MyPlugin", Arrays.asList("dep1", "dep2"), false);
         PluginsService.Bundle bundle = new PluginsService.Bundle(info1, pluginDir);
@@ -492,8 +492,8 @@ public class PluginsServiceTests extends ESTestCase {
         Path depDir = createTempDir();
         Path depJar = depDir.resolve("dep.jar");
         makeJar(depJar, DummyClass1.class);
-        Map<String, Set<URL>> transitiveDeps = new HashMap<>();
-        transitiveDeps.put("dep", Collections.singleton(depJar.toUri().toURL()));
+        Map<String, Set<URI>> transitiveDeps = new HashMap<>();
+        transitiveDeps.put("dep", Collections.singleton(depJar.toUri()));
         PluginInfo info1 = new PluginInfo("myplugin", "desc", "1.0", Version.CURRENT, "1.8",
             "MyPlugin", Collections.singletonList("dep"), false);
         PluginsService.Bundle bundle = new PluginsService.Bundle(info1, pluginDir);
@@ -514,9 +514,9 @@ public class PluginsServiceTests extends ESTestCase {
         Path dep2Dir = createTempDir();
         Path dep2Jar = dep2Dir.resolve("dep2.jar");
         makeJar(dep2Jar, DummyClass2.class);
-        Map<String, Set<URL>> transitiveDeps = new HashMap<>();
-        transitiveDeps.put("dep1", Collections.singleton(dep1Jar.toUri().toURL()));
-        transitiveDeps.put("dep2", Collections.singleton(dep2Jar.toUri().toURL()));
+        Map<String, Set<URI>> transitiveDeps = new HashMap<>();
+        transitiveDeps.put("dep1", Collections.singleton(dep1Jar.toUri()));
+        transitiveDeps.put("dep2", Collections.singleton(dep2Jar.toUri()));
         PluginInfo info1 = new PluginInfo("myplugin", "desc", "1.0", Version.CURRENT, "1.8",
             "MyPlugin", Arrays.asList("dep1", "dep2"), false);
         PluginsService.Bundle bundle = new PluginsService.Bundle(info1, pluginDir);
@@ -537,14 +537,14 @@ public class PluginsServiceTests extends ESTestCase {
         Path dep2Dir = createTempDir();
         Path dep2Jar = dep2Dir.resolve("dep2.jar");
         makeJar(dep2Jar, DummyClass3.class);
-        Map<String, Set<URL>> transitiveDeps = new HashMap<>();
-        transitiveDeps.put("dep1", Collections.singleton(dep1Jar.toUri().toURL()));
-        transitiveDeps.put("dep2", Collections.singleton(dep2Jar.toUri().toURL()));
+        Map<String, Set<URI>> transitiveDeps = new HashMap<>();
+        transitiveDeps.put("dep1", Collections.singleton(dep1Jar.toUri()));
+        transitiveDeps.put("dep2", Collections.singleton(dep2Jar.toUri()));
         PluginInfo info1 = new PluginInfo("myplugin", "desc", "1.0", Version.CURRENT, "1.8",
             "MyPlugin", Arrays.asList("dep1", "dep2"), false);
         PluginsService.Bundle bundle = new PluginsService.Bundle(info1, pluginDir);
         PluginsService.checkBundleJarHell(bundle, transitiveDeps);
-        Set<URL> deps = transitiveDeps.get("myplugin");
+        Set<URI> deps = transitiveDeps.get("myplugin");
         assertNotNull(deps);
         assertThat(deps, containsInAnyOrder(pluginJar.toUri().toURL(), dep1Jar.toUri().toURL(), dep2Jar.toUri().toURL()));
     }

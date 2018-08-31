@@ -25,7 +25,7 @@ import java.util.Set;
 
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.TestUtil;
-import org.elasticsearch.index.fielddata.AbstractSortedSetDocValues;
+import org.apache.lucene.search.AbstractSortedSetDocValues;
 import org.elasticsearch.index.fielddata.SortedBinaryDocValues;
 import org.elasticsearch.search.aggregations.LeafBucketCollector;
 import org.elasticsearch.search.aggregations.bucket.range.BinaryRangeAggregator.SortedBinaryRangeLeafCollector;

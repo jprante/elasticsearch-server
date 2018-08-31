@@ -24,6 +24,8 @@ import org.elasticsearch.common.SuppressForbidden;
 import java.io.FilePermission;
 import java.io.IOException;
 import java.net.SocketPermission;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.Permission;
@@ -33,7 +35,6 @@ import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Predicate;
 
 /** custom policy for union of static and dynamic permissions */
@@ -50,9 +51,10 @@ final class ESPolicy extends Policy {
     final PermissionCollection dynamic;
     final Map<String,Policy> plugins;
 
-    ESPolicy(Map<String, URL> codebases, PermissionCollection dynamic, Map<String,Policy> plugins, boolean filterBadDefaults) {
-        this.template = Security.readPolicy(getClass().getResource(POLICY_RESOURCE), codebases);
-        this.untrusted = Security.readPolicy(getClass().getResource(UNTRUSTED_RESOURCE), Collections.emptyMap());
+    ESPolicy(Map<String, URI> codebases, PermissionCollection dynamic, Map<String,Policy> plugins, boolean filterBadDefaults)
+            throws URISyntaxException {
+        this.template = Security.readPolicy(getClass().getResource(POLICY_RESOURCE).toURI(), codebases);
+        this.untrusted = Security.readPolicy(getClass().getResource(UNTRUSTED_RESOURCE).toURI(), Collections.emptyMap());
         if (filterBadDefaults) {
             this.system = new SystemPolicy(Policy.getPolicy());
         } else {

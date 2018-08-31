@@ -44,13 +44,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * We enforce bootstrap checks once a node has the transport protocol bound to a non-loopback interface or if the system property {@code
  * es.enforce.bootstrap.checks} is set to {@true}. In this case we assume the node is running in production and all bootstrap checks must
  * pass.
+ *
+ * Removed checks:
+ *   - heap min/max (is managed by Java 10)
+ *   - Client JVM (there is no client VM in Java 10)
+ *   - G1GC (works on Java 10)
  */
 final class BootstrapChecks {
 
@@ -185,7 +188,6 @@ final class BootstrapChecks {
     // the list of checks to execute
     static List<BootstrapCheck> checks() {
         final List<BootstrapCheck> checks = new ArrayList<>();
-        checks.add(new HeapSizeCheck());
         final FileDescriptorCheck fileDescriptorCheck
             = Constants.MAC_OS_X ? new OsXFileDescriptorCheck() : new FileDescriptorCheck();
         checks.add(fileDescriptorCheck);
@@ -202,46 +204,12 @@ final class BootstrapChecks {
         if (Constants.LINUX) {
             checks.add(new MaxMapCountCheck());
         }
-        checks.add(new ClientJvmCheck());
         checks.add(new UseSerialGCCheck());
         checks.add(new SystemCallFilterCheck());
         checks.add(new OnErrorCheck());
         checks.add(new OnOutOfMemoryErrorCheck());
-        checks.add(new EarlyAccessCheck());
-        checks.add(new G1GCCheck());
         checks.add(new AllPermissionCheck());
         return Collections.unmodifiableList(checks);
-    }
-
-    static class HeapSizeCheck implements BootstrapCheck {
-
-        @Override
-        public BootstrapCheckResult check(BootstrapContext context) {
-            final long initialHeapSize = getInitialHeapSize();
-            final long maxHeapSize = getMaxHeapSize();
-            if (initialHeapSize != 0 && maxHeapSize != 0 && initialHeapSize != maxHeapSize) {
-                final String message = String.format(
-                        Locale.ROOT,
-                        "initial heap size [%d] not equal to maximum heap size [%d]; " +
-                                "this can cause resize pauses and prevents mlockall from locking the entire heap",
-                        getInitialHeapSize(),
-                        getMaxHeapSize());
-                return BootstrapCheckResult.failure(message);
-            } else {
-                return BootstrapCheckResult.success();
-            }
-        }
-
-        // visible for testing
-        long getInitialHeapSize() {
-            return JvmInfo.jvmInfo().getConfiguredInitialHeapSize();
-        }
-
-        // visible for testing
-        long getMaxHeapSize() {
-            return JvmInfo.jvmInfo().getConfiguredMaxHeapSize();
-        }
-
     }
 
     static class OsXFileDescriptorCheck extends FileDescriptorCheck {
@@ -397,7 +365,7 @@ final class BootstrapChecks {
 
     static class MaxMapCountCheck implements BootstrapCheck {
 
-        private static final long LIMIT = 1 << 18;
+        private static final long LIMIT = 65530;
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {
@@ -454,28 +422,6 @@ final class BootstrapChecks {
         // visible for testing
         long parseProcSysVmMaxMapCount(final String procSysVmMaxMapCount) throws NumberFormatException {
             return Long.parseLong(procSysVmMaxMapCount);
-        }
-
-    }
-
-    static class ClientJvmCheck implements BootstrapCheck {
-
-        @Override
-        public BootstrapCheckResult check(BootstrapContext context) {
-            if (getVmName().toLowerCase(Locale.ROOT).contains("client")) {
-                final String message = String.format(
-                        Locale.ROOT,
-                        "JVM is using the client VM [%s] but should be using a server VM for the best performance",
-                        getVmName());
-                return BootstrapCheckResult.failure(message);
-            } else {
-                return BootstrapCheckResult.success();
-            }
-        }
-
-        // visible for testing
-        String getVmName() {
-            return JvmInfo.jvmInfo().getVmName();
         }
 
     }
@@ -603,87 +549,6 @@ final class BootstrapChecks {
                     " upgrade to at least Java 8u92 and use ExitOnOutOfMemoryError",
                 onOutOfMemoryError(),
                 BootstrapSettings.SYSTEM_CALL_FILTER_SETTING.getKey());
-        }
-
-    }
-
-    /**
-     * Bootstrap check for early-access builds from OpenJDK.
-     */
-    static class EarlyAccessCheck implements BootstrapCheck {
-
-        @Override
-        public BootstrapCheckResult check(BootstrapContext context) {
-            final String javaVersion = javaVersion();
-            if ("Oracle Corporation".equals(jvmVendor()) && javaVersion.endsWith("-ea")) {
-                final String message = String.format(
-                        Locale.ROOT,
-                        "Java version [%s] is an early-access build, only use release builds",
-                        javaVersion);
-                return BootstrapCheckResult.failure(message);
-            } else {
-                return BootstrapCheckResult.success();
-            }
-        }
-
-        String jvmVendor() {
-            return Constants.JVM_VENDOR;
-        }
-
-        String javaVersion() {
-            return Constants.JAVA_VERSION;
-        }
-
-    }
-
-    /**
-     * Bootstrap check for versions of HotSpot that are known to have issues that can lead to index corruption when G1GC is enabled.
-     */
-    static class G1GCCheck implements BootstrapCheck {
-
-        @Override
-        public BootstrapCheckResult check(BootstrapContext context) {
-            if ("Oracle Corporation".equals(jvmVendor()) && isJava8() && isG1GCEnabled()) {
-                final String jvmVersion = jvmVersion();
-                // HotSpot versions on Java 8 match this regular expression; note that this changes with Java 9 after JEP-223
-                final Pattern pattern = Pattern.compile("(\\d+)\\.(\\d+)-b\\d+");
-                final Matcher matcher = pattern.matcher(jvmVersion);
-                final boolean matches = matcher.matches();
-                assert matches : jvmVersion;
-                final int major = Integer.parseInt(matcher.group(1));
-                final int update = Integer.parseInt(matcher.group(2));
-                // HotSpot versions for Java 8 have major version 25, the bad versions are all versions prior to update 40
-                if (major == 25 && update < 40) {
-                    final String message = String.format(
-                            Locale.ROOT,
-                            "JVM version [%s] can cause data corruption when used with G1GC; upgrade to at least Java 8u40", jvmVersion);
-                    return BootstrapCheckResult.failure(message);
-                }
-            }
-            return BootstrapCheckResult.success();
-        }
-
-        // visible for testing
-        String jvmVendor() {
-            return Constants.JVM_VENDOR;
-        }
-
-        // visible for testing
-        boolean isG1GCEnabled() {
-            assert "Oracle Corporation".equals(jvmVendor());
-            return JvmInfo.jvmInfo().useG1GC().equals("true");
-        }
-
-        // visible for testing
-        String jvmVersion() {
-            assert "Oracle Corporation".equals(jvmVendor());
-            return Constants.JVM_VERSION;
-        }
-
-        // visible for testing
-        boolean isJava8() {
-            assert "Oracle Corporation".equals(jvmVendor());
-            return JavaVersion.current().equals(JavaVersion.parse("1.8"));
         }
 
     }

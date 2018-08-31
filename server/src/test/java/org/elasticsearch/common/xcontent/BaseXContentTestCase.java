@@ -25,8 +25,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Constants;
-import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.common.LoggingDeprecationHandler;
 import org.elasticsearch.common.ParseField;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesArray;

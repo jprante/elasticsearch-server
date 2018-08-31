@@ -76,7 +76,7 @@ public class RestCountAction extends AbstractCatAction {
         } catch (IOException e) {
             throw new ElasticsearchException("Couldn't parse query", e);
         }
-        return channel -> client.search(countRequest, new RestResponseListener<SearchResponse>(channel) {
+        return channel -> client.search(countRequest, new RestResponseListener<>(channel) {
             @Override
             public RestResponse buildResponse(SearchResponse countResponse) throws Exception {
                 return RestTable.buildResponse(buildTable(request, countResponse), channel);

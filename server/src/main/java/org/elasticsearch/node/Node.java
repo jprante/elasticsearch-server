@@ -93,7 +93,6 @@ import org.elasticsearch.gateway.GatewayModule;
 import org.elasticsearch.gateway.GatewayService;
 import org.elasticsearch.gateway.MetaStateService;
 import org.elasticsearch.http.HttpServerTransport;
-import org.elasticsearch.http.HttpTransportSettings;
 import org.elasticsearch.index.analysis.AnalysisRegistry;
 import org.elasticsearch.indices.IndicesModule;
 import org.elasticsearch.indices.IndicesService;
@@ -743,30 +742,45 @@ public class Node implements Closeable {
         logger.info("stopping ...");
 
         injector.getInstance(ResourceWatcherService.class).stop();
+        logger.debug("resource watch service stopped");
         if (NetworkModule.HTTP_ENABLED.get(settings)) {
             injector.getInstance(HttpServerTransport.class).stop();
+            logger.debug("http server stopped");
         }
 
         injector.getInstance(SnapshotsService.class).stop();
+        logger.debug("snapshot service stopped");
         injector.getInstance(SnapshotShardsService.class).stop();
+        logger.debug("snapshot shar watch service stopped");
         // stop any changes happening as a result of cluster state changes
         injector.getInstance(IndicesClusterStateService.class).stop();
+        logger.debug("indices cluster state service stopped");
         // close discovery early to not react to pings anymore.
         // This can confuse other nodes and delay things - mostly if we're the master and we're running tests.
         injector.getInstance(Discovery.class).stop();
+        logger.debug("discovery stopped");
         // we close indices first, so operations won't be allowed on it
         injector.getInstance(RoutingService.class).stop();
+        logger.debug("routing service stopped");
         injector.getInstance(ClusterService.class).stop();
+        logger.debug("cluster service stopped");
         injector.getInstance(NodeConnectionsService.class).stop();
+        logger.debug("node connections service stopped");
         nodeService.getMonitorService().stop();
+        logger.debug("monitor service stopped");
         injector.getInstance(GatewayService.class).stop();
+        logger.debug("gateway service stopped");
         injector.getInstance(SearchService.class).stop();
+        logger.debug("search service stopped");
         injector.getInstance(TransportService.class).stop();
+        logger.debug("transport service stopped");
 
         pluginLifecycleComponents.forEach(LifecycleComponent::stop);
+        logger.debug("plugins stopped");
         // we should stop this last since it waits for resources to get released
         // if we had scroll searchers etc or recovery going on we wait for to finish.
         injector.getInstance(IndicesService.class).stop();
+        logger.debug("indices stopped");
         logger.info("stopped");
 
         return this;

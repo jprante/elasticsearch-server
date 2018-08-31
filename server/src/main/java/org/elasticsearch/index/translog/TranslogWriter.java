@@ -20,7 +20,6 @@
 package org.elasticsearch.index.translog;
 
 import org.apache.lucene.store.AlreadyClosedException;
-import org.apache.lucene.store.OutputStreamDataOutput;
 import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.Assertions;
 import org.elasticsearch.common.bytes.BytesArray;

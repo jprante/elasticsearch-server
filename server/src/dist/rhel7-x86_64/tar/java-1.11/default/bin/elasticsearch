@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# This is the start script for Elasticsearch on Linux
+
+app="elasticsearch"
+profile="${profile}"
+
+# declare JDKs here (for early exit to avoid ugly class file error message)
+
+jdk_versions=(
+  "10.0.1" "10.0.2"
+  "11-ea"
+)
+
+parse_jvm_options() {
+  if [ -f "\$1" ]; then
+    echo "\$(grep "^-" "\$1" | tr '\\n' ' ')"
+  fi
+}
+containsElement() {
+  local e match="\$1"
+  shift
+  for e; do [[ "\$e" == "\$match" ]] && return 0; done
+  return 1
+}
+function join_by() {
+  local IFS="\$1"; shift; echo "\$*";
+}
+
+dir="\$(cd -P "\$(dirname "\$0")" && pwd)"
+
+ES_HOME="\${dir}/.."
+ES_PATH_CONF="\${ES_HOME}/conf"
+
+for jvm_options in \${ES_PATH_CONF}/\${app}-\${profile}-jvm.options ; do
+    if [ -r "\$jvm_options" ]; then
+        JVM_OPTIONS=\$jvm_options
+        break
+    fi
+done
+ES_JAVA_OPTS="\$(parse_jvm_options "\$JVM_OPTIONS") \$ES_JAVA_OPTS"
+ES_JAVA_OPTS=\$(eval "echo \$ES_JAVA_OPTS")
+
+if [ -x "\$JAVA_HOME/bin/java" ]; then
+    JAVA="\$JAVA_HOME/bin/java"
+else
+    JAVA=`which java`
+fi
+if [ ! -x "\$JAVA" ]; then
+    echo "Could not find any executable java binary. Please install java in your PATH or set JAVA_HOME"
+    exit 1
+fi
+
+JAVA_VERSION=\$(\${JAVA} -version 2>&1 | sed -E -n 's/.* version "(.*)"/\\1/p' | cut -d' ' -f1)
+
+containsElement "\${JAVA_VERSION}" "\${jdk_versions[@]}"
+if [ \$? == 1 ]; then
+    java_versions=\$(join_by , "\${jdk_versions[@]}")
+    echo "Java version is \${JAVA_VERSION}, unable to execute. Please install one of the Java versions \${java_versions} in your PATH or set JAVA_HOME"
+    exit 1
+fi
+
+exec \${JAVA} \
+ \${ES_JAVA_OPTS} \
+ -Des.path.home="\${ES_HOME}" \
+ -Des.path.conf="\${ES_PATH_CONF}" \
+ -Des.distribution.flavor="oss" \
+ -Des.distribution.type="tar" \
+ --module-path "\${ES_HOME}/lib" \
+ --module org.xbib.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch \
+ "\${@}"
+
+retval=\$?
+exit \${retval}

@@ -32,14 +32,13 @@ import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.common.regex.Regex;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.xcontent.DeprecationHandler;
-import org.elasticsearch.common.xcontent.LoggingDeprecationHandler;
+import org.elasticsearch.common.LoggingDeprecationHandler;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.index.query.support.QueryParsers;
 import org.elasticsearch.index.search.MatchQuery;
 import org.elasticsearch.index.search.MultiMatchQuery;
 import org.elasticsearch.index.search.QueryParserHelper;
-import org.elasticsearch.index.search.QueryStringQueryParser;
 
 import java.io.IOException;
 import java.util.HashMap;

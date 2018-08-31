@@ -27,7 +27,7 @@ import org.elasticsearch.common.joda.FormatDateTimeFormatter;
 import org.elasticsearch.common.joda.Joda;
 import org.elasticsearch.common.logging.DeprecationLogger;
 import org.elasticsearch.common.logging.Loggers;
-import org.elasticsearch.common.xcontent.support.XContentMapValues;
+import org.elasticsearch.common.xcontent.XContentMapValues;
 import org.elasticsearch.index.analysis.NamedAnalyzer;
 import org.elasticsearch.index.similarity.SimilarityProvider;
 
@@ -37,10 +37,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.isArray;
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeFloatValue;
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeMapValue;
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeStringValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.isArray;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeFloatValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeMapValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeStringValue;
 
 public class TypeParsers {
 

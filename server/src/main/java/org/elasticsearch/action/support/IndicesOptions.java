@@ -27,8 +27,8 @@ import org.elasticsearch.rest.RestRequest;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeBooleanValue;
-import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeStringArrayValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeBooleanValue;
+import static org.elasticsearch.common.xcontent.XContentMapValues.nodeStringArrayValue;
 
 /**
  * Controls how to deal with unavailable concrete indices (closed or missing), how wildcard expressions are expanded

@@ -19,6 +19,7 @@
 
 package org.elasticsearch.common.xcontent;
 
+import org.elasticsearch.common.UnknownNamedObjectException;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.rest.RestStatus;
@@ -36,7 +37,7 @@ public class UnknownNamedObjectExceptionTests extends ESTestCase {
         try (BytesStreamOutput out = new BytesStreamOutput()) {
             created.writeTo(out);
             try (StreamInput in = out.bytes().streamInput()) {
-                roundTripped = new UnknownNamedObjectException(in);
+                roundTripped = new org.elasticsearch.common.UnknownNamedObjectException(in);
             }
         }
         assertEquals(created.getMessage(), roundTripped.getMessage());

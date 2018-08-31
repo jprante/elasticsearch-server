@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.xbib.elasticsearch:gradle-plugin-elasticsearch-build:6.3.2.1"
+        classpath "org.xbib.elasticsearch:gradle-plugin-elasticsearch-build:6.3.2.2"
     }
 }
 
@@ -16,12 +16,12 @@ import java.time.format.DateTimeFormatter
 plugins {
     id "org.sonarqube" version "2.6.1"
     id "io.codearte.nexus-staging" version "0.11.0"
-    id "com.palantir.docker" version "0.20.1"
-    id "org.xbib.gradle.plugin.rpm" version "1.0.1"
+    id "org.ajoberstar.grgit" version "2.3.0"
+    id "org.xbib.gradle.plugin.rpm" version "1.0.2"
     id "org.xbib.gradle.plugin.asciidoctor" version "1.5.6.0.1"
 }
 
-printf "Date: %s\nHost: %s\nOS: %s %s %s\nJVM: %s %s %s %s\nGradle: %s Groovy: %s Java: %s\n" +
+printf "Date: %s\nHost: %s\nOS: %s %s %s\nJava: %s %s %s %s\nGradle: %s Groovy: %s Java: %s\n" +
         "Build: group: ${project.group} name: ${project.name} version: ${project.version}\n",
         ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
         InetAddress.getLocalHost(),
@@ -36,8 +36,8 @@ printf "Date: %s\nHost: %s\nOS: %s %s %s\nJVM: %s %s %s %s\nGradle: %s Groovy: %
 
 ext {
     user = 'jprante'
-    name = 'elasticsearch-xbib'
-    description = 'Elasticsearch'
+    name = 'elasticsearch-server'
+    description = 'Elasticsearch server'
     esmodules = [
             'elasticsearch-analysis-common',
             'transport-netty4'
@@ -48,8 +48,19 @@ ext {
 }
 
 apply plugin: "io.codearte.nexus-staging"
+apply plugin: 'org.xbib.gradle.plugin.asciidoctor'
 
 configure(allprojects.findAll { it.name in rootProject.esmodules }) {
+    apply plugin: 'org.xbib.gradle.plugin.elasticsearch.plugin'
+    configurations {
+        esdist
+    }
+    artifacts {
+        esdist bundlePlugin
+    }
+}
+
+configure(allprojects.findAll { it.name in rootProject.esplugins }) {
     apply plugin: 'org.xbib.gradle.plugin.elasticsearch.plugin'
     configurations {
         esdist
@@ -62,25 +73,26 @@ configure(allprojects.findAll { it.name in rootProject.esmodules }) {
 subprojects {
 
     apply plugin: 'java'
-    apply plugin: 'org.xbib.gradle.plugin.asciidoctor'
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
-    task injectGradleProperties(type: Copy) {
-        from rootProject.file('gradle.properties')
-        into 'build/resources/main'
-        expand([
-                'timestamp': new Date().format('yyyyMMddHHmmss')
-        ])
+    compileJava {
+        sourceCompatibility = JavaVersion.VERSION_1_10
+        targetCompatibility = JavaVersion.VERSION_1_10
     }
-    processResources.finalizedBy injectGradleProperties
+    compileTestJava {
+        sourceCompatibility = JavaVersion.VERSION_1_10
+        targetCompatibility = JavaVersion.VERSION_1_10
+    }
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
 
     apply from: rootProject.file('gradle/publish.gradle')
     apply from: rootProject.file('gradle/sourcequality.gradle')
 }
 
 asciidoctor {
+    sourceDir rootProject.file('docs/asciidoc')
     attributes toc: 'left',
             doctype: 'book',
             icons: 'font',

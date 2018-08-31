@@ -35,7 +35,7 @@ import org.elasticsearch.common.regex.Regex;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.common.xcontent.support.XContentMapValues;
+import org.elasticsearch.common.xcontent.XContentMapValues;
 import org.elasticsearch.index.fieldvisitor.CustomFieldsVisitor;
 import org.elasticsearch.index.fieldvisitor.FieldsVisitor;
 import org.elasticsearch.index.mapper.DocumentMapper;

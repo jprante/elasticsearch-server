@@ -18,6 +18,7 @@
  */
 package org.elasticsearch.common.xcontent;
 
+import org.elasticsearch.common.xcontent.ToXContentObject;
 import org.elasticsearch.rest.RestStatus;
 
 /**

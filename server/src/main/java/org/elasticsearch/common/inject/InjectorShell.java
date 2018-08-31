@@ -24,18 +24,15 @@ import org.elasticsearch.common.inject.internal.PrivateElementsImpl;
 import org.elasticsearch.common.inject.internal.ProviderInstanceBindingImpl;
 import org.elasticsearch.common.inject.internal.Scoping;
 import org.elasticsearch.common.inject.internal.SourceProvider;
-import org.elasticsearch.common.inject.internal.Stopwatch;
 import org.elasticsearch.common.inject.spi.Dependency;
 import org.elasticsearch.common.inject.spi.Element;
 import org.elasticsearch.common.inject.spi.Elements;
-import org.elasticsearch.common.inject.spi.InjectionPoint;
 import org.elasticsearch.common.inject.spi.PrivateElements;
 import org.elasticsearch.common.inject.spi.TypeListenerBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import static java.util.Collections.emptySet;
 import static org.elasticsearch.common.inject.Scopes.SINGLETON;
@@ -117,7 +114,7 @@ class InjectorShell {
          * primary injector will be first in the returned list.
          */
         List<InjectorShell> build(Initializer initializer, BindingProcessor bindingProcessor,
-                                  Stopwatch stopwatch, Errors errors) {
+                                  Errors errors) {
             if (stage == null) {
                 throw new IllegalStateException("Stage not initialized");
             }
@@ -140,26 +137,14 @@ class InjectorShell {
             }
 
             elements.addAll(Elements.getElements(stage, modules));
-            stopwatch.resetAndLog("Module execution");
-
             new MessageProcessor(errors).process(injector, elements);
-
             new TypeListenerBindingProcessor(errors).process(injector, elements);
             List<TypeListenerBinding> listenerBindings = injector.state.getTypeListenerBindings();
             injector.membersInjectorStore = new MembersInjectorStore(injector, listenerBindings);
-            stopwatch.resetAndLog("TypeListeners creation");
-
             new ScopeBindingProcessor(errors).process(injector, elements);
-            stopwatch.resetAndLog("Scopes creation");
-
             new TypeConverterBindingProcessor(errors).process(injector, elements);
-            stopwatch.resetAndLog("Converters creation");
-
             bindInjector(injector);
-            bindLogger(injector);
             bindingProcessor.process(injector, elements);
-            stopwatch.resetAndLog("Binding creation");
-
             List<InjectorShell> injectorShells = new ArrayList<>();
             injectorShells.add(new InjectorShell(elements, injector));
 
@@ -167,10 +152,8 @@ class InjectorShell {
             PrivateElementProcessor processor = new PrivateElementProcessor(errors, stage);
             processor.process(injector, elements);
             for (Builder builder : processor.getInjectorShellBuilders()) {
-                injectorShells.addAll(builder.build(initializer, bindingProcessor, stopwatch, errors));
+                injectorShells.addAll(builder.build(initializer, bindingProcessor, errors));
             }
-            stopwatch.resetAndLog("Private environment creation");
-
             return injectorShells;
         }
 
@@ -216,39 +199,6 @@ class InjectorShell {
         @Override
         public String toString() {
             return "Provider<Injector>";
-        }
-    }
-
-    /**
-     * The Logger is a special case because it knows the injection point of the injected member. It's
-     * the only binding that does this.
-     */
-    private static void bindLogger(InjectorImpl injector) {
-        Key<Logger> key = Key.get(Logger.class);
-        LoggerFactory loggerFactory = new LoggerFactory();
-        injector.state.putBinding(key,
-                new ProviderInstanceBindingImpl<>(injector, key,
-                        SourceProvider.UNKNOWN_SOURCE, loggerFactory, Scoping.UNSCOPED,
-                        loggerFactory, emptySet()));
-    }
-
-    private static class LoggerFactory implements InternalFactory<Logger>, Provider<Logger> {
-        @Override
-        public Logger get(Errors errors, InternalContext context, Dependency<?> dependency) {
-            InjectionPoint injectionPoint = dependency.getInjectionPoint();
-            return injectionPoint == null
-                    ? Logger.getAnonymousLogger()
-                    : Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
-        }
-
-        @Override
-        public Logger get() {
-            return Logger.getAnonymousLogger();
-        }
-
-        @Override
-        public String toString() {
-            return "Provider<Logger>";
         }
     }
 

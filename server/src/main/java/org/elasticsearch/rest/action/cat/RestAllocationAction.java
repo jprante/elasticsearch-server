@@ -34,6 +34,7 @@ import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -67,23 +68,8 @@ public class RestAllocationAction extends AbstractCatAction {
         clusterStateRequest.clear().routingTable(true);
         clusterStateRequest.local(request.paramAsBoolean("local", clusterStateRequest.local()));
         clusterStateRequest.masterNodeTimeout(request.paramAsTime("master_timeout", clusterStateRequest.masterNodeTimeout()));
-
-        return channel -> client.admin().cluster().state(clusterStateRequest, new RestActionListener<ClusterStateResponse>(channel) {
-            @Override
-            public void processResponse(final ClusterStateResponse state) {
-                NodesStatsRequest statsRequest = new NodesStatsRequest(nodes);
-                statsRequest.clear().fs(true).indices(new CommonStatsFlags(CommonStatsFlags.Flag.Store));
-
-                client.admin().cluster().nodesStats(statsRequest, new RestResponseListener<NodesStatsResponse>(channel) {
-                    @Override
-                    public RestResponse buildResponse(NodesStatsResponse stats) throws Exception {
-                        Table tab = buildTable(request, state, stats);
-                        return RestTable.buildResponse(tab, channel);
-                    }
-                });
-            }
-        });
-
+        return channel -> client.admin().cluster().state(clusterStateRequest,
+                new MyRestActionListener(channel, client, request, nodes));
     }
 
     @Override
@@ -166,4 +152,34 @@ public class RestAllocationAction extends AbstractCatAction {
         return table;
     }
 
+    private class MyRestActionListener extends RestActionListener<ClusterStateResponse> {
+
+        private final NodeClient client;
+
+        private final RestRequest request;
+
+        private final String[] nodes;
+
+        MyRestActionListener(RestChannel channel, final NodeClient client, final RestRequest request,
+                             final String[] nodes) {
+            super(channel);
+            this.client = client;
+            this.request = request;
+            this.nodes = nodes;
+        }
+
+        @Override
+        protected void processResponse(ClusterStateResponse clusterStateResponse) {
+            NodesStatsRequest statsRequest = new NodesStatsRequest(nodes);
+            statsRequest.clear().fs(true).indices(new CommonStatsFlags(CommonStatsFlags.Flag.Store));
+
+            client.admin().cluster().nodesStats(statsRequest, new RestResponseListener<>(channel) {
+                @Override
+                public RestResponse buildResponse(NodesStatsResponse stats) throws Exception {
+                    Table tab = buildTable(request, clusterStateResponse, stats);
+                    return RestTable.buildResponse(tab, channel);
+                }
+            });
+        }
+    }
 }

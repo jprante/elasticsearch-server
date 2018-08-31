@@ -18,15 +18,12 @@ package org.elasticsearch.common.inject.internal;
 
 import org.elasticsearch.common.unit.TimeValue;
 
-import java.util.logging.Logger;
-
 /**
  * Enables simple performance monitoring.
  *
  * @author crazybob@google.com (Bob Lee)
  */
 public class Stopwatch {
-    private static final Logger logger = Logger.getLogger(Stopwatch.class.getName());
 
     private long startNS = System.nanoTime();
 
@@ -46,6 +43,6 @@ public class Stopwatch {
      * Resets and logs elapsed time in milliseconds.
      */
     public void resetAndLog(String label) {
-        logger.fine(label + ": " + reset() + "ms");
+        reset();
     }
 }

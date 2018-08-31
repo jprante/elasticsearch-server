@@ -20,7 +20,6 @@ import org.elasticsearch.common.inject.internal.BindingImpl;
 import org.elasticsearch.common.inject.internal.Errors;
 import org.elasticsearch.common.inject.internal.ErrorsException;
 import org.elasticsearch.common.inject.internal.InternalContext;
-import org.elasticsearch.common.inject.internal.Stopwatch;
 import org.elasticsearch.common.inject.spi.Dependency;
 
 import java.util.List;
@@ -47,7 +46,6 @@ import java.util.Map;
  */
 class InjectorBuilder {
 
-    private final Stopwatch stopwatch = new Stopwatch();
     private final Errors errors = new Errors();
 
     private Stage stage;
@@ -87,8 +85,7 @@ class InjectorBuilder {
         // Synchronize while we're building up the bindings and other injector state. This ensures that
         // the JIT bindings in the parent injector don't change while we're being built
         synchronized (shellBuilder.lock()) {
-            shells = shellBuilder.build(initializer, bindingProcesor, stopwatch, errors);
-            stopwatch.resetAndLog("Injector construction");
+            shells = shellBuilder.build(initializer, bindingProcesor, errors);
 
             initializeStatically();
         }
@@ -103,31 +100,18 @@ class InjectorBuilder {
      */
     private void initializeStatically() {
         bindingProcesor.initializeBindings();
-        stopwatch.resetAndLog("Binding initialization");
 
         for (InjectorShell shell : shells) {
             shell.getInjector().index();
         }
-        stopwatch.resetAndLog("Binding indexing");
-
         injectionRequestProcessor.process(shells);
-        stopwatch.resetAndLog("Collecting injection requests");
-
         bindingProcesor.runCreationListeners();
-        stopwatch.resetAndLog("Binding validation");
-
         injectionRequestProcessor.validate();
-        stopwatch.resetAndLog("Static validation");
-
         initializer.validateOustandingInjections(errors);
-        stopwatch.resetAndLog("Instance member validation");
-
         new LookupProcessor(errors).process(shells);
         for (InjectorShell shell : shells) {
             ((DeferredLookups) shell.getInjector().lookups).initialize(errors);
         }
-        stopwatch.resetAndLog("Provider verification");
-
         for (InjectorShell shell : shells) {
             if (!shell.getElements().isEmpty()) {
                 throw new AssertionError("Failed to execute " + shell.getElements());
@@ -151,16 +135,12 @@ class InjectorBuilder {
      */
     private void injectDynamically() {
         injectionRequestProcessor.injectMembers();
-        stopwatch.resetAndLog("Static member injection");
-
         initializer.injectAll(errors);
-        stopwatch.resetAndLog("Instance injection");
         errors.throwCreationExceptionIfErrorsExist();
 
         for (InjectorShell shell : shells) {
             loadEagerSingletons(shell.getInjector(), stage, errors);
         }
-        stopwatch.resetAndLog("Preloading singletons");
         errors.throwCreationExceptionIfErrorsExist();
     }
 

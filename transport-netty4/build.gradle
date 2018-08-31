@@ -1,6 +1,6 @@
 
-
 esplugin {
+    url 'https://github.com/jprante/elasticsearch-server'
     description 'Netty 4 based transport implementation'
     classname 'org.elasticsearch.transport.Netty4Plugin'
     hasClientJar = true
@@ -10,22 +10,24 @@ compileJava.options.compilerArgs << "-Xlint:-try"
 compileTestJava.options.compilerArgs << "-Xlint:-cast,-deprecation,-rawtypes,-try,-unchecked"
 
 dependencies {
-    compile "io.netty:netty-buffer:${property('netty.version')}"
-    compile "io.netty:netty-codec:${property('netty.version')}"
     compile "io.netty:netty-codec-http:${property('netty.version')}"
-    compile "io.netty:netty-common:${property('netty.version')}"
     compile "io.netty:netty-handler:${property('netty.version')}"
-    compile "io.netty:netty-resolver:${property('netty.version')}"
-    compile "io.netty:netty-transport:${property('netty.version')}"
-    compile "io.netty:netty-transport-native-epoll:${property('netty.version')}"
+    // epoll does not work under OpenJDK 11
     compile "io.netty:netty-transport-native-epoll:${property('netty.version')}:linux-x86_64"
+
+    testCompile "org.elasticsearch:elasticsearch:${project.property('elasticsearch.version')}"
 }
 
 dependencyLicenses {
   mapping from: /netty-.*/, to: 'netty'
 }
 
+test {
+    enabled = false
+}
+
 esTest {
+    enabled = false
     /*
      * We have to disable setting the number of available processors as tests in the same JVM randomize processors
       * and will step on each other if we allow them to set the number of available processors as it's set-once in Netty.
@@ -33,112 +35,115 @@ esTest {
     systemProperty 'es.set.netty.runtime.available.processors', 'false'
 }
 
+integTest {
+    //  plugin 'transport-netty4' cannot be installed as a plugin, it is a system module
+    enabled = false
+}
+
 integTestRunner {
-    /*
-     * We have to disable setting the number of available processors as tests in the same JVM randomize processors
-     * and will step on each other if we allow them to set the number of available processors as it's set-once in Netty.
-     */
+    enabled = false
     systemProperty 'es.set.netty.runtime.available.processors', 'false'
 }
 
-thirdPartyAudit.excludes = [
-        // classes are missing
 
-        // from io.netty.handler.codec.protobuf.ProtobufDecoder (netty)
-        'com.google.protobuf.ExtensionRegistry',
-        'com.google.protobuf.MessageLite$Builder',
-        'com.google.protobuf.MessageLite',
-        'com.google.protobuf.Parser',
+thirdPartyAudit {
+    // sun.misc.Unsafe in io.netty.util.internal.shaded.org.jctools
+    // sun.security.x509.* in io.netty.handler.ssl.util.OpenJdkSelfSignedCertGenerator
+    enabled = true
+    excludes = [
+            // classes are missing
 
-        // from io.netty.logging.CommonsLoggerFactory (netty)
-        'org.apache.commons.logging.Log',
-        'org.apache.commons.logging.LogFactory',
+            'com.google.protobuf.ExtensionRegistry',
+            'com.google.protobuf.ExtensionRegistryLite',
+            'com.google.protobuf.MessageLite$Builder',
+            'com.google.protobuf.MessageLite',
+            'com.google.protobuf.MessageLiteOrBuilder',
+            'com.google.protobuf.Parser',
+            'com.google.protobuf.nano.CodedOutputByteBufferNano',
+            'com.google.protobuf.nano.MessageNano',
 
-        // from io.netty.handler.ssl.OpenSslEngine (netty)
-        'io.netty.internal.tcnative.Buffer',
-        'io.netty.internal.tcnative.Library',
-        'io.netty.internal.tcnative.SSL',
-        'io.netty.internal.tcnative.SSLContext',
+            'com.jcraft.jzlib.Deflater',
+            'com.jcraft.jzlib.Inflater',
+            'com.jcraft.jzlib.JZlib$WrapperType',
+            'com.jcraft.jzlib.JZlib',
 
-        // from io.netty.handler.ssl.util.BouncyCastleSelfSignedCertGenerator (netty)
-        'org.bouncycastle.asn1.x500.X500Name',
-        'org.bouncycastle.cert.X509v3CertificateBuilder',
-        'org.bouncycastle.cert.jcajce.JcaX509CertificateConverter',
-        'org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder',
-        'org.bouncycastle.jce.provider.BouncyCastleProvider',
-        'org.bouncycastle.operator.jcajce.JcaContentSignerBuilder',
+            'com.ning.compress.BufferRecycler',
+            'com.ning.compress.lzf.ChunkDecoder',
+            'com.ning.compress.lzf.ChunkEncoder',
+            'com.ning.compress.lzf.LZFEncoder',
+            'com.ning.compress.lzf.util.ChunkDecoderFactory',
+            'com.ning.compress.lzf.util.ChunkEncoderFactory',
 
-        // from io.netty.handler.ssl.JettyNpnSslEngine (netty)
-        'org.eclipse.jetty.npn.NextProtoNego$ClientProvider',
-        'org.eclipse.jetty.npn.NextProtoNego$ServerProvider',
-        'org.eclipse.jetty.npn.NextProtoNego',
+            'io.netty.internal.tcnative.Buffer',
+            'io.netty.internal.tcnative.CertificateRequestedCallback',
+            'io.netty.internal.tcnative.CertificateVerifier',
+            'io.netty.internal.tcnative.Library',
+            'io.netty.internal.tcnative.SSL',
+            'io.netty.internal.tcnative.SSLContext',
+            'io.netty.internal.tcnative.SessionTicketKey',
+            'io.netty.internal.tcnative.SniHostNameMatcher',
 
-        // from io.netty.handler.codec.marshalling.ChannelBufferByteInput (netty)
-        'org.jboss.marshalling.ByteInput',
+            'lzma.sdk.lzma.Encoder',
+            'net.jpountz.lz4.LZ4Compressor',
+            'net.jpountz.lz4.LZ4Factory',
+            'net.jpountz.lz4.LZ4FastDecompressor',
+            'net.jpountz.xxhash.StreamingXXHash32',
+            'net.jpountz.xxhash.XXHashFactory',
 
-        // from io.netty.handler.codec.marshalling.ChannelBufferByteOutput (netty)
-        'org.jboss.marshalling.ByteOutput',
+            'org.apache.commons.logging.Log',
+            'org.apache.commons.logging.LogFactory',
+            'org.apache.log4j.Level',
+            'org.apache.log4j.Logger',
+            'org.apache.logging.log4j.Level',
+            'org.apache.logging.log4j.LogManager',
+            'org.apache.logging.log4j.Logger',
+            'org.apache.logging.log4j.spi.ExtendedLoggerWrapper',
 
-        // from io.netty.handler.codec.marshalling.CompatibleMarshallingEncoder (netty)
-        'org.jboss.marshalling.Marshaller',
+            'org.bouncycastle.asn1.x500.X500Name',
+            'org.bouncycastle.cert.X509v3CertificateBuilder',
+            'org.bouncycastle.cert.jcajce.JcaX509CertificateConverter',
+            'org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder',
+            'org.bouncycastle.jce.provider.BouncyCastleProvider',
+            'org.bouncycastle.operator.jcajce.JcaContentSignerBuilder',
 
-        // from io.netty.handler.codec.marshalling.ContextBoundUnmarshallerProvider (netty)
-        'org.jboss.marshalling.MarshallerFactory',
-        'org.jboss.marshalling.MarshallingConfiguration',
-        'org.jboss.marshalling.Unmarshaller',
+            'org.conscrypt.AllocatedBuffer',
+            'org.conscrypt.BufferAllocator',
+            'org.conscrypt.Conscrypt',
+            'org.conscrypt.HandshakeListener',
 
-        // from io.netty.util.internal.logging.InternalLoggerFactory (netty) - it's optional
-        'org.slf4j.Logger',
-        'org.slf4j.LoggerFactory',
+            'org.eclipse.jetty.alpn.ALPN$ClientProvider',
+            'org.eclipse.jetty.alpn.ALPN$ServerProvider',
+            'org.eclipse.jetty.alpn.ALPN',
+            'org.eclipse.jetty.npn.NextProtoNego$ClientProvider',
+            'org.eclipse.jetty.npn.NextProtoNego$ServerProvider',
+            'org.eclipse.jetty.npn.NextProtoNego',
 
-        'com.google.protobuf.ExtensionRegistryLite',
-        'com.google.protobuf.MessageLiteOrBuilder',
-        'com.google.protobuf.nano.CodedOutputByteBufferNano',
-        'com.google.protobuf.nano.MessageNano',
-        'com.jcraft.jzlib.Deflater',
-        'com.jcraft.jzlib.Inflater',
-        'com.jcraft.jzlib.JZlib$WrapperType',
-        'com.jcraft.jzlib.JZlib',
-        'com.ning.compress.BufferRecycler',
-        'com.ning.compress.lzf.ChunkDecoder',
-        'com.ning.compress.lzf.ChunkEncoder',
-        'com.ning.compress.lzf.LZFEncoder',
-        'com.ning.compress.lzf.util.ChunkDecoderFactory',
-        'com.ning.compress.lzf.util.ChunkEncoderFactory',
-        'lzma.sdk.lzma.Encoder',
-        'net.jpountz.lz4.LZ4Compressor',
-        'net.jpountz.lz4.LZ4Factory',
-        'net.jpountz.lz4.LZ4FastDecompressor',
-        'net.jpountz.xxhash.StreamingXXHash32',
-        'net.jpountz.xxhash.XXHashFactory',
-        'io.netty.internal.tcnative.CertificateRequestedCallback',
-        'io.netty.internal.tcnative.CertificateRequestedCallback$KeyMaterial',
-        'io.netty.internal.tcnative.CertificateVerifier',
-        'io.netty.internal.tcnative.SessionTicketKey',
-        'io.netty.internal.tcnative.SniHostNameMatcher',
-        'org.eclipse.jetty.alpn.ALPN$ClientProvider',
-        'org.eclipse.jetty.alpn.ALPN$ServerProvider',
-        'org.eclipse.jetty.alpn.ALPN',
+            'org.jboss.marshalling.ByteInput',
+            'org.jboss.marshalling.ByteOutput',
+            'org.jboss.marshalling.Marshaller',
+            'org.jboss.marshalling.MarshallerFactory',
+            'org.jboss.marshalling.MarshallingConfiguration',
+            'org.jboss.marshalling.Unmarshaller',
 
-        'io.netty.handler.ssl.util.OpenJdkSelfSignedCertGenerator',
-        'io.netty.util.internal.PlatformDependent0',
-        'io.netty.util.internal.PlatformDependent0$1',
-        'io.netty.util.internal.PlatformDependent0$2',
-        'io.netty.util.internal.PlatformDependent0$3',
-        'io.netty.util.internal.shaded.org.jctools.queues.BaseLinkedQueueConsumerNodeRef',
-        'io.netty.util.internal.shaded.org.jctools.queues.BaseLinkedQueueProducerNodeRef',
-        'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueColdProducerFields',
-        'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueConsumerFields',
-        'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields',
-        'io.netty.util.internal.shaded.org.jctools.queues.LinkedQueueNode',
-        'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueConsumerIndexField',
-        'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerIndexField',
-        'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerLimitField',
-        'io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess',
-        'io.netty.util.internal.shaded.org.jctools.util.UnsafeRefArrayAccess',
+            'org.slf4j.Logger',
+            'org.slf4j.LoggerFactory',
 
-        'org.conscrypt.AllocatedBuffer',
-        'org.conscrypt.BufferAllocator',
-        'org.conscrypt.Conscrypt$Engines',
-        'org.conscrypt.HandshakeListener'
-]
+            // violations
+            'io.netty.handler.ssl.util.OpenJdkSelfSignedCertGenerator',
+            'io.netty.util.internal.PlatformDependent0',
+            'io.netty.util.internal.PlatformDependent0$1',
+            'io.netty.util.internal.PlatformDependent0$2',
+            'io.netty.util.internal.PlatformDependent0$3',
+            'io.netty.util.internal.shaded.org.jctools.queues.BaseLinkedQueueConsumerNodeRef',
+            'io.netty.util.internal.shaded.org.jctools.queues.BaseLinkedQueueProducerNodeRef',
+            'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueColdProducerFields',
+            'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueConsumerFields',
+            'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields',
+            'io.netty.util.internal.shaded.org.jctools.queues.LinkedQueueNode',
+            'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueConsumerIndexField',
+            'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerIndexField',
+            'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerLimitField',
+            'io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess',
+            'io.netty.util.internal.shaded.org.jctools.util.UnsafeRefArrayAccess'
+    ]
+}

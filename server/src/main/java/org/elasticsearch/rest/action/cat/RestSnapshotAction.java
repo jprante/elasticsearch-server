@@ -65,7 +65,7 @@ public class RestSnapshotAction extends AbstractCatAction {
         getSnapshotsRequest.masterNodeTimeout(request.paramAsTime("master_timeout", getSnapshotsRequest.masterNodeTimeout()));
 
         return channel ->
-            client.admin().cluster().getSnapshots(getSnapshotsRequest, new RestResponseListener<GetSnapshotsResponse>(channel) {
+            client.admin().cluster().getSnapshots(getSnapshotsRequest, new RestResponseListener<>(channel) {
                 @Override
                 public RestResponse buildResponse(GetSnapshotsResponse getSnapshotsResponse) throws Exception {
                     return RestTable.buildResponse(buildTable(request, getSnapshotsResponse), channel);

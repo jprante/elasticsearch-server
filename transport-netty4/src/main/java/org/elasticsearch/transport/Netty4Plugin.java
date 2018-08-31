@@ -63,7 +63,8 @@ public class Netty4Plugin extends Plugin implements NetworkPlugin {
             Netty4Transport.NETTY_RECEIVE_PREDICTOR_SIZE,
             Netty4Transport.NETTY_RECEIVE_PREDICTOR_MIN,
             Netty4Transport.NETTY_RECEIVE_PREDICTOR_MAX,
-            Netty4Transport.NETTY_BOSS_COUNT
+            Netty4Transport.NETTY_BOSS_COUNT,
+            Netty4Transport.NETTY_EPOLL_ENABLE
         );
     }
 

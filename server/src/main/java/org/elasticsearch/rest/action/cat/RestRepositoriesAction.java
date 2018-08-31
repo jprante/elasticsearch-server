@@ -25,6 +25,7 @@ import org.elasticsearch.client.node.NodeClient;
 import org.elasticsearch.cluster.metadata.RepositoryMetaData;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -47,15 +48,8 @@ public class RestRepositoriesAction extends AbstractCatAction {
         getRepositoriesRequest.local(request.paramAsBoolean("local", getRepositoriesRequest.local()));
         getRepositoriesRequest.masterNodeTimeout(request.paramAsTime("master_timeout", getRepositoriesRequest.masterNodeTimeout()));
 
-        return channel ->
-                client.admin()
-                        .cluster()
-                        .getRepositories(getRepositoriesRequest, new RestResponseListener<GetRepositoriesResponse>(channel) {
-                            @Override
-                            public RestResponse buildResponse(GetRepositoriesResponse getRepositoriesResponse) throws Exception {
-                                return RestTable.buildResponse(buildTable(request, getRepositoriesResponse), channel);
-                            }
-                        });
+        return channel -> client.admin().cluster().getRepositories(getRepositoriesRequest,
+                new MyRestResponseListener(channel, request));
     }
 
     @Override
@@ -89,5 +83,20 @@ public class RestRepositoriesAction extends AbstractCatAction {
         }
 
         return table;
+    }
+
+    private class MyRestResponseListener extends RestResponseListener<GetRepositoriesResponse> {
+
+        private final RestRequest request;
+
+        protected MyRestResponseListener(RestChannel channel, RestRequest request) {
+            super(channel);
+            this.request = request;
+        }
+
+        @Override
+        public RestResponse buildResponse(GetRepositoriesResponse getRepositoriesResponse) throws Exception {
+            return RestTable.buildResponse(buildTable(request, getRepositoriesResponse), channel);
+        }
     }
 }

@@ -53,7 +53,7 @@ import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.util.CancellableThreadsTests;
 import org.elasticsearch.common.util.set.Sets;
-import org.elasticsearch.common.xcontent.UnknownNamedObjectException;
+import org.elasticsearch.common.UnknownNamedObjectException;
 import org.elasticsearch.common.xcontent.XContentLocation;
 import org.elasticsearch.discovery.DiscoverySettings;
 import org.elasticsearch.env.ShardLockObtainFailedException;

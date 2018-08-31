@@ -27,8 +27,8 @@ import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.LongsRef;
 import org.apache.lucene.util.packed.PackedInts;
 import org.apache.lucene.util.packed.PackedLongValues;
-import org.elasticsearch.index.fielddata.AbstractSortedDocValues;
-import org.elasticsearch.index.fielddata.AbstractSortedSetDocValues;
+import org.apache.lucene.search.AbstractSortedDocValues;
+import org.apache.lucene.search.AbstractSortedSetDocValues;
 
 import java.io.IOException;
 import java.util.ArrayList;

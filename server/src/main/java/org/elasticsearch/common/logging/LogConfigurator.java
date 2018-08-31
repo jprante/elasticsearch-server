@@ -32,6 +32,8 @@ import org.apache.logging.log4j.core.config.json.JsonConfiguration;
 import org.apache.logging.log4j.core.config.json.JsonConfigurationFactory;
 import org.apache.logging.log4j.core.config.properties.PropertiesConfiguration;
 import org.apache.logging.log4j.core.config.properties.PropertiesConfigurationFactory;
+import org.apache.logging.log4j.core.config.yaml.YamlConfiguration;
+import org.apache.logging.log4j.core.config.yaml.YamlConfigurationFactory;
 import org.apache.logging.log4j.status.StatusConsoleListener;
 import org.apache.logging.log4j.status.StatusData;
 import org.apache.logging.log4j.status.StatusListener;
@@ -143,25 +145,44 @@ public class LogConfigurator {
 
         final LoggerContext context = (LoggerContext) LogManager.getContext(false);
 
-        final List<AbstractConfiguration> configurations = new ArrayList<>();
-        final PropertiesConfigurationFactory factory = new PropertiesConfigurationFactory();
         final Set<FileVisitOption> options = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
-        Files.walkFileTree(configsPath, options, Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
-                if (file.getFileName().toString().endsWith("log4j2.properties")) {
-                    configurations.add((PropertiesConfiguration) factory.getConfiguration(context, file.toString(), file.toUri()));
-                }
-                return FileVisitResult.CONTINUE;
-            }
-        });
+
+        final List<AbstractConfiguration> configurations = new ArrayList<>();
         if (configurations.isEmpty()) {
-            JsonConfigurationFactory jsonConfigurationFactory = new JsonConfigurationFactory();
+            final YamlConfigurationFactory factory = new YamlConfigurationFactory();
+            Files.walkFileTree(configsPath, options, Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+                    String fileName = file.getFileName().toString();
+                    if (fileName.endsWith("log4j2.yaml") || fileName.endsWith("log4j2.yml")) {
+                        configurations.add((YamlConfiguration)
+                                factory.getConfiguration(context, file.toString(), file.toUri()));
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
+        if (configurations.isEmpty()) {
+            final JsonConfigurationFactory factory = new JsonConfigurationFactory();
             Files.walkFileTree(configsPath, options, Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
                     if (file.getFileName().toString().endsWith("log4j2.json")) {
-                        configurations.add((JsonConfiguration) jsonConfigurationFactory.getConfiguration(context, file.toString(), file.toUri()));
+                        configurations.add((JsonConfiguration)
+                                factory.getConfiguration(context, file.toString(), file.toUri()));
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
+        if (configurations.isEmpty()) {
+            final PropertiesConfigurationFactory factory = new PropertiesConfigurationFactory();
+            Files.walkFileTree(configsPath, options, Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+                    if (file.getFileName().toString().endsWith("log4j2.properties")) {
+                        configurations.add((PropertiesConfiguration)
+                                factory.getConfiguration(context, file.toString(), file.toUri()));
                     }
                     return FileVisitResult.CONTINUE;
                 }

@@ -1,0 +1,9 @@
+cat << EOF
+-Dfile.encoding=UTF-8
+-Djava.security.egd=file:/dev/./urandom
+-Djava.awt.headless=true
+-Dlog4j2.disable.jmx=true
+-Dio.netty.noUnsafe=true
+-Dio.netty.recycler.maxCapacity=0
+-Djna.nosys=true
+EOF

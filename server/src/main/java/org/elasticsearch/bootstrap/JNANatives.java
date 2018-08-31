@@ -68,7 +68,10 @@ class JNANatives {
             int result = JNACLibrary.mlockall(JNACLibrary.MCL_CURRENT);
             if (result == 0) {
                 LOCAL_MLOCKALL = true;
+                logger.debug("mlockall success");
                 return;
+            } else {
+                logger.debug("mlockall failed, result = " + result);
             }
 
             errno = Native.getLastError();

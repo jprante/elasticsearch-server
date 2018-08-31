@@ -1,4 +1,21 @@
+// enable in preparation for Gradle 5.0
+enableFeaturePreview('STABLE_PUBLISHING')
 
-include 'plugin-classloader'
+include 'elasticsearch-classloader'
+include 'elasticsearch-hdrhistogram'
+include 'elasticsearch-hppc'
+include 'elasticsearch-jackson'
+include 'elasticsearch-jna'
+include 'elasticsearch-joda'
+include 'elasticsearch-joptsimple'
+include 'elasticsearch-jts'
+include 'elasticsearch-log4j'
+include 'elasticsearch-lucene'
+include 'elasticsearch-noggit'
+include 'elasticsearch-s2geo'
+include 'elasticsearch-securesm'
+include 'elasticsearch-snakeyaml'
+include 'elasticsearch-spatial4j'
+include 'elasticsearch-tdigest'
 include 'transport-netty4'
 include 'server'

@@ -141,47 +141,6 @@ public class BootstrapChecksTests extends ESTestCase {
         assertThat(suppressed[1], hasToString(containsString("second")));
     }
 
-    public void testHeapSizeCheck() throws NodeValidationException {
-        final int initial = randomIntBetween(0, Integer.MAX_VALUE - 1);
-        final int max = randomIntBetween(initial + 1, Integer.MAX_VALUE);
-        final AtomicLong initialHeapSize = new AtomicLong(initial);
-        final AtomicLong maxHeapSize = new AtomicLong(max);
-
-        final BootstrapChecks.HeapSizeCheck check = new BootstrapChecks.HeapSizeCheck() {
-            @Override
-            long getInitialHeapSize() {
-                return initialHeapSize.get();
-            }
-
-            @Override
-            long getMaxHeapSize() {
-                return maxHeapSize.get();
-            }
-        };
-
-        final NodeValidationException e =
-                expectThrows(
-                        NodeValidationException.class,
-                        () -> BootstrapChecks.check(defaultContext, true, Collections.singletonList(check), "testHeapSizeCheck"));
-        assertThat(
-                e.getMessage(),
-                containsString("initial heap size [" + initialHeapSize.get() + "] " +
-                        "not equal to maximum heap size [" + maxHeapSize.get() + "]"));
-
-        initialHeapSize.set(maxHeapSize.get());
-
-        BootstrapChecks.check(defaultContext, true, Collections.singletonList(check), "testHeapSizeCheck");
-
-        // nothing should happen if the initial heap size or the max
-        // heap size is not available
-        if (randomBoolean()) {
-            initialHeapSize.set(0);
-        } else {
-            maxHeapSize.set(0);
-        }
-        BootstrapChecks.check(defaultContext, true, Collections.singletonList(check), "testHeapSizeCheck");
-    }
-
     public void testFileDescriptorLimits() throws NodeValidationException {
         final boolean osX = randomBoolean(); // simulates OS X versus non-OS X
         final int limit = osX ? 10240 : 1 << 16;
@@ -383,27 +342,6 @@ public class BootstrapChecksTests extends ESTestCase {
         BootstrapChecks.check(defaultContext, true, Collections.singletonList(check), "testMaxMapCountCheck");
     }
 
-    public void testClientJvmCheck() throws NodeValidationException {
-        final AtomicReference<String> vmName = new AtomicReference<>("Java HotSpot(TM) 32-Bit Client VM");
-        final BootstrapCheck check = new BootstrapChecks.ClientJvmCheck() {
-            @Override
-            String getVmName() {
-                return vmName.get();
-            }
-        };
-
-        final NodeValidationException e = expectThrows(
-                NodeValidationException.class,
-                () -> BootstrapChecks.check(defaultContext, true, Collections.singletonList(check), "testClientJvmCheck"));
-        assertThat(
-                e.getMessage(),
-                containsString("JVM is using the client VM [Java HotSpot(TM) 32-Bit Client VM] " +
-                        "but should be using a server VM for the best performance"));
-
-        vmName.set("Java HotSpot(TM) 32-Bit Server VM");
-        BootstrapChecks.check(defaultContext, true, Collections.singletonList(check), "testClientJvmCheck");
-    }
-
     public void testUseSerialGCCheck() throws NodeValidationException {
         final AtomicReference<String> useSerialGC = new AtomicReference<>("true");
         final BootstrapCheck check = new BootstrapChecks.UseSerialGCCheck() {
@@ -579,114 +517,6 @@ public class BootstrapChecksTests extends ESTestCase {
             NodeValidationException.class,
             () -> BootstrapChecks.check(defaultContext, randomBoolean(), Collections.singletonList(check), methodName));
         consumer.accept(e);
-    }
-
-    public void testEarlyAccessCheck() throws NodeValidationException {
-        final AtomicReference<String> javaVersion
-                = new AtomicReference<>(randomFrom("1.8.0_152-ea", "9-ea"));
-        final BootstrapChecks.EarlyAccessCheck eaCheck = new BootstrapChecks.EarlyAccessCheck() {
-
-            @Override
-            String jvmVendor() {
-                return "Oracle Corporation";
-            }
-
-            @Override
-            String javaVersion() {
-                return javaVersion.get();
-            }
-
-        };
-
-        final List<BootstrapCheck> checks = Collections.singletonList(eaCheck);
-        final NodeValidationException e = expectThrows(
-                NodeValidationException.class,
-                () -> {
-                    BootstrapChecks.check(defaultContext, true, checks, "testEarlyAccessCheck");
-                });
-        assertThat(
-                e.getMessage(),
-                containsString(
-                        "Java version ["
-                                + javaVersion.get()
-                                + "] is an early-access build, only use release builds"));
-
-        // if not on an early-access build, nothing should happen
-        javaVersion.set(randomFrom("1.8.0_152", "9"));
-        BootstrapChecks.check(defaultContext, true, checks, "testEarlyAccessCheck");
-
-    }
-
-    public void testG1GCCheck() throws NodeValidationException {
-        final AtomicBoolean isG1GCEnabled = new AtomicBoolean(true);
-        final AtomicBoolean isJava8 = new AtomicBoolean(true);
-        final AtomicReference<String> jvmVersion =
-            new AtomicReference<>(String.format(Locale.ROOT, "25.%d-b%d", randomIntBetween(0, 39), randomIntBetween(1, 128)));
-        final BootstrapChecks.G1GCCheck g1GCCheck = new BootstrapChecks.G1GCCheck() {
-
-            @Override
-            String jvmVendor() {
-                return "Oracle Corporation";
-            }
-
-            @Override
-            boolean isG1GCEnabled() {
-                return isG1GCEnabled.get();
-            }
-
-            @Override
-            String jvmVersion() {
-                return jvmVersion.get();
-            }
-
-            @Override
-            boolean isJava8() {
-                return isJava8.get();
-            }
-
-        };
-
-        final NodeValidationException e =
-            expectThrows(
-                NodeValidationException.class,
-                () -> BootstrapChecks.check(defaultContext, true, Collections.singletonList(g1GCCheck), "testG1GCCheck"));
-        assertThat(
-            e.getMessage(),
-            containsString(
-                "JVM version [" + jvmVersion.get() + "] can cause data corruption when used with G1GC; upgrade to at least Java 8u40"));
-
-        // if G1GC is disabled, nothing should happen
-        isG1GCEnabled.set(false);
-        BootstrapChecks.check(defaultContext, true, Collections.singletonList(g1GCCheck), "testG1GCCheck");
-
-        // if on or after update 40, nothing should happen independent of whether or not G1GC is enabled
-        isG1GCEnabled.set(randomBoolean());
-        jvmVersion.set(String.format(Locale.ROOT, "25.%d-b%d", randomIntBetween(40, 112), randomIntBetween(1, 128)));
-        BootstrapChecks.check(defaultContext, true, Collections.singletonList(g1GCCheck), "testG1GCCheck");
-
-        final BootstrapChecks.G1GCCheck nonOracleCheck = new BootstrapChecks.G1GCCheck() {
-
-            @Override
-            String jvmVendor() {
-                return randomAlphaOfLength(8);
-            }
-
-        };
-
-        // if not on an Oracle JVM, nothing should happen
-        BootstrapChecks.check(defaultContext, true, Collections.singletonList(nonOracleCheck), "testG1GCCheck");
-
-        final BootstrapChecks.G1GCCheck nonJava8Check = new BootstrapChecks.G1GCCheck() {
-
-            @Override
-            boolean isJava8() {
-                return false;
-            }
-
-        };
-
-        // if not Java 8, nothing should happen
-        BootstrapChecks.check(defaultContext, true, Collections.singletonList(nonJava8Check), "testG1GCCheck");
     }
 
     public void testAllPermissionCheck() throws NodeValidationException {

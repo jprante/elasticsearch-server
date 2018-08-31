@@ -26,7 +26,7 @@ import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.common.xcontent.support.XContentMapValues;
+import org.elasticsearch.common.xcontent.XContentMapValues;
 import org.elasticsearch.test.ESIntegTestCase;
 
 import java.io.IOException;

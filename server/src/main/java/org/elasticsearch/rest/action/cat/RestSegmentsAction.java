@@ -32,6 +32,7 @@ import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.engine.Segment;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -64,21 +65,8 @@ public class RestSegmentsAction extends AbstractCatAction {
         clusterStateRequest.masterNodeTimeout(request.paramAsTime("master_timeout", clusterStateRequest.masterNodeTimeout()));
         clusterStateRequest.clear().nodes(true).routingTable(true).indices(indices);
 
-        return channel -> client.admin().cluster().state(clusterStateRequest, new RestActionListener<ClusterStateResponse>(channel) {
-            @Override
-            public void processResponse(final ClusterStateResponse clusterStateResponse) {
-                final IndicesSegmentsRequest indicesSegmentsRequest = new IndicesSegmentsRequest();
-                indicesSegmentsRequest.indices(indices);
-                client.admin().indices().segments(indicesSegmentsRequest, new RestResponseListener<IndicesSegmentResponse>(channel) {
-                    @Override
-                    public RestResponse buildResponse(final IndicesSegmentResponse indicesSegmentResponse) throws Exception {
-                        final Map<String, IndexSegments> indicesSegments = indicesSegmentResponse.getIndices();
-                        Table tab = buildTable(request, clusterStateResponse, indicesSegments);
-                        return RestTable.buildResponse(tab, channel);
-                    }
-                });
-            }
-        });
+        return channel -> client.admin().cluster().state(clusterStateRequest,
+                new MyRestActionListener(channel, indices, client, request));
     }
 
     @Override
@@ -152,5 +140,36 @@ public class RestSegmentsAction extends AbstractCatAction {
         }
 
         return table;
+    }
+
+    private class MyRestActionListener extends RestActionListener<ClusterStateResponse> {
+
+        private final String[] indices;
+
+        private final NodeClient client;
+
+        private final RestRequest request;
+
+        MyRestActionListener(RestChannel channel, final String[] indices,  final NodeClient client,
+                             final RestRequest request) {
+            super(channel);
+            this.indices = indices;
+            this.client = client;
+            this.request = request;
+        }
+
+        @Override
+        protected void processResponse(ClusterStateResponse clusterStateResponse) {
+            final IndicesSegmentsRequest indicesSegmentsRequest = new IndicesSegmentsRequest();
+            indicesSegmentsRequest.indices(indices);
+            client.admin().indices().segments(indicesSegmentsRequest, new RestResponseListener<>(channel) {
+                @Override
+                public RestResponse buildResponse(final IndicesSegmentResponse indicesSegmentResponse) throws Exception {
+                    final Map<String, IndexSegments> indicesSegments = indicesSegmentResponse.getIndices();
+                    Table tab = buildTable(request, clusterStateResponse, indicesSegments);
+                    return RestTable.buildResponse(tab, channel);
+                }
+            });
+        }
     }
 }

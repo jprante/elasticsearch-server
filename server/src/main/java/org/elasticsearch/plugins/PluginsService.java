@@ -47,6 +47,7 @@ import org.elasticsearch.transport.TcpTransport;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.DirectoryStream;
@@ -548,11 +549,11 @@ public class PluginsService extends AbstractComponent {
     private List<Tuple<PluginInfo,Plugin>> loadBundles(Set<Bundle> bundles) {
         List<Tuple<PluginInfo, Plugin>> plugins = new ArrayList<>();
         Map<String, Plugin> loaded = new HashMap<>();
-        Map<String, Set<URL>> transitiveUrls = new HashMap<>();
+        Map<String, Set<URI>> transitiveUris = new HashMap<>();
         List<Bundle> sortedBundles = sortBundles(bundles);
 
         for (Bundle bundle : sortedBundles) {
-            checkBundleJarHell(bundle, transitiveUrls);
+            checkBundleJarHell(bundle, transitiveUris);
 
             final Plugin plugin = loadBundle(bundle, loaded);
             plugins.add(new Tuple<>(bundle.plugin, plugin));
@@ -563,49 +564,56 @@ public class PluginsService extends AbstractComponent {
 
     // jar-hell check the bundle against the parent classloader and extended plugins
     // the plugin cli does it, but we do it again, in case lusers mess with jar files manually
-    static void checkBundleJarHell(Bundle bundle, Map<String, Set<URL>> transitiveUrls) {
+    static void checkBundleJarHell(Bundle bundle, Map<String, Set<URI>> transitiveUris) {
         // invariant: any plugins this plugin bundle extends have already been added to transitiveUrls
         List<String> exts = bundle.plugin.getExtendedPlugins();
 
         try {
             final Logger logger = ESLoggerFactory.getLogger(JarHell.class);
-            Set<URL> urls = new HashSet<>();
+            Set<URI> uris = new HashSet<>();
             for (String extendedPlugin : exts) {
-                Set<URL> pluginUrls = transitiveUrls.get(extendedPlugin);
-                assert pluginUrls != null : "transitive urls should have already been set for " + extendedPlugin;
+                Set<URI> pluginUris = transitiveUris.get(extendedPlugin);
+                assert pluginUris != null : "transitive urls should have already been set for " + extendedPlugin;
 
-                Set<URL> intersection = new HashSet<>(urls);
-                intersection.retainAll(pluginUrls);
+                Set<URI> intersection = new HashSet<>(uris);
+                intersection.retainAll(pluginUris);
                 if (intersection.isEmpty() == false) {
                     throw new IllegalStateException("jar hell! extended plugins " + exts +
                                                     " have duplicate codebases with each other: " + intersection);
                 }
 
-                intersection = new HashSet<>(bundle.urls);
-                intersection.retainAll(pluginUrls);
+                intersection = new HashSet<>();
+                for (URL url : bundle.urls) {
+                    intersection.add(url.toURI());
+                }
+                intersection.retainAll(pluginUris);
                 if (intersection.isEmpty() == false) {
                     throw new IllegalStateException("jar hell! duplicate codebases with extended plugin [" +
                                                     extendedPlugin + "]: " + intersection);
                 }
 
-                urls.addAll(pluginUrls);
-                JarHell.checkJarHell(urls, logger::debug); // check jarhell as we add each extended plugin's urls
+                uris.addAll(pluginUris);
+                JarHell.checkJarHell(uris, logger::debug); // check jarhell as we add each extended plugin's urls
             }
 
-            urls.addAll(bundle.urls);
-            JarHell.checkJarHell(urls, logger::debug); // check jarhell of each extended plugin against this plugin
-            transitiveUrls.put(bundle.plugin.getName(), urls);
+            for (URL url : bundle.urls) {
+                uris.add(url.toURI());
+            }
+            JarHell.checkJarHell(uris, logger::debug); // check jarhell of each extended plugin against this plugin
+            transitiveUris.put(bundle.plugin.getName(), uris);
 
-            Set<URL> classpath = JarHell.parseClassPath();
+            Set<URI> classpath = JarHell.parseClassPath();
             // check we don't have conflicting codebases with core
-            Set<URL> intersection = new HashSet<>(classpath);
+            Set<URI> intersection = new HashSet<>(classpath);
             intersection.retainAll(bundle.urls);
             if (intersection.isEmpty() == false) {
                 throw new IllegalStateException("jar hell! duplicate codebases between plugin and core: " + intersection);
             }
             // check we don't have conflicting classes
-            Set<URL> union = new HashSet<>(classpath);
-            union.addAll(bundle.urls);
+            Set<URI> union = new HashSet<>(classpath);
+            for (URL url : bundle.urls) {
+                union.add(url.toURI());
+            }
             JarHell.checkJarHell(union, logger::debug);
         } catch (Exception e) {
             throw new IllegalStateException("failed to load plugin " + bundle.plugin.getName() + " due to jar hell", e);

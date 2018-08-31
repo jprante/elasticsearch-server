@@ -1,0 +1,103 @@
+
+ext {
+    moduleName = 'org.xbib.elasticsearch.lucene'
+}
+
+configurations {
+    source
+}
+
+sourceSets {
+    generated {
+        java {
+            srcDir "$buildDir/generated-src"
+        }
+        output.dir("$buildDir/generated-src", builtBy: 'sourceDownload')
+    }
+    main {
+        java {
+            srcDirs += sourceSets.generated.java.srcDirs
+        }
+    }
+}
+
+dependencies {
+
+    source "org.apache.lucene:lucene-analyzers-common:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-backward-codecs:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-core:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-grouping:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-highlighter:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-join:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-memory:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-misc:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-queries:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-queryparser:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-sandbox:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-spatial:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-spatial-extras:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-spatial3d:${property('lucene.version')}:sources"
+    source "org.apache.lucene:lucene-suggest:${property('lucene.version')}:sources"
+
+    compile project(':elasticsearch-spatial4j')
+    compile project(':elasticsearch-s2geo')
+
+}
+
+task unpackSource(type: Copy) {
+    configurations.source.each {
+        if (it.toString().endsWith('sources.jar')) {
+            from zipTree(it)
+            into "$buildDir/generated-src/java"
+            exclude '**/FieldQuery.java'
+        }
+    }
+}
+
+task unpackResources(type: Copy) {
+    dependsOn unpackSource
+    from "$buildDir/generated-src/java"
+    into "$buildDir/resources/main"
+    include '**/*.txt'
+    // for loading XML for controlling Lucene compound hyphenation
+    include '**/hyphenation.dtd'
+    // snowball stemming
+    include '**/stem_ISO_8859_1.sbl'
+    // for portuguese stemming
+    include '**/portuguese.rslp'
+    // omit jj, jflex
+}
+
+afterEvaluate {
+    compileJava {
+        dependsOn unpackSource, unpackResources
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.compilerArgs = [
+                    '--module-path', classpath.asPath
+            ]
+            classpath = files()
+        }
+    }
+    javadoc {
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.addStringOption('-module-path', classpath.asPath)
+            classpath = files()
+        }
+    }
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier 'sources'
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}

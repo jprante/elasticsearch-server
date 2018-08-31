@@ -30,6 +30,7 @@ import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.plugins.PluginInfo;
+import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestResponse;
@@ -61,19 +62,8 @@ public class RestPluginsAction extends AbstractCatAction {
         clusterStateRequest.local(request.paramAsBoolean("local", clusterStateRequest.local()));
         clusterStateRequest.masterNodeTimeout(request.paramAsTime("master_timeout", clusterStateRequest.masterNodeTimeout()));
 
-        return channel -> client.admin().cluster().state(clusterStateRequest, new RestActionListener<ClusterStateResponse>(channel) {
-            @Override
-            public void processResponse(final ClusterStateResponse clusterStateResponse) throws Exception {
-                NodesInfoRequest nodesInfoRequest = new NodesInfoRequest();
-                nodesInfoRequest.clear().plugins(true);
-                client.admin().cluster().nodesInfo(nodesInfoRequest, new RestResponseListener<NodesInfoResponse>(channel) {
-                    @Override
-                    public RestResponse buildResponse(final NodesInfoResponse nodesInfoResponse) throws Exception {
-                        return RestTable.buildResponse(buildTable(request, clusterStateResponse, nodesInfoResponse), channel);
-                    }
-                });
-            }
-        });
+        return channel -> client.admin().cluster().state(clusterStateRequest,
+                new MyRestActionListener(channel, client, request));
     }
 
     @Override
@@ -108,5 +98,30 @@ public class RestPluginsAction extends AbstractCatAction {
         }
 
         return table;
+    }
+
+    private class MyRestActionListener extends RestActionListener<ClusterStateResponse> {
+
+        private final NodeClient client;
+
+        private final RestRequest request;
+
+        MyRestActionListener(RestChannel channel, final NodeClient client, final RestRequest request) {
+            super(channel);
+            this.client = client;
+            this.request = request;
+        }
+
+        @Override
+        protected void processResponse(ClusterStateResponse clusterStateResponse) throws Exception {
+            NodesInfoRequest nodesInfoRequest = new NodesInfoRequest();
+            nodesInfoRequest.clear().plugins(true);
+            client.admin().cluster().nodesInfo(nodesInfoRequest, new RestResponseListener<NodesInfoResponse>(channel) {
+                @Override
+                public RestResponse buildResponse(final NodesInfoResponse nodesInfoResponse) throws Exception {
+                    return RestTable.buildResponse(buildTable(request, clusterStateResponse, nodesInfoResponse), channel);
+                }
+            });
+        }
     }
 }

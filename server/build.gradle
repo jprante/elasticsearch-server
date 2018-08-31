@@ -1,4 +1,6 @@
-import org.xbib.gradle.plugin.elasticsearch.VersionProperties
+plugins {
+    id "com.palantir.docker" version "0.20.1"
+}
 
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -6,70 +8,145 @@ import java.time.ZonedDateTime
 apply plugin: 'org.xbib.gradle.plugin.elasticsearch.build'
 apply plugin: 'org.xbib.gradle.plugin.rpm'
 
+ext {
+    moduleName = 'org.xbib.elasticsearch.server'
+}
 configurations {
-    esModuleDists
-    esPluginDists
+    esLibDist
+    esModuleDist
+    esPluginDist
 }
 
 dependencies {
-    compile "org.elasticsearch:elasticsearch-core:${property('elasticsearch.version')}"
-    compile "org.elasticsearch:elasticsearch-secure-sm:${property('elasticsearch.version')}"
-    compile "org.elasticsearch:elasticsearch-x-content:${property('elasticsearch.version')}"
-    compile "org.elasticsearch:elasticsearch-cli:${property('elasticsearch.version')}"
-
-    compile "org.apache.lucene:lucene-core:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-analyzers-common:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-backward-codecs:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-grouping:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-highlighter:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-join:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-memory:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-misc:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-queries:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-queryparser:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-sandbox:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-spatial:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-spatial-extras:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-spatial3d:${property('lucene.version')}"
-    compile "org.apache.lucene:lucene-suggest:${property('lucene.version')}"
-
-    compile "com.carrotsearch:hppc:${property('hppc.version')}"
-    compile "joda-time:joda-time:${property('joda-time.version')}"
-    compile "com.tdunning:t-digest:${property('t-digest.version')}"
-    compile "org.hdrhistogram:HdrHistogram:${property('hdr.version')}"
-    compile "org.locationtech.spatial4j:spatial4j:${property('spatial4j.version')}"
-    compile "org.locationtech.jts:jts-core:${property('jts.version')}"
-    compile "org.elasticsearch:jna:${property('jna.version')}"
-    compile "org.apache.logging.log4j:log4j-api:${property('log4j.version')}"
-    compile "org.apache.logging.log4j:log4j-core:${property('log4j.version')}"
-    compile "org.apache.logging.log4j:log4j-1.2-api:${property('log4j.version')}"
-    compile project(':plugin-classloader')
+    compile project(':elasticsearch-classloader')
+    compile project(':elasticsearch-hdrhistogram')
+    compile project(':elasticsearch-hppc')
+    compile project(':elasticsearch-jna')
+    compile project(':elasticsearch-joda')
+    compile project(':elasticsearch-joptsimple')
+    compile project(':elasticsearch-log4j')
+    compile project(':elasticsearch-lucene')
+    compile project(':elasticsearch-securesm')
+    compile project(':elasticsearch-tdigest')
+    compile project(':elasticsearch-snakeyaml')
 
     testCompile "org.xbib.elasticsearch:elasticsearch-test-framework:${property('xbib-elasticsearch-test.version')}"
     testCompile "com.google.jimfs:jimfs:${property('jimfs.version')}"
     testCompile "com.google.guava:guava:${property('guava.version')}"
 
+    esLibDist project(':elasticsearch-classloader')
+    esLibDist project(':elasticsearch-hdrhistogram')
+    esLibDist project(':elasticsearch-hppc')
+    esLibDist project(':elasticsearch-jna')
+    esLibDist project(':elasticsearch-joda')
+    esLibDist project(':elasticsearch-joptsimple')
+    esLibDist project(':elasticsearch-log4j')
+    esLibDist project(':elasticsearch-lucene')
+    esLibDist project(':elasticsearch-securesm')
+    esLibDist project(':elasticsearch-tdigest')
+    esLibDist project(':elasticsearch-snakeyaml')
+
     rootProject.esmodules.each { module ->
-        if (new File(module).exists()) {
-            add('esModuleDists', project(path: ":${module}", configuration: 'esdist'))
+        if (rootProject.file(module).exists()) {
+            add('esModuleDist', project(path: ":${module}", configuration: 'esdist'))
         }
     }
-
-    esModuleDists group: "org.xbib.elasticsearch", name: "elasticsearch-analysis-common", version: "6.3.2.1", ext:"zip"
-
-    esPluginDists group: "org.xbib.elasticsearch.plugin", name: "elasticsearch-plugin-bundle", version: "6.3.2.1", ext:"zip"
-
+    rootProject.esplugins.each { plugin ->
+        if (rootProject.file(plugin).exists()) {
+            add('esPluginDist', project(path: ":${plugin}", configuration: 'esdist'))
+        }
+    }
+    // our modules
+    esModuleDist project(path: ":transport-netty4", configuration: "esdist")
+    esModuleDist group: "org.xbib.elasticsearch", name: "elasticsearch-analysis-common",
+            version: "${property('elasticsearch-analysis-common.version')}", ext:"zip"
+    // our plugins
+    if (profile == 'extended') {
+        esPluginDist group: "org.xbib.elasticsearch.plugin", name: "elasticsearch-plugin-bundle",
+                version: "${property('elasticsearch-plugin-bundle.version')}", ext: "zip"
+    }
 }
 
-compileJava.options.compilerArgs << "-Xlint:-cast,-deprecation,-rawtypes,-try,-unchecked"
-compileTestJava.options.compilerArgs << "-Xlint:-cast,-deprecation,-rawtypes,-try,-unchecked"
-
-artifacts {
-    archives sourcesJar, javadocJar
+afterEvaluate {
+    compileJava {
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.compilerArgs = [
+                    '--module-path', classpath.asPath
+            ]
+            classpath = files()
+        }
+    }
+    compileTestJava {
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.compilerArgs = [
+                    "-Xlint:-cast,-deprecation,-rawtypes,-try,-unchecked",
+                    "-proc:none",
+                    //'--module-path', classpath.asPath,
+                    //'--add-modules', 'junit',
+                    //'--add-reads', "$moduleName=junit",
+                    //'--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath
+            ]
+            //classpath = files()
+        }
+    }
+    javadoc {
+        enabled = true
+        inputs.property("moduleName", moduleName)
+        doFirst {
+            options.addStringOption('-module-path', classpath.asPath)
+            classpath = files()
+        }
+    }
+    jar {
+        inputs.property("moduleName", moduleName)
+        manifest {
+            attributes(
+                    'Implementation-Title': "${project.group}#${project.name};${project.version}",
+                    'Implementation-Version': version,
+                    'Implementation-Vendor': "${user}",
+                    'Change': grgit.head().abbreviatedId,
+                    'Branch': grgit.head().id,
+                    'Build-Date': ZonedDateTime.now(ZoneOffset.UTC),
+                    'Build-Java-Version': System.getProperty("java.version"),
+                    'X-Compile-Source-JDK': compileJava.targetCompatibility,
+                    'X-Compile-Target-JDK': compileJava.sourceCompatibility,
+                    'X-Compile-Elasticsearch-Version': version,
+                    'X-Compile-Lucene-Version': project.property('lucene.version'),
+                    'X-Compile-Elasticsearch-Snapshot': false,
+                    'Main-Class': 'org.elasticsearch.bootstrap.Elasticsearch'
+            )
+        }
+    }
 }
 
-// do not run junit tests
-test.enabled = false
+task injectGradleProperties(type: Copy) {
+    from rootProject.file('gradle.properties')
+    into 'build/resources/main'
+    expand([
+            'timestamp': new Date().format('yyyyMMddHHmmss')
+    ])
+}
+processResources.finalizedBy injectGradleProperties
+
+test {
+    enabled = false
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        jvmArgs = [
+                '--module-path', classpath.asPath,
+                '--add-modules', 'ALL-MODULE-PATH',
+                '--add-reads', "$moduleName=junit",
+                '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+        ]
+        classpath = files()
+    }
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat = 'full'
+    }
+}
 // do not run randomized tests
 randomizedTest.enabled = false
 // run Elasticsearch test suite
@@ -98,12 +175,16 @@ task generatePluginsList {
 }
 
 processResources {
+    dependsOn generateModulesList, generatePluginsList
     rootProject.esmodules.each { module ->
-        if (new File(module).exists()) {
+        if (rootProject.file(module).exists()) {
             dependsOn ":${module}:bundlePlugin"
         }
     }
-    dependsOn generateModulesList, generatePluginsList
+}
+
+clean {
+    delete fileTree('.') { include '.local*.log' }
 }
 
 forbiddenPatterns {
@@ -114,32 +195,44 @@ forbiddenPatterns {
 thirdPartyAudit.excludes = [
         // classes are missing!
 
-        // from com.fasterxml.jackson.dataformat.yaml.YAMLMapper (jackson-dataformat-yaml)
-        'com.fasterxml.jackson.databind.ObjectMapper',
+        // from jackson
+        'javax.activation.DataHandler',
+        'javax.activation.DataSource',
+        'javax.xml.bind.JAXBElement',
+        'javax.xml.bind.annotation.XmlAccessOrder',
+        'javax.xml.bind.annotation.XmlAccessType',
+        'javax.xml.bind.annotation.XmlAccessorOrder',
+        'javax.xml.bind.annotation.XmlAccessorType',
+        'javax.xml.bind.annotation.XmlAttribute',
+        'javax.xml.bind.annotation.XmlElement$DEFAULT',
+        'javax.xml.bind.annotation.XmlElement',
+        'javax.xml.bind.annotation.XmlElementRef',
+        'javax.xml.bind.annotation.XmlElementRefs',
+        'javax.xml.bind.annotation.XmlElementWrapper',
+        'javax.xml.bind.annotation.XmlElements',
+        'javax.xml.bind.annotation.XmlEnum',
+        'javax.xml.bind.annotation.XmlEnumValue',
+        'javax.xml.bind.annotation.XmlID',
+        'javax.xml.bind.annotation.XmlIDREF',
+        'javax.xml.bind.annotation.XmlRootElement',
+        'javax.xml.bind.annotation.XmlSeeAlso',
+        'javax.xml.bind.annotation.XmlTransient',
+        'javax.xml.bind.annotation.XmlType',
+        'javax.xml.bind.annotation.XmlValue',
+        'javax.xml.bind.annotation.adapters.XmlAdapter',
+        'javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter$DEFAULT',
+        'javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter',
+        'javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters',
+        'org.codehaus.stax2.LocationInfo',
+        'org.codehaus.stax2.XMLStreamLocation2',
+        'org.codehaus.stax2.XMLStreamReader2',
+        'org.codehaus.stax2.XMLStreamWriter2',
+        'org.codehaus.stax2.io.Stax2ByteArraySource',
+        'org.codehaus.stax2.io.Stax2CharArraySource',
+        'org.codehaus.stax2.ri.Stax2ReaderAdapter',
+        'org.codehaus.stax2.ri.Stax2WriterAdapter',
 
         // from log4j
-        'com.conversantmedia.util.concurrent.DisruptorBlockingQueue',
-        'com.conversantmedia.util.concurrent.SpinPolicy',
-        'com.fasterxml.jackson.annotation.JsonInclude$Include',
-        'com.fasterxml.jackson.databind.DeserializationContext',
-        'com.fasterxml.jackson.databind.DeserializationFeature',
-        'com.fasterxml.jackson.databind.JsonMappingException',
-        'com.fasterxml.jackson.databind.JsonNode',
-        'com.fasterxml.jackson.databind.Module$SetupContext',
-        'com.fasterxml.jackson.databind.ObjectReader',
-        'com.fasterxml.jackson.databind.ObjectWriter',
-        'com.fasterxml.jackson.databind.SerializerProvider',
-        'com.fasterxml.jackson.databind.deser.std.StdDeserializer',
-        'com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer',
-        'com.fasterxml.jackson.databind.module.SimpleModule',
-        'com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter',
-        'com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider',
-        'com.fasterxml.jackson.databind.ser.std.StdScalarSerializer',
-        'com.fasterxml.jackson.databind.ser.std.StdSerializer',
-        'com.fasterxml.jackson.dataformat.xml.JacksonXmlModule',
-        'com.fasterxml.jackson.dataformat.xml.XmlMapper',
-        'com.fasterxml.jackson.dataformat.xml.util.DefaultXmlPrettyPrinter',
-        'com.fasterxml.jackson.databind.node.ObjectNode',
         'org.fusesource.jansi.Ansi',
         'org.fusesource.jansi.AnsiRenderer$Code',
         'com.lmax.disruptor.BlockingWaitStrategy',
@@ -168,28 +261,10 @@ thirdPartyAudit.excludes = [
         'javax.jms.MessageConsumer',
         'javax.jms.MessageProducer',
         'javax.jms.Session',
-        'javax.mail.Authenticator',
-        'javax.mail.Message$RecipientType',
-        'javax.mail.PasswordAuthentication',
-        'javax.mail.Session',
-        'javax.mail.Transport',
-        'javax.mail.internet.InternetAddress',
-        'javax.mail.internet.InternetHeaders',
-        'javax.mail.internet.MimeBodyPart',
-        'javax.mail.internet.MimeMessage',
-        'javax.mail.internet.MimeMultipart',
-        'javax.mail.internet.MimeUtility',
-        'javax.mail.util.ByteArrayDataSource',
         'org.apache.commons.compress.compressors.CompressorStreamFactory',
         'org.apache.commons.compress.utils.IOUtils',
         'org.apache.commons.csv.CSVFormat',
         'org.apache.commons.csv.QuoteMode',
-        'org.apache.kafka.clients.producer.Callback',
-        'org.apache.kafka.clients.producer.KafkaProducer',
-        'org.apache.kafka.clients.producer.Producer',
-        'org.apache.kafka.clients.producer.ProducerRecord',
-        'org.apache.kafka.clients.producer.RecordMetadata',
-        'org.codehaus.stax2.XMLStreamWriter2',
         'org.jctools.queues.MessagePassingQueue$Consumer',
         'org.jctools.queues.MpscArrayQueue',
         'org.osgi.framework.AdaptPermission',
@@ -206,84 +281,66 @@ thirdPartyAudit.excludes = [
         'org.osgi.framework.wiring.BundleWiring',
         'org.zeromq.ZMQ$Context',
         'org.zeromq.ZMQ$Socket',
-        'org.zeromq.ZMQ',
-        // log4j-api 2.11.0  Java 9
-        'java.io.ObjectInputFilter$Config',
-        'java.io.ObjectInputFilter$FilterInfo',
-        'java.io.ObjectInputFilter$Status',
-        'java.io.ObjectInputFilter',
-
-        // from org.locationtech.spatial4j.io.GeoJSONReader (spatial4j)
-        'org.noggit.JSONParser',
-
-        // from lucene-spatial
-        'com.fasterxml.jackson.databind.JsonSerializer',
-        'com.fasterxml.jackson.databind.JsonDeserializer',
-        'com.fasterxml.jackson.databind.node.ArrayNode',
+        'org.zeromq.ZMQ'
 ]
 
-dependencyLicenses {
-    mapping from: /lucene-.*/, to: 'lucene'
-    dependencies = project.configurations.runtime.fileCollection {
-        !it.group.startsWith('org.elasticsearch') || it.name == 'jna' || it.name == 'securesm'
-    }
-}
+dependencyLicenses.enabled = false
 
+// jarHell checks runtimeClasspath, but why is there log4j? must be overlay problem with older elasticsearch
+/*
+> Task :server:jarHell FAILED
+checking for jar hell...
+Exception in thread "main" java.lang.IllegalStateException: jar hell!
+class: org.apache.logging.log4j.core.appender.AbstractAppender$Builder
+jar1: /Users/joerg/Projects/github/jprante/elasticsearch-xbib/elasticsearch-log4j/build/libs/elasticsearch-log4j-6.3.2.0.jar
+jar2: /Users/joerg/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.11.1/592a48674c926b01a9a747c7831bcd82a9e6d6e4/log4j-core-2.11.1.jar
+	at org.elasticsearch.bootstrap.JarHellForJava9.checkClass(JarHellForJava9.java:260)
+	at org.elasticsearch.bootstrap.JarHellForJava9.checkJarHell(JarHellForJava9.java:173)
+	at org.elasticsearch.bootstrap.JarHellForJava9.checkJarHell(JarHellForJava9.java:70)
+	at org.elasticsearch.bootstrap.JarHellForJava9.main(JarHellForJava9.java:52)
+
+ */
 jarHell.enabled = false
+loggerUsageCheck.enabled = true
 
 archivesBaseName = 'elasticsearch'
-
-jar {
-    manifest {
-        attributes(
-                'Implementation-Version': version,
-                'Change': '',
-                'Branch': '',
-                'X-Compile-Elasticsearch-Version': version,
-                'X-Compile-Lucene-Version': project.property('lucene.version'),
-                'X-Compile-Elasticsearch-Snapshot': false,
-                'Build-Date': ZonedDateTime.now(ZoneOffset.UTC),
-                'Build-Java-Version': project.compilerJavaVersion
-        )
-    }
-}
 
 def rhelDistCopySpec = copySpec {
     into("elasticsearch-${version}") {
         into('bin') {
-            from "build/tmp/dist/rhel7-linux-x86_64/bin/elasticsearch.${project.profile}-tar-java${targetCompatibility.getMajorVersion()}"
-            rename { String filename -> "elasticsearch" }
+            from("build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin/elasticsearch")
+            rename { String filename -> "elasticsearch-${project.profile}" }
             fileMode 0550
         }
-        into('lib') {
-            from configurations.runtime
-        }
-        into('lib') {
-            from 'build/distributions'
-            include "elasticsearch-${version}.jar"
-            rename { String filename -> "elasticsearch-${project.property('elasticsearch.version')}.jar" }
-            }
-        into('config') {
-            from "src/dist/rhel7-linux-x86_64/etc/options.${project.profile}-tar-java${targetCompatibility.getMajorVersion()}"
+        into('conf') {
+            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf/jvm.options"
             rename { String filename -> "elasticsearch-${project.profile}-jvm.options" }
         }
-        into('config') {
-            from "src/dist/rhel7-linux-x86_64/etc/config.${project.profile}-tar-java${targetCompatibility.getMajorVersion()}"
-            rename { String filename -> "elasticsearch-${project.profile}-config.yml" }
+        into('conf') {
+            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf/elasticsearch.json"
+            rename { String filename -> "elasticsearch-${project.profile}-config.json" }
         }
-        into('config') {
-            from "src/dist/rhel7-linux-x86_64/etc/log4j2.${project.profile}-tar-java${targetCompatibility.getMajorVersion()}"
-            rename { String filename -> "elasticsearch-${project.profile}-log4j2.properties" }
+        into('conf') {
+            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf/log4j2.json"
+            rename { String filename -> "elasticsearch-${project.profile}-log4j2.json" }
+        }
+        into('lib') {
+            from configurations.esLibDist
+        }
+        into('lib') {
+            from distsDir
+            include "elasticsearch-${version}.jar"
+            rename { String filename -> "elasticsearch-${project.property('elasticsearch.version')}.jar" }
         }
         into("logs") {
-            from('src/dist/rhel7-linux-x86_64/log/.empty')
+            from("src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/log/.empty")
         }
-        project.configurations.esModuleDists.each { artifact ->
-            into("elasticsearch-${version}/modules/${artifact.name.replace('-' + version.toString() + '.zip','')}") {
+        project.configurations.esModuleDist.each { artifact ->
+            into("elasticsearch-${version}/modules/${artifact.name.replaceAll('\\-[\\.\\d]*?.zip', '')}") {
                 from zipTree(artifact)
             }
         }
-        project.configurations.esPluginDists.each { artifact ->
+        project.configurations.esPluginDist.each { artifact ->
             into("elasticsearch-${version}/plugins/${artifact.name.replaceAll('\\-[\\.\\d]*?.zip','')}") {
                 from zipTree(artifact)
             }
@@ -291,88 +348,131 @@ def rhelDistCopySpec = copySpec {
     }
 }
 
-task rhelBinCopy(type: Copy) {
+task rhel7BinCopyTar(type: Copy) {
     group = 'linux'
-    from 'src/dist/rhel7-linux-x86_64/bin'
-    into 'build/tmp/dist/rhel7-linux-x86_64/bin'
+    from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+    into "build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
     expand([
             'profile' : "${project.profile}"
     ])
 }
 
-task rhelDistTar(type: Tar, dependsOn: ['jar', 'rhelBinCopy']) {
+task rhel7BinCopyZip(type: Copy) {
     group = 'linux'
+    from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+    into "build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+    expand([
+            'profile' : "${project.profile}"
+    ])
+}
+
+task rhel7BinCopyRpm(type: Copy) {
+    group = 'linux'
+    from "src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+    into "build/tmp/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+    expand([
+            'profile' : "${project.profile}"
+    ])
+}
+
+task rhel7DistTar(type: Tar) {
+    dependsOn 'jar', 'rhel7BinCopyTar'
+    group = 'linux'
+    baseName 'elasticsearch-server'
+    version project.version
+    appendix "${project.profile}.java-${compileJava.targetCompatibility}"
     compression Compression.GZIP
     extension 'tar.gz'
     with rhelDistCopySpec
 }
 
-task rhelDistRpm(type: Rpm, dependsOn: ['jar', 'rhelBinCopy']) {
+task rhel7DistZip(type: Zip) {
+    dependsOn 'jar', 'rhel7BinCopyZip'
     group = 'linux'
-    packageName project.name
+    baseName 'elasticsearch-server'
     version project.version
-    release "${project.release}.${project.profile}.java${targetCompatibility.getMajorVersion()}"
+    appendix "${project.profile}.java-${compileJava.targetCompatibility}"
+    with rhelDistCopySpec
+}
+
+task rhel7DistRpm(type: Rpm) {
+    dependsOn 'jar', 'rhel7BinCopyRpm'
+    group = 'linux'
+    packageName 'elasticsearch-server'
+    version project.version
+    release "${project.release}.${project.profile}"
     arch X86_64
     os LINUX
     license 'Apache License 2.0'
     packager 'Jörg Prante < joergprante@gmail.com>'
     vendor 'xbib'
     description description
-    url 'https://github.com/jprante/elasticsearch-xbib'
-    user 'elasticsearch'
-    preInstall 'src/dist/rpm/preInstall.sh'
-    postInstall 'src/dist/rpm/postInstall.sh'
-    preUninstall 'src/dist/rpm/preUninstall.sh'
-    postUninstall 'src/dist/rpm/postUninstall.sh'
-    into('/usr/bin') {
+    url 'https://github.com/jprante/elasticsearch-server'
+    user 'es'
+    preInstall "src/dist/rhel7-x86_64/rpm/preInstall.sh"
+    postInstall "src/dist/rhel7-x86_64/rpm/postInstall.sh"
+    preUninstall "src/dist/rhel7-x86_64/rpm/preUninstall.sh"
+    postUninstall "src/dist/rhel7-x86_64/rpm/postUninstall.sh"
+    into('/opt') {
         addParentDirs = false
-        fileMode 0550
-        from "build/tmp/dist/rhel7-linux-x86_64/bin/elasticsearch.${project.profile}-rpm-java${targetCompatibility.getMajorVersion()}"
-        rename { String filename -> "elasticsearch" }
-    }
-    into('/usr/share') {
-        addParentDirs = false
-        into('elasticsearch-' + project.version) {
-            into('lib') {
-                from configurations.runtime
+        into("elasticsearch-${version}") {
+            into('bin') {
+                addParentDirs = false
+                fileMode 0550
+                from "build/tmp/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin/elasticsearch"
+                rename { String filename -> "elasticsearch-${project.profile}" }
+            }
+            into('conf') {
+                from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf/jvm.options")
+                rename { String filename -> "elasticsearch-${project.profile}-jvm.options" }
+            }
+            into('conf') {
+                from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf/elasticsearch.json")
+                rename { String filename -> "elasticsearch-${project.profile}-config.json" }
+            }
+            into('conf') {
+                from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf/log4j2.json")
+                rename { String filename -> "elasticsearch-${project.profile}-log4j2.json" }
             }
             into('lib') {
-                from libsDir
+                from configurations.esLibDist
+            }
+            into('lib') {
+                from distsDir
                 include "elasticsearch-${version}.jar"
                 rename { String filename -> "elasticsearch-${project.property('elasticsearch.version')}.jar" }
             }
-            into('config') {
-                from("src/dist/rhel7-linux-x86_64/etc/options.${project.profile}-rpm-java${targetCompatibility.getMajorVersion()}")
-                rename { String filename -> "elasticsearch-${project.profile}-jvm.options" }
-            }
-            into('config') {
-                from("src/dist/rhel7-linux-x86_64/etc/config.${project.profile}-rpm-java${targetCompatibility.getMajorVersion()}")
-                rename { String filename -> "elasticsearch-${project.profile}-config.yml" }
-            }
-            into('config') {
-                from "src/dist/rhel7-linux-x86_64/etc/log4j2.${project.profile}-rpm-java${targetCompatibility.getMajorVersion()}"
-                rename { String filename -> "elasticsearch-${project.profile}-log4j2.properties" }
-            }
             into('logs') {
-                from('src/dist/rhel7-linux-x86_64/log/.empty')
-            }
-            project.configurations.esModuleDists.each { artifact ->
-                into("elasticsearch-${version}/modules/${artifact.name.replace('-' + version.toString() + '.zip','')}") {
-                    from zipTree(artifact)
-                }
-            }
-            project.configurations.esPluginDists.each { artifact ->
-                into("elasticsearch-${version}/plugins/${artifact.name.replaceAll('\\-[\\.\\d]*?.zip','')}") {
-                    from zipTree(artifact)
-                }
+                from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/log/.empty")
             }
         }
     }
-    from('src/dist/rhel7-linux-x86_64/systemd') {
-        addParentDirs = false
-        into '/etc/systemd/system'
+    project.configurations.esModuleDist.each { artifact ->
+        into("/opt/elasticsearch-${version}/modules/${artifact.name.replaceAll('\\-[\\.\\d]*?.zip', '')}") {
+            from zipTree(artifact)
+        }
     }
-    link('/usr/share/elasticsearch', '/usr/share/elasticsearch' + '-' + project.version)
+    project.configurations.esPluginDist.each { artifact ->
+        into("/opt/elasticsearch-${version}/plugins/${artifact.name.replaceAll('\\-[\\.\\d]*?.zip','')}") {
+            from zipTree(artifact)
+        }
+    }
+    into('/etc/systemd/system') {
+        addParentDirs = false
+        from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/etc/systemd/system/elasticsearch.service")
+        rename { String filename -> "elasticsearch.service" }
+    }
+    into('/etc/sysconfig') {
+        addParentDirs = false
+        from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/etc/sysconfig/elasticsearch")
+        rename { String filename -> "elasticsearch-${project.profile}" }
+    }
+    into('/etc/security/limits.d') {
+        addParentDirs = false
+        from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/etc/security/limits.d")
+        rename { String filename -> "elasticsearch-${project.profile}" }
+    }
+    link('/opt/elasticsearch', "/opt/elasticsearch-${version}")
     if (project.hasProperty('signing.keyId')) {
         signingKeyId = project.property('signing.keyId')
         signingKeyPassphrase = project.property('signing.password')
@@ -387,4 +487,14 @@ task rhelDistRpm(type: Rpm, dependsOn: ['jar', 'rhelBinCopy']) {
             gradleProperties.write(content.replace("\nrelease = ${project.release}\n", "\nrelease = ${nextRelease}\n"))
         }
     }
+}
+
+docker {
+    name "jprante/elasticsearch-server"
+    dependsOn rhel7DistTar
+    files tasks.rhel7DistTar.outputs
+}
+
+artifacts {
+    archives javadocJar, sourcesJar, rhel7DistTar, rhel7DistZip, rhel7DistRpm
 }

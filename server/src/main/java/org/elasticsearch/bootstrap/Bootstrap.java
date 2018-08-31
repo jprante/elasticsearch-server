@@ -57,7 +57,6 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
@@ -112,10 +111,13 @@ final class Bootstrap {
         // mlockall if requested
         if (mlockAll) {
             if (Constants.WINDOWS) {
-               Natives.tryVirtualLock();
+                Natives.tryVirtualLock();
             } else {
-               Natives.tryMlockall();
+                logger.debug("trying mlockall");
+                Natives.tryMlockall();
             }
+        } else {
+            logger.debug("no mlockall available");
         }
 
         // listener for windows close event
@@ -196,7 +198,7 @@ final class Bootstrap {
             // look for jar hell
             final Logger logger = ESLoggerFactory.getLogger(JarHell.class);
             JarHell.checkJarHell(logger::debug);
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             throw new BootstrapException(e);
         }
 
@@ -206,7 +208,7 @@ final class Bootstrap {
         // install SM after natives, shutdown hooks, etc.
         try {
             Security.configure(environment, BootstrapSettings.SECURITY_FILTER_BAD_DEFAULTS_SETTING.get(settings));
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException | URISyntaxException e) {
             throw new BootstrapException(e);
         }
 

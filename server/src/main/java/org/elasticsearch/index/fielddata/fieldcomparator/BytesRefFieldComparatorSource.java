@@ -29,7 +29,7 @@ import org.apache.lucene.search.Scorer;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.BitSet;
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.index.fielddata.AbstractSortedDocValues;
+import org.apache.lucene.search.AbstractSortedDocValues;
 import org.elasticsearch.index.fielddata.IndexFieldData;
 import org.elasticsearch.index.fielddata.IndexOrdinalsFieldData;
 import org.elasticsearch.index.fielddata.SortedBinaryDocValues;

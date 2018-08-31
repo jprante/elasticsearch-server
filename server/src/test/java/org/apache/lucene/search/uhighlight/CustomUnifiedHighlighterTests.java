@@ -45,12 +45,12 @@ import org.apache.lucene.store.Directory;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.lucene.all.AllTermQuery;
 import org.elasticsearch.common.lucene.search.MultiPhrasePrefixQuery;
+import org.elasticsearch.search.fetch.subphase.highlight.CustomUnifiedHighlighter;
 import org.elasticsearch.test.ESTestCase;
 
 import java.text.BreakIterator;
 import java.util.Locale;
 
-import static org.apache.lucene.search.uhighlight.CustomUnifiedHighlighter.MULTIVAL_SEP_CHAR;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class CustomUnifiedHighlighterTests extends ESTestCase {
@@ -76,7 +76,7 @@ public class CustomUnifiedHighlighterTests extends ESTestCase {
         iw.close();
         TopDocs topDocs = searcher.search(new MatchAllDocsQuery(), 1, Sort.INDEXORDER);
         assertThat(topDocs.totalHits, equalTo(1L));
-        String rawValue = Strings.arrayToDelimitedString(inputs, String.valueOf(MULTIVAL_SEP_CHAR));
+        String rawValue = Strings.arrayToDelimitedString(inputs, String.valueOf(CustomUnifiedHighlighter.MULTIVAL_SEP_CHAR));
         CustomUnifiedHighlighter highlighter = new CustomUnifiedHighlighter(searcher, analyzer, null,
                 new CustomPassageFormatter("<b>", "</b>", new DefaultEncoder()), locale,
                 breakIterator, rawValue, noMatchSize);

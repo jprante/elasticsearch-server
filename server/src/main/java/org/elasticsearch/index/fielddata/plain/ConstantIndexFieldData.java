@@ -29,7 +29,7 @@ import org.apache.lucene.util.Accountable;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.index.fielddata.AbstractSortedDocValues;
+import org.apache.lucene.search.AbstractSortedDocValues;
 import org.elasticsearch.index.fielddata.AtomicOrdinalsFieldData;
 import org.elasticsearch.index.fielddata.IndexFieldData;
 import org.elasticsearch.index.fielddata.IndexFieldDataCache;

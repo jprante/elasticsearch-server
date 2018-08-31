@@ -20,12 +20,19 @@
 package org.elasticsearch.node;
 
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.elasticsearch.Version;
@@ -33,13 +40,12 @@ import org.elasticsearch.cli.Terminal;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.collect.Tuple;
+import org.elasticsearch.common.io.PathUtils;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.SettingsException;
 import org.elasticsearch.env.Environment;
 
 public class InternalSettingsPreparer {
-
-    private static final String[] ALLOWED_SUFFIXES = {".yml", ".yaml", ".json"};
 
     public static final String SECRET_PROMPT_VALUE = "${prompt.secret}";
     public static final String TEXT_PROMPT_VALUE = "${prompt.text}";
@@ -85,33 +91,56 @@ public class InternalSettingsPreparer {
         initializeSettings(output, input, properties);
         Environment environment = new Environment(output.build(), configPath);
 
-        if (Files.exists(environment.configFile().resolve("elasticsearch.yaml"))) {
-            throw new SettingsException("elasticsearch.yaml was deprecated in 5.5.0 and must be renamed to elasticsearch.yml");
-        }
+        Settings.Builder builder = Settings.builder(); // start with a fresh output
 
-        if (Files.exists(environment.configFile().resolve("elasticsearch.json"))) {
-            throw new SettingsException("elasticsearch.json was deprecated in 5.5.0 and must be converted to elasticsearch.yml");
-        }
+        // we accept multiple config files of the pattern "elasticsearch*config.json or .yml or. yaml
+        List<Path> configFilePaths = new ArrayList<>();
+        try {
+            final Set<FileVisitOption> options = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
+            PathMatcher pathMatcher = PathUtils.getDefaultFileSystem()
+                    .getPathMatcher("glob:**/elasticsearch*config.{json,yml,yaml}");
+            Files.walkFileTree(environment.configFile(), options, 2, new SimpleFileVisitor<Path>() {
 
-        output = Settings.builder(); // start with a fresh output
-        Path path = environment.configFile().resolve("elasticsearch.yml");
-        if (Files.exists(path)) {
-            try {
-                output.loadFromPath(path);
-            } catch (IOException e) {
-                throw new SettingsException("Failed to load settings from " + path.toString(), e);
+                @Override
+                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
+                    if (pathMatcher.matches(path)) {
+                        configFilePaths.add(path);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) {
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            throw new SettingsException("problems while finding elasticsearch config file", e);
+        }
+        // last, the original Elasticsearch config file
+        configFilePaths.add(environment.configFile().resolve("elasticsearch.yml"));
+
+        for (Path path : configFilePaths) {
+            if (Files.exists(path)) {
+                try {
+                    builder.loadFromPath(path);
+                } catch (IOException e) {
+                    throw new SettingsException("Failed to load settings from " + path.toString(), e);
+                }
+                // only one config file
+                break;
             }
         }
 
-        // re-initialize settings now that the config file has been loaded
-        initializeSettings(output, input, properties);
-        finalizeSettings(output, terminal);
+        // re-initialize settings now that the config file(s) has been loaded
+        initializeSettings(builder, input, properties);
+        finalizeSettings(builder, terminal);
 
-        environment = new Environment(output.build(), configPath);
+        environment = new Environment(builder.build(), configPath);
 
         // we put back the path.logs so we can use it in the logging configuration file
-        output.put(Environment.PATH_LOGS_SETTING.getKey(), environment.logsFile().toAbsolutePath().normalize().toString());
-        return new Environment(output.build(), configPath);
+        builder.put(Environment.PATH_LOGS_SETTING.getKey(), environment.logsFile().toAbsolutePath().normalize().toString());
+        return new Environment(builder.build(), configPath);
     }
 
     /**

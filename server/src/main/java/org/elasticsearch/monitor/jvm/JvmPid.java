@@ -19,31 +19,12 @@
 
 package org.elasticsearch.monitor.jvm;
 
-import org.apache.logging.log4j.message.ParameterizedMessage;
-import org.elasticsearch.common.logging.Loggers;
-
-import java.lang.management.ManagementFactory;
+import java.lang.ProcessHandle;
 
 class JvmPid {
 
-    private static final long PID;
-
     static long getPid() {
-        return PID;
-    }
-
-    static {
-        PID = initializePid();
-    }
-
-    private static long initializePid() {
-        final String name = ManagementFactory.getRuntimeMXBean().getName();
-        try {
-            return Long.parseLong(name.split("@")[0]);
-        } catch (final NumberFormatException e) {
-            Loggers.getLogger(JvmPid.class).debug(new ParameterizedMessage("failed parsing PID from [{}]", name), e);
-            return -1;
-        }
+        return ProcessHandle.current().pid();
     }
 
 }

@@ -58,7 +58,7 @@ public class RestFielddataAction extends AbstractCatAction {
         String[] fields = request.paramAsStringArray("fields", null);
         nodesStatsRequest.indices().fieldDataFields(fields == null ? new String[] {"*"} : fields);
 
-        return channel -> client.admin().cluster().nodesStats(nodesStatsRequest, new RestResponseListener<NodesStatsResponse>(channel) {
+        return channel -> client.admin().cluster().nodesStats(nodesStatsRequest, new RestResponseListener<>(channel) {
             @Override
             public RestResponse buildResponse(NodesStatsResponse nodeStatses) throws Exception {
                 return RestTable.buildResponse(buildTable(request, nodeStatses), channel);

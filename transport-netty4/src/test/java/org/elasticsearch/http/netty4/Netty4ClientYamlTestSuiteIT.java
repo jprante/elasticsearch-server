@@ -37,7 +37,7 @@ public class Netty4ClientYamlTestSuiteIT extends ESClientYamlSuiteTestCase {
 
     @ParametersFactory
     public static Iterable<Object[]> parameters() throws Exception {
-        return ESClientYamlSuiteTestCase.createParameters();
+        return ESClientYamlSuiteTestCase.createParameters(Netty4ClientYamlTestSuiteIT.class.getClassLoader());
     }
 
 }
