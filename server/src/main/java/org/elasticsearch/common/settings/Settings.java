@@ -19,6 +19,7 @@
 
 package org.elasticsearch.common.settings;
 
+import org.apache.logging.log4j.Level;
 import org.elasticsearch.core.internal.io.IOUtils;
 import org.apache.lucene.util.SetOnce;
 import org.elasticsearch.ElasticsearchParseException;
@@ -891,6 +892,18 @@ public final class Settings implements ToXContentFragment {
          */
         public Builder put(String key, Enum<?> enumValue) {
             return put(key, enumValue.toString());
+        }
+
+
+        /**
+         * Sets an level setting with the provided setting key and level instance.
+         *
+         * @param key  The setting key
+         * @param level The setting value
+         * @return The builder
+         */
+        public Builder put(String key, Level level) {
+            return put(key, level.toString());
         }
 
         /**
