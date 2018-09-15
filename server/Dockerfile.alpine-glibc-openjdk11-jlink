@@ -1,0 +1,32 @@
+FROM fl.hbz-nrw.de/jprante/alpine-glibc-openjdk11 AS builder
+
+COPY elasticsearch*.tar.gz /
+
+ARG version
+
+RUN tar -zxf /elasticsearch*.tar.gz && \
+    jlink \
+      --module-path $JAVA_HOME/jmods:/elasticsearch-${version}/lib \
+      --add-modules org.xbib.elasticsearch.server \
+      --compress 2 \
+      --no-header-files \
+      --no-man-pages \
+      --output /elasticsearch && \
+    rm -f /elasticsearch/lib/jrt-fs.jar && \
+    mkdir -p /elasticsearch/conf/ && \
+    cp -a /elasticsearch-${version}/conf/elasticsearch.json /elasticsearch/conf/ && \
+    cp -a /elasticsearch-${version}/conf/log4j2-docker.json /elasticsearch/conf/log4j2.json && \
+    mkdir -p /elasticsearch/logs/ && \
+    cp -a /elasticsearch-${version}/modules /elasticsearch/ && \
+    cp -a /elasticsearch-${version}/plugins /elasticsearch/ && \
+    rm -rf /elasticsearch-${version} /elasticsearch*.tar.gz
+
+FROM fl.hbz-nrw.de/jprante/alpine-glibc
+
+COPY --from=builder /elasticsearch /elasticsearch
+
+RUN adduser -D -u 1000 elasticsearch && \
+    chown -R elasticsearch /elasticsearch
+
+ENV JAVA_HOME=/elasticsearch \
+    PATH=$PATH:/elasticsearch/bin

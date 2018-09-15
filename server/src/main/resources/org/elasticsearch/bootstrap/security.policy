@@ -51,6 +51,7 @@ grant codeBase "${codebase.elasticsearch-classloader}" {
 
 grant codeBase "${codebase.elasticsearch-log4j}" {
   permission java.lang.RuntimePermission "getClassLoader";
+  permission javax.management.MBeanTrustPermission "register";
 };
 
 grant codeBase "${codebase.elasticsearch}" {

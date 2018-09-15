@@ -12,7 +12,6 @@ compileTestJava.options.compilerArgs << "-Xlint:-cast,-deprecation,-rawtypes,-tr
 dependencies {
     compile "io.netty:netty-codec-http:${property('netty.version')}"
     compile "io.netty:netty-handler:${property('netty.version')}"
-    // epoll does not work under OpenJDK 11
     compile "io.netty:netty-transport-native-epoll:${property('netty.version')}:linux-x86_64"
 
     testCompile "org.elasticsearch:elasticsearch:${project.property('elasticsearch.version')}"

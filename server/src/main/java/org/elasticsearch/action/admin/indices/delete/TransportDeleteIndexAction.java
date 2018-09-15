@@ -27,7 +27,6 @@ import org.elasticsearch.action.support.master.TransportMasterNodeAction;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.ack.ClusterStateUpdateResponse;
 import org.elasticsearch.cluster.block.ClusterBlockException;
-import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
 import org.elasticsearch.cluster.metadata.MetaDataDeleteIndexService;
 import org.elasticsearch.cluster.service.ClusterService;
@@ -101,7 +100,7 @@ public class TransportDeleteIndexAction extends TransportMasterNodeAction<Delete
 
             @Override
             public void onFailure(Exception t) {
-                logger.debug(() -> new ParameterizedMessage("failed to delete indices [{}]", concreteIndices), t);
+                logger.debug(new ParameterizedMessage("failed to delete indices [{}]", concreteIndices), t);
                 listener.onFailure(t);
             }
         });

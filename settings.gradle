@@ -2,6 +2,7 @@
 enableFeaturePreview('STABLE_PUBLISHING')
 
 include 'elasticsearch-classloader'
+include 'elasticsearch-litebeans'
 include 'elasticsearch-hdrhistogram'
 include 'elasticsearch-hppc'
 include 'elasticsearch-jackson'

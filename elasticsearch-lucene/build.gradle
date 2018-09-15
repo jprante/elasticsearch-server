@@ -49,7 +49,7 @@ task unpackSource(type: Copy) {
         if (it.toString().endsWith('sources.jar')) {
             from zipTree(it)
             into "$buildDir/generated-src/java"
-            exclude '**/FieldQuery.java'
+            exclude '**/FieldQuery.java' // replace by our patched FieldQuery (public modifier)
         }
     }
 }

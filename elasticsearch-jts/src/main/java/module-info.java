@@ -22,7 +22,7 @@ module org.xbib.elasticsearch.jts {
     exports org.locationtech.jts.algorithm.distance;
     exports org.locationtech.jts.algorithm.locate;
     exports org.locationtech.jts.algorithm.match;
-    exports org.locationtech.jts.awt;
+    //exports org.locationtech.jts.awt;
     exports org.locationtech.jts.densify;
     exports org.locationtech.jts.dissolve;
     exports org.locationtech.jts.edgegraph;
@@ -41,7 +41,7 @@ module org.xbib.elasticsearch.jts {
     exports org.locationtech.jts.index.strtree;
     exports org.locationtech.jts.index.sweepline;
     exports org.locationtech.jts.io;
-    exports org.locationtech.jts.io.gml2;
+    //exports org.locationtech.jts.io.gml2;
     exports org.locationtech.jts.io.kml;
     exports org.locationtech.jts.linearref;
     exports org.locationtech.jts.math;
@@ -68,5 +68,5 @@ module org.xbib.elasticsearch.jts {
     exports org.locationtech.jts.triangulate.quadedge;
     exports org.locationtech.jts.util;
 
-    requires java.desktop;
+    //requires java.desktop; // we removed awt and io.gml2 XML stuff
 }

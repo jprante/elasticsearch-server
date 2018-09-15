@@ -32,7 +32,7 @@ dir="\$(cd -P "\$(dirname "\$0")" && pwd)"
 ES_HOME="\${dir}/.."
 ES_PATH_CONF="\${ES_HOME}/conf"
 
-for jvm_options in \${ES_PATH_CONF}/\${app}-\${profile}-jvm.options ; do
+for jvm_options in \${ES_PATH_CONF}/jvm.options ; do
     if [ -r "\$jvm_options" ]; then
         JVM_OPTIONS=\$jvm_options
         break
@@ -69,7 +69,6 @@ exec \${JAVA} \
  -Des.distribution.flavor="oss" \
  -Des.distribution.type="tar" \
  --module-path "\${ES_HOME}/lib" \
- --add-exports java.base/jdk.internal.misc=ALL-UNNAMED \
  --module org.xbib.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch \
  "\${@}"
 

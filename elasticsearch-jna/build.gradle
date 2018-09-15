@@ -32,6 +32,7 @@ task unpackSource(type: Copy) {
         from zipTree(it)
         into "${buildDir}/generated-src/java"
         exclude '**/Platform.java'
+        exclude '**/Native.java'
     }
 }
 

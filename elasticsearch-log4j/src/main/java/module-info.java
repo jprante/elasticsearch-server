@@ -20,12 +20,6 @@
 module org.xbib.elasticsearch.log4j {
 
     exports org.apache.logging.log4j;
-    exports org.apache.logging.log4j.message;
-    exports org.apache.logging.log4j.simple;
-    exports org.apache.logging.log4j.spi;
-    exports org.apache.logging.log4j.status;
-    exports org.apache.logging.log4j.util;
-
     exports org.apache.logging.log4j.core;
     exports org.apache.logging.log4j.core.appender;
     exports org.apache.logging.log4j.core.config;
@@ -33,9 +27,41 @@ module org.xbib.elasticsearch.log4j {
     exports org.apache.logging.log4j.core.config.builder.impl;
     exports org.apache.logging.log4j.core.config.composite;
     exports org.apache.logging.log4j.core.config.json;
+    exports org.apache.logging.log4j.core.config.plugins;
+    exports org.apache.logging.log4j.core.config.plugins.convert;
+    exports org.apache.logging.log4j.core.config.plugins.processor;
+    exports org.apache.logging.log4j.core.config.plugins.util;
+    exports org.apache.logging.log4j.core.config.plugins.validation;
+    exports org.apache.logging.log4j.core.config.plugins.validation.constraints;
+    exports org.apache.logging.log4j.core.config.plugins.validation.validators;
+    exports org.apache.logging.log4j.core.config.plugins.visitors;
     exports org.apache.logging.log4j.core.config.properties;
+    exports org.apache.logging.log4j.core.config.xml;
     exports org.apache.logging.log4j.core.config.yaml;
     exports org.apache.logging.log4j.core.filter;
+    exports org.apache.logging.log4j.core.impl;
+    exports org.apache.logging.log4j.core.jackson;
+    exports org.apache.logging.log4j.core.jmx;
+    exports org.apache.logging.log4j.core.layout;
+    exports org.apache.logging.log4j.core.lookup;
+    exports org.apache.logging.log4j.core.message;
+    exports org.apache.logging.log4j.core.net;
+    exports org.apache.logging.log4j.core.net.ssl;
+    exports org.apache.logging.log4j.core.parser;
+    exports org.apache.logging.log4j.core.pattern;
+    exports org.apache.logging.log4j.core.script;
+    exports org.apache.logging.log4j.core.selector;
+    exports org.apache.logging.log4j.core.time;
+    exports org.apache.logging.log4j.core.tools;
+    exports org.apache.logging.log4j.core.tools.picocli;
+    exports org.apache.logging.log4j.core.util;
+    exports org.apache.logging.log4j.core.util.datetime;
+    exports org.apache.logging.log4j.jul;
+    exports org.apache.logging.log4j.message;
+    exports org.apache.logging.log4j.simple;
+    exports org.apache.logging.log4j.spi;
+    exports org.apache.logging.log4j.status;
+    exports org.apache.logging.log4j.util;
 
     exports org.apache.log4j;
     exports org.apache.log4j.config;
@@ -57,18 +83,21 @@ module org.xbib.elasticsearch.log4j {
     uses javax.annotation.processing.Processor;
     uses org.apache.logging.log4j.spi.Provider;
     uses org.apache.logging.log4j.util.PropertySource;
+    uses org.apache.logging.log4j.message.ThreadDumpMessage.ThreadInfoFactory;
 
     requires org.xbib.elasticsearch.jackson;
 
-    requires java.compiler; // javax.annotation.processing
-    requires java.desktop; // java.beans
-    requires java.rmi;
-    requires java.sql;
+    requires java.compiler; // javax.annotation.processing for org.apache.logging.log4j.core.config.plugins.PluginProcessor
     requires java.management; // javax.management
-    requires java.naming;
-    requires jdk.scripting.nashorn; // javax.script
 
-    // external modules we do not include
+    // optional stuff in core
+    requires static java.sql;
+    requires static java.naming;
+    requires static java.rmi;
+    requires static java.desktop; // java.beans
+    requires static jdk.scripting.nashorn; // javax.script
+
+    // external modules
     requires static java.annotation;
     requires static javax.jms.api;
     requires static org.codehaus.stax2; // StAX2 in JacksonFactory
@@ -80,6 +109,6 @@ module org.xbib.elasticsearch.log4j {
     requires static org.osgi.core;
     requires static jansi;
 
-    // remove all mail and activation deps because of forbidden com.sun packages
-    // kafka requires jackson but can not access our jackson module, so drop it
+    // we removed all mail and activation deps because of forbidden com.sun packages
+    // kafka is too complex, requires jackson but can not access our jackson module, so it's removed
 }

@@ -1,0 +1,11 @@
+-XX:UseAVX=2
+-Dfile.encoding=UTF-8
+-Djava.awt.headless=true
+-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager
+-Dlog4j2.disable.jmx=true
+-Dlog4j.shutdownHookEnabled=false
+-Dio.netty.allocator.type=pooled
+-Dio.netty.noUnsafe=true
+-Dio.netty.recycler.maxCapacity=0
+-Dio.netty.noKeySetOptimization=true
+-Djna.nosys=true

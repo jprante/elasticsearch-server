@@ -1,0 +1,25 @@
+{
+  "configuration": {
+    "name": "Default",
+    "status" : "error",
+    "shutdownHook": "disable",
+    "appenders": {
+      "Console": {
+        "name": "console",
+        "PatternLayout": {
+          "pattern": "[%d{ISO8601}][%-5p][%-25c{1.}] %marker%m%n"
+        }
+      }
+    },
+    "loggers" : {
+      "root" : {
+        "level": "debug",
+        "appender-ref": [
+          {
+            "ref": "console"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -28,16 +28,16 @@ dependencies {
     source "com.fasterxml.jackson.core:jackson-databind:${property('jackson-databind.version')}:sources"
     source "com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:${property('jackson.version')}:sources"
     source "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:${property('jackson.version')}:sources"
-    source "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${property('jackson.version')}:sources"
     source "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${property('jackson.version')}:sources"
+    // xml required by log4j2
+    source "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:${property('jackson.version')}:sources"
     source "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${property('jackson.version')}:sources"
+    compile project(":elasticsearch-snakeyaml")
 
-    // non-jackson deps, completely optional
-    compileOnly "javax.xml.bind:jaxb-api:2.4.0-b180725.0427" // external java.xml.bind, a module jar!
-    //compileOnly "org.yaml:snakeyaml:${property('snakeyaml.version')}"
+    // XML is completely optional, not used by us, but by log4j2
+    compileOnly "javax.xml.bind:jaxb-api:2.4.0-b180725.0427" // this is an external java.xml.bind, a named module jar
     compileOnly "com.fasterxml.woodstox:woodstox-core:${property('woodstox.version')}"
     compileOnly "org.codehaus.woodstox:stax2-api:${property('stax2.version')}"
-    compileOnly project(":elasticsearch-snakeyaml")
 }
 
 task unpackSource(type: Copy) {
@@ -45,6 +45,8 @@ task unpackSource(type: Copy) {
         if (it.toString().endsWith('sources.jar')) {
             from zipTree(it)
             into "$buildDir/generated-src/java"
+            exclude '**/Java7SupportImpl.java'
+            exclude '**/JaxbAnnotationIntrospector.java'
         }
     }
 }

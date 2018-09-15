@@ -45,6 +45,6 @@ module org.xbib.elasticsearch.jna {
     opens com.sun.jna.win32.x32;
     opens com.sun.jna.win32.x64;
 
-    requires java.desktop; // java beans
+    //requires java.desktop; // we removed java awt in com.sun.jna.Native
     requires java.logging;
 }

@@ -19,7 +19,6 @@
 
 package org.elasticsearch.cli;
 
-import org.apache.logging.log4j.Level;
 import org.elasticsearch.common.logging.LogConfigurator;
 import org.elasticsearch.common.settings.Settings;
 
@@ -35,7 +34,7 @@ final class CommandLoggingConfigurator {
      */
     static void configureLoggingWithoutConfig() {
         // initialize default for es.logger.level because we will not read the log4j2.properties
-        final String loggerLevel = System.getProperty("es.logger.level", Level.INFO.name());
+        final String loggerLevel = System.getProperty("es.logger.level", "INFO");
         final Settings settings = Settings.builder().put("logger.level", loggerLevel).build();
         LogConfigurator.configureWithoutConfig(settings);
     }

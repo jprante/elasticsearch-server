@@ -10,9 +10,15 @@ apply plugin: 'org.xbib.gradle.plugin.rpm'
 
 ext {
     moduleName = 'org.xbib.elasticsearch.server'
+    subst = [
+            'timestamp': new Date().format('yyyyMMddHHmmss'),
+            'profile': "${project.profile}"
+    ]
 }
+
 configurations {
     esLibDist
+    esPatchDist
     esModuleDist
     esPluginDist
 }
@@ -45,6 +51,10 @@ dependencies {
     esLibDist project(':elasticsearch-securesm')
     esLibDist project(':elasticsearch-tdigest')
     esLibDist project(':elasticsearch-snakeyaml')
+
+    esPatchDist(project(path: ':elasticsearch-litebeans', configuration: 'shadow')) {
+        transitive = false
+    }
 
     rootProject.esmodules.each { module ->
         if (rootProject.file(module).exists()) {
@@ -124,9 +134,7 @@ afterEvaluate {
 task injectGradleProperties(type: Copy) {
     from rootProject.file('gradle.properties')
     into 'build/resources/main'
-    expand([
-            'timestamp': new Date().format('yyyyMMddHHmmss')
-    ])
+    expand(subst)
 }
 processResources.finalizedBy injectGradleProperties
 
@@ -308,21 +316,11 @@ archivesBaseName = 'elasticsearch'
 def rhelDistCopySpec = copySpec {
     into("elasticsearch-${version}") {
         into('bin') {
-            from("build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin/elasticsearch")
-            rename { String filename -> "elasticsearch-${project.profile}" }
+            from "build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
             fileMode 0550
         }
         into('conf') {
-            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf/jvm.options"
-            rename { String filename -> "elasticsearch-${project.profile}-jvm.options" }
-        }
-        into('conf') {
-            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf/elasticsearch.json"
-            rename { String filename -> "elasticsearch-${project.profile}-config.json" }
-        }
-        into('conf') {
-            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf/log4j2.json"
-            rename { String filename -> "elasticsearch-${project.profile}-log4j2.json" }
+            from "build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf"
         }
         into('lib') {
             from configurations.esLibDist
@@ -332,8 +330,12 @@ def rhelDistCopySpec = copySpec {
             include "elasticsearch-${version}.jar"
             rename { String filename -> "elasticsearch-${project.property('elasticsearch.version')}.jar" }
         }
+        into('lib/patch') {
+            from project.configurations.esPatchDist
+            rename { String filename -> 'java.beans'}
+        }
         into("logs") {
-            from("src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/log/.empty")
+            from project.file("src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/log/.empty")
         }
         project.configurations.esModuleDist.each { artifact ->
             into("elasticsearch-${version}/modules/${artifact.name.replaceAll('\\-[\\.\\d]*?.zip', '')}") {
@@ -348,35 +350,40 @@ def rhelDistCopySpec = copySpec {
     }
 }
 
-task rhel7BinCopyTar(type: Copy) {
+task rhel7Copy(type: Copy) {
+    dependsOn jar
     group = 'linux'
-    from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
-    into "build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
-    expand([
-            'profile' : "${project.profile}"
-    ])
-}
-
-task rhel7BinCopyZip(type: Copy) {
-    group = 'linux'
-    from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
-    into "build/tmp/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
-    expand([
-            'profile' : "${project.profile}"
-    ])
-}
-
-task rhel7BinCopyRpm(type: Copy) {
-    group = 'linux'
-    from "src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin"
-    into "build/tmp/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin"
-    expand([
-            'profile' : "${project.profile}"
-    ])
+    destinationDir project.file("build")
+    into("tmp/dist/rhel7-x86_64") {
+        into("tar/java-${compileJava.targetCompatibility}/${project.profile}/bin") {
+            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+            expand(subst)
+        }
+        into("tar/java-${compileJava.targetCompatibility}/${project.profile}/conf") {
+            from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf"
+            expand(subst)
+        }
+        into("zip/java-${compileJava.targetCompatibility}/${project.profile}/bin") {
+            from "src/dist/rhel7-x86_64/zip/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+            expand(subst)
+        }
+        into("zip/java-${compileJava.targetCompatibility}/${project.profile}/conf") {
+            from "src/dist/rhel7-x86_64/zip/java-${compileJava.targetCompatibility}/${project.profile}/conf"
+            expand(subst)
+        }
+        into("rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin") {
+            from "src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin"
+            expand(subst)
+        }
+        into("rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf") {
+            from "src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf"
+            expand(subst)
+        }
+    }
 }
 
 task rhel7DistTar(type: Tar) {
-    dependsOn 'jar', 'rhel7BinCopyTar'
+    dependsOn 'rhel7Copy'
     group = 'linux'
     baseName 'elasticsearch-server'
     version project.version
@@ -387,7 +394,7 @@ task rhel7DistTar(type: Tar) {
 }
 
 task rhel7DistZip(type: Zip) {
-    dependsOn 'jar', 'rhel7BinCopyZip'
+    dependsOn 'rhel7Copy'
     group = 'linux'
     baseName 'elasticsearch-server'
     version project.version
@@ -396,7 +403,7 @@ task rhel7DistZip(type: Zip) {
 }
 
 task rhel7DistRpm(type: Rpm) {
-    dependsOn 'jar', 'rhel7BinCopyRpm'
+    dependsOn 'rhel7Copy'
     group = 'linux'
     packageName 'elasticsearch-server'
     version project.version
@@ -419,20 +426,10 @@ task rhel7DistRpm(type: Rpm) {
             into('bin') {
                 addParentDirs = false
                 fileMode 0550
-                from "build/tmp/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin/elasticsearch"
-                rename { String filename -> "elasticsearch-${project.profile}" }
+                from "build/tmp/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin"
             }
             into('conf') {
-                from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf/jvm.options")
-                rename { String filename -> "elasticsearch-${project.profile}-jvm.options" }
-            }
-            into('conf') {
-                from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf/elasticsearch.json")
-                rename { String filename -> "elasticsearch-${project.profile}-config.json" }
-            }
-            into('conf') {
-                from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf/log4j2.json")
-                rename { String filename -> "elasticsearch-${project.profile}-log4j2.json" }
+                from("build/tmp/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf")
             }
             into('lib') {
                 from configurations.esLibDist
@@ -441,6 +438,10 @@ task rhel7DistRpm(type: Rpm) {
                 from distsDir
                 include "elasticsearch-${version}.jar"
                 rename { String filename -> "elasticsearch-${project.property('elasticsearch.version')}.jar" }
+            }
+            into('lib/patch') {
+                from project.configurations.esPatchDist
+                rename { String filename -> 'java.beans'}
             }
             into('logs') {
                 from("src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/log/.empty")
@@ -489,12 +490,52 @@ task rhel7DistRpm(type: Rpm) {
     }
 }
 
-docker {
-    name "jprante/elasticsearch-server"
-    dependsOn rhel7DistTar
-    files tasks.rhel7DistTar.outputs
-}
-
 artifacts {
     archives javadocJar, sourcesJar, rhel7DistTar, rhel7DistZip, rhel7DistRpm
 }
+
+docker {
+    dependsOn rhel7DistTar
+    name "fl.hbz-nrw.de/jprante/elasticsearch-server-${project.profile}:${project.version}"
+    dockerfile file('Dockerfile.alpine-glibc-openjdk11')
+    buildArgs(['version': "${project.version}"])
+    files tasks.rhel7DistTar.outputs
+}
+
+task dockerBuildExtended(type: GradleBuild) {
+    group = 'docker'
+    tasks = ['docker']
+    startParameter.projectProperties = ['profile': 'extended']
+}
+
+/*
+dockerRun {
+    name 'elasticsearch'
+    user 'elasticsearch'
+    ports '9200:9200', '9300:9300'
+    image "fl.hbz-nrw.de/jprante/elasticsearch-server-${project.profile}:${project.version}"
+    command 'java',
+            '-XX:UseAVX=2',
+            '-Dfile.encoding=UTF-8',
+            '-Djava.awt.headless=true',
+            '-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager',
+            '-Dlog4j2.debug=false',
+            '-Dlog4j2.disable.jmx=true',
+            '-Dlog4j.shutdownHookEnabled=false',
+            '-Dio.netty.allocator.type=pooled',
+            '-Dio.netty.noUnsafe=true',
+            '-Dio.netty.recycler.maxCapacity=0',
+            '-Dio.netty.noKeySetOptimization=true',
+            '-Djna.nosys=true',
+            '-Des.path.home=/elasticsearch',
+            '-Des.path.conf=/elasticsearch/conf',
+            '-Des.distribution.flavor=oss',
+            '-Des.distribution.type=tar',
+            '--patch-module', 'java.base=/elasticsearch/lib/patch/java.beans',
+            '--add-exports', 'java.base/java.beans=org.xbib.elasticsearch.log4j',
+            '--module-path', '/elasticsearch/lib',
+            '--module','org.xbib.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch',
+            '-Ebootstrap.memory_lock=false',
+            '-Enetwork.host=0.0.0.0'
+}
+*/

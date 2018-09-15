@@ -143,8 +143,7 @@ module org.xbib.elasticsearch.lucene {
 
     requires java.logging;
 
-    requires transitive java.desktop;
-    requires transitive java.xml;
+    requires transitive java.xml; // for XML query parser, compound hyphenation parser
 
     requires org.xbib.elasticsearch.spatial4j;
     requires org.xbib.elasticsearch.s2geo;

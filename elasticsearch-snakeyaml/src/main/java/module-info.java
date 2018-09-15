@@ -27,6 +27,5 @@ module org.xbib.elasticsearch.snakeyaml {
     exports org.yaml.snakeyaml.resolver;
 
     requires java.sql;
-    requires java.desktop;
-
+    //requires java.desktop;
 }
