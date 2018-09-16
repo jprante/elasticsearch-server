@@ -11,9 +11,9 @@ Version 6.3.2.0
 
 == Introduction
 
-The Elasticsearch Distributed Search application is a software to
-implement the Elasticsearch server platform with essential features
-in a modular fashion using current Java 10 modularization technology.
+Elasticsearch is a software to implement a search server platform in Java.
+This attempt is a reorganization of the software
+in a modular fashion using current Java modularization technology.
 
 == Synopsis
 
