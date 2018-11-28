@@ -1,1 +1,0 @@
-package com.sun.jna.freebsd.x64;

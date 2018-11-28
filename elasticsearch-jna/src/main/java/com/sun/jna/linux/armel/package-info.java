@@ -1,1 +1,0 @@
-package com.sun.jna.linux.armel;
