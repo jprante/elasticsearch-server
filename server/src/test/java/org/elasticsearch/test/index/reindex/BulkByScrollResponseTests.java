@@ -17,21 +17,23 @@
  * under the License.
  */
 
-package org.elasticsearch.index.reindex;
+package org.elasticsearch.test.index.reindex;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.Version;
 import org.elasticsearch.action.bulk.BulkItemResponse.Failure;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.ScrollableHitSource;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static org.apache.lucene.util.TestUtil.randomSimpleString;
+import static org.apache.lucene.testframework.util.TestUtil.randomSimpleString;
 import static org.elasticsearch.common.unit.TimeValue.timeValueMillis;
 
 public class BulkByScrollResponseTests extends ESTestCase {

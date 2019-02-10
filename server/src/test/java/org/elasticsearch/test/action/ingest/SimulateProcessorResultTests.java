@@ -17,17 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.action.ingest;
+package org.elasticsearch.test.action.ingest;
 
+import org.elasticsearch.action.ingest.SimulateProcessorResult;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.ingest.RandomDocumentPicks;
+import org.elasticsearch.testframework.ingest.RandomDocumentPicks;
 import org.elasticsearch.ingest.IngestDocument;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 
-import static org.elasticsearch.ingest.IngestDocumentMatcher.assertIngestDocument;
+import static org.elasticsearch.testframework.ingest.IngestDocumentMatcher.assertIngestDocument;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;

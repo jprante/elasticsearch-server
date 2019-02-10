@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.threadpool;
+package org.elasticsearch.test.threadpool;
 
 import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.concurrent.EsThreadPoolExecutor;
+import org.elasticsearch.threadpool.ThreadPool;
+import org.elasticsearch.threadpool.ThreadPoolStats;
 
 import java.util.HashMap;
 import java.util.Map;

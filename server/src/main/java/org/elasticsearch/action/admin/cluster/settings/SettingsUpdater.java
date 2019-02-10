@@ -37,24 +37,24 @@ import static org.elasticsearch.common.settings.AbstractScopedSettings.ARCHIVED_
  * Updates transient and persistent cluster state settings if there are any changes
  * due to the update.
  */
-final class SettingsUpdater {
+public final class SettingsUpdater {
     final Settings.Builder transientUpdates = Settings.builder();
     final Settings.Builder persistentUpdates = Settings.builder();
     private final ClusterSettings clusterSettings;
 
-    SettingsUpdater(ClusterSettings clusterSettings) {
+    public SettingsUpdater(ClusterSettings clusterSettings) {
         this.clusterSettings = clusterSettings;
     }
 
-    synchronized Settings getTransientUpdates() {
+    public synchronized Settings getTransientUpdates() {
         return transientUpdates.build();
     }
 
-    synchronized Settings getPersistentUpdate() {
+    public synchronized Settings getPersistentUpdate() {
         return persistentUpdates.build();
     }
 
-    synchronized ClusterState updateSettings(
+    public synchronized ClusterState updateSettings(
             final ClusterState currentState, final Settings transientToApply, final Settings persistentToApply, final Logger logger) {
         boolean changed = false;
 

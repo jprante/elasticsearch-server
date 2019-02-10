@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.delete;
+package org.elasticsearch.test.action.admin.indices.delete;
 
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 public class DeleteIndexResponseTests extends AbstractStreamableXContentTestCase<DeleteIndexResponse> {
 

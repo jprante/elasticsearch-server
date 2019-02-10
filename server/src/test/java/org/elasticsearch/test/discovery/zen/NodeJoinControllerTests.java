@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.discovery.zen;
+package org.elasticsearch.test.discovery.zen;
 
 import org.apache.logging.log4j.message.ParameterizedMessage;
 import org.elasticsearch.ExceptionsHelper;
@@ -35,7 +35,7 @@ import org.elasticsearch.cluster.routing.IndexShardRoutingTable;
 import org.elasticsearch.cluster.routing.RoutingTable;
 import org.elasticsearch.cluster.routing.ShardRouting;
 import org.elasticsearch.cluster.routing.ShardRoutingState;
-import org.elasticsearch.cluster.routing.TestShardRouting;
+import org.elasticsearch.testframework.cluster.routing.TestShardRouting;
 import org.elasticsearch.cluster.routing.UnassignedInfo;
 import org.elasticsearch.cluster.service.MasterService;
 import org.elasticsearch.common.Priority;
@@ -43,11 +43,14 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.util.concurrent.AbstractRunnable;
 import org.elasticsearch.common.util.concurrent.BaseFuture;
+import org.elasticsearch.discovery.zen.ElectMasterService;
+import org.elasticsearch.discovery.zen.MembershipAction;
+import org.elasticsearch.discovery.zen.NodeJoinController;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ClusterServiceUtils;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.junit.annotations.TestLogging;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ClusterServiceUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.junit.annotations.TestLogging;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -76,7 +79,7 @@ import java.util.stream.StreamSupport;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.shuffle;
-import static org.elasticsearch.cluster.ESAllocationTestCase.createAllocationService;
+import static org.elasticsearch.testframework.cluster.ESAllocationTestCase.createAllocationService;
 import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_CREATION_DATE;
 import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_NUMBER_OF_REPLICAS;
 import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_NUMBER_OF_SHARDS;
@@ -84,10 +87,10 @@ import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_VERSION_C
 import static org.elasticsearch.test.cluster.routing.RoutingTableTests.updateActiveAllocations;
 import static org.elasticsearch.test.cluster.service.MasterServiceTests.discoveryState;
 import static org.elasticsearch.gateway.GatewayService.STATE_NOT_RECOVERED_BLOCK;
-import static org.elasticsearch.test.ClusterServiceUtils.setState;
-import static org.elasticsearch.test.VersionUtils.allVersions;
-import static org.elasticsearch.test.VersionUtils.getPreviousVersion;
-import static org.elasticsearch.test.VersionUtils.randomCompatibleVersion;
+import static org.elasticsearch.testframework.ClusterServiceUtils.setState;
+import static org.elasticsearch.testframework.VersionUtils.allVersions;
+import static org.elasticsearch.testframework.VersionUtils.getPreviousVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomCompatibleVersion;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;

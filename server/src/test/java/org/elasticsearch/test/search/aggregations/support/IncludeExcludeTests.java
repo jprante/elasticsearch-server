@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.support;
+package org.elasticsearch.test.search.aggregations.support;
 
 import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.SortedSetDocValues;
@@ -33,7 +33,7 @@ import org.apache.lucene.search.AbstractSortedSetDocValues;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
 import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude.OrdinalsFilter;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;

@@ -40,15 +40,15 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
 
     public static class Path implements Writeable, ToXContentObject {
 
-        String path;
+        public String path;
         @Nullable
-        String mount;
+        public String mount;
         /** File system type from {@code java.nio.file.FileStore type()}, if available. */
         @Nullable
-        String type;
-        long total = -1;
-        long free = -1;
-        long available = -1;
+        public String type;
+        public long total = -1;
+        public long free = -1;
+        public long available = -1;
 
         public Path() {
         }
@@ -181,17 +181,17 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
 
     public static class DeviceStats implements Writeable, ToXContentFragment {
 
-        final int majorDeviceNumber;
-        final int minorDeviceNumber;
-        final String deviceName;
-        final long currentReadsCompleted;
-        final long previousReadsCompleted;
-        final long currentSectorsRead;
-        final long previousSectorsRead;
-        final long currentWritesCompleted;
-        final long previousWritesCompleted;
-        final long currentSectorsWritten;
-        final long previousSectorsWritten;
+        public final int majorDeviceNumber;
+        public final int minorDeviceNumber;
+        public final String deviceName;
+        public final long currentReadsCompleted;
+        public final long previousReadsCompleted;
+        public final long currentSectorsRead;
+        public final long previousSectorsRead;
+        public final long currentWritesCompleted;
+        public final long previousWritesCompleted;
+        public final long currentSectorsWritten;
+        public final long previousSectorsWritten;
 
         public DeviceStats(
                 final int majorDeviceNumber,
@@ -322,12 +322,12 @@ public class FsInfo implements Iterable<FsInfo.Path>, Writeable, ToXContentFragm
         private static final String READ_KILOBYTES = "read_kilobytes";
         private static final String WRITE_KILOBYTES = "write_kilobytes";
 
-        final DeviceStats[] devicesStats;
-        final long totalOperations;
-        final long totalReadOperations;
-        final long totalWriteOperations;
-        final long totalReadKilobytes;
-        final long totalWriteKilobytes;
+        public final DeviceStats[] devicesStats;
+        public final long totalOperations;
+        public final long totalReadOperations;
+        public final long totalWriteOperations;
+        public final long totalReadKilobytes;
+        public final long totalWriteKilobytes;
 
         public IoStats(final DeviceStats[] devicesStats) {
             this.devicesStats = devicesStats;

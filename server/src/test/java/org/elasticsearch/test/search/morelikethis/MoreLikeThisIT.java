@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.morelikethis;
+package org.elasticsearch.test.search.morelikethis;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -35,8 +35,8 @@ import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
 import org.elasticsearch.index.query.MoreLikeThisQueryBuilder.Item;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,13 +53,13 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.MoreLikeThisQueryBuilder.ids;
 import static org.elasticsearch.index.query.QueryBuilders.moreLikeThisQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertHitCount;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertNoFailures;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertOrderedSearchHits;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSearchHits;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSearchResponse;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertThrows;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertHitCount;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertNoFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertOrderedSearchHits;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSearchHits;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSearchResponse;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertThrows;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 

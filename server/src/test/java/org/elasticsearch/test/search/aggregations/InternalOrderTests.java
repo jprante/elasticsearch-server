@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.aggregations;
+package org.elasticsearch.test.search.aggregations;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
@@ -24,9 +24,11 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.Writeable.Reader;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentParser.Token;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.InternalOrder;
 import org.elasticsearch.search.aggregations.InternalOrder.CompoundOrder;
-import org.elasticsearch.test.AbstractSerializingTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.AbstractSerializingTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;

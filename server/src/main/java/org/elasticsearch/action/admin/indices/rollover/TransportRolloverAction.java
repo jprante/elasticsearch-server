@@ -96,7 +96,7 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
     }
 
     @Override
-    protected ClusterBlockException checkBlock(RolloverRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(RolloverRequest request, ClusterState state) {
         IndicesOptions indicesOptions = IndicesOptions.fromOptions(true, true,
             request.indicesOptions().expandWildcardsOpen(), request.indicesOptions().expandWildcardsClosed());
         return state.blocks().indicesBlockedException(ClusterBlockLevel.METADATA_WRITE,
@@ -104,7 +104,7 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
     }
 
     @Override
-    protected void masterOperation(final RolloverRequest rolloverRequest, final ClusterState state,
+    public void masterOperation(final RolloverRequest rolloverRequest, final ClusterState state,
                                    final ActionListener<RolloverResponse> listener) {
         final MetaData metaData = state.metaData();
         validate(metaData, rolloverRequest);
@@ -170,7 +170,7 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
         );
     }
 
-    static IndicesAliasesClusterStateUpdateRequest prepareRolloverAliasesUpdateRequest(String oldIndex, String newIndex,
+    public static IndicesAliasesClusterStateUpdateRequest prepareRolloverAliasesUpdateRequest(String oldIndex, String newIndex,
                                                                                        RolloverRequest request) {
         List<AliasAction> actions = unmodifiableList(Arrays.asList(
                 new AliasAction.Add(newIndex, request.getAlias(), null, null, null),
@@ -182,7 +182,7 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
     }
 
 
-    static String generateRolloverIndexName(String sourceIndexName, IndexNameExpressionResolver indexNameExpressionResolver) {
+    public static String generateRolloverIndexName(String sourceIndexName, IndexNameExpressionResolver indexNameExpressionResolver) {
         String resolvedName = indexNameExpressionResolver.resolveDateMathExpression(sourceIndexName);
         final boolean isDateMath = sourceIndexName.equals(resolvedName) == false;
         if (INDEX_NAME_PATTERN.matcher(resolvedName).matches()) {
@@ -198,7 +198,7 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
         }
     }
 
-    static Map<String, Boolean> evaluateConditions(final Collection<Condition> conditions,
+    public static Map<String, Boolean> evaluateConditions(final Collection<Condition> conditions,
                                                    final DocsStats docsStats, final IndexMetaData metaData) {
         final long numDocs = docsStats == null ? 0 : docsStats.getCount();
         final long indexSize = docsStats == null ? 0 : docsStats.getTotalSizeInBytes();
@@ -208,12 +208,12 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
             .collect(Collectors.toMap(result -> result.condition.toString(), result -> result.matched));
     }
 
-    static Map<String, Boolean> evaluateConditions(final Collection<Condition> conditions, final IndexMetaData metaData,
+    public static Map<String, Boolean> evaluateConditions(final Collection<Condition> conditions, final IndexMetaData metaData,
                                                     final IndicesStatsResponse statsResponse) {
         return evaluateConditions(conditions, statsResponse.getPrimaries().getDocs(), metaData);
     }
 
-    static void validate(MetaData metaData, RolloverRequest request) {
+    public static void validate(MetaData metaData, RolloverRequest request) {
         final AliasOrIndex aliasOrIndex = metaData.getAliasAndIndexLookup().get(request.getAlias());
         if (aliasOrIndex == null) {
             throw new IllegalArgumentException("source alias does not exist");
@@ -226,8 +226,9 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
         }
     }
 
-    static CreateIndexClusterStateUpdateRequest prepareCreateIndexRequest(final String providedIndexName, final String targetIndexName,
-                                                                          final RolloverRequest rolloverRequest) {
+    public static CreateIndexClusterStateUpdateRequest prepareCreateIndexRequest(final String providedIndexName,
+                                                                                 final String targetIndexName,
+                                                                                 final RolloverRequest rolloverRequest) {
 
         final CreateIndexRequest createIndexRequest = rolloverRequest.getCreateIndexRequest();
         createIndexRequest.cause("rollover_index");
@@ -247,7 +248,7 @@ public class TransportRolloverAction extends TransportMasterNodeAction<RolloverR
      * the rollover alias will point to multiple indices. This causes indexing requests to be rejected.
      * To avoid this, we make sure that there is no duplicated alias in index templates before creating a new index.
      */
-    static void checkNoDuplicatedAliasInIndexTemplate(MetaData metaData, String rolloverIndexName, String rolloverRequestAlias) {
+    public static void checkNoDuplicatedAliasInIndexTemplate(MetaData metaData, String rolloverIndexName, String rolloverRequestAlias) {
         final List<IndexTemplateMetaData> matchedTemplates = MetaDataIndexTemplateService.findTemplates(metaData, rolloverIndexName);
         for (IndexTemplateMetaData template : matchedTemplates) {
             if (template.aliases().containsKey(rolloverRequestAlias)) {

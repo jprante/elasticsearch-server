@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
 import org.apache.lucene.store.ByteArrayDataInput;
 import org.apache.lucene.store.ByteArrayDataOutput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.ByteUtils;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

@@ -16,14 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.aggregations.metrics.geocentroid;
+package org.elasticsearch.test.search.aggregations.metrics.geocentroid;
 
 import org.apache.lucene.geo.GeoEncodingUtils;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
+import org.elasticsearch.search.aggregations.metrics.geocentroid.InternalGeoCentroid;
+import org.elasticsearch.search.aggregations.metrics.geocentroid.ParsedGeoCentroid;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.test.InternalAggregationTestCase;
+import org.elasticsearch.testframework.InternalAggregationTestCase;
 import org.elasticsearch.test.geo.RandomGeoGenerator;
 
 import java.util.Collections;

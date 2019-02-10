@@ -17,11 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util.concurrent;
+package org.elasticsearch.test.common.util.concurrent;
 
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.concurrent.AbstractRunnable;
+import org.elasticsearch.common.util.concurrent.EsExecutors;
+import org.elasticsearch.common.util.concurrent.EsRejectedExecutionException;
+import org.elasticsearch.common.util.concurrent.EsThreadPoolExecutor;
+import org.elasticsearch.common.util.concurrent.ThreadBarrier;
+import org.elasticsearch.common.util.concurrent.ThreadContext;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matcher;
 
 import java.util.concurrent.CountDownLatch;

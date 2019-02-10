@@ -16,10 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.search.ParsedScrollId;
+import org.elasticsearch.action.search.ScrollIdForNode;
+import org.elasticsearch.action.search.SearchActionListener;
+import org.elasticsearch.action.search.SearchPhase;
+import org.elasticsearch.action.search.SearchPhaseExecutionException;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollAsyncAction;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.unit.TimeValue;
@@ -27,8 +36,8 @@ import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.internal.InternalScrollSearchRequest;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.InternalScrollSearchRequest;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.transport.Transport;
 
 import java.io.IOException;

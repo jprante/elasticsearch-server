@@ -43,7 +43,7 @@ public class MainResponse extends ActionResponse implements ToXContentObject {
     private Build build;
     boolean available;
 
-    MainResponse() {
+    public MainResponse() {
     }
 
     public MainResponse(String nodeName, Version version, ClusterName clusterName, String clusterUuid, Build build, boolean available) {

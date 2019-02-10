@@ -242,7 +242,7 @@ public final class ShardPath {
         return new ShardPath(indexSettings.hasCustomDataPath(), dataPath, statePath, shardId);
     }
 
-    static NodeEnvironment.NodePath getPathWithMostFreeSpace(NodeEnvironment env) throws IOException {
+    public static NodeEnvironment.NodePath getPathWithMostFreeSpace(NodeEnvironment env) throws IOException {
         final NodeEnvironment.NodePath[] paths = env.nodePaths();
         NodeEnvironment.NodePath bestPath = null;
         long maxUsableBytes = Long.MIN_VALUE;

@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.common.transport;
+package org.elasticsearch.test.common.transport;
 
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.transport.BoundTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.net.InetAddress;
 import java.util.ArrayList;

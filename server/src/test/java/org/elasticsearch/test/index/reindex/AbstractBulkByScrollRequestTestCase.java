@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.index.reindex;
+package org.elasticsearch.test.index.reindex;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.support.ActiveShardCount;
+import org.elasticsearch.index.reindex.AbstractBulkByScrollRequest;
 import org.elasticsearch.tasks.TaskId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.elasticsearch.common.unit.TimeValue.parseTimeValue;
 

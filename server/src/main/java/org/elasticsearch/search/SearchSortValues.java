@@ -38,7 +38,7 @@ public class SearchSortValues implements ToXContentFragment, Writeable {
     static final SearchSortValues EMPTY = new SearchSortValues(new Object[0]);
     private final Object[] sortValues;
 
-    SearchSortValues(Object[] sortValues) {
+    public SearchSortValues(Object[] sortValues) {
         this.sortValues = Objects.requireNonNull(sortValues, "sort values must not be empty");
     }
 

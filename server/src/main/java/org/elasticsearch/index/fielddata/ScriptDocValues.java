@@ -118,7 +118,7 @@ public abstract class ScriptDocValues<T> extends AbstractList<T> {
         /**
          * Constructor for testing the deprecation callback.
          */
-        Longs(SortedNumericDocValues in, Consumer<String> deprecationCallback) {
+        public Longs(SortedNumericDocValues in, Consumer<String> deprecationCallback) {
             this.in = in;
             this.deprecationCallback = deprecationCallback;
         }
@@ -235,7 +235,7 @@ public abstract class ScriptDocValues<T> extends AbstractList<T> {
         /**
          * Constructor for testing deprecation logging.
          */
-        Dates(SortedNumericDocValues in, Consumer<String> deprecationCallback) {
+        public Dates(SortedNumericDocValues in, Consumer<String> deprecationCallback) {
             this.in = in;
             this.deprecationCallback = deprecationCallback;
         }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent.support;
+package org.elasticsearch.test.common.xcontent.support;
 
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.XContentMapValues;

@@ -274,7 +274,7 @@ public final class BitsetFilterCache extends AbstractIndexComponent implements I
 
     }
 
-    Cache<IndexReader.CacheKey, Cache<Query, Value>> getLoadedFilters() {
+    public Cache<IndexReader.CacheKey, Cache<Query, Value>> getLoadedFilters() {
         return loadedFilters;
     }
 

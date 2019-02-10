@@ -25,7 +25,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.IndexService;
 import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.DocumentMapperParser;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 

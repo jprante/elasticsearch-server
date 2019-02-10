@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.query;
+package org.elasticsearch.test.search.query;
 
 import org.elasticsearch.action.explain.ExplainResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
@@ -27,7 +27,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,9 +38,9 @@ import java.util.Map;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertHitCount;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSearchResponse;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertHitCount;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSearchResponse;
 
 public class ExistsIT extends ESIntegTestCase {
 

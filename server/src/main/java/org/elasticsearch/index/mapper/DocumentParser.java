@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Objects;
 
 /** A parser for documents, given mappings from a DocumentMapper */
-final class DocumentParser {
+public final class DocumentParser {
 
     private final IndexSettings indexSettings;
     private final DocumentMapperParser docMapperParser;
@@ -195,7 +195,7 @@ final class DocumentParser {
     }
 
     /** Creates a Mapping containing any dynamically added fields, or returns null if there were no dynamic mappings. */
-    static Mapping createDynamicUpdate(Mapping mapping, DocumentMapper docMapper, List<Mapper> dynamicMappers) {
+    public static Mapping createDynamicUpdate(Mapping mapping, DocumentMapper docMapper, List<Mapper> dynamicMappers) {
         if (dynamicMappers.isEmpty()) {
             return null;
         }
@@ -340,7 +340,7 @@ final class DocumentParser {
         return parent.mappingUpdate(mapper);
     }
 
-    static void parseObjectOrNested(ParseContext context, ObjectMapper mapper) throws IOException {
+    public static void parseObjectOrNested(ParseContext context, ObjectMapper mapper) throws IOException {
         if (mapper.isEnabled() == false) {
             context.parser().skipChildren();
             return;

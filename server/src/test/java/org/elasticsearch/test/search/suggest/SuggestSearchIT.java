@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest;
+package org.elasticsearch.test.search.suggest;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -35,6 +35,10 @@ import org.elasticsearch.plugins.ScriptPlugin;
 import org.elasticsearch.script.ScriptContext;
 import org.elasticsearch.script.ScriptEngine;
 import org.elasticsearch.script.TemplateScript;
+import org.elasticsearch.search.suggest.SortBy;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestionBuilder;
 import org.elasticsearch.search.suggest.phrase.DirectCandidateGeneratorBuilder;
 import org.elasticsearch.search.suggest.phrase.Laplace;
 import org.elasticsearch.search.suggest.phrase.LinearInterpolation;
@@ -42,8 +46,8 @@ import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilder;
 import org.elasticsearch.search.suggest.phrase.StupidBackoff;
 import org.elasticsearch.search.suggest.term.TermSuggestionBuilder;
 import org.elasticsearch.search.suggest.term.TermSuggestionBuilder.SuggestMode;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.hamcrest.ElasticsearchAssertions;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -62,12 +66,12 @@ import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_NUMBER_OF
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.search.suggest.SuggestBuilders.phraseSuggestion;
 import static org.elasticsearch.search.suggest.SuggestBuilders.termSuggestion;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertNoFailures;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSuggestion;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSuggestionPhraseCollateMatchExists;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSuggestionSize;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertThrows;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertNoFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSuggestion;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSuggestionPhraseCollateMatchExists;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSuggestionSize;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertThrows;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;

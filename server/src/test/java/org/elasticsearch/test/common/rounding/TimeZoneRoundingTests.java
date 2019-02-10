@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.common.rounding;
+package org.elasticsearch.test.common.rounding;
 
 import org.elasticsearch.common.collect.Tuple;
+import org.elasticsearch.common.rounding.DateTimeUnit;
+import org.elasticsearch.common.rounding.Rounding;
 import org.elasticsearch.common.rounding.Rounding.TimeIntervalRounding;
 import org.elasticsearch.common.rounding.Rounding.TimeUnitRounding;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

@@ -30,14 +30,14 @@ import static org.elasticsearch.common.util.BigArrays.OBJECT_PAGE_SIZE;
  * Int array abstraction able to support more than 2B values. This implementation slices data into fixed-sized blocks of
  * configurable length.
  */
-final class BigObjectArray<T> extends AbstractBigArray implements ObjectArray<T> {
+public final class BigObjectArray<T> extends AbstractBigArray implements ObjectArray<T> {
 
     private static final BigObjectArray ESTIMATOR = new BigObjectArray(0, BigArrays.NON_RECYCLING_INSTANCE);
 
     private Object[][] pages;
 
     /** Constructor. */
-    BigObjectArray(long size, BigArrays bigArrays) {
+    public BigObjectArray(long size, BigArrays bigArrays) {
         super(OBJECT_PAGE_SIZE, bigArrays, true);
         this.size = size;
         pages = new Object[numPages(size)][];

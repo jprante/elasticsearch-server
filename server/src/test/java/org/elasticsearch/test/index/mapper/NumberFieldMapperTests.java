@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.apache.lucene.index.DocValuesType;
 import org.apache.lucene.index.IndexableField;
@@ -26,8 +26,14 @@ import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.mapper.DocumentMapper;
+import org.elasticsearch.index.mapper.DocumentMapperParser;
+import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.index.mapper.NumberFieldMapper.NumberType;
-import org.elasticsearch.index.mapper.NumberFieldTypeTests.OutOfRangeSpec;
+import org.elasticsearch.index.mapper.ParsedDocument;
+import org.elasticsearch.index.mapper.SourceToParse;
+import org.elasticsearch.test.index.mapper.NumberFieldTypeTests.OutOfRangeSpec;
+import org.elasticsearch.testframework.index.mapper.AbstractNumericFieldMapperTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -35,7 +41,6 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent;
+package org.elasticsearch.test.common.xcontent;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -36,8 +36,20 @@ import org.elasticsearch.common.io.PathUtils;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.util.CollectionUtils;
+import org.elasticsearch.common.xcontent.DeprecationHandler;
+import org.elasticsearch.common.xcontent.NamedObjectNotFoundException;
+import org.elasticsearch.common.xcontent.NamedXContentRegistry;
+import org.elasticsearch.common.xcontent.ToXContent;
+import org.elasticsearch.common.xcontent.XContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentElasticsearchExtension;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentGenerator;
+import org.elasticsearch.common.xcontent.XContentHelper;
+import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentParser.Token;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
@@ -671,7 +683,7 @@ public abstract class BaseXContentTestCase extends ESTestCase {
         Map<String, Object> objects = new HashMap<>();
         objects.put("{'obj':50.63}", DistanceUnit.METERS.fromMeters(50.63));
         objects.put("{'obj':'MINUTES'}", TimeUnit.MINUTES);
-        objects.put("{'obj':'class org.elasticsearch.common.xcontent.BaseXContentTestCase'}", BaseXContentTestCase.class);
+        objects.put("{'obj':'class org.elasticsearch.test.common.xcontent.BaseXContentTestCase'}", BaseXContentTestCase.class);
 
         for (Map.Entry<String, ?> o : objects.entrySet()) {
             final String expected = o.getKey();

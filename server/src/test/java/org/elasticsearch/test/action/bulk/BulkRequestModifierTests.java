@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,11 +27,15 @@ import java.util.Set;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteRequest;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.bulk.TransportBulkAction;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 
 import static org.hamcrest.Matchers.equalTo;

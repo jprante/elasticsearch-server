@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
 import org.elasticsearch.ElasticsearchParseException;
 import org.elasticsearch.Version;
@@ -28,13 +28,19 @@ import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.logging.DeprecationLogger;
 import org.elasticsearch.common.logging.ESLoggerFactory;
+import org.elasticsearch.common.settings.SecureSetting;
+import org.elasticsearch.common.settings.SecureString;
+import org.elasticsearch.common.settings.Setting;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.settings.SettingsException;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.VersionUtils;
+import org.elasticsearch.testframework.common.settings.MockSecureSettings;
 import org.hamcrest.CoreMatchers;
 
 import java.io.ByteArrayInputStream;
@@ -620,7 +626,7 @@ public class SettingsTests extends ESTestCase {
     }
 
     public void testSimpleJsonSettings() throws Exception {
-        final String json = "/org/elasticsearch/common/settings/loader/test-settings.json";
+        final String json = "/org/elasticsearch/test/common/settings/loader/test-settings.json";
         final Settings settings = Settings.builder()
             .loadFromStream(json, getClass().getResourceAsStream(json), false)
             .build();
@@ -693,7 +699,7 @@ public class SettingsTests extends ESTestCase {
     }
 
     public void testSimpleYamlSettings() throws Exception {
-        final String yaml = "/org/elasticsearch/common/settings/loader/test-settings.yml";
+        final String yaml = "/org/elasticsearch/test/common/settings/loader/test-settings.yml";
         final Settings settings = Settings.builder()
             .loadFromStream(yaml, getClass().getResourceAsStream(yaml), false)
             .build();
@@ -720,7 +726,7 @@ public class SettingsTests extends ESTestCase {
     }
 
     public void testIndentation() throws Exception {
-        String yaml = "/org/elasticsearch/common/settings/loader/indentation-settings.yml";
+        String yaml = "/org/elasticsearch/test/common/settings/loader/indentation-settings.yml";
         ElasticsearchParseException e = expectThrows(ElasticsearchParseException.class, () -> {
             Settings.builder().loadFromStream(yaml, getClass().getResourceAsStream(yaml), false);
         });
@@ -728,7 +734,7 @@ public class SettingsTests extends ESTestCase {
     }
 
     public void testIndentationWithExplicitDocumentStart() throws Exception {
-        String yaml = "/org/elasticsearch/common/settings/loader/indentation-with-explicit-document-start-settings.yml";
+        String yaml = "/org/elasticsearch/test/common/settings/loader/indentation-with-explicit-document-start-settings.yml";
         ElasticsearchParseException e = expectThrows(ElasticsearchParseException.class, () -> {
             Settings.builder().loadFromStream(yaml, getClass().getResourceAsStream(yaml), false);
         });

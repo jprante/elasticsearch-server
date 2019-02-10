@@ -34,16 +34,16 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-final class WriteableIngestDocument implements Writeable, ToXContentFragment {
+public final class WriteableIngestDocument implements Writeable, ToXContentFragment {
 
     private final IngestDocument ingestDocument;
 
-    WriteableIngestDocument(IngestDocument ingestDocument) {
+    public WriteableIngestDocument(IngestDocument ingestDocument) {
         assert ingestDocument != null;
         this.ingestDocument = ingestDocument;
     }
 
-    WriteableIngestDocument(StreamInput in) throws IOException {
+    public WriteableIngestDocument(StreamInput in) throws IOException {
         Map<String, Object> sourceAndMetadata = in.readMap();
         Map<String, Object> ingestMetadata = in.readMap();
         if (in.getVersion().before(Version.V_6_0_0_beta1)) {
@@ -61,7 +61,7 @@ final class WriteableIngestDocument implements Writeable, ToXContentFragment {
         out.writeMap(ingestDocument.getIngestMetadata());
     }
 
-    IngestDocument getIngestDocument() {
+    public IngestDocument getIngestDocument() {
         return ingestDocument;
     }
 

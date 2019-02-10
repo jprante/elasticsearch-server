@@ -17,15 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.rest.action.admin.cluster;
+package org.elasticsearch.test.rest.action.admin.cluster;
 
 import org.elasticsearch.client.node.NodeClient;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.rest.action.admin.cluster.RestNodesStatsAction;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 import org.elasticsearch.usage.UsageService;
 
 import java.io.IOException;

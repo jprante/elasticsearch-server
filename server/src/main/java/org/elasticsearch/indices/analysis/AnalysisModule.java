@@ -140,7 +140,7 @@ public final class AnalysisModule {
                 preConfiguredCharFilters, preConfiguredTokenFilters, preConfiguredTokenizers);
     }
 
-    HunspellService getHunspellService() {
+    public HunspellService getHunspellService() {
         return hunspellService;
     }
 
@@ -173,7 +173,7 @@ public final class AnalysisModule {
         return tokenFilters;
     }
 
-    static Map<String, PreConfiguredCharFilter> setupPreConfiguredCharFilters(List<AnalysisPlugin> plugins) {
+    public static Map<String, PreConfiguredCharFilter> setupPreConfiguredCharFilters(List<AnalysisPlugin> plugins) {
         NamedRegistry<PreConfiguredCharFilter> preConfiguredCharFilters = new NamedRegistry<>("pre-configured char_filter");
 
         // No char filter are available in lucene-core so none are built in to Elasticsearch core
@@ -186,7 +186,7 @@ public final class AnalysisModule {
         return unmodifiableMap(preConfiguredCharFilters.getRegistry());
     }
 
-    static Map<String, PreConfiguredTokenFilter> setupPreConfiguredTokenFilters(List<AnalysisPlugin> plugins) {
+    public static Map<String, PreConfiguredTokenFilter> setupPreConfiguredTokenFilters(List<AnalysisPlugin> plugins) {
         NamedRegistry<PreConfiguredTokenFilter> preConfiguredTokenFilters = new NamedRegistry<>("pre-configured token_filter");
 
         // Add filters available in lucene-core
@@ -205,7 +205,7 @@ public final class AnalysisModule {
         return unmodifiableMap(preConfiguredTokenFilters.getRegistry());
     }
 
-    static Map<String, PreConfiguredTokenizer> setupPreConfiguredTokenizers(List<AnalysisPlugin> plugins) {
+    public static Map<String, PreConfiguredTokenizer> setupPreConfiguredTokenizers(List<AnalysisPlugin> plugins) {
         NamedRegistry<PreConfiguredTokenizer> preConfiguredTokenizers = new NamedRegistry<>("pre-configured tokenizer");
 
         // Temporary shim to register old style pre-configured tokenizers

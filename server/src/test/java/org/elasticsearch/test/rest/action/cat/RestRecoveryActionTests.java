@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.rest.action.cat;
+package org.elasticsearch.test.rest.action.cat;
 
 import org.elasticsearch.action.admin.indices.recovery.RecoveryResponse;
 import org.elasticsearch.action.support.DefaultShardOperationFailedException;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.routing.RecoverySource;
 import org.elasticsearch.cluster.routing.RecoverySource.SnapshotRecoverySource;
-import org.elasticsearch.cluster.routing.TestShardRouting;
+import org.elasticsearch.testframework.cluster.routing.TestShardRouting;
 import org.elasticsearch.common.Randomness;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
@@ -33,7 +33,8 @@ import org.elasticsearch.index.Index;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.recovery.RecoveryState;
 import org.elasticsearch.rest.RestController;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.rest.action.cat.RestRecoveryAction;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.usage.UsageService;
 
 import java.util.ArrayList;

@@ -64,7 +64,7 @@ public class ReplicationTracker extends AbstractIndexShardComponent implements L
     /**
      * The allocation ID for the shard to which this tracker is a component of.
      */
-    final String shardAllocationId;
+    public final String shardAllocationId;
 
     /**
      * The global checkpoint tracker can operate in two modes:
@@ -84,7 +84,7 @@ public class ReplicationTracker extends AbstractIndexShardComponent implements L
      *   to replica mode (using {@link #completeRelocationHandoff}), as the relocation target will be in charge of the global checkpoint
      *   computation from that point on.
      */
-    volatile boolean primaryMode;
+    public volatile boolean primaryMode;
     /**
      * Boolean flag that indicates if a relocation handoff is in progress. A handoff is started by calling {@link #startRelocationHandoff}
      * and is finished by either calling {@link #completeRelocationHandoff} or {@link #abortRelocationHandoff}, depending on whether the
@@ -100,7 +100,7 @@ public class ReplicationTracker extends AbstractIndexShardComponent implements L
      * because the master could have failed some of the in-sync shard copies and marked them as stale. That is ok though, as this
      * information is conveyed through cluster state updates, and the new primary relocation target will also eventually learn about those.
      */
-    boolean handoffInProgress;
+    public boolean handoffInProgress;
 
     /**
      * The global checkpoint tracker relies on the property that cluster state updates are applied in-order. After transferring a primary
@@ -110,49 +110,49 @@ public class ReplicationTracker extends AbstractIndexShardComponent implements L
      * until the newer cluster state were to be applied, which would unsafely advance the global checkpoint. This field thus captures
      * the version of the last applied cluster state to ensure in-order updates.
      */
-    long appliedClusterStateVersion;
+    public long appliedClusterStateVersion;
 
-    IndexShardRoutingTable routingTable;
+    public IndexShardRoutingTable routingTable;
 
     /**
      * Local checkpoint information for all shard copies that are tracked. Has an entry for all shard copies that are either initializing
      * and / or in-sync, possibly also containing information about unassigned in-sync shard copies. The information that is tracked for
      * each shard copy is explained in the docs for the {@link CheckpointState} class.
      */
-    final Map<String, CheckpointState> checkpoints;
+    public final Map<String, CheckpointState> checkpoints;
 
     /**
      * This set contains allocation IDs for which there is a thread actively waiting for the local checkpoint to advance to at least the
      * current global checkpoint.
      */
-    final Set<String> pendingInSync;
+    public final Set<String> pendingInSync;
 
     /**
      * Cached value for the last replication group that was computed
      */
-    volatile ReplicationGroup replicationGroup;
+    public volatile ReplicationGroup replicationGroup;
 
     public static class CheckpointState implements Writeable {
 
         /**
          * the last local checkpoint information that we have for this shard
          */
-        long localCheckpoint;
+        public long localCheckpoint;
 
         /**
          * the last global checkpoint information that we have for this shard. This information is computed for the primary if
          * the tracker is in primary mode and received from the primary if in replica mode.
          */
-        long globalCheckpoint;
+        public long globalCheckpoint;
         /**
          * whether this shard is treated as in-sync and thus contributes to the global checkpoint calculation
          */
-        boolean inSync;
+        public boolean inSync;
 
         /**
          * whether this shard is tracked in the replication group, i.e., should receive document updates from the primary.
          */
-        boolean tracked;
+        public boolean tracked;
 
         public CheckpointState(long localCheckpoint, long globalCheckpoint, boolean inSync, boolean tracked) {
             this.localCheckpoint = localCheckpoint;

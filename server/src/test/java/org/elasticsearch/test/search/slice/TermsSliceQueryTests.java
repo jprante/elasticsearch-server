@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.slice;
+package org.elasticsearch.test.search.slice;
 
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.document.Document;
@@ -25,18 +25,19 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.LeafReaderContext;
-import org.apache.lucene.index.RandomIndexWriter;
+import org.apache.lucene.testframework.index.RandomIndexWriter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Collector;
 import org.apache.lucene.search.LeafCollector;
 import org.apache.lucene.search.Scorer;
-import org.apache.lucene.search.QueryUtils;
+import org.apache.lucene.testframework.search.QueryUtils;
 
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.StringHelper;
 import org.elasticsearch.common.UUIDs;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.slice.TermsSliceQuery;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;

@@ -17,17 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.action.ingest;
+package org.elasticsearch.test.action.ingest;
 
+import org.elasticsearch.action.ingest.WriteableIngestDocument;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentHelper;
-import org.elasticsearch.ingest.RandomDocumentPicks;
+import org.elasticsearch.testframework.ingest.RandomDocumentPicks;
 import org.elasticsearch.ingest.IngestDocument;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -35,7 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.elasticsearch.common.xcontent.ToXContent.EMPTY_PARAMS;
-import static org.elasticsearch.ingest.IngestDocumentMatcher.assertIngestDocument;
+import static org.elasticsearch.testframework.ingest.IngestDocumentMatcher.assertIngestDocument;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;

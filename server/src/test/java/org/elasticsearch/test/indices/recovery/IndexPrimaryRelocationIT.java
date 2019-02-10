@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.indices.recovery;
+package org.elasticsearch.test.indices.recovery;
 
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
@@ -29,9 +29,9 @@ import org.elasticsearch.cluster.routing.allocation.command.MoveAllocationComman
 import org.elasticsearch.common.Priority;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.hamcrest.ElasticsearchAssertions;
-import org.elasticsearch.test.junit.annotations.TestLogging;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions;
+import org.elasticsearch.testframework.junit.annotations.TestLogging;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;

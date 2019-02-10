@@ -64,9 +64,9 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
     private final LongSupplier globalCheckpointSupplier;
     private final LongSupplier minTranslogGenerationSupplier;
 
-    protected final AtomicBoolean closed = new AtomicBoolean(false);
+    private final AtomicBoolean closed;
     // lock order synchronized(syncLock) -> synchronized(this)
-    private final Object syncLock = new Object();
+    private final Object syncLock;
 
     private final Map<Long, Tuple<BytesReference, Exception>> seenSequenceNumbers;
 
@@ -94,6 +94,8 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
         this.maxSeqNo = initialCheckpoint.maxSeqNo;
         this.globalCheckpointSupplier = globalCheckpointSupplier;
         this.seenSequenceNumbers = Assertions.ENABLED ? new HashMap<>() : null;
+        this.closed = new AtomicBoolean(false);
+        this.syncLock = new Object();
     }
 
     public static TranslogWriter create(ShardId shardId, String translogUUID, long fileGeneration, Path file, ChannelFactory channelFactory,
@@ -257,7 +259,7 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
     }
 
     @Override
-    synchronized Checkpoint getCheckpoint() {
+    public synchronized Checkpoint getCheckpoint() {
         return new Checkpoint(totalOffset, operationCounter, generation, minSeqNo, maxSeqNo,
             globalCheckpointSupplier.getAsLong(), minTranslogGenerationSupplier.getAsLong());
     }
@@ -359,7 +361,7 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
     }
 
     @Override
-    protected void readBytes(ByteBuffer targetBuffer, long position) throws IOException {
+    public void readBytes(ByteBuffer targetBuffer, long position) throws IOException {
         try {
             if (position + targetBuffer.remaining() > getWrittenOffset()) {
                 synchronized (this) {
@@ -397,8 +399,8 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
         return lastSyncedCheckpoint;
     }
 
-    protected final void ensureOpen() {
-        if (isClosed()) {
+    private void ensureOpen() {
+        if (closed.get()) {
             throw new AlreadyClosedException("translog [" + getGeneration() + "] is already closed", tragedy);
         }
     }
@@ -409,11 +411,6 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
             channel.close();
         }
     }
-
-    protected final boolean isClosed() {
-        return closed.get();
-    }
-
 
     private final class BufferedChannelOutputStream extends BufferedOutputStream {
 

@@ -16,10 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.geo;
+package org.elasticsearch.test.common.geo;
 
 import org.apache.lucene.geo.Rectangle;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.geo.GeoHashUtils;
+import org.elasticsearch.common.geo.GeoPoint;
+import org.elasticsearch.testframework.ESTestCase;
 
 /**
  * Tests for {@link org.elasticsearch.common.geo.GeoHashUtils}

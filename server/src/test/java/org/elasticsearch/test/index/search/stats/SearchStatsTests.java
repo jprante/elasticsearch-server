@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.index.search.stats;
+package org.elasticsearch.test.index.search.stats;
 
+import org.elasticsearch.index.search.stats.SearchStats;
 import org.elasticsearch.index.search.stats.SearchStats.Stats;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.HashMap;
 import java.util.Map;

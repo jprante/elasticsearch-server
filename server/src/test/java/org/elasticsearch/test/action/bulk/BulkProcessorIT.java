@@ -17,9 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkProcessor;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetRequestBuilder;
 import org.elasticsearch.action.get.MultiGetResponse;
@@ -36,8 +40,8 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.transport.MockTransportClient;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.transport.MockTransportClient;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,7 +52,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;

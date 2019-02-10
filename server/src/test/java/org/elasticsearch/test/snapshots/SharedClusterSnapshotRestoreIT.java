@@ -17,9 +17,8 @@
  * under the License.
  */
 
-package org.elasticsearch.snapshots;
+package org.elasticsearch.test.snapshots;
 
-import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.Version;
 import org.elasticsearch.action.ActionFuture;
@@ -81,16 +80,28 @@ import org.elasticsearch.index.shard.IndexShard;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.IndicesService;
 import org.elasticsearch.indices.InvalidIndexNameException;
-import org.elasticsearch.ingest.IngestTestPlugin;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.ingest.IngestTestPlugin;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.repositories.IndexId;
 import org.elasticsearch.repositories.RepositoriesService;
 import org.elasticsearch.repositories.RepositoryData;
 import org.elasticsearch.repositories.RepositoryException;
-import org.elasticsearch.script.MockScriptEngine;
-import org.elasticsearch.script.StoredScriptsIT;
-import org.elasticsearch.snapshots.mockstore.MockRepository;
-import org.elasticsearch.test.junit.annotations.TestLogging;
+import org.elasticsearch.testframework.script.MockScriptEngine;
+import org.elasticsearch.test.script.StoredScriptsIT;
+import org.elasticsearch.snapshots.ConcurrentSnapshotExecutionException;
+import org.elasticsearch.snapshots.InvalidSnapshotNameException;
+import org.elasticsearch.snapshots.RestoreInfo;
+import org.elasticsearch.snapshots.Snapshot;
+import org.elasticsearch.snapshots.SnapshotCreationException;
+import org.elasticsearch.snapshots.SnapshotException;
+import org.elasticsearch.snapshots.SnapshotInfo;
+import org.elasticsearch.snapshots.SnapshotMissingException;
+import org.elasticsearch.snapshots.SnapshotRestoreException;
+import org.elasticsearch.snapshots.SnapshotShardFailure;
+import org.elasticsearch.snapshots.SnapshotState;
+import org.elasticsearch.test.snapshots.mockstore.MockRepository;
+import org.elasticsearch.testframework.junit.annotations.TestLogging;
 
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
@@ -118,17 +129,17 @@ import static org.elasticsearch.cluster.routing.allocation.decider.MaxRetryAlloc
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.IndexSettings.INDEX_REFRESH_INTERVAL_SETTING;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static org.elasticsearch.index.shard.IndexShardTests.getEngineFromShard;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAliasesExist;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAliasesMissing;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAllSuccessful;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertBlocked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertHitCount;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertIndexTemplateExists;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertIndexTemplateMissing;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertNoFailures;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertThrows;
+import static org.elasticsearch.test.index.shard.IndexShardTests.getEngineFromShard;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAliasesExist;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAliasesMissing;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAllSuccessful;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertBlocked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertHitCount;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertIndexTemplateExists;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertIndexTemplateMissing;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertNoFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertThrows;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;

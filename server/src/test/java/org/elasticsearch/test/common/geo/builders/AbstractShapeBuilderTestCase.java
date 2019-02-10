@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.geo.builders;
+package org.elasticsearch.test.common.geo.builders;
 
 import org.elasticsearch.common.geo.GeoShapeType;
+import org.elasticsearch.common.geo.builders.ShapeBuilder;
 import org.elasticsearch.common.geo.parsers.ShapeParser;
 import org.elasticsearch.common.io.stream.NamedWriteable;
 import org.elasticsearch.common.io.stream.NamedWriteableRegistry;
@@ -29,13 +30,13 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
 
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
 
 public abstract class AbstractShapeBuilderTestCase<SB extends ShapeBuilder> extends ESTestCase {
 

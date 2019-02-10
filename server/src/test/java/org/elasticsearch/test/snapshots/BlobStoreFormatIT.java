@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.snapshots;
+package org.elasticsearch.test.snapshots;
 
 import org.elasticsearch.ElasticsearchCorruptionException;
 import org.elasticsearch.ElasticsearchParseException;
@@ -38,7 +38,7 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.translog.BufferedChecksumStreamOutput;
 import org.elasticsearch.repositories.blobstore.ChecksumBlobStoreFormat;
-import org.elasticsearch.snapshots.mockstore.BlobContainerWrapper;
+import org.elasticsearch.test.snapshots.mockstore.BlobContainerWrapper;
 
 import java.io.EOFException;
 import java.io.IOException;

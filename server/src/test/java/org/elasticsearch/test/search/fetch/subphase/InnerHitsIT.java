@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.fetch.subphase;
+package org.elasticsearch.test.search.fetch.subphase;
 
 import org.apache.lucene.search.join.ScoreMode;
 import org.apache.lucene.util.ArrayUtil;
@@ -34,17 +34,18 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.InnerHitBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.script.MockScriptEngine;
-import org.elasticsearch.script.MockScriptPlugin;
+import org.elasticsearch.testframework.script.MockScriptEngine;
+import org.elasticsearch.testframework.script.MockScriptPlugin;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,13 +62,13 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.nestedQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAllSuccessful;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertHitCount;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertNoFailures;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSearchHit;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSearchHits;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.hasId;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAllSuccessful;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertHitCount;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertNoFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSearchHit;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSearchHits;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.hasId;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;

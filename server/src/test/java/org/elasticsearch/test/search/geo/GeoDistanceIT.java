@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.geo;
+package org.elasticsearch.test.search.geo;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -33,16 +33,16 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.script.MockScriptPlugin;
+import org.elasticsearch.testframework.script.MockScriptPlugin;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.range.InternalGeoDistance;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
+import org.elasticsearch.testframework.VersionUtils;
 import org.junit.Before;
 
 import java.io.IOException;
@@ -55,7 +55,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.closeTo;
 
 public class GeoDistanceIT extends ESIntegTestCase {

@@ -276,7 +276,7 @@ public abstract class StreamOutput extends OutputStream {
      * Writes a long in a variable-length format without first checking if it is negative. Package private for testing. Use
      * {@link #writeVLong(long)} instead.
      */
-    void writeVLongNoCheck(long i) throws IOException {
+    public void writeVLongNoCheck(long i) throws IOException {
         while ((i & ~0x7F) != 0) {
             writeByte((byte) ((i & 0x7f) | 0x80));
             i >>>= 7;

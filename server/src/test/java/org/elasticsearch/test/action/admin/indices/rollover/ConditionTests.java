@@ -17,13 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.rollover;
+package org.elasticsearch.test.action.admin.indices.rollover;
 
+import org.elasticsearch.action.admin.indices.rollover.Condition;
+import org.elasticsearch.action.admin.indices.rollover.MaxAgeCondition;
+import org.elasticsearch.action.admin.indices.rollover.MaxDocsCondition;
+import org.elasticsearch.action.admin.indices.rollover.MaxSizeCondition;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.EqualsHashCodeTestUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.EqualsHashCodeTestUtils;
 
 import static org.hamcrest.Matchers.equalTo;
 

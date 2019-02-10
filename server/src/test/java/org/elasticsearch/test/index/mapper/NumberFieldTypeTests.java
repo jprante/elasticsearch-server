@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 
@@ -37,10 +37,13 @@ import org.apache.lucene.search.MatchNoDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.core.internal.io.IOUtils;
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.TestUtil;
+import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.MappedFieldType.Relation;
+import org.elasticsearch.index.mapper.NumberFieldMapper;
 import org.elasticsearch.index.mapper.NumberFieldMapper.NumberType;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.index.mapper.FieldTypeTestCase;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 

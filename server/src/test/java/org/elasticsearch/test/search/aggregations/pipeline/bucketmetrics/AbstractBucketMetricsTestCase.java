@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.pipeline.bucketmetrics;
+package org.elasticsearch.test.search.aggregations.pipeline.bucketmetrics;
 
+import org.elasticsearch.search.aggregations.pipeline.bucketmetrics.BucketMetricsPipelineAggregationBuilder;
 import org.elasticsearch.test.search.aggregations.BasePipelineAggregationTestCase;
 import org.elasticsearch.search.aggregations.pipeline.BucketHelpers.GapPolicy;
 

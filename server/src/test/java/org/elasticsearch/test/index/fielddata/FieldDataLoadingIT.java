@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.index.fielddata;
+package org.elasticsearch.test.index.fielddata;
 
 import org.elasticsearch.action.admin.cluster.stats.ClusterStatsResponse;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.greaterThan;
 
 public class FieldDataLoadingIT extends ESIntegTestCase {

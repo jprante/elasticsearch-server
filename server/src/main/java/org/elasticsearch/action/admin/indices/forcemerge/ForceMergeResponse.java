@@ -46,7 +46,8 @@ public class ForceMergeResponse extends BroadcastResponse {
     ForceMergeResponse() {
     }
 
-    ForceMergeResponse(int totalShards, int successfulShards, int failedShards, List<DefaultShardOperationFailedException> shardFailures) {
+    public ForceMergeResponse(int totalShards, int successfulShards, int failedShards,
+                              List<DefaultShardOperationFailedException> shardFailures) {
         super(totalShards, successfulShards, failedShards, shardFailures);
     }
 

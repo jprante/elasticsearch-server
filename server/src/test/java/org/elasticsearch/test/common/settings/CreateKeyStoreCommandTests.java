@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -27,6 +27,8 @@ import java.util.Map;
 import org.elasticsearch.cli.Command;
 import org.elasticsearch.cli.Terminal;
 import org.elasticsearch.cli.UserException;
+import org.elasticsearch.common.settings.CreateKeyStoreCommand;
+import org.elasticsearch.common.settings.KeyStoreWrapper;
 import org.elasticsearch.env.Environment;
 
 public class CreateKeyStoreCommandTests extends KeyStoreCommandTestCase {

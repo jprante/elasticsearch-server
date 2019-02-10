@@ -82,7 +82,7 @@ public class RolloverRequest extends AcknowledgedRequest<RolloverRequest> implem
     //the index name "_na_" is never read back, what matters are settings, mappings and aliases
     private CreateIndexRequest createIndexRequest = new CreateIndexRequest("_na_");
 
-    RolloverRequest() {}
+    public RolloverRequest() {}
 
     public RolloverRequest(String alias, String newIndexName) {
         this.alias = alias;
@@ -196,7 +196,7 @@ public class RolloverRequest extends AcknowledgedRequest<RolloverRequest> implem
         return dryRun;
     }
 
-    Map<String, Condition> getConditions() {
+    public Map<String, Condition> getConditions() {
         return conditions;
     }
 

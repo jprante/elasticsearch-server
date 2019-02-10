@@ -84,7 +84,7 @@ public class RegexOptions implements ToXContentFragment, Writeable {
     /**
      * Read from a stream.
      */
-    RegexOptions(StreamInput in) throws IOException {
+    public RegexOptions(StreamInput in) throws IOException {
         this.flagsValue = in.readVInt();
         this.maxDeterminizedStates = in.readVInt();
     }

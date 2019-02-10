@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.engine;
+package org.elasticsearch.test.index.engine;
 
 import org.elasticsearch.action.admin.indices.stats.IndicesStatsResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -24,18 +24,18 @@ import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
-import org.elasticsearch.test.ESIntegTestCase.Scope;
-import org.elasticsearch.test.junit.annotations.TestLogging;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.testframework.ESIntegTestCase.Scope;
+import org.elasticsearch.testframework.junit.annotations.TestLogging;
 import org.hamcrest.Matchers;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertNoFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertNoFailures;
 
 @ClusterScope(supportsDedicatedMasters = false, numDataNodes = 1, scope = Scope.SUITE)
 public class InternalEngineMergeIT extends ESIntegTestCase {

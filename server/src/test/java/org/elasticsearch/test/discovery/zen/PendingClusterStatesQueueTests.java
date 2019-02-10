@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.discovery.zen;
+package org.elasticsearch.test.discovery.zen;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.Version;
@@ -28,7 +28,7 @@ import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.zen.PendingClusterStatesQueue;
 import org.elasticsearch.discovery.zen.PendingClusterStatesQueue.ClusterStateContext;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.Collections;

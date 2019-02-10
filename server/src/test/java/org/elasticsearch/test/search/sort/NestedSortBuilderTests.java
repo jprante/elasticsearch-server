@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.sort;
+package org.elasticsearch.test.search.sort;
 
 import org.elasticsearch.common.io.stream.NamedWriteableRegistry;
 import org.elasticsearch.common.settings.Settings;
@@ -33,8 +33,9 @@ import org.elasticsearch.index.query.MatchNoneQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryRewriteContext;
 import org.elasticsearch.search.SearchModule;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.EqualsHashCodeTestUtils;
+import org.elasticsearch.search.sort.NestedSortBuilder;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.EqualsHashCodeTestUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.mockito.Mockito;

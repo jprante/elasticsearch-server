@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.rescore;
+package org.elasticsearch.test.search.rescore;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.rescore.QueryRescoreMode;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

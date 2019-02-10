@@ -16,21 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.indices.flush;
+package org.elasticsearch.test.indices.flush;
 
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.routing.ShardRouting;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.InternalTestCluster;
+import org.elasticsearch.indices.flush.ShardsSyncedFlushResult;
+import org.elasticsearch.indices.flush.SyncedFlushService;
+import org.elasticsearch.testframework.InternalTestCluster;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.elasticsearch.test.ESTestCase.assertBusy;
+import static org.elasticsearch.testframework.ESTestCase.assertBusy;
 
 /** Utils for SyncedFlush */
 public class SyncedFlushUtil {

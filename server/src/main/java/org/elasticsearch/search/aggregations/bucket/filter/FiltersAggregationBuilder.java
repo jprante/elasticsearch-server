@@ -34,7 +34,7 @@ import org.elasticsearch.search.aggregations.AggregatorFactories.Builder;
 import org.elasticsearch.search.aggregations.AggregatorFactory;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregator.KeyedFilter;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public class FiltersAggregationBuilder extends AbstractAggregationBuilder<Filter
     }
 
     @Override
-    protected AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
+    public AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
         return new FiltersAggregationBuilder(this, factoriesBuilder, metaData);
     }
 

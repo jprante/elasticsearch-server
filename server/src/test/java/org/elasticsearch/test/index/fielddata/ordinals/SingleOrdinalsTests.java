@@ -16,12 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.fielddata.ordinals;
+package org.elasticsearch.test.index.fielddata.ordinals;
 
 import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.SortedDocValues;
 import org.apache.lucene.index.SortedSetDocValues;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.fielddata.ordinals.Ordinals;
+import org.elasticsearch.index.fielddata.ordinals.OrdinalsBuilder;
+import org.elasticsearch.index.fielddata.ordinals.SinglePackedOrdinals;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.HashMap;

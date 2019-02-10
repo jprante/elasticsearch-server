@@ -650,18 +650,18 @@ public class UnicastZenPing extends AbstractComponent implements ZenPing {
         return new PingResponse(discoNodes.getLocalNode(), discoNodes.getMasterNode(), clusterState);
     }
 
-    static class UnicastPingResponse extends TransportResponse {
+    public static class UnicastPingResponse extends TransportResponse {
 
         final int id;
 
         final PingResponse[] pingResponses;
 
-        UnicastPingResponse(int id, PingResponse[] pingResponses) {
+        public UnicastPingResponse(int id, PingResponse[] pingResponses) {
             this.id = id;
             this.pingResponses = pingResponses;
         }
 
-        UnicastPingResponse(StreamInput in) throws IOException {
+        public UnicastPingResponse(StreamInput in) throws IOException {
             id = in.readInt();
             pingResponses = new PingResponse[in.readVInt()];
             for (int i = 0; i < pingResponses.length; i++) {

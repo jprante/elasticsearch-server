@@ -31,8 +31,8 @@ import java.util.Objects;
  */
 public abstract class Condition<T> implements NamedWriteable, ToXContentFragment {
 
-    protected T value;
-    protected final String name;
+    public T value;
+    public final String name;
 
     protected Condition(String name) {
         this.name = name;
@@ -93,7 +93,7 @@ public abstract class Condition<T> implements NamedWriteable, ToXContentFragment
         public final Condition condition;
         public final boolean matched;
 
-        protected Result(Condition condition, boolean matched) {
+        public Result(Condition condition, boolean matched) {
             this.condition = condition;
             this.matched = matched;
         }

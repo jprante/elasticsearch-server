@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.rest.action.document;
+package org.elasticsearch.test.rest.action.document;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +29,9 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.rest.action.document.RestBulkAction;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 import org.mockito.Mockito;
 
 import static org.mockito.Matchers.any;

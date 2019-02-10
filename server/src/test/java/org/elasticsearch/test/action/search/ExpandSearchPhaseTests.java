@@ -17,9 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.search.ExpandSearchPhase;
+import org.elasticsearch.action.search.MultiSearchRequest;
+import org.elasticsearch.action.search.MultiSearchResponse;
+import org.elasticsearch.action.search.SearchPhase;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchTask;
+import org.elasticsearch.action.search.SearchTransportService;
 import org.elasticsearch.common.document.DocumentField;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.text.Text;
@@ -31,8 +39,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.collapse.CollapseBuilder;
-import org.elasticsearch.search.internal.InternalSearchResponse;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.InternalSearchResponse;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 
 import java.io.IOException;
@@ -73,7 +81,7 @@ public class ExpandSearchPhaseTests extends ESTestCase {
                 Settings.builder().put("search.remote.connect", false).build(), null, null) {
 
                 @Override
-                void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
+                public void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
                     assertTrue(executedMultiSearch.compareAndSet(false, true));
                     assertEquals(numInnerHits, request.requests().size());
                     SearchRequest searchRequest = request.requests().get(0);
@@ -147,7 +155,7 @@ public class ExpandSearchPhaseTests extends ESTestCase {
             Settings.builder().put("search.remote.connect", false).build(), null, null) {
 
             @Override
-            void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
+            public void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
                 assertTrue(executedMultiSearch.compareAndSet(false, true));
                 InternalSearchResponse internalSearchResponse = new InternalSearchResponse(collapsedHits,
                     null, null, null, false, null, 1);
@@ -188,7 +196,7 @@ public class ExpandSearchPhaseTests extends ESTestCase {
             Settings.builder().put("search.remote.connect", false).build(), null, null) {
 
             @Override
-            void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
+            public void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
               fail("no collapsing here");
             }
         };
@@ -219,7 +227,7 @@ public class ExpandSearchPhaseTests extends ESTestCase {
             Settings.builder().put("search.remote.connect", false).build(), null, null) {
 
             @Override
-            void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
+            public void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
                 fail("expand should not try to send empty multi search request");
             }
         };
@@ -251,7 +259,7 @@ public class ExpandSearchPhaseTests extends ESTestCase {
             Settings.builder().put("search.remote.connect", false).build(), null, null) {
 
             @Override
-            void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
+            public void sendExecuteMultiSearch(MultiSearchRequest request, SearchTask task, ActionListener<MultiSearchResponse> listener) {
                 final QueryBuilder postFilter = QueryBuilders.existsQuery("foo");
                 assertTrue(request.requests().stream().allMatch((r) -> "foo".equals(r.preference())));
                 assertTrue(request.requests().stream().allMatch((r) -> "baz".equals(r.routing())));

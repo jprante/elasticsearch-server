@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.search;
 
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.LeafReaderContext;

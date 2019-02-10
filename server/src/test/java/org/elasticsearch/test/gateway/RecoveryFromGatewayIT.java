@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.gateway;
+package org.elasticsearch.test.gateway;
 
 import com.carrotsearch.hppc.cursors.ObjectCursor;
 import org.elasticsearch.action.admin.indices.recovery.RecoveryResponse;
@@ -33,6 +33,8 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.NodeEnvironment;
+import org.elasticsearch.gateway.GatewayService;
+import org.elasticsearch.gateway.TransportNodesListGatewayStartedShards;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.engine.Engine;
@@ -41,12 +43,12 @@ import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.shard.ShardPath;
 import org.elasticsearch.indices.recovery.RecoveryState;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
-import org.elasticsearch.test.ESIntegTestCase.Scope;
-import org.elasticsearch.test.InternalTestCluster;
-import org.elasticsearch.test.InternalTestCluster.RestartCallback;
-import org.elasticsearch.test.store.MockFSIndexStore;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.testframework.ESIntegTestCase.Scope;
+import org.elasticsearch.testframework.InternalTestCluster;
+import org.elasticsearch.testframework.InternalTestCluster.RestartCallback;
+import org.elasticsearch.testframework.store.MockFSIndexStore;
 
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -65,8 +67,8 @@ import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_NUMBER_OF
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertHitCount;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertHitCount;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;

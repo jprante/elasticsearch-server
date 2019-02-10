@@ -17,14 +17,17 @@
  * under the License.
  */
 
-package org.apache.lucene.analysis.miscellaneous;
+package org.elasticsearch.test.lucene.analysis.miscellaneous;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.MockTokenizer;
+import org.apache.lucene.testframework.analysis.MockTokenizer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.miscellaneous.DeDuplicatingTokenFilter;
+import org.apache.lucene.analysis.miscellaneous.DuplicateByteSequenceSpotter;
+import org.apache.lucene.analysis.miscellaneous.DuplicateSequenceAttribute;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

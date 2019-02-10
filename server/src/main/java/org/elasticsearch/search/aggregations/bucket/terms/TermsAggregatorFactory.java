@@ -40,7 +40,7 @@ import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 import org.elasticsearch.search.aggregations.support.ValuesSource;
 import org.elasticsearch.search.aggregations.support.ValuesSourceAggregatorFactory;
 import org.elasticsearch.search.aggregations.support.ValuesSourceConfig;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,7 +49,7 @@ import java.util.Map;
 public class TermsAggregatorFactory extends ValuesSourceAggregatorFactory<ValuesSource, TermsAggregatorFactory> {
     private static final DeprecationLogger DEPRECATION_LOGGER = new DeprecationLogger(Loggers.getLogger(TermsAggregatorFactory.class));
 
-    static Boolean REMAP_GLOBAL_ORDS, COLLECT_SEGMENT_ORDS;
+    public static Boolean REMAP_GLOBAL_ORDS, COLLECT_SEGMENT_ORDS;
 
     private final BucketOrder order;
     private final IncludeExclude includeExclude;
@@ -193,7 +193,7 @@ public class TermsAggregatorFactory extends ValuesSourceAggregatorFactory<Values
 
     // return the SubAggCollectionMode that this aggregation should use based on the expected size
     // and the cardinality of the field
-    static SubAggCollectionMode subAggCollectionMode(int expectedSize, long maxOrd) {
+    public static SubAggCollectionMode subAggCollectionMode(int expectedSize, long maxOrd) {
         if (expectedSize == Integer.MAX_VALUE) {
             // return all buckets
             return SubAggCollectionMode.DEPTH_FIRST;

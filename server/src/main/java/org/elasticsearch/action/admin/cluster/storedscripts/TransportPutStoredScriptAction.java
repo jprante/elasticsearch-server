@@ -57,13 +57,13 @@ public class TransportPutStoredScriptAction extends TransportMasterNodeAction<Pu
     }
 
     @Override
-    protected void masterOperation(PutStoredScriptRequest request, ClusterState state,
+    public void masterOperation(PutStoredScriptRequest request, ClusterState state,
                                    ActionListener<PutStoredScriptResponse> listener) throws Exception {
         scriptService.putStoredScript(clusterService, request, listener);
     }
 
     @Override
-    protected ClusterBlockException checkBlock(PutStoredScriptRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(PutStoredScriptRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
     }
 

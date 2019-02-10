@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.search;
 
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.cluster.metadata.AliasMetaData;
@@ -32,8 +32,6 @@ import org.elasticsearch.index.query.Rewriteable;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.AliasFilterParsingException;
 import org.elasticsearch.indices.InvalidAliasNameException;
-import org.elasticsearch.search.Scroll;
-import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;

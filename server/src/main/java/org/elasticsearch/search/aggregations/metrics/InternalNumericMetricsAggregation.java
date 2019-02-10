@@ -32,7 +32,7 @@ public abstract class InternalNumericMetricsAggregation extends InternalAggregat
 
     private static final DocValueFormat DEFAULT_FORMAT = DocValueFormat.RAW;
 
-    protected DocValueFormat format = DEFAULT_FORMAT;
+    public DocValueFormat format = DEFAULT_FORMAT;
 
     public abstract static class SingleValue extends InternalNumericMetricsAggregation implements NumericMetricsAggregation.SingleValue {
         protected SingleValue(String name, List<PipelineAggregator> pipelineAggregators, Map<String, Object> metaData) {

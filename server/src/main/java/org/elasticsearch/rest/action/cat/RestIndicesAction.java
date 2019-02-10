@@ -300,8 +300,7 @@ public class RestIndicesAction extends AbstractCatAction {
         return table;
     }
 
-    // package private for testing
-    Table buildTable(RestRequest request, Index[] indices, ClusterHealthResponse response, IndicesStatsResponse stats, MetaData indexMetaDatas) {
+    public Table buildTable(RestRequest request, Index[] indices, ClusterHealthResponse response, IndicesStatsResponse stats, MetaData indexMetaDatas) {
         final String healthParam = request.param("health");
         final ClusterHealthStatus status;
         if (healthParam != null) {

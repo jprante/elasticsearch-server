@@ -60,7 +60,7 @@ public class ClusterStatsNodes implements ToXContentFragment {
     private final Set<PluginInfo> plugins;
     private final NetworkTypes networkTypes;
 
-    ClusterStatsNodes(List<ClusterStatsNodeResponse> nodeResponses) {
+    public ClusterStatsNodes(List<ClusterStatsNodeResponse> nodeResponses) {
         this.versions = new HashSet<>();
         this.fs = new FsInfo.Path();
         this.plugins = new HashSet<>();
@@ -171,7 +171,7 @@ public class ClusterStatsNodes implements ToXContentFragment {
     }
 
     public static class Counts implements ToXContentFragment {
-        static final String COORDINATING_ONLY = "coordinating_only";
+        public static final String COORDINATING_ONLY = "coordinating_only";
 
         private final int total;
         private final Map<String, Integer> roles;
@@ -303,7 +303,7 @@ public class ClusterStatsNodes implements ToXContentFragment {
 
     public static class ProcessStats implements ToXContentFragment {
 
-        final int count;
+        public final int count;
         final int cpuPercent;
         final long totalOpenFileDescriptors;
         final long minOpenFileDescriptors;
@@ -543,12 +543,12 @@ public class ClusterStatsNodes implements ToXContentFragment {
         }
     }
 
-    static class NetworkTypes implements ToXContentFragment {
+    public static class NetworkTypes implements ToXContentFragment {
 
         private final Map<String, AtomicInteger> transportTypes;
         private final Map<String, AtomicInteger> httpTypes;
 
-        NetworkTypes(final List<NodeInfo> nodeInfos) {
+        public NetworkTypes(final List<NodeInfo> nodeInfos) {
             final Map<String, AtomicInteger> transportTypes = new HashMap<>();
             final Map<String, AtomicInteger> httpTypes = new HashMap<>();
             for (final NodeInfo nodeInfo : nodeInfos) {

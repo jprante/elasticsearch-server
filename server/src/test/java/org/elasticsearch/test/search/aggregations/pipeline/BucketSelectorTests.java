@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.pipeline;
+package org.elasticsearch.test.search.aggregations.pipeline;
 
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;

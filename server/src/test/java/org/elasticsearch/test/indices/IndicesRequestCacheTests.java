@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.indices;
+package org.elasticsearch.test.indices;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -31,7 +31,6 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Accountable;
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.lucene.index.ElasticsearchDirectoryReader;
@@ -42,7 +41,10 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.cache.request.ShardRequestCache;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.indices.AbstractIndexShardCacheEntity;
+import org.elasticsearch.indices.IndicesRequestCache;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
 
 import java.io.IOException;
 import java.util.Arrays;

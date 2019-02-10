@@ -50,7 +50,7 @@ public class IndexFolderUpgrader {
      * @param settings node settings
      * @param nodeEnv the node env to operate on
      */
-    IndexFolderUpgrader(Settings settings, NodeEnvironment nodeEnv) {
+    public IndexFolderUpgrader(Settings settings, NodeEnvironment nodeEnv) {
         this.settings = settings;
         this.nodeEnv = nodeEnv;
     }
@@ -58,7 +58,7 @@ public class IndexFolderUpgrader {
     /**
      * Moves the index folder found in <code>source</code> to <code>target</code>
      */
-    void upgrade(final Index index, final Path source, final Path target) throws IOException {
+    public void upgrade(final Index index, final Path source, final Path target) throws IOException {
         boolean success = false;
         try {
             Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
@@ -83,7 +83,7 @@ public class IndexFolderUpgrader {
      * iff {@link #needsUpgrade(Index, String)} is true.
      * Index folder in custom paths are renamed first followed by index folders in each node path.
      */
-    void upgrade(final String indexFolderName) throws IOException {
+    public void upgrade(final String indexFolderName) throws IOException {
         for (NodeEnvironment.NodePath nodePath : nodeEnv.nodePaths()) {
             final Path indexFolderPath = nodePath.indicesPath.resolve(indexFolderName);
             final IndexMetaData indexMetaData = IndexMetaData.FORMAT.loadLatestState(logger, NamedXContentRegistry.EMPTY, indexFolderPath);
@@ -128,7 +128,7 @@ public class IndexFolderUpgrader {
         }
     }
 
-    static boolean needsUpgrade(Index index, String indexFolderName) {
+    public static boolean needsUpgrade(Index index, String indexFolderName) {
         return indexFolderName.equals(index.getUUID()) == false;
     }
 }

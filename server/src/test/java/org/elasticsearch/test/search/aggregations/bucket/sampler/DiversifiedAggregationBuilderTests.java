@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.sampler;
+package org.elasticsearch.test.search.aggregations.bucket.sampler;
 
-import org.elasticsearch.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.search.aggregations.bucket.sampler.DiversifiedAggregationBuilder;
+import org.elasticsearch.testframework.search.aggregations.BaseAggregationTestCase;
 import org.elasticsearch.search.aggregations.bucket.sampler.SamplerAggregator.ExecutionMode;
 
 public class DiversifiedAggregationBuilderTests extends BaseAggregationTestCase<DiversifiedAggregationBuilder> {

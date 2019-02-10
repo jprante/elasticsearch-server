@@ -39,7 +39,7 @@ import org.elasticsearch.search.aggregations.support.ValuesSourceAggregationBuil
 import org.elasticsearch.search.aggregations.support.ValuesSourceAggregatorFactory;
 import org.elasticsearch.search.aggregations.support.ValuesSourceConfig;
 import org.elasticsearch.search.aggregations.support.ValuesSourceParserHelper;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -265,7 +265,7 @@ public class GeoDistanceAggregationBuilder extends ValuesSourceAggregationBuilde
     }
 
     @Override
-    protected AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
+    public AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
         return new GeoDistanceAggregationBuilder(this, factoriesBuilder, metaData);
     }
 

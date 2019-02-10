@@ -60,7 +60,7 @@ public class NodeIndicesStats implements Streamable, ToXContentFragment {
     private CommonStats stats;
     private Map<Index, List<IndexShardStats>> statsByShard;
 
-    NodeIndicesStats() {
+    public NodeIndicesStats() {
     }
 
     public NodeIndicesStats(CommonStats oldStats, Map<Index, List<IndexShardStats>> statsByShard) {

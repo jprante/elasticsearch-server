@@ -84,12 +84,12 @@ public final class UidIndexFieldData implements IndexFieldData<AtomicFieldData> 
         idFieldData.clear();
     }
 
-    static final class UidAtomicFieldData implements AtomicFieldData {
+    public static final class UidAtomicFieldData implements AtomicFieldData {
 
         private final BytesRef prefix;
         private final AtomicFieldData idFieldData;
 
-        UidAtomicFieldData(BytesRef prefix, AtomicFieldData idFieldData) {
+        public UidAtomicFieldData(BytesRef prefix, AtomicFieldData idFieldData) {
             this.prefix = prefix;
             this.idFieldData = idFieldData;
         }

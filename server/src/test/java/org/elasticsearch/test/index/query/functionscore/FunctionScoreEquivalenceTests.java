@@ -16,21 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.query.functionscore;
+package org.elasticsearch.test.index.query.functionscore;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.MatchNoDocsQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.RandomApproximationQuery;
-import org.apache.lucene.search.SearchEquivalenceTestBase;
+import org.apache.lucene.testframework.search.RandomApproximationQuery;
+import org.apache.lucene.testframework.search.SearchEquivalenceTestBase;
 import org.apache.lucene.search.TermQuery;
-import org.elasticsearch.bootstrap.BootstrapForTesting;
+import org.elasticsearch.testframework.bootstrap.BootstrapForTesting;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 
 public class FunctionScoreEquivalenceTests extends SearchEquivalenceTestBase {
     static {
         try {
-            Class.forName("org.elasticsearch.test.ESTestCase");
+            Class.forName("org.elasticsearch.testframework.ESTestCase");
         } catch (ClassNotFoundException e) {
             throw new AssertionError(e);
         }

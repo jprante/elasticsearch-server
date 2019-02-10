@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.persistent;
+package org.elasticsearch.test.persistent;
 
 import org.elasticsearch.ResourceAlreadyExistsException;
 import org.elasticsearch.ResourceNotFoundException;
@@ -25,16 +25,19 @@ import org.elasticsearch.action.support.PlainActionFuture;
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.persistent.PersistentTaskParams;
+import org.elasticsearch.persistent.PersistentTasksCustomMetaData;
+import org.elasticsearch.persistent.PersistentTasksService;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.tasks.TaskId;
 import org.elasticsearch.tasks.TaskInfo;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData.PersistentTask;
 import org.elasticsearch.persistent.PersistentTasksService.WaitForPersistentTaskStatusListener;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.Status;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.TestPersistentTasksExecutor;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.TestParams;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.TestTasksRequestBuilder;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.Status;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.TestPersistentTasksExecutor;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.TestParams;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.TestTasksRequestBuilder;
 import org.junit.After;
 
 import java.util.Collection;
@@ -42,7 +45,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertThrows;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertThrows;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;

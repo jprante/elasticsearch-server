@@ -17,13 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.common.io.stream;
+package org.elasticsearch.test.common.io.stream;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.io.stream.NamedWriteable;
+import org.elasticsearch.common.io.stream.NamedWriteableRegistry;
+import org.elasticsearch.common.io.stream.StreamInput;
+import org.elasticsearch.common.io.stream.StreamOutput;
+import org.elasticsearch.common.io.stream.Writeable;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class NamedWriteableRegistryTests extends ESTestCase {
 

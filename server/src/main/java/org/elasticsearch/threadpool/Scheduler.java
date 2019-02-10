@@ -154,7 +154,7 @@ public interface Scheduler {
          * @param executor the executor where this runnable should be scheduled to run
          * @param scheduler the {@link Scheduler} instance to use for scheduling
          */
-        ReschedulingRunnable(Runnable runnable, TimeValue interval, String executor, Scheduler scheduler,
+        public ReschedulingRunnable(Runnable runnable, TimeValue interval, String executor, Scheduler scheduler,
                              Consumer<Exception> rejectionConsumer, Consumer<Exception> failureConsumer) {
             this.runnable = runnable;
             this.interval = interval;

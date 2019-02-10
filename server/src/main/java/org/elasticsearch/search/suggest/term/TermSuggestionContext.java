@@ -22,11 +22,11 @@ import org.elasticsearch.index.query.QueryShardContext;
 import org.elasticsearch.search.suggest.DirectSpellcheckerSettings;
 import org.elasticsearch.search.suggest.SuggestionSearchContext.SuggestionContext;
 
-final class TermSuggestionContext extends SuggestionContext {
+public final class TermSuggestionContext extends SuggestionContext {
 
     private final DirectSpellcheckerSettings settings = new DirectSpellcheckerSettings();
 
-    TermSuggestionContext(QueryShardContext shardContext) {
+    public TermSuggestionContext(QueryShardContext shardContext) {
         super(TermSuggester.INSTANCE, shardContext);
     }
 

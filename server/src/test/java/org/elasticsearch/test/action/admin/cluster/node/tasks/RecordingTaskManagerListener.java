@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.cluster.node.tasks;
+package org.elasticsearch.test.action.admin.cluster.node.tasks;
 
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.regex.Regex;
 import org.elasticsearch.tasks.Task;
 import org.elasticsearch.tasks.TaskInfo;
-import org.elasticsearch.test.tasks.MockTaskManagerListener;
+import org.elasticsearch.testframework.tasks.MockTaskManagerListener;
 
 import java.util.ArrayList;
 import java.util.Collections;

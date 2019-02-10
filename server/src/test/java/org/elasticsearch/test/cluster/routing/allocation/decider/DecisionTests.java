@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.routing.allocation.decider;
+package org.elasticsearch.test.cluster.routing.allocation.decider;
 
+import org.elasticsearch.cluster.routing.allocation.decider.Decision;
 import org.elasticsearch.cluster.routing.allocation.decider.Decision.Type;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.elasticsearch.cluster.routing.allocation.decider.Decision.Type.NO;
 import static org.elasticsearch.cluster.routing.allocation.decider.Decision.Type.THROTTLE;

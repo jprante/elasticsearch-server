@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.stats;
+package org.elasticsearch.test.action.admin.indices.stats;
 
+import org.elasticsearch.action.admin.indices.stats.IndicesStatsResponse;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Collections;
 

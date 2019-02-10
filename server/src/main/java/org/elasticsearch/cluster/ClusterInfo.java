@@ -41,9 +41,9 @@ import java.util.Map;
 public class ClusterInfo implements ToXContentFragment, Writeable {
     private final ImmutableOpenMap<String, DiskUsage> leastAvailableSpaceUsage;
     private final ImmutableOpenMap<String, DiskUsage> mostAvailableSpaceUsage;
-    final ImmutableOpenMap<String, Long> shardSizes;
+    public final ImmutableOpenMap<String, Long> shardSizes;
     public static final ClusterInfo EMPTY = new ClusterInfo();
-    final ImmutableOpenMap<ShardRouting, String> routingToDataPath;
+    public final ImmutableOpenMap<ShardRouting, String> routingToDataPath;
 
     protected ClusterInfo() {
        this(ImmutableOpenMap.of(), ImmutableOpenMap.of(), ImmutableOpenMap.of(), ImmutableOpenMap.of());
@@ -187,7 +187,7 @@ public class ClusterInfo implements ToXContentFragment, Writeable {
      * Method that incorporates the ShardId for the shard into a string that
      * includes a 'p' or 'r' depending on whether the shard is a primary.
      */
-    static String shardIdentifierFromRouting(ShardRouting shardRouting) {
+    public static String shardIdentifierFromRouting(ShardRouting shardRouting) {
         return shardRouting.shardId().toString() + "[" + (shardRouting.primary() ? "p" : "r") + "]";
     }
 }

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.indices.recovery;
+package org.elasticsearch.test.indices.recovery;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -27,9 +27,9 @@ import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexCommit;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.RandomIndexWriter;
+import org.apache.lucene.testframework.index.RandomIndexWriter;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.store.BaseDirectoryWrapper;
+import org.apache.lucene.testframework.store.BaseDirectoryWrapper;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.IOContext;
 import org.elasticsearch.ExceptionsHelper;
@@ -48,7 +48,6 @@ import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.CancellableThreads;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.engine.SegmentsStats;
@@ -67,10 +66,16 @@ import org.elasticsearch.index.store.DirectoryService;
 import org.elasticsearch.index.store.Store;
 import org.elasticsearch.index.store.StoreFileMetaData;
 import org.elasticsearch.index.translog.Translog;
-import org.elasticsearch.test.CorruptionUtils;
-import org.elasticsearch.test.DummyShardLock;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.indices.recovery.RecoverySettings;
+import org.elasticsearch.indices.recovery.RecoverySourceHandler;
+import org.elasticsearch.indices.recovery.RecoveryTargetHandler;
+import org.elasticsearch.indices.recovery.StartRecoveryRequest;
+import org.elasticsearch.testframework.CorruptionUtils;
+import org.elasticsearch.testframework.DummyShardLock;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.IndexSettingsModule;
+import org.junit.Ignore;
 import org.mockito.ArgumentCaptor;
 
 import java.io.IOException;
@@ -87,10 +92,9 @@ import java.util.stream.Collectors;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -400,7 +404,7 @@ public class RecoverySourceHandlerTests extends ESTestCase {
         doAnswer(invocation -> {
             ((ActionListener<Releasable>)invocation.getArguments()[0]).onResponse(() -> {});
             return null;
-        }).when(shard).acquirePrimaryOperationPermit(any(), anyString(), anyObject());
+        }).when(shard).acquirePrimaryOperationPermit(any(), anyString(), any());
         final AtomicBoolean phase1Called = new AtomicBoolean();
         final AtomicBoolean prepareTargetForTranslogCalled = new AtomicBoolean();
         final AtomicBoolean phase2Called = new AtomicBoolean();
@@ -413,7 +417,7 @@ public class RecoverySourceHandlerTests extends ESTestCase {
 
 
             @Override
-            boolean isTranslogReadyForSequenceNumberBasedRecovery() throws IOException {
+            public boolean isTranslogReadyForSequenceNumberBasedRecovery() throws IOException {
                 return randomBoolean();
             }
 
@@ -423,12 +427,12 @@ public class RecoverySourceHandlerTests extends ESTestCase {
             }
 
             @Override
-            void prepareTargetForTranslog(final boolean fileBasedRecovery, final int totalTranslogOps) throws IOException {
+            public void prepareTargetForTranslog(final boolean fileBasedRecovery, final int totalTranslogOps) throws IOException {
                 prepareTargetForTranslogCalled.set(true);
             }
 
             @Override
-            long phase2(long startingSeqNo, long requiredSeqNoRangeStart, long endingSeqNo, Translog.Snapshot snapshot) throws IOException {
+            public long phase2(long startingSeqNo, long requiredSeqNoRangeStart, long endingSeqNo, Translog.Snapshot snapshot) throws IOException {
                 phase2Called.set(true);
                 return SequenceNumbers.UNASSIGNED_SEQ_NO;
             }
@@ -449,7 +453,7 @@ public class RecoverySourceHandlerTests extends ESTestCase {
             freed.set(false);
             ((ActionListener<Releasable>)invocation.getArguments()[0]).onResponse(() -> freed.set(true));
             return null;
-        }).when(shard).acquirePrimaryOperationPermit(any(), anyString(), anyObject());
+        }).when(shard).acquirePrimaryOperationPermit(any(), anyString(), any());
 
         Thread cancelingThread = new Thread(() -> cancellableThreads.cancel("test"));
         cancelingThread.start();

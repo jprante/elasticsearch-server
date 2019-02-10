@@ -257,7 +257,7 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
         }
     }
 
-    static ConnectionProfile buildDefaultConnectionProfile(Settings settings) {
+    public static ConnectionProfile buildDefaultConnectionProfile(Settings settings) {
         int connectionsPerNodeRecovery = CONNECTIONS_PER_NODE_RECOVERY.get(settings);
         int connectionsPerNodeBulk = CONNECTIONS_PER_NODE_BULK.get(settings);
         int connectionsPerNodeReg = CONNECTIONS_PER_NODE_REG.get(settings);
@@ -420,7 +420,7 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
         private final AtomicBoolean closed = new AtomicBoolean(false);
         private final Version version;
 
-        NodeChannels(DiscoveryNode node, List<TcpChannel> channels, ConnectionProfile connectionProfile, Version handshakeVersion) {
+        public NodeChannels(DiscoveryNode node, List<TcpChannel> channels, ConnectionProfile connectionProfile, Version handshakeVersion) {
             this.node = node;
             this.channels = Collections.unmodifiableList(channels);
             assert channels.size() == connectionProfile.getNumConnections() : "expected channels size to be == "
@@ -573,7 +573,7 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
      * takes a {@link ConnectionProfile} that have been passed as a parameter to the public methods
      * and resolves it to a fully specified (i.e., no nulls) profile
      */
-    static ConnectionProfile resolveConnectionProfile(@Nullable ConnectionProfile connectionProfile,
+    public static ConnectionProfile resolveConnectionProfile(@Nullable ConnectionProfile connectionProfile,
                                                       ConnectionProfile defaultConnectionProfile) {
         Objects.requireNonNull(defaultConnectionProfile);
         if (connectionProfile == null) {
@@ -592,7 +592,7 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
         }
     }
 
-    protected ConnectionProfile resolveConnectionProfile(ConnectionProfile connectionProfile) {
+    public ConnectionProfile resolveConnectionProfile(ConnectionProfile connectionProfile) {
         return resolveConnectionProfile(connectionProfile, defaultConnectionProfile);
     }
 
@@ -895,7 +895,8 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
     private static final Pattern BRACKET_PATTERN = Pattern.compile("^\\[(.*:.*)\\](?::([\\d\\-]*))?$");
 
     /** parse a hostname+port range spec into its equivalent addresses */
-    static TransportAddress[] parse(String hostPortString, String defaultPortRange, int perAddressLimit) throws UnknownHostException {
+    public static TransportAddress[] parse(String hostPortString, String defaultPortRange, int perAddressLimit)
+            throws UnknownHostException {
         Objects.requireNonNull(hostPortString);
         String host;
         String portString = null;
@@ -1450,7 +1451,7 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
         }
     }
 
-    static void ensureVersionCompatibility(Version version, Version currentVersion, boolean isHandshake) {
+    public static void ensureVersionCompatibility(Version version, Version currentVersion, boolean isHandshake) {
         // for handshakes we are compatible with N-2 since otherwise we can't figure out our initial version
         // since we are compatible with N-1 and N+1 so we always send our minCompatVersion as the initial version in the
         // handshake. This looks odd but it's required to establish the connection correctly we check for real compatibility
@@ -1636,7 +1637,7 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
         }
     }
 
-    protected Version executeHandshake(DiscoveryNode node, TcpChannel channel, TimeValue timeout)
+    public Version executeHandshake(DiscoveryNode node, TcpChannel channel, TimeValue timeout)
         throws IOException, InterruptedException {
         numHandshakes.inc();
         final long requestId = newRequestId();
@@ -1681,11 +1682,11 @@ public abstract class TcpTransport extends AbstractLifecycleComponent implements
         }
     }
 
-    final int getNumPendingHandshakes() { // for testing
+    public final int getNumPendingHandshakes() { // for testing
         return pendingHandshakes.size();
     }
 
-    final long getNumHandshakes() {
+    public final long getNumHandshakes() {
         return numHandshakes.count(); // for testing
     }
 

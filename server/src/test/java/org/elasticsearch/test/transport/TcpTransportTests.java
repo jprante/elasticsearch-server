@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.transport;
+package org.elasticsearch.test.transport;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.ActionListener;
@@ -31,10 +31,19 @@ import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.util.BigArrays;
 import org.elasticsearch.common.util.PageCacheRecycler;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.VersionUtils;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.transport.MockTcpTransport;
 import org.elasticsearch.threadpool.ThreadPool;
+import org.elasticsearch.transport.ConnectionProfile;
+import org.elasticsearch.transport.TcpChannel;
+import org.elasticsearch.transport.TcpHeader;
+import org.elasticsearch.transport.TcpTransport;
+import org.elasticsearch.transport.Transport;
+import org.elasticsearch.transport.TransportRequest;
+import org.elasticsearch.transport.TransportRequestOptions;
+import org.elasticsearch.transport.TransportStatus;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

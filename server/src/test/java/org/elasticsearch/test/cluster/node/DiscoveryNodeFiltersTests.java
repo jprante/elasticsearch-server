@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.node;
+package org.elasticsearch.test.cluster.node;
 
 import org.elasticsearch.Version;
+import org.elasticsearch.cluster.node.DiscoveryNode;
+import org.elasticsearch.cluster.node.DiscoveryNodeFilters;
 import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

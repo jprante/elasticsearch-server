@@ -26,11 +26,11 @@ import org.elasticsearch.common.SuppressForbidden;
  * Extends the {@code SizeBlockingQueue} to add the {@code adjustCapacity} method, which will adjust
  * the capacity by a certain amount towards a maximum or minimum.
  */
-final class ResizableBlockingQueue<E> extends SizeBlockingQueue<E> {
+public final class ResizableBlockingQueue<E> extends SizeBlockingQueue<E> {
 
     private volatile int capacity;
 
-    ResizableBlockingQueue(BlockingQueue<E> queue, int initialCapacity) {
+    public ResizableBlockingQueue(BlockingQueue<E> queue, int initialCapacity) {
         super(queue, initialCapacity);
         this.capacity = initialCapacity;
     }

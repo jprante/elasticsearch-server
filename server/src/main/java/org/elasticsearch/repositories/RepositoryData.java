@@ -97,7 +97,7 @@ public final class RepositoryData {
         this.incompatibleSnapshotIds = Collections.unmodifiableList(incompatibleSnapshotIds);
     }
 
-    protected RepositoryData copy() {
+    public RepositoryData copy() {
         return new RepositoryData(genId, snapshotIds, snapshotStates, indexSnapshots, incompatibleSnapshotIds);
     }
 

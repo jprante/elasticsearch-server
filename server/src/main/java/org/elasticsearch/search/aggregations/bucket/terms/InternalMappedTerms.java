@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
  * Common superclass for results of the terms aggregation on mapped fields.
  */
 public abstract class InternalMappedTerms<A extends InternalTerms<A, B>, B extends InternalTerms.Bucket<B>> extends InternalTerms<A, B> {
-    protected final DocValueFormat format;
+    public final DocValueFormat format;
     protected final int shardSize;
-    protected final boolean showTermDocCountError;
+    public final boolean showTermDocCountError;
     protected final long otherDocCount;
     protected final List<B> buckets;
     protected Map<String, B> bucketMap;
@@ -88,7 +88,7 @@ public abstract class InternalMappedTerms<A extends InternalTerms<A, B>, B exten
     }
 
     @Override
-    protected int getShardSize() {
+    public int getShardSize() {
         return shardSize;
     }
 

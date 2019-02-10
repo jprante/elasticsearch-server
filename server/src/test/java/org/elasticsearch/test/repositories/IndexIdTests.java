@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.repositories;
+package org.elasticsearch.test.repositories;
 
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -26,7 +26,8 @@ import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.repositories.IndexId;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

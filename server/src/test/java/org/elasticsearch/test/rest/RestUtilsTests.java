@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.rest;
+package org.elasticsearch.test.rest;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.rest.RestUtils;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.HashMap;
 import java.util.Locale;

@@ -16,12 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.suggest;
+package org.elasticsearch.test.search.suggest;
 
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.util.CharsRefBuilder;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.QueryShardContext;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.Suggester;
+import org.elasticsearch.search.suggest.SuggestionSearchContext;
 
 import java.io.IOException;
 import java.util.Locale;

@@ -39,9 +39,9 @@ import org.elasticsearch.search.fetch.QueryFetchSearchResult;
 import org.elasticsearch.search.fetch.ScrollQueryFetchSearchResult;
 import org.elasticsearch.search.fetch.ShardFetchRequest;
 import org.elasticsearch.search.fetch.ShardFetchSearchRequest;
-import org.elasticsearch.search.internal.InternalScrollSearchRequest;
-import org.elasticsearch.search.internal.ShardSearchRequest;
-import org.elasticsearch.search.internal.ShardSearchTransportRequest;
+import org.elasticsearch.search.InternalScrollSearchRequest;
+import org.elasticsearch.search.ShardSearchRequest;
+import org.elasticsearch.search.ShardSearchTransportRequest;
 import org.elasticsearch.search.query.QuerySearchRequest;
 import org.elasticsearch.search.query.QuerySearchResult;
 import org.elasticsearch.search.query.ScrollQuerySearchResult;
@@ -60,7 +60,6 @@ import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -191,7 +190,7 @@ public class SearchTransportService extends AbstractComponent {
     /**
      * Used by {@link TransportSearchAction} to send the expand queries (field collapsing).
      */
-    void sendExecuteMultiSearch(final MultiSearchRequest request, SearchTask task,
+    public void sendExecuteMultiSearch(final MultiSearchRequest request, SearchTask task,
                                 final ActionListener<MultiSearchResponse> listener) {
         final Transport.Connection connection = transportService.getConnection(transportService.getLocalNode());
         transportService.sendChildRequest(connection, MultiSearchAction.NAME, request, task,
@@ -281,10 +280,10 @@ public class SearchTransportService extends AbstractComponent {
 
         private boolean freed;
 
-        SearchFreeContextResponse() {
+        public SearchFreeContextResponse() {
         }
 
-        SearchFreeContextResponse(boolean freed) {
+        public SearchFreeContextResponse(boolean freed) {
             this.freed = freed;
         }
 
@@ -492,7 +491,7 @@ public class SearchTransportService extends AbstractComponent {
      * @param node the node to resolve
      * @return a connection to the given node belonging to the cluster with the provided alias.
      */
-    Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
+    public Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
         if (clusterAlias == null) {
             return transportService.getConnection(node);
         } else {

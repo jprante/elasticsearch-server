@@ -17,17 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.delete;
+package org.elasticsearch.test.action.admin.indices.delete;
 
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.cluster.metadata.MetaData;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertBlocked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSearchHits;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertBlocked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSearchHits;
 
 public class DeleteIndexBlocksIT extends ESIntegTestCase {
     public void testDeleteIndexWithBlocks() {

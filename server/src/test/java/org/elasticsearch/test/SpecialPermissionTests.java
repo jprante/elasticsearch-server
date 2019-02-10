@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch;
+package org.elasticsearch.test;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.SpecialPermission;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.security.AllPermission;
 

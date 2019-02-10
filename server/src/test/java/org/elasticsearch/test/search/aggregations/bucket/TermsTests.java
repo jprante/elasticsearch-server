@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket;
+package org.elasticsearch.test.search.aggregations.bucket;
 
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.automaton.RegExp;
 import org.elasticsearch.search.aggregations.Aggregator.SubAggCollectionMode;
-import org.elasticsearch.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.testframework.search.aggregations.BaseAggregationTestCase;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;

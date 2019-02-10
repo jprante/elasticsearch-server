@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch;
+package org.elasticsearch.test;
 
+import org.elasticsearch.Build;
 import org.elasticsearch.common.io.FileSystemUtils;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.io.InputStream;

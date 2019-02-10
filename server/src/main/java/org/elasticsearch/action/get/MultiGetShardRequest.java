@@ -36,14 +36,14 @@ public class MultiGetShardRequest extends SingleShardRequest<MultiGetShardReques
     boolean realtime = true;
     boolean refresh;
 
-    IntArrayList locations;
-    List<MultiGetRequest.Item> items;
+    public IntArrayList locations;
+    public List<MultiGetRequest.Item> items;
 
     public MultiGetShardRequest() {
 
     }
 
-    MultiGetShardRequest(MultiGetRequest multiGetRequest, String index, int shardId) {
+    public MultiGetShardRequest(MultiGetRequest multiGetRequest, String index, int shardId) {
         super(index);
         this.shardId = shardId;
         locations = new IntArrayList();
@@ -94,7 +94,7 @@ public class MultiGetShardRequest extends SingleShardRequest<MultiGetShardReques
         return this;
     }
 
-    void add(int location, MultiGetRequest.Item item) {
+    public void add(int location, MultiGetRequest.Item item) {
         this.locations.add(location);
         this.items.add(item);
     }

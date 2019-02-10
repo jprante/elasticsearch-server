@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.LocaleUtils;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 
 import java.util.Locale;

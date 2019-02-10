@@ -47,7 +47,8 @@ public class FlushResponse extends BroadcastResponse {
 
     }
 
-    FlushResponse(int totalShards, int successfulShards, int failedShards, List<DefaultShardOperationFailedException> shardFailures) {
+    public FlushResponse(int totalShards, int successfulShards, int failedShards,
+                         List<DefaultShardOperationFailedException> shardFailures) {
         super(totalShards, successfulShards, failedShards, shardFailures);
     }
 

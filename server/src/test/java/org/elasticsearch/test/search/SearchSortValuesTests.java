@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search;
+package org.elasticsearch.test.search;
 
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -28,7 +28,8 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.SearchSortValues;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,8 +38,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static org.elasticsearch.common.xcontent.XContentHelper.toXContent;
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 
 public class SearchSortValuesTests extends ESTestCase {
 

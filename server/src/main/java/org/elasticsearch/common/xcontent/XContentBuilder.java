@@ -929,11 +929,11 @@ public final class XContentBuilder implements Closeable, Flushable {
         return this.generator;
     }
 
-    static void ensureNameNotNull(String name) {
+    public static void ensureNameNotNull(String name) {
         ensureNotNull(name, "Field name cannot be null");
     }
 
-    static void ensureNotNull(Object value, String message) {
+    public static void ensureNotNull(Object value, String message) {
         if (value == null) {
             throw new IllegalArgumentException(message);
         }

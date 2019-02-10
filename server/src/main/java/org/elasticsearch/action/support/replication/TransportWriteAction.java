@@ -96,7 +96,7 @@ public abstract class TransportWriteAction<
     }
 
     @Override
-    protected ReplicationOperation.Replicas newReplicasProxy(long primaryTerm) {
+    public ReplicationOperation.Replicas newReplicasProxy(long primaryTerm) {
         return new WriteActionReplicasProxy(primaryTerm);
     }
 
@@ -186,7 +186,7 @@ public abstract class TransportWriteAction<
     /**
      * Result of taking the action on the replica.
      */
-    protected static class WriteReplicaResult<ReplicaRequest extends ReplicatedWriteRequest<ReplicaRequest>>
+    public static class WriteReplicaResult<ReplicaRequest extends ReplicatedWriteRequest<ReplicaRequest>>
             extends ReplicaResult implements RespondingWriteResult {
         public final Location location;
         boolean finishedAsyncActions;
@@ -249,7 +249,7 @@ public abstract class TransportWriteAction<
      * callback used by {@link AsyncAfterWriteAction} to notify that all post
      * process actions have been executed
      */
-    interface RespondingWriteResult {
+    public interface RespondingWriteResult {
         /**
          * Called on successful processing of all post write actions
          * @param forcedRefresh <code>true</code> iff this write has caused a refresh
@@ -267,7 +267,7 @@ public abstract class TransportWriteAction<
      * translog syncs or waiting for a refresh to happen making the write operation
      * visible.
      */
-    static final class AsyncAfterWriteAction {
+    public static final class AsyncAfterWriteAction {
         private final Location location;
         private final boolean waitUntilRefresh;
         private final boolean sync;
@@ -279,7 +279,7 @@ public abstract class TransportWriteAction<
         private final WriteRequest<?> request;
         private final Logger logger;
 
-        AsyncAfterWriteAction(final IndexShard indexShard,
+        public AsyncAfterWriteAction(final IndexShard indexShard,
                              final WriteRequest<?> request,
                              @Nullable final Translog.Location location,
                              final RespondingWriteResult respond,
@@ -326,7 +326,7 @@ public abstract class TransportWriteAction<
             assert numPending >= 0 && numPending <= 2: "numPending must either 2, 1 or 0 but was " + numPending ;
         }
 
-        void run() {
+        public void run() {
             /*
              * We either respond immediately (i.e., if we do not fsync per request or wait for
              * refresh), or we there are past async operations and we wait for them to return to

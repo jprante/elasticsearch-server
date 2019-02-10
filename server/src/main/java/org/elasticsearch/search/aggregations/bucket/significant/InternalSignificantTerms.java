@@ -175,8 +175,8 @@ public abstract class InternalSignificantTerms<A extends InternalSignificantTerm
         protected abstract XContentBuilder keyToXContent(XContentBuilder builder) throws IOException;
     }
 
-    protected final int requiredSize;
-    protected final long minDocCount;
+    public final int requiredSize;
+    public final long minDocCount;
 
     protected InternalSignificantTerms(String name, int requiredSize, long minDocCount, List<PipelineAggregator> pipelineAggregators,
             Map<String, Object> metaData) {
@@ -265,9 +265,9 @@ public abstract class InternalSignificantTerms<A extends InternalSignificantTerm
      */
     protected abstract B[] createBucketsArray(int size);
 
-    protected abstract long getSubsetSize();
+    public abstract long getSubsetSize();
 
-    protected abstract long getSupersetSize();
+    public abstract long getSupersetSize();
 
     protected abstract SignificanceHeuristic getSignificanceHeuristic();
 

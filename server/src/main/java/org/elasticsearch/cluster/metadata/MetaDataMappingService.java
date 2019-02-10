@@ -63,8 +63,8 @@ public class MetaDataMappingService extends AbstractComponent {
     private final ClusterService clusterService;
     private final IndicesService indicesService;
 
-    final RefreshTaskExecutor refreshExecutor = new RefreshTaskExecutor();
-    final PutMappingExecutor putMappingExecutor = new PutMappingExecutor();
+    public final RefreshTaskExecutor refreshExecutor = new RefreshTaskExecutor();
+    public final PutMappingExecutor putMappingExecutor = new PutMappingExecutor();
 
 
     @Inject
@@ -208,7 +208,7 @@ public class MetaDataMappingService extends AbstractComponent {
         );
     }
 
-    class PutMappingExecutor implements ClusterStateTaskExecutor<PutMappingClusterStateUpdateRequest> {
+    public class PutMappingExecutor implements ClusterStateTaskExecutor<PutMappingClusterStateUpdateRequest> {
         @Override
         public ClusterTasksResult<PutMappingClusterStateUpdateRequest> execute(ClusterState currentState,
                                                                                List<PutMappingClusterStateUpdateRequest> tasks) throws Exception {

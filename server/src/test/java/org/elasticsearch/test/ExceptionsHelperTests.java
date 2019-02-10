@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch;
+package org.elasticsearch.test;
 
 import org.apache.commons.codec.DecoderException;
+import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.common.util.concurrent.EsRejectedExecutionException;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Optional;
 

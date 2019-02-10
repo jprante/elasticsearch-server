@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.Version;
@@ -31,10 +31,31 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.IndexService;
+import org.elasticsearch.index.mapper.DateFieldMapper;
+import org.elasticsearch.index.mapper.DocumentMapper;
+import org.elasticsearch.index.mapper.DocumentMapperParser;
+import org.elasticsearch.index.mapper.DocumentParser;
+import org.elasticsearch.index.mapper.IdFieldMapper;
+import org.elasticsearch.index.mapper.Mapper;
+import org.elasticsearch.index.mapper.MapperParsingException;
+import org.elasticsearch.index.mapper.MapperService;
+import org.elasticsearch.index.mapper.Mapping;
+import org.elasticsearch.index.mapper.NumberFieldMapper;
+import org.elasticsearch.index.mapper.ObjectMapper;
+import org.elasticsearch.index.mapper.ParseContext;
 import org.elasticsearch.index.mapper.ParseContext.Document;
+import org.elasticsearch.index.mapper.ParsedDocument;
+import org.elasticsearch.index.mapper.RootObjectMapper;
+import org.elasticsearch.index.mapper.SourceToParse;
+import org.elasticsearch.index.mapper.StrictDynamicMappingException;
+import org.elasticsearch.index.mapper.TextFieldMapper;
+import org.elasticsearch.index.mapper.TypeFieldMapper;
+import org.elasticsearch.index.mapper.Uid;
+import org.elasticsearch.index.mapper.UidFieldMapper;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESSingleNodeTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
+import org.elasticsearch.testframework.index.mapper.MockFieldMapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -44,8 +65,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.test.StreamsUtils.copyToBytesFromClasspath;
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToBytesFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
@@ -1025,7 +1046,8 @@ public class DocumentParserTests extends ESSingleNodeTestCase {
                         .add(new ObjectMapper.Builder("name").add(new TextFieldMapper.Builder("first").store(true).index(false))),
             indexService.mapperService()).build(indexService.mapperService());
 
-        BytesReference json = new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/mapper/simple/test1.json"));
+        BytesReference json = new BytesArray(copyToBytesFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test1.json"));
         Document doc = docMapper.parse(SourceToParse.source("test", "person", "1", json, XContentType.JSON)).rootDoc();
 
         assertThat(doc.get(docMapper.mappers().getMapper("name.first").fieldType().name()), equalTo("shay"));
@@ -1033,41 +1055,48 @@ public class DocumentParserTests extends ESSingleNodeTestCase {
     }
 
     public void testParseToJsonAndParse() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/simple/test-mapping.json");
+        String mapping = copyToStringFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test-mapping.json");
         DocumentMapperParser parser = createIndex("test").mapperService().documentMapperParser();
         DocumentMapper docMapper = parser.parse("person", new CompressedXContent(mapping));
         String builtMapping = docMapper.mappingSource().string();
         // reparse it
         DocumentMapper builtDocMapper = parser.parse("person", new CompressedXContent(builtMapping));
-        BytesReference json = new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/mapper/simple/test1.json"));
+        BytesReference json = new BytesArray(copyToBytesFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test1.json"));
         Document doc = builtDocMapper.parse(SourceToParse.source("test", "person", "1", json, XContentType.JSON)).rootDoc();
         assertThat(doc.getBinaryValue(docMapper.idFieldMapper().fieldType().name()), equalTo(Uid.encodeId("1")));
         assertThat(doc.get(docMapper.mappers().getMapper("name.first").fieldType().name()), equalTo("shay"));
     }
 
     public void testSimpleParser() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/simple/test-mapping.json");
+        String mapping = copyToStringFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test-mapping.json");
         DocumentMapper docMapper = createIndex("test").mapperService().documentMapperParser().parse("person", new CompressedXContent(mapping));
 
         assertThat((String) docMapper.meta().get("param1"), equalTo("value1"));
 
-        BytesReference json = new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/mapper/simple/test1.json"));
+        BytesReference json = new BytesArray(copyToBytesFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test1.json"));
         Document doc = docMapper.parse(SourceToParse.source("test", "person", "1", json, XContentType.JSON)).rootDoc();
         assertThat(doc.getBinaryValue(docMapper.idFieldMapper().fieldType().name()), equalTo(Uid.encodeId("1")));
         assertThat(doc.get(docMapper.mappers().getMapper("name.first").fieldType().name()), equalTo("shay"));
     }
 
     public void testSimpleParserNoTypeNoId() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/simple/test-mapping.json");
+        String mapping = copyToStringFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test-mapping.json");
         DocumentMapper docMapper = createIndex("test").mapperService().documentMapperParser().parse("person", new CompressedXContent(mapping));
-        BytesReference json = new BytesArray(copyToBytesFromClasspath("/org/elasticsearch/index/mapper/simple/test1-notype-noid.json"));
+        BytesReference json = new BytesArray(copyToBytesFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test1-notype-noid.json"));
         Document doc = docMapper.parse(SourceToParse.source("test", "person", "1", json, XContentType.JSON)).rootDoc();
         assertThat(doc.getBinaryValue(docMapper.idFieldMapper().fieldType().name()), equalTo(Uid.encodeId("1")));
         assertThat(doc.get(docMapper.mappers().getMapper("name.first").fieldType().name()), equalTo("shay"));
     }
 
     public void testAttributes() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/simple/test-mapping.json");
+        String mapping = copyToStringFromClasspath(DocumentParserTests.class,
+                "/org/elasticsearch/test/index/mapper/simple/test-mapping.json");
         DocumentMapperParser parser = createIndex("test").mapperService().documentMapperParser();
         DocumentMapper docMapper = parser.parse("person", new CompressedXContent(mapping));
 

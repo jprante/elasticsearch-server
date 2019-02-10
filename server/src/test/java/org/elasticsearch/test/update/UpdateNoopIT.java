@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.update;
+package org.elasticsearch.test.update;
 
 import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 import org.junit.Before;
 
 import java.io.IOException;

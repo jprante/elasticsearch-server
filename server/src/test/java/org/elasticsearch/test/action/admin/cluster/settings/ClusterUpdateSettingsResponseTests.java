@@ -17,14 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.cluster.settings;
+package org.elasticsearch.test.action.admin.cluster.settings;
 
+import org.elasticsearch.action.admin.cluster.settings.ClusterUpdateSettingsResponse;
 import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 import java.util.List;
 import java.util.Set;

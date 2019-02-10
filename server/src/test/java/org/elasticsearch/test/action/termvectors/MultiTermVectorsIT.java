@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.test.action.support.termvectors;
+package org.elasticsearch.test.action.termvectors;
 
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.Fields;
@@ -36,7 +36,7 @@ import org.elasticsearch.index.engine.VersionConflictEngineException;
 
 import java.io.IOException;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;

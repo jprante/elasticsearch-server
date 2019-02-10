@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.aggregations.bucket.range;
+package org.elasticsearch.test.search.aggregations.bucket.range;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,13 +24,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.lucene.util.BytesRef;
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.TestUtil;
 import org.apache.lucene.search.AbstractSortedSetDocValues;
 import org.elasticsearch.index.fielddata.SortedBinaryDocValues;
 import org.elasticsearch.search.aggregations.LeafBucketCollector;
+import org.elasticsearch.search.aggregations.bucket.range.BinaryRangeAggregator;
 import org.elasticsearch.search.aggregations.bucket.range.BinaryRangeAggregator.SortedBinaryRangeLeafCollector;
 import org.elasticsearch.search.aggregations.bucket.range.BinaryRangeAggregator.SortedSetRangeLeafCollector;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import com.carrotsearch.hppc.LongHashSet;
 

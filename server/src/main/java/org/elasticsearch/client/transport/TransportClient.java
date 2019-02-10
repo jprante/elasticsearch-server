@@ -255,8 +255,8 @@ public abstract class TransportClient extends AbstractClient {
 
     public static final String CLIENT_TYPE = "transport";
 
-    final Injector injector;
-    protected final NamedWriteableRegistry namedWriteableRegistry;
+    public final Injector injector;
+    public final NamedWriteableRegistry namedWriteableRegistry;
 
     private final List<LifecycleComponent> pluginLifecycleComponents;
     private final TransportClientNodesService nodesService;
@@ -391,8 +391,7 @@ public abstract class TransportClient extends AbstractClient {
         void onNodeDisconnected(DiscoveryNode node, Exception ex);
     }
 
-    // pkg private for testing
-    TransportClientNodesService getNodesService() {
+    public TransportClientNodesService getNodesService() {
         return nodesService;
     }
 }

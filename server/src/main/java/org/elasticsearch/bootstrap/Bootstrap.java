@@ -64,7 +64,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Internal startup code.
  */
-final class Bootstrap {
+public final class Bootstrap {
 
     private static volatile Bootstrap INSTANCE;
     private volatile Node node;
@@ -73,7 +73,7 @@ final class Bootstrap {
     private final Spawner spawner = new Spawner();
 
     /** creates a new instance */
-    Bootstrap() {
+    public Bootstrap() {
         keepAliveThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -154,7 +154,7 @@ final class Bootstrap {
         StringHelper.randomId();
     }
 
-    static void initializeProbes() {
+    public static void initializeProbes() {
         // Force probes to be loaded
         ProcessProbe.getInstance();
         OsProbe.getInstance();
@@ -207,6 +207,8 @@ final class Bootstrap {
 
         // install SM after natives, shutdown hooks, etc.
         try {
+            final Logger logger = ESLoggerFactory.getLogger(Bootstrap.class);
+            logger.info("configuring security manager");
             Security.configure(environment, BootstrapSettings.SECURITY_FILTER_BAD_DEFAULTS_SETTING.get(settings));
         } catch (IOException | URISyntaxException e) {
             throw new BootstrapException(e);
@@ -222,7 +224,7 @@ final class Bootstrap {
         };
     }
 
-    static SecureSettings loadSecureSettings(Environment initialEnv) throws BootstrapException {
+    public static SecureSettings loadSecureSettings(Environment initialEnv) throws BootstrapException {
         final KeyStoreWrapper keystore;
         try {
             keystore = KeyStoreWrapper.load(initialEnv.configFile());
@@ -268,7 +270,7 @@ final class Bootstrap {
         keepAliveThread.start();
     }
 
-    static void stop() throws IOException {
+    public static void stop() throws IOException {
         try {
             IOUtils.close(INSTANCE.node, INSTANCE.spawner);
         } finally {
@@ -279,7 +281,7 @@ final class Bootstrap {
     /**
      * This method is invoked by {@link Elasticsearch#main(String[])} to startup elasticsearch.
      */
-    static void init(
+    public static void init(
             final boolean foreground,
             final Path pidFile,
             final boolean quiet,

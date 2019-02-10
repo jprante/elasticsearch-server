@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.MultiReader;
@@ -27,7 +27,10 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.IndexService;
 import org.elasticsearch.index.mapper.MappedFieldType.Relation;
 import org.elasticsearch.index.mapper.MapperService.MergeReason;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.query.QueryRewriteContext;
+import org.elasticsearch.index.query.QueryShardContext;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 // The purpose of this test case is to test RangeQueryBuilder.getRelation()
 // Whether it should return INTERSECT/DISJOINT/WITHIN is already tested in

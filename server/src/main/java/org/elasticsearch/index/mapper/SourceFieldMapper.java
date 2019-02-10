@@ -147,9 +147,9 @@ public class SourceFieldMapper extends MetadataFieldMapper {
         }
     }
 
-    static final class SourceFieldType extends MappedFieldType {
+    public static final class SourceFieldType extends MappedFieldType {
 
-        SourceFieldType() {}
+        public SourceFieldType() {}
 
         protected SourceFieldType(SourceFieldType ref) {
             super(ref);

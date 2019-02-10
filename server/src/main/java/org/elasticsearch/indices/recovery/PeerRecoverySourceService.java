@@ -57,7 +57,7 @@ public class PeerRecoverySourceService extends AbstractComponent implements Inde
     private final IndicesService indicesService;
     private final RecoverySettings recoverySettings;
 
-    final OngoingRecoveries ongoingRecoveries = new OngoingRecoveries();
+    public final OngoingRecoveries ongoingRecoveries = new OngoingRecoveries();
 
     @Inject
     public PeerRecoverySourceService(Settings settings, TransportService transportService, IndicesService indicesService,
@@ -109,17 +109,17 @@ public class PeerRecoverySourceService extends AbstractComponent implements Inde
         }
     }
 
-    final class OngoingRecoveries {
+    public final class OngoingRecoveries {
         private final Map<IndexShard, ShardRecoveryContext> ongoingRecoveries = new HashMap<>();
 
-        synchronized RecoverySourceHandler addNewRecovery(StartRecoveryRequest request, IndexShard shard) {
+        public synchronized RecoverySourceHandler addNewRecovery(StartRecoveryRequest request, IndexShard shard) {
             final ShardRecoveryContext shardContext = ongoingRecoveries.computeIfAbsent(shard, s -> new ShardRecoveryContext());
             RecoverySourceHandler handler = shardContext.addNewRecovery(request, shard);
             shard.recoveryStats().incCurrentAsSource();
             return handler;
         }
 
-        synchronized void remove(IndexShard shard, RecoverySourceHandler handler) {
+        public synchronized void remove(IndexShard shard, RecoverySourceHandler handler) {
             final ShardRecoveryContext shardRecoveryContext = ongoingRecoveries.get(shard);
             assert shardRecoveryContext != null : "Shard was not registered [" + shard + "]";
             boolean remove = shardRecoveryContext.recoveryHandlers.remove(handler);

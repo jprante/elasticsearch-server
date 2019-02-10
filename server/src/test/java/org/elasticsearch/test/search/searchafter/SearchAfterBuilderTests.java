@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.searchafter;
+package org.elasticsearch.test.search.searchafter;
 
 import org.apache.lucene.document.LatLonDocValuesField;
 import org.apache.lucene.search.FieldComparator;
@@ -35,13 +35,14 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.fielddata.IndexFieldData;
 import org.elasticsearch.search.MultiValueMode;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.searchafter.SearchAfterBuilder;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;
 
 import static org.elasticsearch.search.searchafter.SearchAfterBuilder.extractSortType;
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
 import static org.hamcrest.Matchers.equalTo;
 
 public class SearchAfterBuilderTests extends ESTestCase {

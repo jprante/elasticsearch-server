@@ -46,7 +46,7 @@ public class ClusterHealthResponse extends ActionResponse implements StatusToXCo
     private ClusterStateHealth clusterStateHealth;
     private ClusterHealthStatus clusterHealthStatus;
 
-    ClusterHealthResponse() {
+    public ClusterHealthResponse() {
     }
 
     /** needed for plugins BWC */
@@ -72,8 +72,7 @@ public class ClusterHealthResponse extends ActionResponse implements StatusToXCo
         return clusterName;
     }
 
-    //package private for testing
-    ClusterStateHealth getClusterStateHealth() {
+    public ClusterStateHealth getClusterStateHealth() {
         return clusterStateHealth;
     }
 

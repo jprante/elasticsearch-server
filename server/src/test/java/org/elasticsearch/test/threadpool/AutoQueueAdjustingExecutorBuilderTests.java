@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.threadpool;
+package org.elasticsearch.test.threadpool;
 
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.threadpool.AutoQueueAdjustingExecutorBuilder;
 
 import static org.hamcrest.CoreMatchers.containsString;
 

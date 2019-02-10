@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.client.transport;
+package org.elasticsearch.test.client.transport;
 
 import org.elasticsearch.action.admin.cluster.node.liveness.LivenessResponse;
 import org.elasticsearch.action.admin.cluster.node.liveness.TransportLivenessAction;

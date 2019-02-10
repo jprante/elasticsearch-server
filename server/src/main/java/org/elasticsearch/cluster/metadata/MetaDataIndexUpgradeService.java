@@ -102,7 +102,7 @@ public class MetaDataIndexUpgradeService extends AbstractComponent {
     /**
      * Checks if the index was already opened by this version of Elasticsearch and doesn't require any additional checks.
      */
-    boolean isUpgraded(IndexMetaData indexMetaData) {
+    public boolean isUpgraded(IndexMetaData indexMetaData) {
         return indexMetaData.getUpgradedVersion().onOrAfter(Version.CURRENT);
     }
 
@@ -205,7 +205,7 @@ public class MetaDataIndexUpgradeService extends AbstractComponent {
         return IndexMetaData.builder(indexMetaData).settings(settings).build();
     }
 
-    IndexMetaData archiveBrokenIndexSettings(IndexMetaData indexMetaData) {
+    public IndexMetaData archiveBrokenIndexSettings(IndexMetaData indexMetaData) {
         final Settings settings = indexMetaData.getSettings();
         final Settings upgrade = indexScopedSettings.archiveUnknownOrInvalidSettings(
             settings,

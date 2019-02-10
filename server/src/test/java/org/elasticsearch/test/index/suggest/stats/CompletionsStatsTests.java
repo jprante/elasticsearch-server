@@ -16,14 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.suggest.stats;
+package org.elasticsearch.test.index.suggest.stats;
 
 import org.elasticsearch.common.FieldMemoryStats;
 import org.elasticsearch.test.common.FieldMemoryStatsTests;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.search.suggest.completion.CompletionStats;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

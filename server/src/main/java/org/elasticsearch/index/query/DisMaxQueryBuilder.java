@@ -207,7 +207,7 @@ public class DisMaxQueryBuilder extends AbstractQueryBuilder<DisMaxQueryBuilder>
     }
 
     @Override
-    protected void extractInnerHitBuilders(Map<String, InnerHitContextBuilder> innerHits) {
+    public void extractInnerHitBuilders(Map<String, InnerHitContextBuilder> innerHits) {
         for (QueryBuilder query : queries) {
             InnerHitContextBuilder.extractInnerHits(query, innerHits);
         }

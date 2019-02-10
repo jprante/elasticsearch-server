@@ -17,10 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.percentiles;
+package org.elasticsearch.test.search.aggregations.metrics.percentiles;
 
 import org.elasticsearch.search.aggregations.InternalAggregation;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
+import org.elasticsearch.search.aggregations.metrics.percentiles.ParsedPercentiles;
+import org.elasticsearch.search.aggregations.metrics.percentiles.Percentile;
+import org.elasticsearch.search.aggregations.metrics.percentiles.Percentiles;
 
 import java.util.List;
 

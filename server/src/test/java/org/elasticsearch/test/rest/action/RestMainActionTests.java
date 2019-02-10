@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.rest.action;
+package org.elasticsearch.test.rest.action;
 
 import org.elasticsearch.Build;
 import org.elasticsearch.Version;
@@ -30,8 +30,9 @@ import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.rest.BytesRestResponse;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.rest.action.RestMainAction;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 
 import java.util.HashMap;
 import java.util.Map;

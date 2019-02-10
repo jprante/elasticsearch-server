@@ -17,10 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.discovery.zen;
+package org.elasticsearch.test.discovery.zen;
 
 import org.apache.logging.log4j.Logger;
-import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
@@ -41,15 +40,21 @@ import org.elasticsearch.common.util.BigArrays;
 import org.elasticsearch.common.util.concurrent.AbstractRunnable;
 import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
 import org.elasticsearch.common.util.concurrent.EsExecutors;
+import org.elasticsearch.discovery.zen.ElectMasterService;
+import org.elasticsearch.discovery.zen.PingContextProvider;
+import org.elasticsearch.discovery.zen.UnicastHostsProvider;
+import org.elasticsearch.discovery.zen.UnicastZenPing;
+import org.elasticsearch.discovery.zen.ZenPing;
 import org.elasticsearch.indices.breaker.NoneCircuitBreakerService;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
-import org.elasticsearch.test.transport.MockTransportService;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.VersionUtils;
+import org.elasticsearch.testframework.transport.MockTransportService;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.ConnectTransportException;
 import org.elasticsearch.transport.ConnectionProfile;
-import org.elasticsearch.transport.MockTcpTransport;
+import org.elasticsearch.testframework.transport.MockTcpTransport;
 import org.elasticsearch.transport.TcpTransport;
 import org.elasticsearch.transport.Transport;
 import org.elasticsearch.transport.TransportConnectionListener;
@@ -59,6 +64,7 @@ import org.elasticsearch.transport.TransportResponseHandler;
 import org.elasticsearch.transport.TransportService;
 import org.junit.After;
 import org.junit.Before;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Matchers;
 
 import java.io.Closeable;
@@ -742,7 +748,8 @@ public class UnicastZenPingTests extends ESTestCase {
         assertThat(discoveryNodes, hasSize(1)); // only one of the two is valid and will be used
         assertThat(discoveryNodes.get(0).getAddress().getAddress(), equalTo("127.0.0.1"));
         assertThat(discoveryNodes.get(0).getAddress().getPort(), equalTo(9301));
-        verify(logger).warn(eq("failed to resolve host [127.0.0.1:9300:9300]"), Matchers.any(ExecutionException.class));
+        verify(logger).warn(eq("failed to resolve host [127.0.0.1:9300:9300]"),
+                ArgumentMatchers.any(IllegalArgumentException.class));
     }
 
     private void assertPingCount(final NetworkHandle fromNode, final NetworkHandle toNode, int expectedCount) {

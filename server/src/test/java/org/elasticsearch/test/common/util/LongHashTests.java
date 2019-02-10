@@ -17,14 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
 import com.carrotsearch.hppc.LongLongHashMap;
 import com.carrotsearch.hppc.LongLongMap;
 import com.carrotsearch.hppc.cursors.LongLongCursor;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.util.BigArrays;
+import org.elasticsearch.common.util.LongHash;
 import org.elasticsearch.indices.breaker.NoneCircuitBreakerService;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.common.util.MockBigArrays;
+import org.elasticsearch.testframework.common.util.MockPageCacheRecycler;
 
 import java.util.HashMap;
 import java.util.HashSet;

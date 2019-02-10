@@ -29,7 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-enum BinaryRangeUtil {
+public enum BinaryRangeUtil {
 
     ;
 
@@ -87,13 +87,13 @@ enum BinaryRangeUtil {
         return new BytesRef(encoded, 0, out.getPosition());
     }
 
-    static byte[] encodeDouble(double number) {
+    public static byte[] encodeDouble(double number) {
         byte[] encoded = new byte[8];
         NumericUtils.longToSortableBytes(NumericUtils.doubleToSortableLong(number), encoded, 0);
         return encoded;
     }
 
-    static byte[] encodeFloat(float number) {
+    public static byte[] encodeFloat(float number) {
         byte[] encoded = new byte[4];
         NumericUtils.intToSortableBytes(NumericUtils.floatToSortableInt(number), encoded, 0);
         return encoded;
@@ -105,7 +105,7 @@ enum BinaryRangeUtil {
      * The first bit stores the sign and the 4 subsequent bits encode the number of bytes that are used to
      * represent the long value, in addition to the first one.
      */
-    static byte[] encodeLong(long number) {
+    public static byte[] encodeLong(long number) {
         int sign = 1; // means positive
         if (number < 0) {
             number = -1 - number;

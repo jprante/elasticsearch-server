@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.common.geo;
+package org.elasticsearch.test.common.geo;
 
+import org.elasticsearch.common.geo.GeoUtils;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;

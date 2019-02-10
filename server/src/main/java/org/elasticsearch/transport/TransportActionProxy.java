@@ -99,16 +99,16 @@ public final class TransportActionProxy {
         }
     }
 
-    static class ProxyRequest<T extends TransportRequest> extends TransportRequest {
+    public static class ProxyRequest<T extends TransportRequest> extends TransportRequest {
         T wrapped;
         Writeable.Reader<T> reader;
         DiscoveryNode targetNode;
 
-        ProxyRequest(Writeable.Reader<T> reader) {
+        public ProxyRequest(Writeable.Reader<T> reader) {
             this.reader = reader;
         }
 
-        ProxyRequest(T wrapped, DiscoveryNode targetNode) {
+        public ProxyRequest(T wrapped, DiscoveryNode targetNode) {
             this.wrapped = wrapped;
             this.targetNode = targetNode;
         }

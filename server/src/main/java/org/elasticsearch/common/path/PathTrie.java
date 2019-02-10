@@ -37,7 +37,7 @@ import static java.util.Collections.unmodifiableMap;
 
 public class PathTrie<T> {
 
-    enum TrieMatchingMode {
+    public enum TrieMatchingMode {
         /*
          * Retrieve only explicitly mapped nodes, no wildcards are
          * matched.

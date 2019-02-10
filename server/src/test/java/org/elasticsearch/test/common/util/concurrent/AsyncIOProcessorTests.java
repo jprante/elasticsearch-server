@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.util.concurrent;
+package org.elasticsearch.test.common.util.concurrent;
 
 import org.elasticsearch.common.collect.Tuple;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.concurrent.AsyncIOProcessor;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.List;

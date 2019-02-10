@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.node;
+package org.elasticsearch.test.node;
 
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase;
 import org.elasticsearch.Version;
 import org.elasticsearch.bootstrap.BootstrapCheck;
 import org.elasticsearch.bootstrap.BootstrapContext;
@@ -29,9 +29,12 @@ import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.BoundTransportAddress;
 import org.elasticsearch.env.Environment;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.node.NodeValidationException;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.InternalTestCluster;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.InternalTestCluster;
+import org.elasticsearch.testframework.node.MockNode;
 
 import java.io.IOException;
 import java.nio.file.Path;

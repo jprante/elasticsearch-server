@@ -17,8 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
+import org.elasticsearch.action.search.MultiSearchRequest;
+import org.elasticsearch.action.search.MultiSearchResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.common.CheckedBiConsumer;
 import org.elasticsearch.common.CheckedRunnable;
@@ -34,9 +38,9 @@ import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.action.search.RestMultiSearchAction;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.StreamsUtils;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.StreamsUtils;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -44,15 +48,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
-import static org.elasticsearch.search.RandomSearchRequestGenerator.randomSearchRequest;
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.search.RandomSearchRequestGenerator.randomSearchRequest;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
 public class MultiSearchRequestTests extends ESTestCase {
     public void testSimpleAdd() throws Exception {
-        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/action/search/simple-msearch1.json");
+        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/test/action/search/simple-msearch1.json");
         assertThat(request.requests().size(),
                 equalTo(8));
         assertThat(request.requests().get(0).indices()[0],
@@ -103,7 +107,7 @@ public class MultiSearchRequestTests extends ESTestCase {
     }
 
     public void testSimpleAdd2() throws Exception {
-        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/action/search/simple-msearch2.json");
+        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/test/action/search/simple-msearch2.json");
         assertThat(request.requests().size(), equalTo(5));
         assertThat(request.requests().get(0).indices()[0], equalTo("test"));
         assertThat(request.requests().get(0).types().length, equalTo(0));
@@ -119,7 +123,7 @@ public class MultiSearchRequestTests extends ESTestCase {
     }
 
     public void testSimpleAdd3() throws Exception {
-        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/action/search/simple-msearch3.json");
+        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/test/action/search/simple-msearch3.json");
         assertThat(request.requests().size(), equalTo(4));
         assertThat(request.requests().get(0).indices()[0], equalTo("test0"));
         assertThat(request.requests().get(0).indices()[1], equalTo("test1"));
@@ -136,7 +140,7 @@ public class MultiSearchRequestTests extends ESTestCase {
     }
 
     public void testSimpleAdd4() throws Exception {
-        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/action/search/simple-msearch4.json");
+        MultiSearchRequest request = parseMultiSearchRequest("/org/elasticsearch/test/action/search/simple-msearch4.json");
         assertThat(request.requests().size(), equalTo(3));
         assertThat(request.requests().get(0).indices()[0], equalTo("test0"));
         assertThat(request.requests().get(0).indices()[1], equalTo("test1"));
@@ -182,7 +186,8 @@ public class MultiSearchRequestTests extends ESTestCase {
     }
 
     public void testMsearchTerminatedByNewline() throws Exception {
-        String mserchAction = StreamsUtils.copyToStringFromClasspath("/org/elasticsearch/action/search/simple-msearch5.json");
+        String mserchAction = StreamsUtils.copyToStringFromClasspath(MultiSearchRequestTests.class,
+                "/org/elasticsearch/test/action/search/simple-msearch5.json");
         RestRequest restRequest = new FakeRestRequest.Builder(xContentRegistry())
                 .withContent(new BytesArray(mserchAction.getBytes(StandardCharsets.UTF_8)), XContentType.JSON).build();
         IllegalArgumentException expectThrows = expectThrows(IllegalArgumentException.class,
@@ -197,7 +202,7 @@ public class MultiSearchRequestTests extends ESTestCase {
     }
 
     private MultiSearchRequest parseMultiSearchRequest(String sample) throws IOException {
-        byte[] data = StreamsUtils.copyToBytesFromClasspath(sample);
+        byte[] data = StreamsUtils.copyToBytesFromClasspath(MultiSearchRequestTests.class, sample);
         RestRequest restRequest = new FakeRestRequest.Builder(xContentRegistry())
             .withContent(new BytesArray(data), XContentType.JSON).build();
         return RestMultiSearchAction.parseRequest(restRequest, true);

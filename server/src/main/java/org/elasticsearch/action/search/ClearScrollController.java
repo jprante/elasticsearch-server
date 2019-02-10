@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.elasticsearch.action.search.TransportSearchHelper.parseScrollId;
 
-final class ClearScrollController implements Runnable {
+public final class ClearScrollController implements Runnable {
     private final DiscoveryNodes nodes;
     private final SearchTransportService searchTransportService;
     private final CountDown expectedOps;
@@ -44,8 +44,9 @@ final class ClearScrollController implements Runnable {
     private final Logger logger;
     private final Runnable runner;
 
-    ClearScrollController(ClearScrollRequest request, ActionListener<ClearScrollResponse> listener, DiscoveryNodes nodes, Logger logger,
-                          SearchTransportService searchTransportService) {
+    public ClearScrollController(ClearScrollRequest request, ActionListener<ClearScrollResponse> listener,
+                                 DiscoveryNodes nodes, Logger logger,
+                                 SearchTransportService searchTransportService) {
         this.nodes = nodes;
         this.logger = logger;
         this.searchTransportService = searchTransportService;
@@ -80,7 +81,7 @@ final class ClearScrollController implements Runnable {
         runner.run();
     }
 
-    void cleanAllScrolls() {
+    public void cleanAllScrolls() {
         for (final DiscoveryNode node : nodes) {
             try {
                 Transport.Connection connection = searchTransportService.getConnection(null, node);
@@ -101,7 +102,7 @@ final class ClearScrollController implements Runnable {
         }
     }
 
-    void cleanScrollIds(List<ScrollIdForNode> parsedScrollIds) {
+    public void cleanScrollIds(List<ScrollIdForNode> parsedScrollIds) {
         SearchScrollAsyncAction.collectNodesAndRun(parsedScrollIds, nodes, searchTransportService, ActionListener.wrap(
             lookup -> {
                 for (ScrollIdForNode target : parsedScrollIds) {

@@ -17,10 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
-import org.elasticsearch.common.inject.ModuleTestCase;
+import org.elasticsearch.testframework.common.inject.ModuleTestCase;
+import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Setting.Property;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.settings.SettingsFilter;
+import org.elasticsearch.common.settings.SettingsModule;
 
 import java.util.Arrays;
 

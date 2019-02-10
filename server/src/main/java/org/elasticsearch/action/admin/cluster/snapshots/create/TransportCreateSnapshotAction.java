@@ -60,7 +60,7 @@ public class TransportCreateSnapshotAction extends TransportMasterNodeAction<Cre
     }
 
     @Override
-    protected ClusterBlockException checkBlock(CreateSnapshotRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(CreateSnapshotRequest request, ClusterState state) {
         // We are reading the cluster metadata and indices - so we need to check both blocks
         ClusterBlockException clusterBlockException = state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
         if (clusterBlockException != null) {
@@ -70,7 +70,7 @@ public class TransportCreateSnapshotAction extends TransportMasterNodeAction<Cre
     }
 
     @Override
-    protected void masterOperation(final CreateSnapshotRequest request, ClusterState state, final ActionListener<CreateSnapshotResponse> listener) {
+    public void masterOperation(final CreateSnapshotRequest request, ClusterState state, final ActionListener<CreateSnapshotResponse> listener) {
         SnapshotsService.SnapshotRequest snapshotRequest =
                 new SnapshotsService.SnapshotRequest(request.repository(), request.snapshot(), "create_snapshot [" + request.snapshot() + "]")
                         .indices(request.indices())

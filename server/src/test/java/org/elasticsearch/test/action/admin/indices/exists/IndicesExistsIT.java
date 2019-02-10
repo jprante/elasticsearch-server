@@ -17,20 +17,20 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.exists;
+package org.elasticsearch.test.action.admin.indices.exists;
 
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.discovery.MasterNotDiscoveredException;
 import org.elasticsearch.discovery.zen.ElectMasterService;
 import org.elasticsearch.gateway.GatewayService;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
-import org.elasticsearch.test.InternalTestCluster;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.testframework.InternalTestCluster;
 
 import java.io.IOException;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertThrows;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertThrows;
 
 @ClusterScope(scope = ESIntegTestCase.Scope.TEST, numDataNodes = 0, numClientNodes = 0, transportClientRatio = 0.0,
     autoMinMasterNodes = false)

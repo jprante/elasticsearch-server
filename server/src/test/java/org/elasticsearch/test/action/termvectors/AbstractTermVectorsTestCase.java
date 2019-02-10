@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.test.action.support.termvectors;
+package org.elasticsearch.test.action.termvectors;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
@@ -50,10 +50,9 @@ import org.apache.lucene.store.RAMDirectory;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.termvectors.TermVectorsRequestBuilder;
 import org.elasticsearch.action.termvectors.TermVectorsResponse;
-import org.elasticsearch.common.inject.internal.Join;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.equalTo;
 
 public abstract class AbstractTermVectorsTestCase extends ESIntegTestCase {
@@ -198,7 +197,7 @@ public abstract class AbstractTermVectorsTestCase extends ESIntegTestCase {
             }
             Locale aLocale = new Locale("en", "US");
             return String.format(aLocale, "(doc: %s\n requested: %s, fields: %s)", doc, requested,
-                    selectedFields == null ? "NULL" : Join.join(",", selectedFields));
+                    selectedFields == null ? "NULL" : String.join(",", selectedFields));
         }
     }
 

@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
-import org.apache.lucene.analysis.MockSynonymAnalyzer;
+import org.apache.lucene.testframework.analysis.MockSynonymAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
@@ -37,14 +37,19 @@ import org.apache.lucene.search.spans.SpanNearQuery;
 import org.apache.lucene.search.spans.SpanOrQuery;
 import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.TestUtil;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.lucene.all.AllTermQuery;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.index.query.AbstractQueryBuilder;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.index.query.QueryShardContext;
+import org.elasticsearch.index.query.SimpleQueryStringBuilder;
+import org.elasticsearch.index.query.SimpleQueryStringFlag;
 import org.elasticsearch.index.search.SimpleQueryStringQueryParser;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.AbstractQueryTestCase;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.AbstractQueryTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +63,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;

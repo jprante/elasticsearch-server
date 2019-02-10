@@ -37,7 +37,7 @@ import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.rest.action.RestActions;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.internal.InternalSearchResponse;
+import org.elasticsearch.search.InternalSearchResponse;
 import org.elasticsearch.search.profile.ProfileShardResult;
 import org.elasticsearch.search.profile.SearchProfileShardResults;
 import org.elasticsearch.search.suggest.Suggest;
@@ -422,7 +422,7 @@ public class SearchResponse extends ActionResponse implements StatusToXContentOb
         private final int successful;
         private final int skipped;
 
-        Clusters(int total, int successful, int skipped) {
+        public Clusters(int total, int successful, int skipped) {
             assert total >= 0 && successful >= 0 && skipped >= 0
                     : "total: " + total + " successful: " + successful + " skipped: " + skipped;
             assert successful <= total && skipped == total - successful

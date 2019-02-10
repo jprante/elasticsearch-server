@@ -26,7 +26,7 @@ import org.elasticsearch.cluster.service.ClusterService;
 import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.search.fetch.QueryFetchSearchResult;
 import org.elasticsearch.search.fetch.ScrollQueryFetchSearchResult;
-import org.elasticsearch.search.internal.InternalScrollSearchRequest;
+import org.elasticsearch.search.InternalScrollSearchRequest;
 import org.elasticsearch.transport.Transport;
 
 import java.util.function.BiFunction;

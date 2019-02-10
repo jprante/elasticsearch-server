@@ -17,9 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.cli;
+package org.elasticsearch.test.cli;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.cli.Terminal;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.cli.MockTerminal;
 
 public class TerminalTests extends ESTestCase {
     public void testVerbosity() throws Exception {

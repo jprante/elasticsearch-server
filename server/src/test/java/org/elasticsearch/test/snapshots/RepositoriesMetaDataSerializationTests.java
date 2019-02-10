@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.snapshots;
+package org.elasticsearch.test.snapshots;
 
 import org.elasticsearch.cluster.ClusterModule;
 import org.elasticsearch.cluster.Diff;
@@ -28,7 +28,7 @@ import org.elasticsearch.common.io.stream.NamedWriteableRegistry;
 import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractDiffableSerializationTestCase;
+import org.elasticsearch.testframework.AbstractDiffableSerializationTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;

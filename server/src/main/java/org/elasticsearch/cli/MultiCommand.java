@@ -34,7 +34,7 @@ import org.elasticsearch.core.internal.io.IOUtils;
  */
 public class MultiCommand extends Command {
 
-    protected final Map<String, Command> subcommands = new LinkedHashMap<>();
+    public final Map<String, Command> subcommands = new LinkedHashMap<>();
 
     private final NonOptionArgumentSpec<String> arguments = parser.nonOptions("command");
 

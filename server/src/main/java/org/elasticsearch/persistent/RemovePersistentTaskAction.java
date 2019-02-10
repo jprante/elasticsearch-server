@@ -149,13 +149,13 @@ public class RemovePersistentTaskAction extends Action<RemovePersistentTaskActio
         }
 
         @Override
-        protected ClusterBlockException checkBlock(Request request, ClusterState state) {
+        public ClusterBlockException checkBlock(Request request, ClusterState state) {
             // Cluster is not affected but we look up repositories in metadata
             return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
         }
 
         @Override
-        protected final void masterOperation(final Request request, ClusterState state,
+        public final void masterOperation(final Request request, ClusterState state,
                                              final ActionListener<PersistentTaskResponse> listener) {
             persistentTasksClusterService.removePersistentTask(request.taskId, new ActionListener<PersistentTask<?>>() {
                 @Override

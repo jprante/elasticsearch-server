@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.elasticsearch.Version;
@@ -25,18 +25,21 @@ import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.analysis.AnalyzerScope;
+import org.elasticsearch.index.analysis.NamedAnalyzer;
+import org.elasticsearch.index.analysis.PreBuiltAnalyzerProvider;
 import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.FieldMapper;
 import org.elasticsearch.indices.analysis.PreBuiltAnalyzers;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESSingleNodeTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Locale;
 
-import static org.elasticsearch.test.VersionUtils.randomVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersion;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 

@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.support.replication;
+package org.elasticsearch.test.action.support.replication;
 
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.support.WriteRequest;
+import org.elasticsearch.action.support.replication.TransportWriteAction;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.index.shard.IndexShard;
 import org.elasticsearch.index.translog.Translog;

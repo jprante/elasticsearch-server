@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.suggest.phrase;
+package org.elasticsearch.test.search.suggest.phrase;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
@@ -42,8 +42,17 @@ import org.apache.lucene.search.spell.SuggestMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.BytesRef;
+import org.elasticsearch.search.suggest.phrase.CandidateGenerator;
+import org.elasticsearch.search.suggest.phrase.Correction;
+import org.elasticsearch.search.suggest.phrase.DirectCandidateGenerator;
+import org.elasticsearch.search.suggest.phrase.LaplaceScorer;
+import org.elasticsearch.search.suggest.phrase.LinearInterpolatingScorer;
+import org.elasticsearch.search.suggest.phrase.MultiCandidateGeneratorWrapper;
+import org.elasticsearch.search.suggest.phrase.NoisyChannelSpellChecker;
 import org.elasticsearch.search.suggest.phrase.NoisyChannelSpellChecker.Result;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.suggest.phrase.StupidBackoffScorer;
+import org.elasticsearch.search.suggest.phrase.WordScorer;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.io.StringReader;

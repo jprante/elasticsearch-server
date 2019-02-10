@@ -21,8 +21,8 @@ package org.elasticsearch.test.action.support;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.support.PlainListenableActionFuture;
 import org.elasticsearch.common.util.concurrent.AbstractRunnable;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.Transports;
 

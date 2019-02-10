@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.lucene.index;
+package org.elasticsearch.test.common.lucene.index;
 
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.document.Document;
@@ -35,10 +35,11 @@ import org.apache.lucene.search.TermInSetQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.core.internal.io.IOUtils;
+import org.elasticsearch.common.lucene.index.FreqTermsEnum;
 import org.elasticsearch.common.lucene.search.Queries;
 import org.elasticsearch.common.util.BigArrays;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 

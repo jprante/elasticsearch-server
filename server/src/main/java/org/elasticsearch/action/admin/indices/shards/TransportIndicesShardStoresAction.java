@@ -84,7 +84,7 @@ public class TransportIndicesShardStoresAction extends TransportMasterNodeReadAc
     }
 
     @Override
-    protected void masterOperation(IndicesShardStoresRequest request, ClusterState state, ActionListener<IndicesShardStoresResponse> listener) {
+    public void masterOperation(IndicesShardStoresRequest request, ClusterState state, ActionListener<IndicesShardStoresResponse> listener) {
         final RoutingTable routingTables = state.routingTable();
         final RoutingNodes routingNodes = state.getRoutingNodes();
         final String[] concreteIndices = indexNameExpressionResolver.concreteIndexNames(state, request);
@@ -115,7 +115,7 @@ public class TransportIndicesShardStoresAction extends TransportMasterNodeReadAc
     }
 
     @Override
-    protected ClusterBlockException checkBlock(IndicesShardStoresRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(IndicesShardStoresRequest request, ClusterState state) {
         return state.blocks().indicesBlockedException(ClusterBlockLevel.METADATA_READ, indexNameExpressionResolver.concreteIndexNames(state, request));
     }
 
@@ -154,7 +154,7 @@ public class TransportIndicesShardStoresAction extends TransportMasterNodeReadAc
             }
 
             @Override
-            protected synchronized void processAsyncFetch(List<NodeGatewayStartedShards> responses, List<FailedNodeException> failures, long fetchingRound) {
+            public synchronized void processAsyncFetch(List<NodeGatewayStartedShards> responses, List<FailedNodeException> failures, long fetchingRound) {
                 fetchResponses.add(new Response(shardId, responses, failures));
                 if (expectedOps.countDown()) {
                     finish();

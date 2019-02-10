@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.admin.indices.get.GetIndexResponse;
@@ -32,7 +32,7 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.indices.IndicesModule;
 import org.elasticsearch.plugins.MapperPlugin;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 import org.junit.Before;
 
 import java.util.Collection;
@@ -45,7 +45,7 @@ import java.util.function.Predicate;
 
 import static org.elasticsearch.test.cluster.metadata.MetaDataTests.assertLeafs;
 import static org.elasticsearch.test.cluster.metadata.MetaDataTests.assertMultiField;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 
 public class FieldFilterMapperPluginTests extends ESSingleNodeTestCase {
 

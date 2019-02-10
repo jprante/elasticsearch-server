@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.rest.action.admin.indices;
+package org.elasticsearch.test.rest.action.admin.indices;
 
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.common.bytes.BytesArray;
@@ -26,8 +26,9 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.rest.action.admin.indices.RestAnalyzeAction;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;

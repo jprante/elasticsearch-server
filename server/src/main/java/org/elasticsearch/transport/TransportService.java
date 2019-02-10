@@ -80,15 +80,15 @@ public class TransportService extends AbstractLifecycleComponent {
     public static final String HANDSHAKE_ACTION_NAME = "internal:transport/handshake";
 
     private final CountDownLatch blockIncomingRequestsLatch = new CountDownLatch(1);
-    protected final Transport transport;
-    protected final ThreadPool threadPool;
+    public final Transport transport;
+    public final ThreadPool threadPool;
     protected final ClusterName clusterName;
     protected final TaskManager taskManager;
     private final TransportInterceptor.AsyncSender asyncSender;
     private final Function<BoundTransportAddress, DiscoveryNode> localNodeFactory;
     private final boolean connectToRemoteCluster;
 
-    volatile Map<String, RequestHandlerRegistry> requestHandlers = Collections.emptyMap();
+    public volatile Map<String, RequestHandlerRegistry> requestHandlers = Collections.emptyMap();
     final Object requestHandlerMutex = new Object();
 
     final ConcurrentMapLong<RequestHolder> clientHandlers = ConcurrentCollections.newConcurrentMapLongWithAggressiveConcurrency();
@@ -411,7 +411,7 @@ public class TransportService extends AbstractLifecycleComponent {
         return response;
     }
 
-    static class HandshakeRequest extends TransportRequest {
+    public static class HandshakeRequest extends TransportRequest {
 
         public static final HandshakeRequest INSTANCE = new HandshakeRequest();
 

@@ -37,7 +37,7 @@ import java.nio.file.Path;
 /**
  * Each translog file is started with a translog header then followed by translog operations.
  */
-final class TranslogHeader {
+public final class TranslogHeader {
     public static final String TRANSLOG_CODEC = "translog";
 
     public static final int VERSION_CHECKSUMS    = 1; // pre-2.0 - unsupported
@@ -59,7 +59,7 @@ final class TranslogHeader {
      * @param primaryTerm  the primary term of the owning index shard when creating (eg. rolling) this translog file.
      *                     All operations' terms in this translog file are enforced to be at most this term.
      */
-    TranslogHeader(String translogUUID, long primaryTerm) {
+    public TranslogHeader(String translogUUID, long primaryTerm) {
         this(translogUUID, primaryTerm, headerSizeInBytes(translogUUID));
         assert primaryTerm >= 0 : "Primary term must be non-negative; term [" + primaryTerm + "]";
     }
@@ -90,7 +90,7 @@ final class TranslogHeader {
         return headerSizeInBytes;
     }
 
-    static int headerSizeInBytes(String translogUUID) {
+    public static int headerSizeInBytes(String translogUUID) {
         return headerSizeInBytes(CURRENT_VERSION, new BytesRef(translogUUID).length);
     }
 
@@ -107,7 +107,7 @@ final class TranslogHeader {
     /**
      * Read a translog header from the given path and file channel
      */
-    static TranslogHeader read(final String translogUUID, final Path path, final FileChannel channel) throws IOException {
+    public static TranslogHeader read(final String translogUUID, final Path path, final FileChannel channel) throws IOException {
         // This input is intentionally not closed because closing it will close the FileChannel.
         final BufferedChecksumStreamInput in =
             new BufferedChecksumStreamInput(new InputStreamStreamInput(java.nio.channels.Channels.newInputStream(channel), channel.size()));
@@ -173,7 +173,7 @@ final class TranslogHeader {
     /**
      * Writes this header with the latest format into the file channel
      */
-    void write(final FileChannel channel) throws IOException {
+    public void write(final FileChannel channel) throws IOException {
         // This output is intentionally not closed because closing it will close the FileChannel.
         @SuppressWarnings({"IOResourceOpenedButNotSafelyClosed", "resource"})
         final BufferedChecksumStreamOutput out = new BufferedChecksumStreamOutput(

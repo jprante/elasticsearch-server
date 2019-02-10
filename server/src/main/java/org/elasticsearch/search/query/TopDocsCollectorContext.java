@@ -42,8 +42,8 @@ import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.lucene.Lucene;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.collapse.CollapseContext;
-import org.elasticsearch.search.internal.ScrollContext;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.ScrollContext;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.rescore.RescoreContext;
 import org.elasticsearch.search.sort.SortAndFormats;
 

@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.cluster.tasks;
+package org.elasticsearch.test.action.admin.cluster.tasks;
 
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.action.admin.cluster.tasks.PendingClusterTasksResponse;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
 
 import java.util.Arrays;
 

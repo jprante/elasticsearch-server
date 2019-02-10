@@ -17,18 +17,19 @@
  * under the License.
  */
 
-package org.elasticsearch.node;
+package org.elasticsearch.test.node;
 
-import org.elasticsearch.cli.MockTerminal;
+import org.elasticsearch.testframework.cli.MockTerminal;
 import org.elasticsearch.cluster.ClusterName;
-import org.elasticsearch.common.settings.MockSecureSettings;
+import org.elasticsearch.testframework.common.settings.MockSecureSettings;
 import org.elasticsearch.common.settings.SecureSetting;
 import org.elasticsearch.common.settings.SecureString;
 import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.SettingsException;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.node.InternalSettingsPreparer;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.After;
 import org.junit.Before;
 
@@ -137,7 +138,7 @@ public class InternalSettingsPreparerTests extends ESTestCase {
 
     public void testGarbageIsNotSwallowed() throws IOException {
         try {
-            InputStream garbage = getClass().getResourceAsStream("/config/garbage/garbage.yml");
+            InputStream garbage = getClass().getResourceAsStream("/org/elasticsearch/test/config/garbage/garbage.yml");
             Path home = createTempDir();
             Path config = home.resolve("config");
             Files.createDirectory(config);

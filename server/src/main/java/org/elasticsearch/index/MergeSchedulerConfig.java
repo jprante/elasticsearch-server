@@ -68,7 +68,7 @@ public final class MergeSchedulerConfig {
     private volatile int maxThreadCount;
     private volatile int maxMergeCount;
 
-    MergeSchedulerConfig(IndexSettings indexSettings) {
+    public MergeSchedulerConfig(IndexSettings indexSettings) {
         int maxThread = indexSettings.getValue(MAX_THREAD_COUNT_SETTING);
         int maxMerge = indexSettings.getValue(MAX_MERGE_COUNT_SETTING);
         setMaxThreadAndMergeCount(maxThread, maxMerge);

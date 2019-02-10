@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.completion;
+package org.elasticsearch.test.search.suggest.completion;
 
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.search.suggest.Suggest;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;

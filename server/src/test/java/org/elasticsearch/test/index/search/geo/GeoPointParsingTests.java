@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.search.geo;
+package org.elasticsearch.test.index.search.geo;
 
 import org.elasticsearch.ElasticsearchParseException;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -26,14 +26,14 @@ import org.elasticsearch.common.geo.GeoUtils;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.test.geo.RandomGeoGenerator;
 
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
 
 import static org.elasticsearch.common.geo.GeoHashUtils.stringEncode;
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
 import static org.hamcrest.Matchers.is;
 
 public class GeoPointParsingTests  extends ESTestCase {

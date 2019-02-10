@@ -53,7 +53,7 @@ public class TransportUpgradeSettingsAction extends TransportMasterNodeAction<Up
     }
 
     @Override
-    protected ClusterBlockException checkBlock(UpgradeSettingsRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(UpgradeSettingsRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
     }
 
@@ -63,7 +63,7 @@ public class TransportUpgradeSettingsAction extends TransportMasterNodeAction<Up
     }
 
     @Override
-    protected void masterOperation(final UpgradeSettingsRequest request, final ClusterState state, final ActionListener<UpgradeSettingsResponse> listener) {
+    public void masterOperation(final UpgradeSettingsRequest request, final ClusterState state, final ActionListener<UpgradeSettingsResponse> listener) {
         UpgradeSettingsClusterStateUpdateRequest clusterStateUpdateRequest = new UpgradeSettingsClusterStateUpdateRequest()
                 .ackTimeout(request.timeout())
                 .versions(request.versions())

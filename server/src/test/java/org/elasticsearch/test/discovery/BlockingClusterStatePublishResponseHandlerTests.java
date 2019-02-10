@@ -16,14 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.discovery;
+package org.elasticsearch.test.discovery;
 
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.util.concurrent.AbstractRunnable;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.discovery.BlockingClusterStatePublishResponseHandler;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Arrays;
 import java.util.HashSet;

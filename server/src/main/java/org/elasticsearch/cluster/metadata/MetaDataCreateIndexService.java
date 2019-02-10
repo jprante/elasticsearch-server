@@ -227,11 +227,11 @@ public class MetaDataCreateIndexService extends AbstractComponent {
                 this::validate));
     }
 
-    interface IndexValidator {
+    public interface IndexValidator {
         void validate(CreateIndexClusterStateUpdateRequest request, ClusterState state);
     }
 
-    static class IndexCreationTask extends AckedClusterStateUpdateTask<ClusterStateUpdateResponse> {
+    public static class IndexCreationTask extends AckedClusterStateUpdateTask<ClusterStateUpdateResponse> {
 
         private final IndicesService indicesService;
         private final AliasValidator aliasValidator;
@@ -242,7 +242,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
         private final Settings settings;
         private final IndexValidator validator;
 
-        IndexCreationTask(Logger logger, AllocationService allocationService, CreateIndexClusterStateUpdateRequest request,
+        public IndexCreationTask(Logger logger, AllocationService allocationService, CreateIndexClusterStateUpdateRequest request,
                           ActionListener<ClusterStateUpdateResponse> listener, IndicesService indicesService,
                           AliasValidator aliasValidator, NamedXContentRegistry xContentRegistry,
                           Settings settings, IndexValidator validator) {
@@ -589,7 +589,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
      * Validates the settings and mappings for shrinking an index.
      * @return the list of nodes at least one instance of the source index shards are allocated
      */
-    static List<String> validateShrinkIndex(ClusterState state, String sourceIndex,
+    public static List<String> validateShrinkIndex(ClusterState state, String sourceIndex,
                                         Set<String> targetIndexMappingsTypes, String targetIndexName,
                                         Settings targetIndexSettings) {
         IndexMetaData sourceMetaData = validateResize(state, sourceIndex, targetIndexMappingsTypes, targetIndexName, targetIndexSettings);
@@ -622,7 +622,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
         return nodesToAllocateOn;
     }
 
-    static void validateSplitIndex(ClusterState state, String sourceIndex,
+    public static void validateSplitIndex(ClusterState state, String sourceIndex,
                                    Set<String> targetIndexMappingsTypes, String targetIndexName,
                                    Settings targetIndexSettings) {
         IndexMetaData sourceMetaData = validateResize(state, sourceIndex, targetIndexMappingsTypes, targetIndexName, targetIndexSettings);
@@ -636,7 +636,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
 
     }
 
-    static IndexMetaData validateResize(ClusterState state, String sourceIndex,
+    public static IndexMetaData validateResize(ClusterState state, String sourceIndex,
                                            Set<String> targetIndexMappingsTypes, String targetIndexName,
                                            Settings targetIndexSettings) {
         if (state.metaData().hasIndex(targetIndexName)) {
@@ -666,7 +666,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
         return sourceMetaData;
     }
 
-    static void prepareResizeIndexSettings(ClusterState currentState, Set<String> mappingKeys, Settings.Builder indexSettingsBuilder,
+    public static void prepareResizeIndexSettings(ClusterState currentState, Set<String> mappingKeys, Settings.Builder indexSettingsBuilder,
                                            Index resizeSourceIndex, String resizeIntoName, ResizeType type) {
         final IndexMetaData sourceMetaData = currentState.metaData().index(resizeSourceIndex.getName());
         if (type == ResizeType.SHRINK) {

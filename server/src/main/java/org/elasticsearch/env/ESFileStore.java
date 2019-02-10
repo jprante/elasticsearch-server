@@ -37,16 +37,14 @@ import java.util.List;
  * filesystem information for the root filesystem.
  * @see Environment#getFileStore(Path)
  */
-class ESFileStore extends FileStore {
+public class ESFileStore extends FileStore {
     /** Underlying filestore */
     final FileStore in;
     private int majorDeviceNumber;
     private int minorDeviceNumber;
     
     @SuppressForbidden(reason = "tries to determine if disk is spinning")
-    // TODO: move PathUtils to be package-private here instead of 
-    // public+forbidden api!
-    ESFileStore(final FileStore in) {
+    public ESFileStore(final FileStore in) {
         this.in = in;
         if (Constants.LINUX) {
             try {

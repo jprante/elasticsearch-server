@@ -17,10 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.significant;
+package org.elasticsearch.test.search.aggregations.bucket.significant;
 
 import org.elasticsearch.search.aggregations.InternalAggregations;
-import org.elasticsearch.test.InternalMultiBucketAggregationTestCase;
+import org.elasticsearch.search.aggregations.bucket.significant.InternalSignificantTerms;
+import org.elasticsearch.search.aggregations.bucket.significant.ParsedSignificantTerms;
+import org.elasticsearch.search.aggregations.bucket.significant.SignificantTerms;
+import org.elasticsearch.search.aggregations.bucket.significant.UnmappedSignificantTerms;
+import org.elasticsearch.testframework.InternalMultiBucketAggregationTestCase;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.significant.heuristics.ChiSquare;
 import org.elasticsearch.search.aggregations.bucket.significant.heuristics.GND;

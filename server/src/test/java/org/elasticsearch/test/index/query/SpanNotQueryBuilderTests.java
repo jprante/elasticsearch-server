@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.spans.SpanNotQuery;
@@ -25,8 +25,12 @@ import org.elasticsearch.common.ParsingException;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.AbstractQueryTestCase;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.SpanNearQueryBuilder;
+import org.elasticsearch.index.query.SpanNotQueryBuilder;
+import org.elasticsearch.index.query.SpanTermQueryBuilder;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.AbstractQueryTestCase;
 
 import java.io.IOException;
 

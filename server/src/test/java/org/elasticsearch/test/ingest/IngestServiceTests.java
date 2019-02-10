@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.ingest;
+package org.elasticsearch.test.ingest;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,8 +25,10 @@ import java.util.Map;
 
 import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.ingest.IngestService;
+import org.elasticsearch.ingest.Processor;
 import org.elasticsearch.plugins.IngestPlugin;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.mockito.Mockito;
 

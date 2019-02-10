@@ -17,23 +17,30 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.metadata;
+package org.elasticsearch.test.cluster.metadata;
 
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
+import org.elasticsearch.cluster.metadata.AliasAction;
+import org.elasticsearch.cluster.metadata.AliasOrIndex;
+import org.elasticsearch.cluster.metadata.AliasValidator;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.cluster.metadata.MetaData;
+import org.elasticsearch.cluster.metadata.MetaDataDeleteIndexService;
+import org.elasticsearch.cluster.metadata.MetaDataIndexAliasesService;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.IndexNotFoundException;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.contains;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anySetOf;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +52,7 @@ public class MetaDataIndexAliasesServiceTests extends ESTestCase {
 
     public MetaDataIndexAliasesServiceTests() {
         // Mock any deletes so we don't need to worry about how MetaDataDeleteIndexService does its job
-        when(deleteIndexService.deleteIndices(any(ClusterState.class), anySetOf(Index.class))).then(i -> {
+        when(deleteIndexService.deleteIndices(any(ClusterState.class), anySet())).then(i -> {
             ClusterState state = (ClusterState) i.getArguments()[0];
             @SuppressWarnings("unchecked")
             Collection<Index> indices = (Collection<Index>) i.getArguments()[1];

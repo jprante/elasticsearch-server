@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.index.search;
+package org.elasticsearch.test.index.search;
 
-import org.apache.lucene.analysis.MockSynonymAnalyzer;
+import org.apache.lucene.testframework.analysis.MockSynonymAnalyzer;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queries.BlendedTermQuery;
 import org.apache.lucene.search.BooleanClause;
@@ -39,11 +39,12 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.IndexService;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.mapper.MapperService;
-import org.elasticsearch.index.mapper.MockFieldMapper.FakeFieldType;
+import org.elasticsearch.testframework.index.mapper.MockFieldMapper.FakeFieldType;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryShardContext;
+import org.elasticsearch.index.search.MultiMatchQuery;
 import org.elasticsearch.index.search.MultiMatchQuery.FieldAndFieldType;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 import org.junit.Before;
 
 import java.io.IOException;

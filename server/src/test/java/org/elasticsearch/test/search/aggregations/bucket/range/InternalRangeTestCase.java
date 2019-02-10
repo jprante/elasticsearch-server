@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.range;
+package org.elasticsearch.test.search.aggregations.bucket.range;
 
 import org.elasticsearch.search.aggregations.InternalAggregation;
 import org.elasticsearch.search.aggregations.InternalAggregations;
 import org.elasticsearch.search.aggregations.InternalMultiBucketAggregation;
-import org.elasticsearch.test.InternalMultiBucketAggregationTestCase;
+import org.elasticsearch.search.aggregations.bucket.range.Range;
+import org.elasticsearch.testframework.InternalMultiBucketAggregationTestCase;
 import org.elasticsearch.search.aggregations.ParsedMultiBucketAggregation;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;

@@ -17,10 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.action.support.master;
+package org.elasticsearch.test.action.support.master;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.ActionResponse;
+import org.elasticsearch.action.support.master.MasterNodeRequest;
+import org.elasticsearch.action.support.master.TransportMasterNodeAction;
 import org.elasticsearch.cluster.ClusterState;
 
 public class TransportMasterNodeActionUtils {

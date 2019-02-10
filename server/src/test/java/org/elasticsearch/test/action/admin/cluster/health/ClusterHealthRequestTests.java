@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.cluster.health;
+package org.elasticsearch.test.action.admin.cluster.health;
 
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
 import org.elasticsearch.common.Priority;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 

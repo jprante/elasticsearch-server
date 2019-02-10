@@ -30,7 +30,7 @@ import org.elasticsearch.common.util.concurrent.CountDown;
 import org.elasticsearch.search.SearchShardTarget;
 import org.elasticsearch.search.fetch.FetchSearchResult;
 import org.elasticsearch.search.fetch.ShardFetchRequest;
-import org.elasticsearch.search.internal.InternalScrollSearchRequest;
+import org.elasticsearch.search.InternalScrollSearchRequest;
 import org.elasticsearch.search.query.QuerySearchResult;
 import org.elasticsearch.search.query.ScrollQuerySearchResult;
 import org.elasticsearch.transport.Transport;

@@ -1,4 +1,4 @@
-package org.elasticsearch.action.support.master;
+package org.elasticsearch.test.action.support.master;
 
 /*
  * Licensed to Elasticsearch under one or more contributor
@@ -26,13 +26,13 @@ import org.elasticsearch.discovery.DiscoverySettings;
 import org.elasticsearch.discovery.zen.ElectMasterService;
 import org.elasticsearch.discovery.zen.FaultDetection;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.discovery.TestZenDiscovery;
-import org.elasticsearch.test.disruption.NetworkDisruption;
-import org.elasticsearch.test.disruption.NetworkDisruption.NetworkDisconnect;
-import org.elasticsearch.test.disruption.NetworkDisruption.TwoPartitions;
-import org.elasticsearch.test.junit.annotations.TestLogging;
-import org.elasticsearch.test.transport.MockTransportService;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.discovery.TestZenDiscovery;
+import org.elasticsearch.testframework.disruption.NetworkDisruption;
+import org.elasticsearch.testframework.disruption.NetworkDisruption.NetworkDisconnect;
+import org.elasticsearch.testframework.disruption.NetworkDisruption.TwoPartitions;
+import org.elasticsearch.testframework.junit.annotations.TestLogging;
+import org.elasticsearch.testframework.transport.MockTransportService;
 
 import java.util.Arrays;
 import java.util.Collection;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -28,8 +28,11 @@ import org.apache.lucene.util.Version;
 import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.ESTokenStreamTestCase;
+import org.elasticsearch.index.analysis.StopTokenFilterFactory;
+import org.elasticsearch.index.analysis.TokenFilterFactory;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.ESTokenStreamTestCase;
+import org.elasticsearch.testframework.index.analysis.AnalysisTestsHelper;
 
 import java.io.IOException;
 import java.io.StringReader;

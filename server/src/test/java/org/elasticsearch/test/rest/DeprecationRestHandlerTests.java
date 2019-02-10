@@ -16,13 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.rest;
+package org.elasticsearch.test.rest;
 
 import com.carrotsearch.randomizedtesting.generators.CodepointSetGenerator;
 
 import org.elasticsearch.client.node.NodeClient;
 import org.elasticsearch.common.logging.DeprecationLogger;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.rest.DeprecationRestHandler;
+import org.elasticsearch.rest.RestChannel;
+import org.elasticsearch.rest.RestHandler;
+import org.elasticsearch.rest.RestRequest;
+import org.elasticsearch.testframework.ESTestCase;
 
 import org.mockito.InOrder;
 

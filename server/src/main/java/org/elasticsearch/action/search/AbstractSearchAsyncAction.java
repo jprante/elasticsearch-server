@@ -32,9 +32,9 @@ import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.search.SearchPhaseResult;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.internal.AliasFilter;
-import org.elasticsearch.search.internal.InternalSearchResponse;
-import org.elasticsearch.search.internal.ShardSearchTransportRequest;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.search.InternalSearchResponse;
+import org.elasticsearch.search.ShardSearchTransportRequest;
 import org.elasticsearch.transport.Transport;
 
 import java.util.List;
@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-abstract class AbstractSearchAsyncAction<Result extends SearchPhaseResult> extends InitialSearchPhase<Result>
+public abstract class AbstractSearchAsyncAction<Result extends SearchPhaseResult> extends InitialSearchPhase<Result>
     implements SearchPhaseContext {
     private static final float DEFAULT_INDEX_BOOST = 1.0f;
     private final Logger logger;
@@ -96,7 +96,7 @@ abstract class AbstractSearchAsyncAction<Result extends SearchPhaseResult> exten
     /**
      * Builds how long it took to execute the search.
      */
-    long buildTookInMillis() {
+    public long buildTookInMillis() {
         return TimeUnit.NANOSECONDS.toMillis(
                 timeProvider.getRelativeCurrentNanos() - timeProvider.getRelativeStartNanos());
     }

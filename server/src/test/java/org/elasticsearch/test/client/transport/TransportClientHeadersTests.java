@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.client.transport;
+package org.elasticsearch.test.client.transport;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.GenericAction;
@@ -25,7 +25,8 @@ import org.elasticsearch.action.admin.cluster.node.liveness.LivenessResponse;
 import org.elasticsearch.action.admin.cluster.node.liveness.TransportLivenessAction;
 import org.elasticsearch.action.admin.cluster.state.ClusterStateAction;
 import org.elasticsearch.action.admin.cluster.state.ClusterStateResponse;
-import org.elasticsearch.client.AbstractClientHeadersTestCase;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.test.client.AbstractClientHeadersTestCase;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
@@ -40,9 +41,9 @@ import org.elasticsearch.env.Environment;
 import org.elasticsearch.plugins.NetworkPlugin;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.plugins.PluginsService;
-import org.elasticsearch.test.transport.MockTransportService;
+import org.elasticsearch.testframework.transport.MockTransportService;
 import org.elasticsearch.threadpool.ThreadPool;
-import org.elasticsearch.transport.MockTransportClient;
+import org.elasticsearch.testframework.transport.MockTransportClient;
 import org.elasticsearch.transport.Transport;
 import org.elasticsearch.transport.TransportException;
 import org.elasticsearch.transport.TransportInterceptor;

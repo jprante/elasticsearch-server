@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.fetch.subphase;
+package org.elasticsearch.test.search.fetch.subphase;
 
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -27,10 +27,12 @@ import org.elasticsearch.index.shard.IndexShard;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.search.fetch.FetchSubPhase;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
+import org.elasticsearch.search.fetch.subphase.FetchSourceSubPhase;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.lookup.SearchLookup;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.TestSearchContext;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.TestSearchContext;
 
 import java.io.IOException;
 import java.util.Collections;

@@ -17,22 +17,24 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.geobounds;
+package org.elasticsearch.test.search.aggregations.metrics.geobounds;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.LatLonDocValuesField;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.RandomIndexWriter;
+import org.apache.lucene.testframework.index.RandomIndexWriter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.store.Directory;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.index.mapper.GeoPointFieldMapper;
 import org.elasticsearch.index.mapper.MappedFieldType;
-import org.elasticsearch.search.aggregations.AggregatorTestCase;
+import org.elasticsearch.testframework.search.aggregations.AggregatorTestCase;
+import org.elasticsearch.search.aggregations.metrics.geobounds.GeoBoundsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.geobounds.InternalGeoBounds;
 import org.elasticsearch.test.geo.RandomGeoGenerator;
 
-import static org.elasticsearch.search.aggregations.metrics.geobounds.InternalGeoBoundsTests.GEOHASH_TOLERANCE;
+import static org.elasticsearch.test.search.aggregations.metrics.geobounds.InternalGeoBoundsTests.GEOHASH_TOLERANCE;
 import static org.hamcrest.Matchers.closeTo;
 
 public class GeoBoundsAggregatorTests extends AggregatorTestCase {

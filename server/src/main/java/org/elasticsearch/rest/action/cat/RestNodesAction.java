@@ -219,7 +219,7 @@ public class RestNodesAction extends AbstractCatAction {
         return table;
     }
 
-    Table buildTable(boolean fullId, RestRequest req, ClusterStateResponse state, NodesInfoResponse nodesInfo,
+    public Table buildTable(boolean fullId, RestRequest req, ClusterStateResponse state, NodesInfoResponse nodesInfo,
                              NodesStatsResponse nodesStats) {
 
         DiscoveryNodes nodes = state.getState().nodes();

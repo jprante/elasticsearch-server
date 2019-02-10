@@ -74,7 +74,7 @@ public class ClusterAllocationExplainRequest extends MasterNodeRequest<ClusterAl
      *
      * Package private for testing.
      */
-    ClusterAllocationExplainRequest(String index, int shard, boolean primary, @Nullable String currentNode) {
+    public ClusterAllocationExplainRequest(String index, int shard, boolean primary, @Nullable String currentNode) {
         this.index = index;
         this.shard = shard;
         this.primary = primary;

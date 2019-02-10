@@ -54,7 +54,7 @@ public class InternalComposite
     private final List<String> sourceNames;
     private final List<DocValueFormat> formats;
 
-    InternalComposite(String name, int size, List<String> sourceNames, List<DocValueFormat> formats,
+    public InternalComposite(String name, int size, List<String> sourceNames, List<DocValueFormat> formats,
                       List<InternalBucket> buckets, CompositeKey afterKey, int[] reverseMuls,
                       List<PipelineAggregator> pipelineAggregators, Map<String, Object> metaData) {
         super(name, pipelineAggregators, metaData);
@@ -150,8 +150,7 @@ public class InternalComposite
         return null;
     }
 
-    // Visible for tests
-    int[] getReverseMuls() {
+    public int[] getReverseMuls() {
         return reverseMuls;
     }
 
@@ -226,7 +225,7 @@ public class InternalComposite
         }
     }
 
-    static class InternalBucket extends InternalMultiBucketAggregation.InternalBucket
+    public static class InternalBucket extends InternalMultiBucketAggregation.InternalBucket
             implements CompositeAggregation.Bucket, KeyComparable<InternalBucket> {
 
         private final CompositeKey key;
@@ -237,7 +236,7 @@ public class InternalComposite
         private final transient List<DocValueFormat> formats;
 
 
-        InternalBucket(List<String> sourceNames, List<DocValueFormat> formats, CompositeKey key, int[] reverseMuls, long docCount,
+        public InternalBucket(List<String> sourceNames, List<DocValueFormat> formats, CompositeKey key, int[] reverseMuls, long docCount,
                        InternalAggregations aggregations) {
             this.key = key;
             this.docCount = docCount;
@@ -288,7 +287,7 @@ public class InternalComposite
 
         // get the raw key (without formatting to preserve the natural order).
         // visible for testing
-        CompositeKey getRawKey() {
+        public CompositeKey getRawKey() {
             return key;
         }
 

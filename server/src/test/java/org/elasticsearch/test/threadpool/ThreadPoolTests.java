@@ -17,9 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.threadpool;
+package org.elasticsearch.test.threadpool;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
+import org.elasticsearch.threadpool.ThreadPool;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 

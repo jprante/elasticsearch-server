@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.transport;
+package org.elasticsearch.test.transport;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.cluster.state.ClusterStateResponse;
@@ -24,15 +24,17 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.transport.MockTransportService;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.transport.MockTransportService;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
+import org.elasticsearch.transport.ActionNotFoundTransportException;
+import org.elasticsearch.transport.RemoteClusterService;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import static org.elasticsearch.transport.RemoteClusterConnectionTests.startTransport;
+import static org.elasticsearch.test.transport.RemoteClusterConnectionTests.startTransport;
 
 public class RemoteClusterClientTests extends ESTestCase {
     private final ThreadPool threadPool = new TestThreadPool(getClass().getName());

@@ -17,9 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.phrase;
+package org.elasticsearch.test.search.suggest.phrase;
 
 import org.elasticsearch.common.xcontent.XContentParser;
+import org.elasticsearch.search.suggest.phrase.LinearInterpolatingScorer;
+import org.elasticsearch.search.suggest.phrase.LinearInterpolation;
+import org.elasticsearch.search.suggest.phrase.SmoothingModel;
+import org.elasticsearch.search.suggest.phrase.WordScorer;
 
 import java.io.IOException;
 
@@ -63,7 +67,7 @@ public class LinearInterpolationModelTests extends SmoothingModelTestCase {
     }
 
     @Override
-    void assertWordScorer(WordScorer wordScorer, SmoothingModel in) {
+    public void assertWordScorer(WordScorer wordScorer, SmoothingModel in) {
         LinearInterpolation testModel = (LinearInterpolation) in;
         LinearInterpolatingScorer testScorer = (LinearInterpolatingScorer) wordScorer;
         assertThat(wordScorer, instanceOf(LinearInterpolatingScorer.class));

@@ -59,11 +59,11 @@ import java.util.function.Function;
 
 public class ScriptService extends AbstractComponent implements Closeable, ClusterStateApplier {
 
-    static final String DISABLE_DYNAMIC_SCRIPTING_SETTING = "script.disable_dynamic";
+    public static final String DISABLE_DYNAMIC_SCRIPTING_SETTING = "script.disable_dynamic";
 
     // a parsing function that requires a non negative int and a timevalue as arguments split by a slash
     // this allows you to easily define rates
-    static final Function<String, Tuple<Integer, TimeValue>> MAX_COMPILATION_RATE_FUNCTION =
+    public static final Function<String, Tuple<Integer, TimeValue>> MAX_COMPILATION_RATE_FUNCTION =
             (String value) -> {
                 if (value.contains("/") == false || value.startsWith("/") || value.endsWith("/")) {
                     throw new IllegalArgumentException("parameter must contain a positive integer and a timevalue, i.e. 10/1m, but was [" +
@@ -247,7 +247,7 @@ public class ScriptService extends AbstractComponent implements Closeable, Clust
      *
      * @param newRate the new expected maximum number of compilations per five minute window
      */
-    void setMaxCompilationRate(Tuple<Integer, TimeValue> newRate) {
+    public void setMaxCompilationRate(Tuple<Integer, TimeValue> newRate) {
         this.rate = newRate;
         // Reset the counter to allow new compilations
         this.scriptsPerTimeWindow = rate.v1();
@@ -359,7 +359,7 @@ public class ScriptService extends AbstractComponent implements Closeable, Clust
      * enough water the request is denied. Just like a normal bucket, if water is added that overflows the bucket, the extra water/capacity
      * is discarded - there can never be more water in the bucket than the size of the bucket.
      */
-    void checkCompilationLimit() {
+    public void checkCompilationLimit() {
         long now = System.nanoTime();
         long timePassed = now - lastInlineCompileTime;
         lastInlineCompileTime = now;
@@ -399,7 +399,7 @@ public class ScriptService extends AbstractComponent implements Closeable, Clust
         return contextsAllowed == null || contextsAllowed.isEmpty() == false;
     }
 
-    StoredScriptSource getScriptFromClusterState(String id) {
+    public StoredScriptSource getScriptFromClusterState(String id) {
         ScriptMetaData scriptMetadata = clusterState.metaData().custom(ScriptMetaData.TYPE);
 
         if (scriptMetadata == null) {

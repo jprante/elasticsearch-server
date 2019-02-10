@@ -171,7 +171,7 @@ public class PluginsService extends AbstractComponent {
         if (mandatoryPlugins.isEmpty() == false) {
             Set<String> missingPlugins = new HashSet<>();
             for (String mandatoryPlugin : mandatoryPlugins) {
-                if (!pluginsNames.contains(mandatoryPlugin) && !missingPlugins.contains(mandatoryPlugin)) {
+                if (!pluginsNames.contains(mandatoryPlugin)) {
                     missingPlugins.add(mandatoryPlugin);
                 }
             }
@@ -285,11 +285,11 @@ public class PluginsService extends AbstractComponent {
 
     // a "bundle" is a group of plugins in a single classloader
     // really should be 1-1, but we are not so fortunate
-    static class Bundle implements BundleCollection {
+    public static class Bundle implements BundleCollection {
         final PluginInfo plugin;
         final Set<URL> urls;
 
-        Bundle(PluginInfo plugin, Path dir) throws IOException {
+        public Bundle(PluginInfo plugin, Path dir) throws IOException {
             this.plugin = Objects.requireNonNull(plugin);
             Set<URL> urls = new LinkedHashSet<>();
             // gather urls for jar files
@@ -416,7 +416,7 @@ public class PluginsService extends AbstractComponent {
     /**
      * Verify the given plugin is compatible with the current Elasticsearch installation.
      */
-    static void verifyCompatibility(PluginInfo info) {
+    public static void verifyCompatibility(PluginInfo info) {
         if (info.getElasticsearchVersion().equals(Version.CURRENT) == false) {
             throw new IllegalArgumentException("Plugin [" + info.getName() + "] was built for Elasticsearch version "
                 + info.getElasticsearchVersion() + " but version " + Version.CURRENT + " is running");
@@ -424,7 +424,7 @@ public class PluginsService extends AbstractComponent {
         JarHell.checkJavaVersion(info.getName(), info.getJavaVersion());
     }
 
-    static void checkForFailedPluginRemovals(final Path pluginsDirectory) throws IOException {
+    public static void checkForFailedPluginRemovals(final Path pluginsDirectory) throws IOException {
         /*
          * Check for the existence of a marker file that indicates any plugins are in a garbage state from a failed attempt to remove the
          * plugin.
@@ -446,12 +446,12 @@ public class PluginsService extends AbstractComponent {
     }
 
     /** Get bundles for plugins installed in the given modules directory. */
-    static Set<Bundle> getModuleBundles(Path modulesDirectory) throws IOException {
+    public static Set<Bundle> getModuleBundles(Path modulesDirectory) throws IOException {
         return findBundles(modulesDirectory, "module").stream().flatMap(b -> b.bundles().stream()).collect(Collectors.toSet());
     }
 
     /** Get bundles for plugins installed in the given plugins directory. */
-    static Set<Bundle> getPluginBundles(final Path pluginsDirectory) throws IOException {
+    public static Set<Bundle> getPluginBundles(final Path pluginsDirectory) throws IOException {
         return findBundles(pluginsDirectory, "plugin").stream().flatMap(b -> b.bundles().stream()).collect(Collectors.toSet());
     }
 
@@ -502,8 +502,7 @@ public class PluginsService extends AbstractComponent {
      *
      * @throws IllegalStateException if a dependency cycle is found
      */
-    // pkg private for tests
-    static List<Bundle> sortBundles(Set<Bundle> bundles) {
+    public static List<Bundle> sortBundles(Set<Bundle> bundles) {
         Map<String, Bundle> namedBundles = bundles.stream().collect(Collectors.toMap(b -> b.plugin.getName(), Function.identity()));
         LinkedHashSet<Bundle> sortedBundles = new LinkedHashSet<>();
         LinkedHashSet<String> dependencyStack = new LinkedHashSet<>();
@@ -564,7 +563,7 @@ public class PluginsService extends AbstractComponent {
 
     // jar-hell check the bundle against the parent classloader and extended plugins
     // the plugin cli does it, but we do it again, in case lusers mess with jar files manually
-    static void checkBundleJarHell(Bundle bundle, Map<String, Set<URI>> transitiveUris) {
+    public static void checkBundleJarHell(Bundle bundle, Map<String, Set<URI>> transitiveUris) {
         // invariant: any plugins this plugin bundle extends have already been added to transitiveUrls
         List<String> exts = bundle.plugin.getExtendedPlugins();
 

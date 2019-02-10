@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Random;
 
-class RandomBasedUUIDGenerator implements UUIDGenerator {
+public class RandomBasedUUIDGenerator implements UUIDGenerator {
 
     /**
      * Returns a Base64 encoded version of a Version 4.0 compatible UUID

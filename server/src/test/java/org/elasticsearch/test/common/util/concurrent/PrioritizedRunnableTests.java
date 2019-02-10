@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util.concurrent;
+package org.elasticsearch.test.common.util.concurrent;
 
 import org.elasticsearch.common.Priority;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.concurrent.PrioritizedRunnable;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;

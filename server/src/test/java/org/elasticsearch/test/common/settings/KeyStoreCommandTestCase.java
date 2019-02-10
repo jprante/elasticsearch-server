@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,12 +29,14 @@ import java.util.List;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import org.elasticsearch.core.internal.io.IOUtils;
-import org.apache.lucene.util.LuceneTestCase;
-import org.elasticsearch.cli.CommandTestCase;
-import org.elasticsearch.common.io.PathUtilsForTesting;
+import org.elasticsearch.common.settings.KeyStoreWrapper;
+import org.elasticsearch.common.settings.Settings;
+import org.apache.lucene.testframework.util.LuceneTestCase;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.cli.CommandTestCase;
+import org.elasticsearch.testframework.common.io.PathUtilsForTesting;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.env.TestEnvironment;
+import org.elasticsearch.testframework.env.TestEnvironment;
 import org.junit.After;
 import org.junit.Before;
 

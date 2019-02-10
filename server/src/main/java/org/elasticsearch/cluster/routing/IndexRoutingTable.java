@@ -96,7 +96,7 @@ public class IndexRoutingTable extends AbstractDiffable<IndexRoutingTable> imple
         return index;
     }
 
-    boolean validate(MetaData metaData) {
+    public boolean validate(MetaData metaData) {
         // check index exists
         if (!metaData.hasIndex(index.getName())) {
             throw new IllegalStateException(index + " exists in routing does not exists in metadata");

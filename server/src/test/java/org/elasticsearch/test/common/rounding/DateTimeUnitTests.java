@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.rounding;
+package org.elasticsearch.test.common.rounding;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.rounding.DateTimeUnit;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.elasticsearch.common.rounding.DateTimeUnit.DAY_OF_MONTH;
 import static org.elasticsearch.common.rounding.DateTimeUnit.HOUR_OF_DAY;

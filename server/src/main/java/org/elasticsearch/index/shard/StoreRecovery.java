@@ -66,12 +66,12 @@ import static org.elasticsearch.common.unit.TimeValue.timeValueMillis;
  * This package private utility class encapsulates the logic to recover an index shard from either an existing index on
  * disk or from a snapshot in a repository.
  */
-final class StoreRecovery {
+public final class StoreRecovery {
 
     private final Logger logger;
     private final ShardId shardId;
 
-    StoreRecovery(ShardId shardId, Logger logger) {
+    public StoreRecovery(ShardId shardId, Logger logger) {
         this.logger = logger;
         this.shardId = shardId;
     }
@@ -143,7 +143,7 @@ final class StoreRecovery {
         return false;
     }
 
-    void addIndices(final RecoveryState.Index indexRecoveryStats, final Directory target, final Sort indexSort, final Directory[] sources,
+    public void addIndices(final RecoveryState.Index indexRecoveryStats, final Directory target, final Sort indexSort, final Directory[] sources,
             final long maxSeqNo, final long maxUnsafeAutoIdTimestamp, IndexMetaData indexMetaData, int shardId, boolean split,
             boolean hasNested) throws IOException {
 
@@ -190,10 +190,10 @@ final class StoreRecovery {
     /**
      * Directory wrapper that records copy process for recovery statistics
      */
-    static final class StatsDirectoryWrapper extends FilterDirectory {
+    public static final class StatsDirectoryWrapper extends FilterDirectory {
         private final RecoveryState.Index index;
 
-        StatsDirectoryWrapper(Directory in, RecoveryState.Index indexRecoveryStats) {
+        public StatsDirectoryWrapper(Directory in, RecoveryState.Index indexRecoveryStats) {
             super(in);
             this.index = indexRecoveryStats;
         }

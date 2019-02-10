@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.serialization;
+package org.elasticsearch.test.cluster.serialization;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.ClusterModule;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.Diff;
-import org.elasticsearch.cluster.ESAllocationTestCase;
+import org.elasticsearch.testframework.cluster.ESAllocationTestCase;
 import org.elasticsearch.cluster.RestoreInProgress;
 import org.elasticsearch.cluster.SnapshotDeletionsInProgress;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -42,7 +42,7 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.snapshots.Snapshot;
 import org.elasticsearch.snapshots.SnapshotId;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.io.IOException;
 import java.util.Arrays;

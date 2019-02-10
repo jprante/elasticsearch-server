@@ -17,9 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.ingest;
+package org.elasticsearch.test.ingest;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.ingest.IngestDocument;
+import org.elasticsearch.ingest.ValueSource;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.ingest.RandomDocumentPicks;
+import org.elasticsearch.testframework.ingest.TestTemplateService;
 
 import java.util.ArrayList;
 import java.util.Collections;

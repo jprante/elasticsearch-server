@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.snapshots;
+package org.elasticsearch.test.snapshots;
 
 import org.elasticsearch.action.ActionFuture;
 import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotResponse;
@@ -25,12 +25,13 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.repositories.RepositoriesService;
-import org.elasticsearch.snapshots.mockstore.MockRepository;
+import org.elasticsearch.snapshots.ConcurrentSnapshotExecutionException;
+import org.elasticsearch.test.snapshots.mockstore.MockRepository;
 
 import java.util.Collection;
 import java.util.Collections;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.containsString;
 
 /**

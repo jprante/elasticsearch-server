@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.ingest;
+package org.elasticsearch.test.ingest;
 
 import org.apache.lucene.util.SetOnce;
 import org.elasticsearch.ElasticsearchException;
@@ -31,7 +31,17 @@ import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.util.concurrent.EsExecutors;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.VersionType;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.ingest.AbstractProcessor;
+import org.elasticsearch.ingest.CompoundProcessor;
+import org.elasticsearch.ingest.IngestDocument;
+import org.elasticsearch.ingest.IngestMetadata;
+import org.elasticsearch.ingest.IngestStats;
+import org.elasticsearch.ingest.Pipeline;
+import org.elasticsearch.ingest.PipelineConfiguration;
+import org.elasticsearch.ingest.PipelineExecutionService;
+import org.elasticsearch.ingest.PipelineStore;
+import org.elasticsearch.ingest.Processor;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.junit.Before;
 import org.mockito.ArgumentMatcher;

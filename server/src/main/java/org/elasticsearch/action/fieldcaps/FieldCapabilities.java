@@ -52,7 +52,7 @@ public class FieldCapabilities implements Writeable, ToXContentObject {
      * @param isSearchable Whether this field is indexed for search.
      * @param isAggregatable Whether this field can be aggregated on.
      */
-    FieldCapabilities(String name, String type, boolean isSearchable, boolean isAggregatable) {
+    public FieldCapabilities(String name, String type, boolean isSearchable, boolean isAggregatable) {
         this(name, type, isSearchable, isAggregatable, null, null, null);
     }
 
@@ -69,7 +69,7 @@ public class FieldCapabilities implements Writeable, ToXContentObject {
      * @param nonAggregatableIndices The list of indices where this field is not aggregatable,
      *                               or null if the field is aggregatable in all indices.
      */
-    FieldCapabilities(String name, String type,
+    public FieldCapabilities(String name, String type,
                       boolean isSearchable, boolean isAggregatable,
                       String[] indices,
                       String[] nonSearchableIndices,
@@ -83,7 +83,7 @@ public class FieldCapabilities implements Writeable, ToXContentObject {
         this.nonAggregatableIndices = nonAggregatableIndices;
     }
 
-    FieldCapabilities(StreamInput in) throws IOException {
+    public FieldCapabilities(StreamInput in) throws IOException {
         this.name = in.readString();
         this.type = in.readString();
         this.isSearchable = in.readBoolean();
@@ -203,14 +203,14 @@ public class FieldCapabilities implements Writeable, ToXContentObject {
         return result;
     }
 
-    static class Builder {
+    public static class Builder {
         private String name;
         private String type;
         private boolean isSearchable;
         private boolean isAggregatable;
         private List<IndexCaps> indiceList;
 
-        Builder(String name, String type) {
+        public Builder(String name, String type) {
             this.name = name;
             this.type = type;
             this.isSearchable = true;
@@ -218,14 +218,14 @@ public class FieldCapabilities implements Writeable, ToXContentObject {
             this.indiceList = new ArrayList<>();
         }
 
-        void add(String index, boolean search, boolean agg) {
+        public void add(String index, boolean search, boolean agg) {
             IndexCaps indexCaps = new IndexCaps(index, search, agg);
             indiceList.add(indexCaps);
             this.isSearchable &= search;
             this.isAggregatable &= agg;
         }
 
-        FieldCapabilities build(boolean withIndices) {
+        public FieldCapabilities build(boolean withIndices) {
             final String[] indices;
             /* Eclipse can't deal with o -> o.name, maybe because of
              * https://bugs.eclipse.org/bugs/show_bug.cgi?id=511750 */

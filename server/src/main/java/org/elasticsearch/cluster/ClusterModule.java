@@ -102,9 +102,8 @@ public class ClusterModule extends AbstractModule {
     private final IndexNameExpressionResolver indexNameExpressionResolver;
     private final AllocationDeciders allocationDeciders;
     private final AllocationService allocationService;
-    // pkg private for tests
-    final Collection<AllocationDecider> deciderList;
-    final ShardsAllocator shardsAllocator;
+    public final Collection<AllocationDecider> deciderList;
+    public final ShardsAllocator shardsAllocator;
 
     public ClusterModule(Settings settings, ClusterService clusterService, List<ClusterPlugin> clusterPlugins,
                          ClusterInfoService clusterInfoService) {
@@ -152,10 +151,10 @@ public class ClusterModule extends AbstractModule {
         return entries;
     }
 
-    static final Set<String> PRE_6_3_METADATA_CUSTOMS_WHITE_LIST = Collections.unmodifiableSet(Sets.newHashSet(
+    public static final Set<String> PRE_6_3_METADATA_CUSTOMS_WHITE_LIST = Collections.unmodifiableSet(Sets.newHashSet(
         IndexGraveyard.TYPE, IngestMetadata.TYPE, RepositoriesMetaData.TYPE, ScriptMetaData.TYPE));
 
-    static final Set<String> PRE_6_3_CLUSTER_CUSTOMS_WHITE_LIST = Collections.unmodifiableSet(Sets.newHashSet(
+    public static final Set<String> PRE_6_3_CLUSTER_CUSTOMS_WHITE_LIST = Collections.unmodifiableSet(Sets.newHashSet(
         RestoreInProgress.TYPE, SnapshotDeletionsInProgress.TYPE, SnapshotsInProgress.TYPE));
 
     /**

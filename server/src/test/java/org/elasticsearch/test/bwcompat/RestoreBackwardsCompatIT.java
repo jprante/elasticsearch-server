@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.bwcompat;
+package org.elasticsearch.test.bwcompat;
 
-import org.elasticsearch.common.io.FileTestUtils;
+import org.elasticsearch.testframework.common.io.FileTestUtils;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.repositories.fs.FsRepository;
-import org.elasticsearch.snapshots.AbstractSnapshotIntegTestCase;
+import org.elasticsearch.test.snapshots.AbstractSnapshotIntegTestCase;
 import org.elasticsearch.snapshots.SnapshotRestoreException;
-import org.elasticsearch.snapshots.mockstore.MockRepository;
-import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
-import org.elasticsearch.test.ESIntegTestCase.Scope;
+import org.elasticsearch.test.snapshots.mockstore.MockRepository;
+import org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.testframework.ESIntegTestCase.Scope;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
 
@@ -78,7 +78,7 @@ public class RestoreBackwardsCompatIT extends AbstractSnapshotIntegTestCase {
 
     private List<String> listRepoVersions(String prefix) throws Exception {
         List<String> repoVersions = new ArrayList<>();
-        Path repoFiles = getBwcIndicesPath();
+        Path repoFiles = getDataPath(RestoreBackwardsCompatIT.class, "/org/elasticsearch/test/indices/bwc");
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(repoFiles, prefix + "-*.zip")) {
             for (Path entry : stream) {
                 String fileName = entry.getFileName().toString();
@@ -91,7 +91,8 @@ public class RestoreBackwardsCompatIT extends AbstractSnapshotIntegTestCase {
     }
 
     private void createRepo(String prefix, String version, String repo) throws Exception {
-        Path repoFileFromBuild = getBwcIndicesPath().resolve(prefix + "-" + version + ".zip");
+        Path bwc = getDataPath(RestoreBackwardsCompatIT.class, "/org/elasticsearch/test/indices/bwc");
+        Path repoFileFromBuild = bwc.resolve(prefix + "-" + version + ".zip");
         String repoFileName = repoFileFromBuild.getFileName().toString().split(".zip")[0];
         Path fsRepoPath = repoPath.resolve(repoFileName);
         FileTestUtils.unzip(repoFileFromBuild, fsRepoPath, null);

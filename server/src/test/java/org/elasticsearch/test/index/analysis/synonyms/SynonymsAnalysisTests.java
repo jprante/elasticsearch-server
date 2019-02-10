@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis.synonyms;
+package org.elasticsearch.test.index.analysis.synonyms;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
@@ -31,8 +31,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.analysis.IndexAnalyzers;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IndexSettingsModule;
 import org.hamcrest.MatcherAssert;
 
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class SynonymsAnalysisTests extends ESTestCase {
         Files.copy(synonyms, config.resolve("synonyms.txt"));
         Files.copy(synonymsWordnet, config.resolve("synonyms_wordnet.txt"));
 
-        String json = "/org/elasticsearch/index/analysis/synonyms/synonyms.json";
+        String json = "/org/elasticsearch/test/index/analysis/synonyms/synonyms.json";
         Settings settings = Settings.builder().
             loadFromStream(json, getClass().getResourceAsStream(json), false)
                 .put(Environment.PATH_HOME_SETTING.getKey(), home)

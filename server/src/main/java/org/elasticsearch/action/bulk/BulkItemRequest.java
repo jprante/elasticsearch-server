@@ -34,7 +34,7 @@ public class BulkItemRequest implements Streamable {
     private DocWriteRequest request;
     private volatile BulkItemResponse primaryResponse;
 
-    BulkItemRequest() {
+    public BulkItemRequest() {
 
     }
 
@@ -57,11 +57,11 @@ public class BulkItemRequest implements Streamable {
         return request.indices()[0];
     }
 
-    BulkItemResponse getPrimaryResponse() {
+    public BulkItemResponse getPrimaryResponse() {
         return primaryResponse;
     }
 
-    void setPrimaryResponse(BulkItemResponse primaryResponse) {
+    public void setPrimaryResponse(BulkItemResponse primaryResponse) {
         this.primaryResponse = primaryResponse;
     }
 

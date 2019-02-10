@@ -30,29 +30,29 @@ import org.elasticsearch.ingest.IngestDocument;
 
 import java.io.IOException;
 
-class SimulateProcessorResult implements Writeable, ToXContentObject {
+public class SimulateProcessorResult implements Writeable, ToXContentObject {
     private final String processorTag;
     private final WriteableIngestDocument ingestDocument;
     private final Exception failure;
 
-    SimulateProcessorResult(String processorTag, IngestDocument ingestDocument, Exception failure) {
+    public SimulateProcessorResult(String processorTag, IngestDocument ingestDocument, Exception failure) {
         this.processorTag = processorTag;
         this.ingestDocument = (ingestDocument == null) ? null : new WriteableIngestDocument(ingestDocument);
         this.failure = failure;
     }
 
-    SimulateProcessorResult(String processorTag, IngestDocument ingestDocument) {
+    public SimulateProcessorResult(String processorTag, IngestDocument ingestDocument) {
         this(processorTag, ingestDocument, null);
     }
 
-    SimulateProcessorResult(String processorTag, Exception failure) {
+    public SimulateProcessorResult(String processorTag, Exception failure) {
         this(processorTag, null, failure);
     }
 
     /**
      * Read from a stream.
      */
-    SimulateProcessorResult(StreamInput in) throws IOException {
+    public SimulateProcessorResult(StreamInput in) throws IOException {
         this.processorTag = in.readString();
         if (in.readBoolean()) {
             this.ingestDocument = new WriteableIngestDocument(in);

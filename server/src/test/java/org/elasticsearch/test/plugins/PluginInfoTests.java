@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.plugins;
+package org.elasticsearch.test.plugins;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.cluster.node.info.PluginsAndModules;
 import org.elasticsearch.common.io.stream.ByteBufferStreamInput;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.plugins.PluginInfo;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.plugins.PluginTestUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.file.Path;

@@ -47,19 +47,19 @@ public class ClusterUpdateSettingsResponse extends AcknowledgedResponse {
         PARSER.declareObject((r, t) -> r.transientSettings = t, (p, c) -> Settings.fromXContent(p), TRANSIENT);
     }
 
-    Settings transientSettings;
-    Settings persistentSettings;
+    public Settings transientSettings;
+    public Settings persistentSettings;
 
-    ClusterUpdateSettingsResponse() {
+    public ClusterUpdateSettingsResponse() {
         this.persistentSettings = Settings.EMPTY;
         this.transientSettings = Settings.EMPTY;
     }
 
-    ClusterUpdateSettingsResponse(boolean acknowledged) {
+    public ClusterUpdateSettingsResponse(boolean acknowledged) {
         super(acknowledged);
     }
 
-    ClusterUpdateSettingsResponse(boolean acknowledged, Settings transientSettings, Settings persistentSettings) {
+    public ClusterUpdateSettingsResponse(boolean acknowledged, Settings transientSettings, Settings persistentSettings) {
         super(acknowledged);
         this.persistentSettings = persistentSettings;
         this.transientSettings = transientSettings;

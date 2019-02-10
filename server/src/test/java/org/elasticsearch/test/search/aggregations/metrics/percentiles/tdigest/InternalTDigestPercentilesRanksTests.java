@@ -17,11 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.percentiles.tdigest;
+package org.elasticsearch.test.search.aggregations.metrics.percentiles.tdigest;
 
 import org.elasticsearch.common.io.stream.Writeable.Reader;
 import org.elasticsearch.search.DocValueFormat;
-import org.elasticsearch.search.aggregations.metrics.percentiles.InternalPercentilesRanksTestCase;
+import org.elasticsearch.search.aggregations.metrics.percentiles.tdigest.InternalTDigestPercentileRanks;
+import org.elasticsearch.search.aggregations.metrics.percentiles.tdigest.ParsedTDigestPercentileRanks;
+import org.elasticsearch.search.aggregations.metrics.percentiles.tdigest.TDigestState;
+import org.elasticsearch.test.search.aggregations.metrics.percentiles.InternalPercentilesRanksTestCase;
 import org.elasticsearch.search.aggregations.metrics.percentiles.ParsedPercentiles;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 

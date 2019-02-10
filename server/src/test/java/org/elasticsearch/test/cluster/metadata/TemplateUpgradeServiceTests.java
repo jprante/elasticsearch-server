@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.metadata;
+package org.elasticsearch.test.cluster.metadata;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.ActionListener;
@@ -30,6 +30,10 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.cluster.ClusterChangedEvent;
 import org.elasticsearch.cluster.ClusterState;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.cluster.metadata.IndexTemplateMetaData;
+import org.elasticsearch.cluster.metadata.MetaData;
+import org.elasticsearch.cluster.metadata.TemplateUpgradeService;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.cluster.service.ClusterService;
@@ -39,8 +43,8 @@ import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.concurrent.ThreadContext;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.junit.After;
 import org.junit.Before;
@@ -62,9 +66,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.Collections.emptyMap;
-import static org.elasticsearch.test.ClusterServiceUtils.createClusterService;
-import static org.elasticsearch.test.ClusterServiceUtils.setState;
-import static org.elasticsearch.test.VersionUtils.randomVersion;
+import static org.elasticsearch.testframework.ClusterServiceUtils.createClusterService;
+import static org.elasticsearch.testframework.ClusterServiceUtils.setState;
+import static org.elasticsearch.testframework.VersionUtils.randomVersion;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.containsString;
@@ -318,19 +322,19 @@ public class TemplateUpgradeServiceTests extends ESTestCase {
                 )) {
 
             @Override
-            void tryFinishUpgrade(AtomicBoolean anyUpgradeFailed) {
+            public void tryFinishUpgrade(AtomicBoolean anyUpgradeFailed) {
                 super.tryFinishUpgrade(anyUpgradeFailed);
                 finishInvocation.release();
             }
 
             @Override
-            void upgradeTemplates(Map<String, BytesReference> changes, Set<String> deletions) {
+            public void upgradeTemplates(Map<String, BytesReference> changes, Set<String> deletions) {
                 super.upgradeTemplates(changes, deletions);
                 updateInvocation.release();
             }
 
             @Override
-            Optional<Tuple<Map<String, BytesReference>, Set<String>>>
+            public Optional<Tuple<Map<String, BytesReference>, Set<String>>>
                     calculateTemplateChanges(ImmutableOpenMap<String, IndexTemplateMetaData> templates) {
                 final Optional<Tuple<Map<String, BytesReference>, Set<String>>> ans = super.calculateTemplateChanges(templates);
                 calculateInvocation.release();

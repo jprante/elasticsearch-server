@@ -177,7 +177,7 @@ public class SliceBuilder implements Writeable, ToXContentObject {
         return builder;
     }
 
-    void innerToXContent(XContentBuilder builder) throws IOException {
+    public void innerToXContent(XContentBuilder builder) throws IOException {
         builder.field(FIELD_FIELD.getPreferredName(), field);
         builder.field(ID_FIELD.getPreferredName(), id);
         builder.field(MAX_FIELD.getPreferredName(), max);

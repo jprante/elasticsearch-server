@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.similarity;
+package org.elasticsearch.test.index.similarity;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
@@ -38,11 +38,12 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.TestUtil;
 import org.apache.lucene.util.Version;
+import org.elasticsearch.index.similarity.ScriptedSimilarity;
 import org.elasticsearch.script.SimilarityScript;
 import org.elasticsearch.script.SimilarityWeightScript;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;

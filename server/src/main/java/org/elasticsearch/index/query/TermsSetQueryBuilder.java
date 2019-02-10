@@ -84,8 +84,7 @@ public final class TermsSetQueryBuilder extends AbstractQueryBuilder<TermsSetQue
         out.writeOptionalWriteable(minimumShouldMatchScript);
     }
 
-    // package protected for testing purpose
-    String getFieldName() {
+    public String getFieldName() {
         return fieldName;
     }
 
@@ -221,7 +220,7 @@ public final class TermsSetQueryBuilder extends AbstractQueryBuilder<TermsSetQue
     }
 
     @Override
-    protected Query doToQuery(QueryShardContext context) throws IOException {
+    public Query doToQuery(QueryShardContext context) throws IOException {
         if (values.isEmpty()) {
             return Queries.newMatchNoDocsQuery("No terms supplied for \"" + getName() + "\" query.");
         }

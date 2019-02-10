@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics;
+package org.elasticsearch.test.search.aggregations.metrics;
 
-import org.elasticsearch.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.testframework.search.aggregations.BaseAggregationTestCase;
 import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCountAggregationBuilder;
 
 public class ValueCountTests extends BaseAggregationTestCase<ValueCountAggregationBuilder> {

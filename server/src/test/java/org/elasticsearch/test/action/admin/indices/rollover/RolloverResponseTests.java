@@ -17,11 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.rollover;
+package org.elasticsearch.test.action.admin.indices.rollover;
 
+import org.elasticsearch.action.admin.indices.rollover.Condition;
+import org.elasticsearch.action.admin.indices.rollover.MaxAgeCondition;
+import org.elasticsearch.action.admin.indices.rollover.MaxDocsCondition;
+import org.elasticsearch.action.admin.indices.rollover.RolloverResponse;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;

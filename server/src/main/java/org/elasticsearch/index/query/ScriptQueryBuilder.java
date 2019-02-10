@@ -137,7 +137,7 @@ public class ScriptQueryBuilder extends AbstractQueryBuilder<ScriptQueryBuilder>
         return new ScriptQuery(script, filterScript);
     }
 
-    static class ScriptQuery extends Query {
+    public static class ScriptQuery extends Query {
 
         final Script script;
         final FilterScript.LeafFactory filterScript;

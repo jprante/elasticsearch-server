@@ -124,7 +124,7 @@ public class OsProbe {
      *
      * @return the available system load averages or {@code null}
      */
-    final double[] getSystemLoadAverage() {
+    public final double[] getSystemLoadAverage() {
         if (Constants.WINDOWS) {
             return null;
         } else if (Constants.LINUX) {
@@ -164,7 +164,7 @@ public class OsProbe {
      * @return the line from {@code /proc/loadavg} or {@code null}
      */
     @SuppressForbidden(reason = "access /proc/loadavg")
-    String readProcLoadavg() throws IOException {
+    public String readProcLoadavg() throws IOException {
         return readSingleLine(PathUtils.get("/proc/loadavg"));
     }
 
@@ -241,7 +241,7 @@ public class OsProbe {
      * @throws IOException if an I/O exception occurs reading {@code /proc/self/cgroup}
      */
     @SuppressForbidden(reason = "access /proc/self/cgroup")
-    List<String> readProcSelfCgroup() throws IOException {
+    public List<String> readProcSelfCgroup() throws IOException {
         final List<String> lines = Files.readAllLines(PathUtils.get("/proc/self/cgroup"));
         assert lines != null && !lines.isEmpty();
         return lines;
@@ -268,7 +268,7 @@ public class OsProbe {
      * @throws IOException if an I/O exception occurs reading {@code cpuacct.usage} for the control group
      */
     @SuppressForbidden(reason = "access /sys/fs/cgroup/cpuacct")
-    String readSysFsCgroupCpuAcctCpuAcctUsage(final String controlGroup) throws IOException {
+    public String readSysFsCgroupCpuAcctCpuAcctUsage(final String controlGroup) throws IOException {
         return readSingleLine(PathUtils.get("/sys/fs/cgroup/cpuacct", controlGroup, "cpuacct.usage"));
     }
 
@@ -294,7 +294,7 @@ public class OsProbe {
      * @throws IOException if an I/O exception occurs reading {@code cpu.cfs_period_us} for the control group
      */
     @SuppressForbidden(reason = "access /sys/fs/cgroup/cpu")
-    String readSysFsCgroupCpuAcctCpuCfsPeriod(final String controlGroup) throws IOException {
+    public String readSysFsCgroupCpuAcctCpuCfsPeriod(final String controlGroup) throws IOException {
         return readSingleLine(PathUtils.get("/sys/fs/cgroup/cpu", controlGroup, "cpu.cfs_period_us"));
     }
 
@@ -320,7 +320,7 @@ public class OsProbe {
      * @throws IOException if an I/O exception occurs reading {@code cpu.cfs_quota_us} for the control group
      */
     @SuppressForbidden(reason = "access /sys/fs/cgroup/cpu")
-    String readSysFsCgroupCpuAcctCpuAcctCfsQuota(final String controlGroup) throws IOException {
+    public String readSysFsCgroupCpuAcctCpuAcctCfsQuota(final String controlGroup) throws IOException {
         return readSingleLine(PathUtils.get("/sys/fs/cgroup/cpu", controlGroup, "cpu.cfs_quota_us"));
     }
 
@@ -373,7 +373,7 @@ public class OsProbe {
      * @throws IOException if an I/O exception occurs reading {@code cpu.stat} for the control group
      */
     @SuppressForbidden(reason = "access /sys/fs/cgroup/cpu")
-    List<String> readSysFsCgroupCpuAcctCpuStat(final String controlGroup) throws IOException {
+    public List<String> readSysFsCgroupCpuAcctCpuStat(final String controlGroup) throws IOException {
         final List<String> lines = Files.readAllLines(PathUtils.get("/sys/fs/cgroup/cpu", controlGroup, "cpu.stat"));
         assert lines != null && lines.size() == 3;
         return lines;
@@ -404,7 +404,7 @@ public class OsProbe {
      * @throws IOException if an I/O exception occurs reading {@code memory.limit_in_bytes} for the control group
      */
     @SuppressForbidden(reason = "access /sys/fs/cgroup/memory")
-    String readSysFsCgroupMemoryLimitInBytes(final String controlGroup) throws IOException {
+    public String readSysFsCgroupMemoryLimitInBytes(final String controlGroup) throws IOException {
         return readSingleLine(PathUtils.get("/sys/fs/cgroup/memory", controlGroup, "memory.limit_in_bytes"));
     }
 
@@ -433,7 +433,7 @@ public class OsProbe {
      * @throws IOException if an I/O exception occurs reading {@code memory.usage_in_bytes} for the control group
      */
     @SuppressForbidden(reason = "access /sys/fs/cgroup/memory")
-    String readSysFsCgroupMemoryUsageInBytes(final String controlGroup) throws IOException {
+    public String readSysFsCgroupMemoryUsageInBytes(final String controlGroup) throws IOException {
         return readSingleLine(PathUtils.get("/sys/fs/cgroup/memory", controlGroup, "memory.usage_in_bytes"));
     }
 
@@ -444,7 +444,7 @@ public class OsProbe {
      * @return {@code true} if the stats are available, otherwise {@code false}
      */
     @SuppressForbidden(reason = "access /proc/self/cgroup, /sys/fs/cgroup/cpu, /sys/fs/cgroup/cpuacct and /sys/fs/cgroup/memory")
-    boolean areCgroupStatsAvailable() {
+    public boolean areCgroupStatsAvailable() {
         if (!Files.exists(PathUtils.get("/proc/self/cgroup"))) {
             return false;
         }
@@ -513,7 +513,7 @@ public class OsProbe {
         return OsProbeHolder.INSTANCE;
     }
 
-    OsProbe() {
+    public OsProbe() {
 
     }
 

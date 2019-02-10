@@ -24,19 +24,19 @@ import org.apache.lucene.store.RAMOutputStream;
 import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.search.SearchPhaseResult;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.internal.InternalScrollSearchRequest;
+import org.elasticsearch.search.InternalScrollSearchRequest;
 import org.elasticsearch.transport.RemoteClusterAware;
 
 import java.io.IOException;
 import java.util.Base64;
 
-final class TransportSearchHelper {
+public final class TransportSearchHelper {
 
     static InternalScrollSearchRequest internalScrollSearchRequest(long id, SearchScrollRequest request) {
         return new InternalScrollSearchRequest(request, id);
     }
 
-    static String buildScrollId(AtomicArray<? extends SearchPhaseResult> searchPhaseResults) throws IOException {
+    public static String buildScrollId(AtomicArray<? extends SearchPhaseResult> searchPhaseResults) throws IOException {
         try (RAMOutputStream out = new RAMOutputStream()) {
             out.writeString(searchPhaseResults.length() == 1 ? ParsedScrollId.QUERY_AND_FETCH_TYPE : ParsedScrollId.QUERY_THEN_FETCH_TYPE);
             out.writeVInt(searchPhaseResults.asList().size());
@@ -56,7 +56,7 @@ final class TransportSearchHelper {
         }
     }
 
-    static ParsedScrollId parseScrollId(String scrollId) {
+    public static ParsedScrollId parseScrollId(String scrollId) {
         try {
             byte[] bytes = Base64.getUrlDecoder().decode(scrollId);
             ByteArrayDataInput in = new ByteArrayDataInput(bytes);

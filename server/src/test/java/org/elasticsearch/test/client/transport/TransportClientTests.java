@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.client.transport;
+package org.elasticsearch.test.client.transport;
 
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
+import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.io.stream.NamedWriteable;
 import org.elasticsearch.common.io.stream.NamedWriteableRegistry;
 import org.elasticsearch.common.io.stream.NamedWriteableRegistry.Entry;
@@ -28,8 +29,8 @@ import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.transport.MockTransportClient;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.transport.MockTransportClient;
 import org.elasticsearch.transport.TcpTransport;
 
 import java.io.IOException;

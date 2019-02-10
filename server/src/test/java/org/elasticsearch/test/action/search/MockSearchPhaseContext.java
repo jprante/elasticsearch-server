@@ -16,15 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.OriginalIndices;
+import org.elasticsearch.action.search.SearchPhase;
+import org.elasticsearch.action.search.SearchPhaseContext;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchShardIterator;
+import org.elasticsearch.action.search.SearchTask;
+import org.elasticsearch.action.search.SearchTransportService;
+import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.internal.InternalSearchResponse;
-import org.elasticsearch.search.internal.ShardSearchTransportRequest;
+import org.elasticsearch.search.InternalSearchResponse;
+import org.elasticsearch.search.ShardSearchTransportRequest;
 import org.elasticsearch.transport.Transport;
 import org.junit.Assert;
 

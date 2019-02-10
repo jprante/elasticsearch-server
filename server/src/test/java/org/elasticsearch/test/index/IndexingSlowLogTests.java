@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index;
+package org.elasticsearch.test.index;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import org.apache.lucene.document.NumericDocValuesField;
@@ -29,10 +29,14 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
+import org.elasticsearch.index.Index;
+import org.elasticsearch.index.IndexSettings;
+import org.elasticsearch.index.IndexingSlowLog;
 import org.elasticsearch.index.IndexingSlowLog.SlowLogParsedDocumentPrinter;
+import org.elasticsearch.index.SlowLogLevel;
 import org.elasticsearch.index.mapper.ParsedDocument;
 import org.elasticsearch.index.mapper.SeqNoFieldMapper;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

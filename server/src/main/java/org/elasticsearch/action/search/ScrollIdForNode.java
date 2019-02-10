@@ -21,12 +21,12 @@ package org.elasticsearch.action.search;
 
 import org.elasticsearch.common.Nullable;
 
-class ScrollIdForNode {
+public class ScrollIdForNode {
     private final String node;
     private final long scrollId;
     private final String clusterAlias;
 
-    ScrollIdForNode(@Nullable String clusterAlias, String node, long scrollId) {
+    public ScrollIdForNode(@Nullable String clusterAlias, String node, long scrollId) {
         this.node = node;
         this.clusterAlias = clusterAlias;
         this.scrollId = scrollId;

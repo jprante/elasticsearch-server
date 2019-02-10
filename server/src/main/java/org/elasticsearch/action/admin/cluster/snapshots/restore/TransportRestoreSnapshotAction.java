@@ -68,7 +68,7 @@ public class TransportRestoreSnapshotAction extends TransportMasterNodeAction<Re
     }
 
     @Override
-    protected ClusterBlockException checkBlock(RestoreSnapshotRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(RestoreSnapshotRequest request, ClusterState state) {
         // Restoring a snapshot might change the global state and create/change an index,
         // so we need to check for METADATA_WRITE and WRITE blocks
         ClusterBlockException blockException = state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
@@ -80,7 +80,7 @@ public class TransportRestoreSnapshotAction extends TransportMasterNodeAction<Re
     }
 
     @Override
-    protected void masterOperation(final RestoreSnapshotRequest request, final ClusterState state, final ActionListener<RestoreSnapshotResponse> listener) {
+    public void masterOperation(final RestoreSnapshotRequest request, final ClusterState state, final ActionListener<RestoreSnapshotResponse> listener) {
         RestoreService.RestoreRequest restoreRequest = new RestoreService.RestoreRequest(request.repository(), request.snapshot(),
                 request.indices(), request.indicesOptions(), request.renamePattern(), request.renameReplacement(),
                 request.settings(), request.masterNodeTimeout(), request.includeGlobalState(), request.partial(), request.includeAliases(),

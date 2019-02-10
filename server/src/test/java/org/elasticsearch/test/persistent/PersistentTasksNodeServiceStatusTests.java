@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.persistent;
+package org.elasticsearch.test.persistent;
 
 import org.elasticsearch.common.io.stream.Writeable;
-import org.elasticsearch.test.AbstractWireSerializingTestCase;
+import org.elasticsearch.persistent.AllocatedPersistentTask;
+import org.elasticsearch.testframework.AbstractWireSerializingTestCase;
 import org.elasticsearch.persistent.PersistentTasksNodeService.Status;
 
 import static org.hamcrest.Matchers.containsString;

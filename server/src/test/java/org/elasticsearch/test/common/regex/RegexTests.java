@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.regex;
+package org.elasticsearch.test.common.regex;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.regex.Regex;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Random;
 import java.util.regex.Pattern;

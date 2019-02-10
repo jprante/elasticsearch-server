@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.ingest;
+package org.elasticsearch.test.ingest;
 
 import org.elasticsearch.ElasticsearchParseException;
 import org.elasticsearch.ResourceNotFoundException;
@@ -31,7 +31,15 @@ import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.ingest.IngestDocument;
+import org.elasticsearch.ingest.IngestInfo;
+import org.elasticsearch.ingest.IngestMetadata;
+import org.elasticsearch.ingest.Pipeline;
+import org.elasticsearch.ingest.PipelineConfiguration;
+import org.elasticsearch.ingest.PipelineStore;
+import org.elasticsearch.ingest.Processor;
+import org.elasticsearch.ingest.ProcessorInfo;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import java.util.Arrays;

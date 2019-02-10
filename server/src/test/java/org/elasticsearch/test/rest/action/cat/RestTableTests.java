@@ -17,14 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.rest.action.cat;
+package org.elasticsearch.test.rest.action.cat;
 
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.AbstractRestChannel;
 import org.elasticsearch.rest.RestResponse;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.rest.action.cat.RestTable;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 import org.junit.Before;
 
 import java.util.ArrayList;

@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.mapper.BinaryRangeUtil;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class BinaryRangeUtilTests extends ESTestCase {
 

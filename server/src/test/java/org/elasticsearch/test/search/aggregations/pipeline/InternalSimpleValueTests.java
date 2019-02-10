@@ -17,12 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.pipeline;
+package org.elasticsearch.test.search.aggregations.pipeline;
 
 import org.elasticsearch.common.io.stream.Writeable.Reader;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
-import org.elasticsearch.test.InternalAggregationTestCase;
+import org.elasticsearch.search.aggregations.pipeline.InternalSimpleValue;
+import org.elasticsearch.search.aggregations.pipeline.ParsedSimpleValue;
+import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
+import org.elasticsearch.testframework.InternalAggregationTestCase;
 
 import java.util.Collections;
 import java.util.HashMap;

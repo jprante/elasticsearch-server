@@ -1,4 +1,4 @@
-package org.elasticsearch.action.admin.cluster.snapshots.status;
+package org.elasticsearch.test.action.admin.cluster.snapshots.status;
 
 /*
  * Licensed to Elasticsearch under one or more contributor
@@ -19,12 +19,15 @@ package org.elasticsearch.action.admin.cluster.snapshots.status;
  * under the License.
  */
 
+import org.elasticsearch.action.admin.cluster.snapshots.status.SnapshotIndexShardStage;
+import org.elasticsearch.action.admin.cluster.snapshots.status.SnapshotIndexShardStatus;
+import org.elasticsearch.action.admin.cluster.snapshots.status.SnapshotStatus;
 import org.elasticsearch.cluster.SnapshotsInProgress;
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.snapshots.Snapshot;
 import org.elasticsearch.snapshots.SnapshotId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.List;

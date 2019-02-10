@@ -17,18 +17,19 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.alias;
+package org.elasticsearch.test.action.admin.indices.aliases;
 
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest.AliasActions;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 
-import static org.elasticsearch.index.alias.RandomAliasActionsGenerator.randomAliasAction;
+import static org.elasticsearch.testframework.index.alias.RandomAliasActionsGenerator.randomAliasAction;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class IndicesAliasesRequestTests extends ESTestCase {

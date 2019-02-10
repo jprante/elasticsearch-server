@@ -17,9 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
 import org.elasticsearch.Version;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.ShardSearchFailure;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
@@ -36,18 +38,18 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.action.search.RestSearchAction;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.SearchHitsTests;
+import org.elasticsearch.test.search.SearchHitsTests;
 import org.elasticsearch.search.SearchModule;
-import org.elasticsearch.search.aggregations.AggregationsTests;
+import org.elasticsearch.test.search.aggregations.AggregationsTests;
 import org.elasticsearch.search.aggregations.InternalAggregations;
-import org.elasticsearch.search.internal.InternalSearchResponse;
+import org.elasticsearch.search.InternalSearchResponse;
 import org.elasticsearch.search.profile.SearchProfileShardResults;
-import org.elasticsearch.search.profile.SearchProfileShardResultsTests;
+import org.elasticsearch.test.search.profile.SearchProfileShardResultsTests;
 import org.elasticsearch.search.suggest.Suggest;
-import org.elasticsearch.search.suggest.SuggestTests;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.InternalAggregationTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.test.search.suggest.SuggestTests;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.InternalAggregationTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 import org.junit.After;
 import org.junit.Before;
 
@@ -59,8 +61,8 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonMap;
-import static org.elasticsearch.test.XContentTestUtils.insertRandomFields;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.XContentTestUtils.insertRandomFields;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 
 public class SearchResponseTests extends ESTestCase {
 

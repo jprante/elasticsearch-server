@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.xcontent;
+package org.elasticsearch.test.common.xcontent;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Locale;
 

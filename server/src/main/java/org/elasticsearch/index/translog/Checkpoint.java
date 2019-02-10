@@ -36,15 +36,15 @@ import java.nio.channels.FileChannel;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 
-final class Checkpoint {
+public final class Checkpoint {
 
-    final long offset;
-    final int numOps;
-    final long generation;
-    final long minSeqNo;
-    final long maxSeqNo;
-    final long globalCheckpoint;
-    final long minTranslogGeneration;
+    public final long offset;
+    public final int numOps;
+    public final long generation;
+    public final long minSeqNo;
+    public final long maxSeqNo;
+    public final long globalCheckpoint;
+    public final long minTranslogGeneration;
 
     private static final int INITIAL_VERSION = 1; // start with 1, just to recognize there was some magic serialization logic before
     private static final int CURRENT_VERSION = 2; // introduction of global checkpoints
@@ -80,7 +80,8 @@ final class Checkpoint {
      * @param globalCheckpoint the last-known global checkpoint
      * @param minTranslogGeneration the minimum generation referenced by the translog at this moment.
      */
-    Checkpoint(long offset, int numOps, long generation, long minSeqNo, long maxSeqNo, long globalCheckpoint, long minTranslogGeneration) {
+    public Checkpoint(long offset, int numOps, long generation, long minSeqNo, long maxSeqNo, long globalCheckpoint,
+                      long minTranslogGeneration) {
         assert minSeqNo <= maxSeqNo : "minSeqNo [" + minSeqNo + "] is higher than maxSeqNo [" + maxSeqNo + "]";
         assert minTranslogGeneration <= generation :
             "minTranslogGen [" + minTranslogGeneration + "] is higher than generation [" + generation + "]";
@@ -103,7 +104,7 @@ final class Checkpoint {
         out.writeLong(minTranslogGeneration);
     }
 
-    static Checkpoint emptyTranslogCheckpoint(final long offset, final long generation, final long globalCheckpoint,
+    public static Checkpoint emptyTranslogCheckpoint(final long offset, final long generation, final long globalCheckpoint,
                                               long minTranslogGeneration) {
         final long minSeqNo = SequenceNumbers.NO_OPS_PERFORMED;
         final long maxSeqNo = SequenceNumbers.NO_OPS_PERFORMED;

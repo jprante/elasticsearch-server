@@ -19,7 +19,7 @@
 
 package org.elasticsearch.test.index.mapper;
 
-import org.apache.lucene.analysis.MockLowerCaseFilter;
+import org.apache.lucene.testframework.analysis.MockLowerCaseFilter;
 import org.apache.lucene.index.DocValuesType;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexableField;
@@ -40,8 +40,8 @@ import org.elasticsearch.index.mapper.ParsedDocument;
 import org.elasticsearch.index.mapper.SourceToParse;
 import org.elasticsearch.plugins.AnalysisPlugin;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESSingleNodeTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
 import org.junit.Before;
 
 import java.io.IOException;

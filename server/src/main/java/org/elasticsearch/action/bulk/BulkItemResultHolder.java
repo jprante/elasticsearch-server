@@ -28,12 +28,12 @@ import org.elasticsearch.index.engine.VersionConflictEngineException;
  * A struct-like holder for a bulk items reponse, result, and the resulting
  * replica operation to be executed.
  */
-class BulkItemResultHolder {
+public class BulkItemResultHolder {
     public final @Nullable DocWriteResponse response;
     public final @Nullable Engine.Result operationResult;
     public final BulkItemRequest replicaRequest;
 
-    BulkItemResultHolder(@Nullable DocWriteResponse response,
+    public BulkItemResultHolder(@Nullable DocWriteResponse response,
                          @Nullable Engine.Result operationResult,
                          BulkItemRequest replicaRequest) {
         this.response = response;

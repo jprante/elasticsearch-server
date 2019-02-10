@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.cache.clear;
+package org.elasticsearch.test.action.admin.indices.cache.clear;
 
+import org.elasticsearch.action.admin.indices.cache.clear.ClearIndicesCacheResponse;
 import org.elasticsearch.action.support.DefaultShardOperationFailedException;
-import org.elasticsearch.action.support.broadcast.AbstractBroadcastResponseTestCase;
+import org.elasticsearch.test.action.support.broadcast.AbstractBroadcastResponseTestCase;
 import org.elasticsearch.common.xcontent.XContentParser;
 
 import java.util.List;

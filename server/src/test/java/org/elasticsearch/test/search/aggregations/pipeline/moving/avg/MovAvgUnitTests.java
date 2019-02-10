@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.pipeline.moving.avg;
+package org.elasticsearch.test.search.aggregations.pipeline.moving.avg;
 
 import org.elasticsearch.common.collect.EvictingQueue;
 import org.elasticsearch.search.aggregations.pipeline.movavg.models.EwmaModel;
@@ -26,7 +26,7 @@ import org.elasticsearch.search.aggregations.pipeline.movavg.models.HoltWintersM
 import org.elasticsearch.search.aggregations.pipeline.movavg.models.LinearModel;
 import org.elasticsearch.search.aggregations.pipeline.movavg.models.MovAvgModel;
 import org.elasticsearch.search.aggregations.pipeline.movavg.models.SimpleModel;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.text.ParseException;
 import java.util.ArrayList;

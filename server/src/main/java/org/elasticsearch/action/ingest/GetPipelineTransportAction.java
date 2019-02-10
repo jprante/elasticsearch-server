@@ -57,12 +57,12 @@ public class GetPipelineTransportAction extends TransportMasterNodeReadAction<Ge
     }
 
     @Override
-    protected void masterOperation(GetPipelineRequest request, ClusterState state, ActionListener<GetPipelineResponse> listener) throws Exception {
+    public void masterOperation(GetPipelineRequest request, ClusterState state, ActionListener<GetPipelineResponse> listener) throws Exception {
         listener.onResponse(new GetPipelineResponse(pipelineStore.getPipelines(state, request.getIds())));
     }
 
     @Override
-    protected ClusterBlockException checkBlock(GetPipelineRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(GetPipelineRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 

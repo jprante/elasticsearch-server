@@ -17,10 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
-import org.elasticsearch.test.AbstractQueryTestCase;
+import org.elasticsearch.index.query.BaseTermQueryBuilder;
+import org.elasticsearch.index.query.QueryShardException;
+import org.elasticsearch.testframework.AbstractQueryTestCase;
 
 import java.util.HashMap;
 import java.util.Map;

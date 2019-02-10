@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.gateway;
+package org.elasticsearch.test.gateway;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.FailedNodeException;
@@ -24,9 +24,10 @@ import org.elasticsearch.action.support.nodes.BaseNodeResponse;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.logging.Loggers;
+import org.elasticsearch.gateway.AsyncShardFetch;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.junit.After;
 import org.junit.Before;
@@ -316,7 +317,7 @@ public class AsyncShardFetchTests extends ESTestCase {
         }
 
         @Override
-        protected void asyncFetch(DiscoveryNode[] nodes, long fetchingRound) {
+        public void asyncFetch(DiscoveryNode[] nodes, long fetchingRound) {
             for (final DiscoveryNode node : nodes) {
                 final String nodeId = node.getId();
                 threadPool.generic().execute(new Runnable() {

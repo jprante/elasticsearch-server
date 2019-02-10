@@ -38,9 +38,9 @@ import java.util.zip.DataFormatException;
 
 abstract class AbstractInternalHDRPercentiles extends InternalNumericMetricsAggregation.MultiValue {
 
-    protected final double[] keys;
-    protected final DoubleHistogram state;
-    protected final boolean keyed;
+    public final double[] keys;
+    public final DoubleHistogram state;
+    public final boolean keyed;
 
     AbstractInternalHDRPercentiles(String name, double[] keys, DoubleHistogram state, boolean keyed, DocValueFormat format,
             List<PipelineAggregator> pipelineAggregators,
@@ -89,7 +89,7 @@ abstract class AbstractInternalHDRPercentiles extends InternalNumericMetricsAggr
         return value(Double.parseDouble(name));
     }
 
-    DocValueFormat formatter() {
+    public DocValueFormat formatter() {
         return format;
     }
 

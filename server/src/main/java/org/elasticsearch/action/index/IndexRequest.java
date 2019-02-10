@@ -77,7 +77,7 @@ public class IndexRequest extends ReplicatedWriteRequest<IndexRequest> implement
      *
      * @see ReplicationRequest#createTask
      */
-    static final int MAX_SOURCE_LENGTH_IN_TOSTRING = 2048;
+    public static final int MAX_SOURCE_LENGTH_IN_TOSTRING = 2048;
 
     private String type;
     private String id;

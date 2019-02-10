@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket;
+package org.elasticsearch.test.search.aggregations.bucket;
 
-import org.elasticsearch.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.testframework.search.aggregations.BaseAggregationTestCase;
 import org.elasticsearch.search.aggregations.bucket.global.GlobalAggregationBuilder;
 
 public class GlobalTests extends BaseAggregationTestCase<GlobalAggregationBuilder> {

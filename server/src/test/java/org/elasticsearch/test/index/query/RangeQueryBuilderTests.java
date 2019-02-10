@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.LongPoint;
@@ -41,8 +41,14 @@ import org.elasticsearch.index.mapper.FieldNamesFieldMapper;
 import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.MappedFieldType.Relation;
 import org.elasticsearch.index.mapper.MapperService;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.AbstractQueryTestCase;
+import org.elasticsearch.index.query.MatchNoneQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryRewriteContext;
+import org.elasticsearch.index.query.QueryShardContext;
+import org.elasticsearch.index.query.QueryShardException;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.AbstractQueryTestCase;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.ISOChronology;
@@ -407,7 +413,7 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
         String fieldName = DATE_FIELD_NAME;
         RangeQueryBuilder query = new RangeQueryBuilder(fieldName) {
             @Override
-            protected MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
+            public MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
                 return Relation.WITHIN;
             }
         };
@@ -443,7 +449,7 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
         String fieldName = DATE_FIELD_NAME;
         RangeQueryBuilder query = new RangeQueryBuilder(fieldName) {
             @Override
-            protected MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
+            public MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
                 return Relation.WITHIN;
             }
         };
@@ -468,7 +474,7 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
         String fieldName = randomAlphaOfLengthBetween(1, 20);
         RangeQueryBuilder query = new RangeQueryBuilder(fieldName) {
             @Override
-            protected MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
+            public MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
                 return Relation.DISJOINT;
             }
         };
@@ -485,7 +491,7 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
         String fieldName = randomAlphaOfLengthBetween(1, 20);
         RangeQueryBuilder query = new RangeQueryBuilder(fieldName) {
             @Override
-            protected MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
+            public MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
                 return Relation.INTERSECTS;
             }
         };
@@ -502,7 +508,7 @@ public class RangeQueryBuilderTests extends AbstractQueryTestCase<RangeQueryBuil
         String fieldName = randomAlphaOfLengthBetween(1, 20);
         RangeQueryBuilder query = new RangeQueryBuilder(fieldName) {
             @Override
-            protected MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
+            public MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) {
                 return Relation.INTERSECTS;
             }
         };

@@ -29,12 +29,12 @@ import org.apache.lucene.search.Weight;
 
 /** A {@link Scorer} that filters out documents that have a score that is
  *  lower than a configured constant. */
-final class MinScoreScorer extends Scorer {
+public final class MinScoreScorer extends Scorer {
 
     private final Scorer in;
     private final float minScore;
 
-    MinScoreScorer(Weight weight, Scorer scorer, float minScore) {
+    public MinScoreScorer(Weight weight, Scorer scorer, float minScore) {
         super(weight);
         if (scorer instanceof ScoreCachingWrappingScorer == false) {
             // when minScore is set, scores might be requested twice: once

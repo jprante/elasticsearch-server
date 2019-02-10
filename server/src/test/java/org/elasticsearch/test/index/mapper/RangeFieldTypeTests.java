@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 import org.apache.lucene.document.DoubleRange;
@@ -38,9 +38,12 @@ import org.elasticsearch.common.joda.Joda;
 import org.elasticsearch.common.network.InetAddresses;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.IndexSettings;
+import org.elasticsearch.index.mapper.MappedFieldType;
+import org.elasticsearch.index.mapper.RangeFieldMapper;
 import org.elasticsearch.index.mapper.RangeFieldMapper.RangeType;
 import org.elasticsearch.index.query.QueryShardContext;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.testframework.IndexSettingsModule;
+import org.elasticsearch.testframework.index.mapper.FieldTypeTestCase;
 import org.joda.time.DateTime;
 import org.junit.Before;
 

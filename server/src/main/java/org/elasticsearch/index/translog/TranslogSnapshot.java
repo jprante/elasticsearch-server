@@ -24,7 +24,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-final class TranslogSnapshot extends BaseTranslogReader {
+public final class TranslogSnapshot extends BaseTranslogReader {
 
     private final int totalOperations;
     private final Checkpoint checkpoint;
@@ -38,7 +38,7 @@ final class TranslogSnapshot extends BaseTranslogReader {
     /**
      * Create a snapshot of translog file channel.
      */
-    TranslogSnapshot(final BaseTranslogReader reader, final long length) {
+    public TranslogSnapshot(final BaseTranslogReader reader, final long length) {
         super(reader.generation, reader.channel, reader.path, reader.header);
         this.length = length;
         this.totalOperations = reader.totalOperations();
@@ -55,7 +55,7 @@ final class TranslogSnapshot extends BaseTranslogReader {
     }
 
     @Override
-    Checkpoint getCheckpoint() {
+    public Checkpoint getCheckpoint() {
         return checkpoint;
     }
 
@@ -83,7 +83,7 @@ final class TranslogSnapshot extends BaseTranslogReader {
     /**
      * reads an operation at the given position into the given buffer.
      */
-    protected void readBytes(ByteBuffer buffer, long position) throws IOException {
+    public void readBytes(ByteBuffer buffer, long position) throws IOException {
         if (position >= length) {
             throw new EOFException("read requested past EOF. pos [" + position + "] end: [" + length + "], generation: [" + getGeneration() + "], path: [" + path + "]");
         }

@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.routing;
+package org.elasticsearch.test.cluster.routing;
 
+import org.elasticsearch.cluster.routing.RoutingService;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.cluster.ESAllocationTestCase;
+import org.elasticsearch.testframework.cluster.ESAllocationTestCase;
 import org.junit.Before;
 
 import java.util.concurrent.atomic.AtomicBoolean;

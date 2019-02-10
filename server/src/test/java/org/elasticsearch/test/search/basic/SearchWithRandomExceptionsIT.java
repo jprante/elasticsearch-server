@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.search.basic;
+package org.elasticsearch.test.search.basic;
 
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.FilterDirectoryReader;
 import org.apache.lucene.index.LeafReader;
-import org.apache.lucene.util.English;
+import org.apache.lucene.testframework.util.English;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
@@ -37,13 +37,13 @@ import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.MockEngineFactoryPlugin;
+import org.elasticsearch.testframework.index.MockEngineFactoryPlugin;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.engine.MockEngineSupport;
-import org.elasticsearch.test.engine.ThrowingLeafReaderWrapper;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.engine.MockEngineSupport;
+import org.elasticsearch.testframework.engine.ThrowingLeafReaderWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 
 public class SearchWithRandomExceptionsIT extends ESIntegTestCase {
 

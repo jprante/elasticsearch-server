@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.indices.recovery;
+package org.elasticsearch.test.indices.recovery;
 
 import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.indices.recovery.RecoverySettings;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.concurrent.TimeUnit;
 

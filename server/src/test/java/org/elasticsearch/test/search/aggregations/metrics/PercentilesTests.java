@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics;
+package org.elasticsearch.test.search.aggregations.metrics;
 
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.common.ParsingException;
 import org.elasticsearch.common.xcontent.XContentParseException;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.testframework.search.aggregations.BaseAggregationTestCase;
 import org.elasticsearch.search.aggregations.metrics.percentiles.PercentilesAggregationBuilder;
 
 import java.io.IOException;

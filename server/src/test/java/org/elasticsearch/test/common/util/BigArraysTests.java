@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.breaker.CircuitBreaker;
@@ -25,9 +25,25 @@ import org.elasticsearch.common.breaker.CircuitBreakingException;
 import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.util.BigArray;
+import org.elasticsearch.common.util.BigArrays;
+import org.elasticsearch.common.util.BigByteArray;
+import org.elasticsearch.common.util.BigDoubleArray;
+import org.elasticsearch.common.util.BigFloatArray;
+import org.elasticsearch.common.util.BigIntArray;
+import org.elasticsearch.common.util.BigLongArray;
+import org.elasticsearch.common.util.BigObjectArray;
+import org.elasticsearch.common.util.ByteArray;
+import org.elasticsearch.common.util.DoubleArray;
+import org.elasticsearch.common.util.FloatArray;
+import org.elasticsearch.common.util.IntArray;
+import org.elasticsearch.common.util.LongArray;
+import org.elasticsearch.common.util.ObjectArray;
 import org.elasticsearch.indices.breaker.HierarchyCircuitBreakerService;
 import org.elasticsearch.indices.breaker.NoneCircuitBreakerService;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.common.util.MockBigArrays;
+import org.elasticsearch.testframework.common.util.MockPageCacheRecycler;
 import org.junit.Before;
 
 import java.lang.reflect.InvocationTargetException;

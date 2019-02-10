@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.lucene.grouping;
+package org.elasticsearch.test.lucene.grouping;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.NumericDocValuesField;
@@ -27,7 +27,7 @@ import org.apache.lucene.index.CompositeReaderContext;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexReaderContext;
 import org.apache.lucene.index.LeafReaderContext;
-import org.apache.lucene.index.RandomIndexWriter;
+import org.apache.lucene.testframework.index.RandomIndexWriter;
 import org.apache.lucene.search.Collector;
 import org.apache.lucene.search.FieldDoc;
 import org.apache.lucene.search.IndexSearcher;
@@ -44,8 +44,8 @@ import org.apache.lucene.search.grouping.CollapsingTopDocsCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.NumericUtils;
-import org.apache.lucene.util.TestUtil;
-import org.elasticsearch.test.ESTestCase;
+import org.apache.lucene.testframework.util.TestUtil;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;

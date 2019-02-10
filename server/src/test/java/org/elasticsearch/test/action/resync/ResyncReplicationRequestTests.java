@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.action.resync;
+package org.elasticsearch.test.action.resync;
 
+import org.elasticsearch.action.resync.ResyncReplicationRequest;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.lucene.uid.Versions;
@@ -26,7 +27,7 @@ import org.elasticsearch.index.Index;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.translog.Translog;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

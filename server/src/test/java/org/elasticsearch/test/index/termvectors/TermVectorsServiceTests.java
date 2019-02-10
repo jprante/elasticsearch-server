@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.termvectors;
+package org.elasticsearch.test.index.termvectors;
 
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
@@ -28,8 +28,9 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.IndexService;
 import org.elasticsearch.index.shard.IndexShard;
+import org.elasticsearch.index.termvectors.TermVectorsService;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 import java.io.IOException;
 import java.util.List;

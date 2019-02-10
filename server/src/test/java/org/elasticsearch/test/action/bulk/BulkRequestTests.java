@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
 import org.elasticsearch.action.ActionRequestValidationException;
 import org.elasticsearch.action.DocWriteRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.WriteRequest.RefreshPolicy;
@@ -35,7 +36,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
@@ -55,7 +56,8 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class BulkRequestTests extends ESTestCase {
     public void testSimpleBulk1() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk.json");
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON);
         assertThat(bulkRequest.numberOfActions(), equalTo(3));
@@ -76,21 +78,24 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testSimpleBulk2() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk2.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk2.json");
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON);
         assertThat(bulkRequest.numberOfActions(), equalTo(3));
     }
 
     public void testSimpleBulk3() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk3.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk3.json");
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON);
         assertThat(bulkRequest.numberOfActions(), equalTo(3));
     }
 
     public void testSimpleBulk4() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk4.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk4.json");
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON);
         assertThat(bulkRequest.numberOfActions(), equalTo(4));
@@ -112,7 +117,8 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testBulkAllowExplicitIndex() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk.json");
         try {
             new BulkRequest().add(new BytesArray(bulkAction.getBytes(StandardCharsets.UTF_8)), null, null, false, XContentType.JSON);
             fail();
@@ -120,7 +126,8 @@ public class BulkRequestTests extends ESTestCase {
 
         }
 
-        bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk5.json");
+        bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk5.json");
         new BulkRequest().add(new BytesArray(bulkAction.getBytes(StandardCharsets.UTF_8)), "test", null, false, XContentType.JSON);
     }
 
@@ -138,7 +145,8 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testSimpleBulk6() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk6.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk6.json");
         BulkRequest bulkRequest = new BulkRequest();
         ParsingException exc = expectThrows(ParsingException.class,
             () -> bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON));
@@ -146,7 +154,8 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testSimpleBulk7() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk7.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk7.json");
         BulkRequest bulkRequest = new BulkRequest();
         IllegalArgumentException exc = expectThrows(IllegalArgumentException.class,
             () -> bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON));
@@ -155,7 +164,8 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testSimpleBulk8() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk8.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk8.json");
         BulkRequest bulkRequest = new BulkRequest();
         IllegalArgumentException exc = expectThrows(IllegalArgumentException.class,
             () -> bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON));
@@ -163,7 +173,8 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testSimpleBulk9() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk9.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk9.json");
         BulkRequest bulkRequest = new BulkRequest();
         IllegalArgumentException exc = expectThrows(IllegalArgumentException.class,
             () -> bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON));
@@ -171,7 +182,8 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testSimpleBulk10() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk10.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk10.json");
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON);
         assertThat(bulkRequest.numberOfActions(), equalTo(9));
@@ -317,7 +329,8 @@ public class BulkRequestTests extends ESTestCase {
     }
 
     public void testBulkTerminatedByNewline() throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk11.json");
+        String bulkAction = copyToStringFromClasspath(BulkRequestTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk11.json");
         IllegalArgumentException expectThrows = expectThrows(IllegalArgumentException.class, () -> new BulkRequest()
                 .add(bulkAction.getBytes(StandardCharsets.UTF_8), 0, bulkAction.length(), null, null, XContentType.JSON));
         assertEquals("The bulk request must be terminated by a newline [\n]", expectThrows.getMessage());

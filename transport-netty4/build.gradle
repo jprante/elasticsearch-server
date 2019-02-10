@@ -1,7 +1,7 @@
 
 esplugin {
     url 'https://github.com/jprante/elasticsearch-server'
-    description 'Netty 4 based transport implementation'
+    description 'Netty 4 based transport module'
     classname 'org.elasticsearch.transport.Netty4Plugin'
     hasClientJar = true
 }
@@ -14,7 +14,7 @@ dependencies {
     compile "io.netty:netty-handler:${property('netty.version')}"
     compile "io.netty:netty-transport-native-epoll:${property('netty.version')}:linux-x86_64"
 
-    testCompile "org.elasticsearch:elasticsearch:${project.property('elasticsearch.version')}"
+    testCompile project(':server')
 }
 
 dependencyLicenses {
@@ -22,6 +22,10 @@ dependencyLicenses {
 }
 
 test {
+    enabled = false
+}
+
+randomizedTest {
     enabled = false
 }
 

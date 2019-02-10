@@ -45,7 +45,7 @@ import org.elasticsearch.search.aggregations.support.ValuesSourceAggregatorFacto
 import org.elasticsearch.search.aggregations.support.ValuesSourceConfig;
 import org.elasticsearch.search.aggregations.support.ValuesSourceParserHelper;
 import org.elasticsearch.search.aggregations.support.ValuesSourceType;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.Map;
@@ -141,7 +141,7 @@ public class SignificantTermsAggregationBuilder extends ValuesSourceAggregationB
     }
 
     @Override
-    protected AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
+    public AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
         return new SignificantTermsAggregationBuilder(this, factoriesBuilder, metaData);
     }
 
@@ -159,7 +159,7 @@ public class SignificantTermsAggregationBuilder extends ValuesSourceAggregationB
         return true;
     }
 
-    protected TermsAggregator.BucketCountThresholds getBucketCountThresholds() {
+    public TermsAggregator.BucketCountThresholds getBucketCountThresholds() {
         return new TermsAggregator.BucketCountThresholds(bucketCountThresholds);
     }
 

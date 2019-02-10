@@ -27,7 +27,7 @@ import org.elasticsearch.common.settings.Setting.Property;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.index.shard.SearchOperationListener;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -137,11 +137,11 @@ public final class SearchSlowLog implements SearchOperationListener {
         }
     }
 
-    static final class SlowLogSearchContextPrinter {
+    public static final class SlowLogSearchContextPrinter {
         private final SearchContext context;
         private final long tookInNanos;
 
-        SlowLogSearchContextPrinter(SearchContext context, long tookInNanos) {
+        public SlowLogSearchContextPrinter(SearchContext context, long tookInNanos) {
             this.context = context;
             this.tookInNanos = tookInNanos;
         }
@@ -210,39 +210,39 @@ public final class SearchSlowLog implements SearchOperationListener {
         this.fetchTraceThreshold = traceThreshold.nanos();
     }
 
-    long getQueryWarnThreshold() {
+    public long getQueryWarnThreshold() {
         return queryWarnThreshold;
     }
 
-    long getQueryInfoThreshold() {
+    public long getQueryInfoThreshold() {
         return queryInfoThreshold;
     }
 
-    long getQueryDebugThreshold() {
+    public long getQueryDebugThreshold() {
         return queryDebugThreshold;
     }
 
-    long getQueryTraceThreshold() {
+    public long getQueryTraceThreshold() {
         return queryTraceThreshold;
     }
 
-    long getFetchWarnThreshold() {
+    public long getFetchWarnThreshold() {
         return fetchWarnThreshold;
     }
 
-    long getFetchInfoThreshold() {
+    public long getFetchInfoThreshold() {
         return fetchInfoThreshold;
     }
 
-    long getFetchDebugThreshold() {
+    public long getFetchDebugThreshold() {
         return fetchDebugThreshold;
     }
 
-    long getFetchTraceThreshold() {
+    public long getFetchTraceThreshold() {
         return fetchTraceThreshold;
     }
 
-    SlowLogLevel getLevel() {
+    public SlowLogLevel getLevel() {
         return level;
     }
 }

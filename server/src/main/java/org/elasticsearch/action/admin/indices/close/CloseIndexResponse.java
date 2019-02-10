@@ -38,10 +38,10 @@ public class CloseIndexResponse extends AcknowledgedResponse {
         declareAcknowledgedField(PARSER);
     }
 
-    CloseIndexResponse() {
+    public CloseIndexResponse() {
     }
 
-    CloseIndexResponse(boolean acknowledged) {
+    public CloseIndexResponse(boolean acknowledged) {
         super(acknowledged);
     }
 

@@ -104,14 +104,14 @@ public abstract class TransportInstanceSingleOperationAction<Request extends Ins
      */
     protected abstract ShardIterator shards(ClusterState clusterState, Request request);
 
-    class AsyncSingleAction {
+    public class AsyncSingleAction {
 
         private final ActionListener<Response> listener;
         private final Request request;
         private volatile ClusterStateObserver observer;
         private ShardIterator shardIt;
 
-        AsyncSingleAction(Request request, ActionListener<Response> listener) {
+        public AsyncSingleAction(Request request, ActionListener<Response> listener) {
             this.request = request;
             this.listener = listener;
         }

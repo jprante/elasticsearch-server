@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index;
+package org.elasticsearch.test.index;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -28,10 +28,13 @@ import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.IndexSettings;
+import org.elasticsearch.index.MergePolicyConfig;
+import org.elasticsearch.index.MergeSchedulerConfig;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.elasticsearch.common.util.concurrent.EsExecutors.PROCESSORS_SETTING;
-import static org.elasticsearch.index.IndexSettingsTests.newIndexMeta;
+import static org.elasticsearch.test.index.IndexSettingsTests.newIndexMeta;
 import static org.elasticsearch.index.MergeSchedulerConfig.MAX_MERGE_COUNT_SETTING;
 import static org.elasticsearch.index.MergeSchedulerConfig.MAX_THREAD_COUNT_SETTING;
 import static org.hamcrest.core.StringContains.containsString;

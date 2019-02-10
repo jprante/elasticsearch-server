@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import com.carrotsearch.randomizedtesting.generators.RandomStrings;
 
@@ -38,7 +38,9 @@ import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.analysis.AnalyzerScope;
 import org.elasticsearch.index.analysis.NamedAnalyzer;
 import org.elasticsearch.index.mapper.KeywordFieldMapper.KeywordFieldType;
+import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.MappedFieldType.Relation;
+import org.elasticsearch.testframework.index.mapper.FieldTypeTestCase;
 import org.junit.Before;
 
 import java.io.IOException;
@@ -60,7 +62,7 @@ public class KeywordFieldTypeTests extends FieldTypeTestCase {
 
     @Override
     protected MappedFieldType createDefaultFieldType() {
-        return new KeywordFieldMapper.KeywordFieldType();
+        return new KeywordFieldType();
     }
 
     public void testIsFieldWithinQuery() throws IOException {

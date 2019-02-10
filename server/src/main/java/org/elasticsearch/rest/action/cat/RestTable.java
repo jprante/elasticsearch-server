@@ -115,7 +115,7 @@ public class RestTable {
         return new BytesRestResponse(RestStatus.OK, BytesRestResponse.TEXT_CONTENT_TYPE, bytesOut.bytes());
     }
 
-    static List<Integer> getRowOrder(Table table, RestRequest request) {
+    public static List<Integer> getRowOrder(Table table, RestRequest request) {
         String[] columnOrdering = request.paramAsStringArray("s", null);
 
         List<Integer> rowOrder = new ArrayList<>();
@@ -147,7 +147,7 @@ public class RestTable {
         return rowOrder;
     }
 
-    static List<DisplayHeader> buildDisplayHeaders(Table table, RestRequest request) {
+    public static List<DisplayHeader> buildDisplayHeaders(Table table, RestRequest request) {
         List<DisplayHeader> display = new ArrayList<>();
         if (request.hasParam("h")) {
             Set<String> headers = expandHeadersFromRequest(table, request);
@@ -399,22 +399,22 @@ public class RestTable {
         return value.toString();
     }
 
-    static class DisplayHeader {
+    public static class DisplayHeader {
         public final String name;
         public final String display;
 
-        DisplayHeader(String name, String display) {
+        public DisplayHeader(String name, String display) {
             this.name = name;
             this.display = display;
         }
     }
 
-    static class TableIndexComparator implements Comparator<Integer> {
+    public static class TableIndexComparator implements Comparator<Integer> {
         private final Table table;
         private final int maxIndex;
         private final List<ColumnOrderElement> ordering;
 
-        TableIndexComparator(Table table, List<ColumnOrderElement> ordering) {
+        public TableIndexComparator(Table table, List<ColumnOrderElement> ordering) {
             this.table = table;
             this.maxIndex = table.getRows().size();
             this.ordering = ordering;
@@ -458,11 +458,11 @@ public class RestTable {
         }
     }
 
-    static class ColumnOrderElement {
+    public static class ColumnOrderElement {
         private final String column;
         private final boolean reverse;
 
-        ColumnOrderElement(String column, boolean reverse) {
+        public ColumnOrderElement(String column, boolean reverse) {
             this.column = column;
             this.reverse = reverse;
         }

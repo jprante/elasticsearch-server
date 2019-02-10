@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.builder;
+package org.elasticsearch.test.search.builder;
 
 import org.elasticsearch.common.ParsingException;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -36,15 +36,16 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchNoneQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryRewriteContext;
-import org.elasticsearch.index.query.RandomQueryBuilder;
+import org.elasticsearch.test.index.query.RandomQueryBuilder;
 import org.elasticsearch.index.query.Rewriteable;
-import org.elasticsearch.search.AbstractSearchTestCase;
+import org.elasticsearch.test.search.AbstractSearchTestCase;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.rescore.QueryRescorerBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.EqualsHashCodeTestUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.EqualsHashCodeTestUtils;
 
 import java.io.IOException;
 import java.util.Map;

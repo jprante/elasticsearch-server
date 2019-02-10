@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *  we use 6 (not 8) bytes for timestamp, and use 3 (not 2) bytes for sequence number. We also reorder bytes in a way that does not make ids
  *  sort in order anymore, but is more friendly to the way that the Lucene terms dictionary is structured. */
 
-class TimeBasedUUIDGenerator implements UUIDGenerator {
+public class TimeBasedUUIDGenerator implements UUIDGenerator {
 
     // We only use bottom 3 bytes for the sequence number.  Paranoia: init with random int so that if JVM/OS/machine goes down, clock slips
     // backwards, and JVM comes back up, we are less likely to be on the same sequenceNumber at the same time:

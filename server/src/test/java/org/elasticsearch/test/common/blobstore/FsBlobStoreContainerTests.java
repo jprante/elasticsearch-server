@@ -16,14 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.blobstore;
+package org.elasticsearch.test.common.blobstore;
 
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase;
+import org.elasticsearch.common.blobstore.BlobStore;
 import org.elasticsearch.common.blobstore.fs.FsBlobStore;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
-import org.elasticsearch.repositories.ESBlobStoreContainerTestCase;
+import org.elasticsearch.testframework.repositories.ESBlobStoreContainerTestCase;
 
 import java.io.IOException;
 import java.nio.file.Path;

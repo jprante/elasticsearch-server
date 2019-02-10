@@ -21,7 +21,7 @@ package org.elasticsearch.search.aggregations;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -116,16 +116,13 @@ public abstract class AbstractAggregationBuilder<AB extends AbstractAggregationB
     @SuppressWarnings("unchecked")
     @Override
     public AB setMetaData(Map<String, Object> metaData) {
-        if (metaData == null) {
-            throw new IllegalArgumentException("[metaData] must not be null: [" + name + "]");
-        }
         this.metaData = metaData;
         return (AB) this;
     }
 
     @Override
     public Map<String, Object> getMetaData() {
-        return metaData == null ? Collections.emptyMap() : Collections.unmodifiableMap(metaData);
+        return metaData == null ? null : Collections.unmodifiableMap(metaData);
     }
 
     @Override
@@ -147,7 +144,7 @@ public abstract class AbstractAggregationBuilder<AB extends AbstractAggregationB
     public final XContentBuilder toXContent(XContentBuilder builder, Params params) throws IOException {
         builder.startObject(name);
 
-        if (this.metaData != null) {
+        if (this.metaData != null && !this.metaData.isEmpty()) {
             builder.field("meta", this.metaData);
         }
         builder.field(getType());

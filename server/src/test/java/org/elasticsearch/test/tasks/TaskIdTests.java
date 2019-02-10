@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.tasks;
+package org.elasticsearch.test.tasks;
 
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.tasks.TaskId;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

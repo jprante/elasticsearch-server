@@ -130,9 +130,9 @@ public final class IngestMetadata implements MetaData.Custom {
         return new IngestMetadataDiff(in);
     }
 
-    static class IngestMetadataDiff implements NamedDiff<MetaData.Custom> {
+    public static class IngestMetadataDiff implements NamedDiff<MetaData.Custom> {
 
-        final Diff<Map<String, PipelineConfiguration>> pipelines;
+        public final Diff<Map<String, PipelineConfiguration>> pipelines;
 
         IngestMetadataDiff(IngestMetadata before, IngestMetadata after) {
             this.pipelines = DiffableUtils.diff(before.pipelines, after.pipelines, DiffableUtils.getStringKeySerializer());

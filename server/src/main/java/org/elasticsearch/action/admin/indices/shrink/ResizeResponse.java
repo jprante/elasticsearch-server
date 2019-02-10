@@ -35,10 +35,10 @@ public final class ResizeResponse extends CreateIndexResponse {
         declareFields(PARSER);
     }
 
-    ResizeResponse() {
+    public ResizeResponse() {
     }
 
-    ResizeResponse(boolean acknowledged, boolean shardsAcknowledged, String index) {
+    public ResizeResponse(boolean acknowledged, boolean shardsAcknowledged, String index) {
         super(acknowledged, shardsAcknowledged, index);
     }
 

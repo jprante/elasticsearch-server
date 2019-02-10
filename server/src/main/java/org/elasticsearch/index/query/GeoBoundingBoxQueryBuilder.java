@@ -294,7 +294,7 @@ public class GeoBoundingBoxQueryBuilder extends AbstractQueryBuilder<GeoBounding
         return ignoreUnmapped;
     }
 
-    QueryValidationException checkLatLon() {
+    public QueryValidationException checkLatLon() {
         if (GeoValidationMethod.isIgnoreMalformed(validationMethod)) {
             return null;
         }

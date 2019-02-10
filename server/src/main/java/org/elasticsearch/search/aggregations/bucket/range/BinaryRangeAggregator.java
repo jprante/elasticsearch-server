@@ -31,7 +31,7 @@ import org.elasticsearch.search.aggregations.LeafBucketCollectorBase;
 import org.elasticsearch.search.aggregations.bucket.BucketsAggregator;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 import org.elasticsearch.search.aggregations.support.ValuesSource;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,8 +47,8 @@ public final class BinaryRangeAggregator extends BucketsAggregator {
 
     public static class Range {
 
-        final String key;
-        final BytesRef from, to;
+        public final String key;
+        public final BytesRef from, to;
 
         public Range(String key, BytesRef from, BytesRef to) {
             this.key = key;
@@ -57,7 +57,7 @@ public final class BinaryRangeAggregator extends BucketsAggregator {
         }
     }
 
-    static final Comparator<Range> RANGE_COMPARATOR = (a, b) -> {
+    public static final Comparator<Range> RANGE_COMPARATOR = (a, b) -> {
         int cmp = compare(a.from, b.from, 1);
         if (cmp == 0) {
             cmp = compare(a.to, b.to, -1);
@@ -120,13 +120,13 @@ public final class BinaryRangeAggregator extends BucketsAggregator {
         }
     }
 
-    abstract static class SortedSetRangeLeafCollector extends LeafBucketCollectorBase {
+    public abstract static class SortedSetRangeLeafCollector extends LeafBucketCollectorBase {
 
         final long[] froms, tos, maxTos;
         final SortedSetDocValues values;
         final LeafBucketCollector sub;
 
-        SortedSetRangeLeafCollector(SortedSetDocValues values,
+        public SortedSetRangeLeafCollector(SortedSetDocValues values,
                 Range[] ranges, LeafBucketCollector sub) throws IOException {
             super(sub, values);
             for (int i = 1; i < ranges.length; ++i) {
@@ -229,14 +229,14 @@ public final class BinaryRangeAggregator extends BucketsAggregator {
         protected abstract void doCollect(LeafBucketCollector sub, int doc, long bucket) throws IOException;
     }
 
-    abstract static class SortedBinaryRangeLeafCollector extends LeafBucketCollectorBase {
+    public abstract static class SortedBinaryRangeLeafCollector extends LeafBucketCollectorBase {
 
         final Range[] ranges;
         final BytesRef[] maxTos;
         final SortedBinaryDocValues values;
         final LeafBucketCollector sub;
 
-        SortedBinaryRangeLeafCollector(SortedBinaryDocValues values,
+        public SortedBinaryRangeLeafCollector(SortedBinaryDocValues values,
                 Range[] ranges, LeafBucketCollector sub) {
             super(sub, values);
             for (int i = 1; i < ranges.length; ++i) {

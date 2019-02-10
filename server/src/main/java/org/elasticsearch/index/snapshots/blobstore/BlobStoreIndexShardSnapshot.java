@@ -234,13 +234,13 @@ public class BlobStoreIndexShardSnapshot implements ToXContentFragment {
             return metadata.checksum().equals(UNKNOWN_CHECKSUM);
         }
 
-        static final String NAME = "name";
-        static final String PHYSICAL_NAME = "physical_name";
-        static final String LENGTH = "length";
-        static final String CHECKSUM = "checksum";
-        static final String PART_SIZE = "part_size";
-        static final String WRITTEN_BY = "written_by";
-        static final String META_HASH = "meta_hash";
+        public static final String NAME = "name";
+        public static final String PHYSICAL_NAME = "physical_name";
+        public static final String LENGTH = "length";
+        public static final String CHECKSUM = "checksum";
+        public static final String PART_SIZE = "part_size";
+        public static final String WRITTEN_BY = "written_by";
+        public static final String META_HASH = "meta_hash";
 
         /**
          * Serializes file info into JSON

@@ -17,10 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.common.cache;
+package org.elasticsearch.test.common.cache;
 
+import org.elasticsearch.common.cache.Cache;
+import org.elasticsearch.common.cache.CacheBuilder;
+import org.elasticsearch.common.cache.RemovalNotification;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import java.lang.management.ManagementFactory;

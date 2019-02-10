@@ -17,16 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
+import org.elasticsearch.bootstrap.BootstrapSettings;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class BootstrapSettingsTests extends ESTestCase {
 
     public void testDefaultSettings() {
         assertTrue(BootstrapSettings.SECURITY_FILTER_BAD_DEFAULTS_SETTING.get(Settings.EMPTY));
-        assertFalse(BootstrapSettings.MEMORY_LOCK_SETTING.get(Settings.EMPTY));
+        // we use memory lock by default but give error message if not possible
+        assertTrue(BootstrapSettings.MEMORY_LOCK_SETTING.get(Settings.EMPTY));
         assertTrue(BootstrapSettings.SYSTEM_CALL_FILTER_SETTING.get(Settings.EMPTY));
         assertTrue(BootstrapSettings.CTRLHANDLER_SETTING.get(Settings.EMPTY));
     }

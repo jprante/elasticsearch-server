@@ -39,10 +39,10 @@ import java.util.Objects;
 public class DoubleTerms extends InternalMappedTerms<DoubleTerms, DoubleTerms.Bucket> {
     public static final String NAME = "dterms";
 
-    static class Bucket extends InternalTerms.Bucket<Bucket> {
+    public static class Bucket extends InternalTerms.Bucket<Bucket> {
         private final double term;
 
-        Bucket(double term, long docCount, InternalAggregations aggregations, boolean showDocCountError, long docCountError,
+        public Bucket(double term, long docCount, InternalAggregations aggregations, boolean showDocCountError, long docCountError,
                 DocValueFormat format) {
             super(docCount, aggregations, showDocCountError, docCountError, format);
             this.term = term;

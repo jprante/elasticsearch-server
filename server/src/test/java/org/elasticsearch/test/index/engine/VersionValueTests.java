@@ -17,14 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.index.engine;
+package org.elasticsearch.test.index.engine;
 
-import org.apache.lucene.util.RamUsageTester;
+import org.apache.lucene.testframework.util.RamUsageTester;
+import org.elasticsearch.index.engine.DeleteVersionValue;
+import org.elasticsearch.index.engine.IndexVersionValue;
 import org.elasticsearch.index.translog.Translog;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.junit.Ignore;
 
 public class VersionValueTests extends ESTestCase {
 
+    @Ignore // RamUsageTester does not work properly
     public void testIndexRamBytesUsed() {
         Translog.Location translogLoc = null;
         if (randomBoolean()) {

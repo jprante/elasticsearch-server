@@ -78,7 +78,7 @@ public abstract class NetworkUtils {
     }
     
     /** Sorts an address by preference. This way code like publishing can just pick the first one */
-    static int sortKey(InetAddress address, boolean prefer_v6) {
+    public static int sortKey(InetAddress address, boolean prefer_v6) {
         int key = address.getAddress().length;
         if (prefer_v6) {
             key = -key;
@@ -123,7 +123,7 @@ public abstract class NetworkUtils {
     }
     
     /** Return all interfaces (and subinterfaces) on the system */
-    static List<NetworkInterface> getInterfaces() throws SocketException {
+    public static List<NetworkInterface> getInterfaces() throws SocketException {
         List<NetworkInterface> all = new ArrayList<>();
         addAllInterfaces(all, Collections.list(NetworkInterface.getNetworkInterfaces()));
         Collections.sort(all, new Comparator<NetworkInterface>() {
@@ -224,7 +224,7 @@ public abstract class NetworkUtils {
     }
     
     /** Returns addresses for the given interface (it must be marked up) */
-    static InetAddress[] getAddressesForInterface(String name) throws SocketException {
+    public static InetAddress[] getAddressesForInterface(String name) throws SocketException {
         Optional<NetworkInterface> networkInterface = getInterfaces().stream().filter((netIf) -> name.equals(netIf.getName())).findFirst();
 
         if (networkInterface.isPresent() == false) {
@@ -241,7 +241,7 @@ public abstract class NetworkUtils {
     }
     
     /** Returns only the IPV4 addresses in {@code addresses} */
-    static InetAddress[] filterIPV4(InetAddress addresses[]) {
+    public static InetAddress[] filterIPV4(InetAddress addresses[]) {
         List<InetAddress> list = new ArrayList<>();
         for (InetAddress address : addresses) {
             if (address instanceof Inet4Address) {
@@ -255,7 +255,7 @@ public abstract class NetworkUtils {
     }
     
     /** Returns only the IPV6 addresses in {@code addresses} */
-    static InetAddress[] filterIPV6(InetAddress addresses[]) {
+    public static InetAddress[] filterIPV6(InetAddress addresses[]) {
         List<InetAddress> list = new ArrayList<>();
         for (InetAddress address : addresses) {
             if (address instanceof Inet6Address) {

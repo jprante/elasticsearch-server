@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.cluster.routing.AllocationId;
@@ -27,6 +27,7 @@ import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.io.FileSystemUtils;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.util.IndexFolderUpgrader;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.NodeEnvironment;
@@ -35,7 +36,7 @@ import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.shard.ShardPath;
 import org.elasticsearch.index.shard.ShardStateMetaData;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -103,7 +104,7 @@ public class IndexFolderUpgraderTests extends ESTestCase {
             writeIndex(nodeEnv, indexSettings, numIdxFiles, numTranslogFiles);
             IndexFolderUpgrader helper = new IndexFolderUpgrader(settings, nodeEnv) {
                 @Override
-                void upgrade(Index index, Path source, Path target) throws IOException {
+                public void upgrade(Index index, Path source, Path target) throws IOException {
                     if(randomBoolean()) {
                         throw new FileNotFoundException("simulated");
                     }

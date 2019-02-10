@@ -64,10 +64,10 @@ public final class RolloverResponse extends ShardsAcknowledgedResponse implement
     private boolean dryRun;
     private boolean rolledOver;
 
-    RolloverResponse() {
+    public RolloverResponse() {
     }
 
-    RolloverResponse(String oldIndex, String newIndex, Map<String, Boolean> conditionResults,
+    public RolloverResponse(String oldIndex, String newIndex, Map<String, Boolean> conditionResults,
                              boolean dryRun, boolean rolledOver, boolean acknowledged, boolean shardsAcknowledged) {
         super(acknowledged, shardsAcknowledged);
         this.oldIndex = oldIndex;

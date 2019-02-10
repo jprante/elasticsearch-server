@@ -17,15 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.routing;
+package org.elasticsearch.test.cluster.routing;
 
+import org.elasticsearch.cluster.routing.AllocationId;
 import org.elasticsearch.cluster.routing.RecoverySource.StoreRecoverySource;
+import org.elasticsearch.cluster.routing.ShardRouting;
+import org.elasticsearch.cluster.routing.UnassignedInfo;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

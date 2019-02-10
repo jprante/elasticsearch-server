@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent;
+package org.elasticsearch.test.common.xcontent;
 
 import org.apache.lucene.util.SetOnce;
 import org.elasticsearch.common.CheckedBiConsumer;
@@ -26,8 +26,16 @@ import org.elasticsearch.common.ParseField;
 import org.elasticsearch.common.ParsingException;
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.common.xcontent.DeprecationHandler;
+import org.elasticsearch.common.xcontent.NamedObjectNotFoundException;
+import org.elasticsearch.common.xcontent.NamedXContentRegistry;
+import org.elasticsearch.common.xcontent.ObjectParser;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentParser;
+import org.elasticsearch.common.xcontent.XContentParserUtils;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,7 +99,7 @@ public class XContentParserUtilsTests extends ESTestCase {
     public void testStoredFieldsValueBinary() throws IOException {
         final byte[] value = randomUnicodeOfLength(scaledRandomIntBetween(10, 1000)).getBytes("UTF-8");
         assertParseFieldsSimpleValue(value, (xcontentType, result) -> {
-            if (xcontentType == XContentType.JSON || xcontentType == XContentType.YAML) {
+            if (xcontentType == XContentType.JSON /*|| xcontentType == XContentType.YAML*/) {
                 //binary values will be parsed back and returned as base64 strings when reading from json and yaml
                 assertArrayEquals(value, Base64.getDecoder().decode((String) result));
             } else {

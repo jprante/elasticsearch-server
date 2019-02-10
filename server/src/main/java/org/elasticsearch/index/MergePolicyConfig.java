@@ -155,7 +155,7 @@ public final class MergePolicyConfig {
     public static final String INDEX_MERGE_ENABLED = "index.merge.enabled"; // don't convert to Setting<> and register... we only set this in tests and register via a plugin
 
 
-    MergePolicyConfig(Logger logger, IndexSettings indexSettings) {
+    public MergePolicyConfig(Logger logger, IndexSettings indexSettings) {
         this.logger = logger;
         double forceMergeDeletesPctAllowed = indexSettings.getValue(INDEX_MERGE_POLICY_EXPUNGE_DELETES_ALLOWED_SETTING); // percentage
         ByteSizeValue floorSegment = indexSettings.getValue(INDEX_MERGE_POLICY_FLOOR_SEGMENT_SETTING);
@@ -231,7 +231,7 @@ public final class MergePolicyConfig {
         return maxMergeAtOnce;
     }
 
-    MergePolicy getMergePolicy() {
+    public MergePolicy getMergePolicy() {
         return mergesEnabled ? mergePolicy : NoMergePolicy.INSTANCE;
     }
 

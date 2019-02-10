@@ -140,7 +140,7 @@ public class GeoDistanceSortBuilder extends SortBuilder<GeoDistanceSortBuilder> 
     /**
      * Copy constructor.
      * */
-    GeoDistanceSortBuilder(GeoDistanceSortBuilder original) {
+    public GeoDistanceSortBuilder(GeoDistanceSortBuilder original) {
         this.fieldName = original.fieldName();
         this.points.addAll(original.points);
         this.geoDistance = original.geoDistance;

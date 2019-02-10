@@ -95,7 +95,7 @@ public class PersistentTasksService extends AbstractComponent {
     /**
      * Cancels a locally running task using the task manager
      */
-    void sendTaskManagerCancellation(long taskId, ActionListener<CancelTasksResponse> listener) {
+    public void sendTaskManagerCancellation(long taskId, ActionListener<CancelTasksResponse> listener) {
         DiscoveryNode localNode = clusterService.localNode();
         CancelTasksRequest cancelTasksRequest = new CancelTasksRequest();
         cancelTasksRequest.setTaskId(new TaskId(localNode.getId(), taskId));
@@ -114,7 +114,7 @@ public class PersistentTasksService extends AbstractComponent {
      * Persistent task implementers shouldn't call this method directly and use
      * {@link AllocatedPersistentTask#updatePersistentStatus} instead
      */
-    void updateStatus(String taskId, long allocationId, Task.Status status, ActionListener<PersistentTask<?>> listener) {
+    public void updateStatus(String taskId, long allocationId, Task.Status status, ActionListener<PersistentTask<?>> listener) {
         UpdatePersistentTaskStatusAction.Request updateStatusRequest =
                 new UpdatePersistentTaskStatusAction.Request(taskId, allocationId, status);
         try {

@@ -17,13 +17,20 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util.concurrent;
+package org.elasticsearch.test.common.util.concurrent;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.concurrent.ConcurrentCollections;
+import org.elasticsearch.common.util.concurrent.EsAbortPolicy;
+import org.elasticsearch.common.util.concurrent.EsExecutors;
+import org.elasticsearch.common.util.concurrent.QueueResizingEsThreadPoolExecutor;
+import org.elasticsearch.common.util.concurrent.ResizableBlockingQueue;
+import org.elasticsearch.common.util.concurrent.ThreadContext;
+import org.elasticsearch.common.util.concurrent.TimedRunnable;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;

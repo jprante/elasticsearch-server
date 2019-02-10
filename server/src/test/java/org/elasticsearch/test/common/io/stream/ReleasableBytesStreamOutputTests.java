@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.common.io.stream;
+package org.elasticsearch.test.common.io.stream;
 
+import org.elasticsearch.common.io.stream.ReleasableBytesStreamOutput;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.util.MockBigArrays;
-import org.elasticsearch.common.util.MockPageCacheRecycler;
+import org.elasticsearch.testframework.common.util.MockBigArrays;
+import org.elasticsearch.testframework.common.util.MockPageCacheRecycler;
 import org.elasticsearch.indices.breaker.NoneCircuitBreakerService;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

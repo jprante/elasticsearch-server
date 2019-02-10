@@ -75,9 +75,9 @@ public class HighlightBuilder extends AbstractHighlighterBuilder<HighlightBuilde
     /** the default number of fragments size in characters */
     public static final int DEFAULT_FRAGMENT_CHAR_SIZE = 100;
     /** the default opening tag  */
-    static final String[] DEFAULT_PRE_TAGS = new String[]{"<em>"};
+    public static final String[] DEFAULT_PRE_TAGS = new String[]{"<em>"};
     /** the default closing tag  */
-    static final String[] DEFAULT_POST_TAGS = new String[]{"</em>"};
+    public static final String[] DEFAULT_POST_TAGS = new String[]{"</em>"};
 
     /** the default opening tags when <tt>tag_schema = "styled"</tt>  */
     public static final String[] DEFAULT_STYLED_PRE_TAG = {
@@ -92,7 +92,7 @@ public class HighlightBuilder extends AbstractHighlighterBuilder<HighlightBuilde
     /**
      * a {@link FieldOptions} with default settings
      */
-    static final FieldOptions defaultOptions = new SearchContextHighlight.FieldOptions.Builder()
+    public static final FieldOptions defaultOptions = new SearchContextHighlight.FieldOptions.Builder()
             .preTags(DEFAULT_PRE_TAGS).postTags(DEFAULT_POST_TAGS).scoreOrdered(DEFAULT_SCORE_ORDERED)
             .highlightFilter(DEFAULT_HIGHLIGHT_FILTER).requireFieldMatch(DEFAULT_REQUIRE_FIELD_MATCH)
             .forceSource(DEFAULT_FORCE_SOURCE).fragmentCharSize(DEFAULT_FRAGMENT_CHAR_SIZE)
@@ -366,7 +366,7 @@ public class HighlightBuilder extends AbstractHighlighterBuilder<HighlightBuilde
         }
     }
 
-    static Character[] convertCharArray(char[] array) {
+    public static Character[] convertCharArray(char[] array) {
         if (array == null) {
             return null;
         }
@@ -446,9 +446,9 @@ public class HighlightBuilder extends AbstractHighlighterBuilder<HighlightBuilde
 
         private final String name;
 
-        int fragmentOffset = -1;
+        public int fragmentOffset = -1;
 
-        String[] matchedFields;
+        public String[] matchedFields;
 
         public Field(String name) {
             this.name = name;

@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.fieldcaps;
+package org.elasticsearch.test.action.fieldcaps;
 
+import org.elasticsearch.action.fieldcaps.FieldCapabilities;
 import org.elasticsearch.common.io.stream.Writeable;
-import org.elasticsearch.test.AbstractWireSerializingTestCase;
+import org.elasticsearch.testframework.AbstractWireSerializingTestCase;
 
 import java.util.Arrays;
 

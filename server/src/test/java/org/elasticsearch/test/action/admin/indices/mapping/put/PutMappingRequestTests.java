@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.mapping.put;
+package org.elasticsearch.test.action.admin.indices.mapping.put;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.ActionRequestValidationException;
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -34,8 +35,8 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.common.xcontent.yaml.YamlXContent;
 import org.elasticsearch.index.Index;
-import org.elasticsearch.index.RandomCreateIndexGenerator;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.index.RandomCreateIndexGenerator;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

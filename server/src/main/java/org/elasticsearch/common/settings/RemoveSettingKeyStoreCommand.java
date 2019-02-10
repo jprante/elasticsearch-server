@@ -32,11 +32,11 @@ import org.elasticsearch.env.Environment;
 /**
  * A subcommand for the keystore cli to remove a setting.
  */
-class RemoveSettingKeyStoreCommand extends EnvironmentAwareCommand {
+public class RemoveSettingKeyStoreCommand extends EnvironmentAwareCommand {
 
     private final OptionSpec<String> arguments;
 
-    RemoveSettingKeyStoreCommand() {
+    public RemoveSettingKeyStoreCommand() {
         super("Remove a setting from the keystore");
         arguments = parser.nonOptions("setting names");
     }

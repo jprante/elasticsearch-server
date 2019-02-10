@@ -17,16 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.rest.action;
+package org.elasticsearch.test.rest.action;
 
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.rest.BytesRestResponse;
 import org.elasticsearch.rest.RestResponse;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestChannel;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.rest.action.RestBuilderListener;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestChannel;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 import org.elasticsearch.transport.TransportResponse;
 import org.elasticsearch.transport.TransportResponse.Empty;
 
@@ -36,7 +37,7 @@ public class RestBuilderListenerTests extends ESTestCase {
 
     public void testXContentBuilderClosedInBuildResponse() throws Exception {
         AtomicReference<XContentBuilder> builderAtomicReference = new AtomicReference<>();
-        RestBuilderListener<TransportResponse.Empty> builderListener =
+        RestBuilderListener<Empty> builderListener =
             new RestBuilderListener<Empty>(new FakeRestChannel(new FakeRestRequest(), randomBoolean(), 1)) {
                 @Override
                 public RestResponse buildResponse(Empty empty, XContentBuilder builder) throws Exception {
@@ -62,7 +63,7 @@ public class RestBuilderListenerTests extends ESTestCase {
                 }
 
                 @Override
-                boolean assertBuilderClosed(XContentBuilder xContentBuilder) {
+                public boolean assertBuilderClosed(XContentBuilder xContentBuilder) {
                     // don't check the actual builder being closed so we can test auto close
                     return true;
                 }

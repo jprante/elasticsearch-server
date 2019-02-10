@@ -53,24 +53,24 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class DelayedAllocationService extends AbstractLifecycleComponent implements ClusterStateListener {
 
-    static final String CLUSTER_UPDATE_TASK_SOURCE = "delayed_allocation_reroute";
+    public static final String CLUSTER_UPDATE_TASK_SOURCE = "delayed_allocation_reroute";
 
     final ThreadPool threadPool;
     private final ClusterService clusterService;
     private final AllocationService allocationService;
 
-    AtomicReference<DelayedRerouteTask> delayedRerouteTask = new AtomicReference<>(); // package private to access from tests
+    public AtomicReference<DelayedRerouteTask> delayedRerouteTask = new AtomicReference<>();
 
     /**
      * represents a delayed scheduling of the reroute action that can be cancelled.
      */
-    class DelayedRerouteTask extends ClusterStateUpdateTask {
-        final TimeValue nextDelay; // delay until submitting the reroute command
-        final long baseTimestampNanos; // timestamp (in nanos) upon which delay was calculated
+    public class DelayedRerouteTask extends ClusterStateUpdateTask {
+        public final TimeValue nextDelay; // delay until submitting the reroute command
+        public final long baseTimestampNanos; // timestamp (in nanos) upon which delay was calculated
         volatile ScheduledFuture future;
-        final AtomicBoolean cancelScheduling = new AtomicBoolean();
+        public final AtomicBoolean cancelScheduling = new AtomicBoolean();
 
-        DelayedRerouteTask(TimeValue nextDelay, long baseTimestampNanos) {
+        public DelayedRerouteTask(TimeValue nextDelay, long baseTimestampNanos) {
             this.nextDelay = nextDelay;
             this.baseTimestampNanos = baseTimestampNanos;
         }

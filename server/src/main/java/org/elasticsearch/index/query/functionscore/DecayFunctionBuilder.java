@@ -416,12 +416,12 @@ public abstract class DecayFunctionBuilder<DFB extends DecayFunctionBuilder<DFB>
         }
     }
 
-    static class NumericFieldDataScoreFunction extends AbstractDistanceScoreFunction {
+    public static class NumericFieldDataScoreFunction extends AbstractDistanceScoreFunction {
 
         private final IndexNumericFieldData fieldData;
         private final double origin;
 
-        NumericFieldDataScoreFunction(double origin, double scale, double decay, double offset, DecayFunction func,
+        public NumericFieldDataScoreFunction(double origin, double scale, double decay, double offset, DecayFunction func,
                                              IndexNumericFieldData fieldData, MultiValueMode mode) {
             super(scale, decay, offset, func, mode);
             this.fieldData = fieldData;

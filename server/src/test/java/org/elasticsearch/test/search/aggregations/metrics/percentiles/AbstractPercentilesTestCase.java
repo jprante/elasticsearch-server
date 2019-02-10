@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.percentiles;
+package org.elasticsearch.test.search.aggregations.metrics.percentiles;
 
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.Aggregation.CommonFields;
 import org.elasticsearch.search.aggregations.InternalAggregation;
+import org.elasticsearch.search.aggregations.metrics.percentiles.ParsedPercentiles;
+import org.elasticsearch.search.aggregations.metrics.percentiles.Percentile;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.test.InternalAggregationTestCase;
+import org.elasticsearch.testframework.InternalAggregationTestCase;
 
 import java.io.IOException;
 import java.util.Arrays;

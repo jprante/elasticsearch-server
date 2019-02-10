@@ -558,7 +558,7 @@ public class Node implements Closeable {
         }
     }
 
-    static void warnIfPreRelease(final Version version, final boolean isSnapshot, final Logger logger) {
+    public static void warnIfPreRelease(final Version version, final boolean isSnapshot, final Logger logger) {
         if (!version.isRelease() || isSnapshot) {
             logger.warn(
                 "version [{}] is a pre-release version of Elasticsearch and is not suitable for production",
@@ -945,7 +945,7 @@ public class Node implements Closeable {
      * Creates a new {@link BigArrays} instance used for this node.
      * This method can be overwritten by subclasses to change their {@link BigArrays} implementation for instance for testing
      */
-    BigArrays createBigArrays(PageCacheRecycler pageCacheRecycler, CircuitBreakerService circuitBreakerService) {
+    public BigArrays createBigArrays(PageCacheRecycler pageCacheRecycler, CircuitBreakerService circuitBreakerService) {
         return new BigArrays(pageCacheRecycler, circuitBreakerService);
     }
 
@@ -953,7 +953,7 @@ public class Node implements Closeable {
      * Creates a new {@link BigArrays} instance used for this node.
      * This method can be overwritten by subclasses to change their {@link BigArrays} implementation for instance for testing
      */
-    PageCacheRecycler createPageCacheRecycler(Settings settings) {
+    public PageCacheRecycler createPageCacheRecycler(Settings settings) {
         return new PageCacheRecycler(settings);
     }
 

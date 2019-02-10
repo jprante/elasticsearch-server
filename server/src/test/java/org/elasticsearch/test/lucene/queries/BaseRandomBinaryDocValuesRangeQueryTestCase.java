@@ -16,11 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.lucene.queries;
+package org.elasticsearch.test.lucene.queries;
 
 import org.apache.lucene.document.BinaryDocValuesField;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.search.BaseRangeFieldQueryTestCase;
+import org.apache.lucene.testframework.search.BaseRangeFieldQueryTestCase;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.index.mapper.RangeFieldMapper;

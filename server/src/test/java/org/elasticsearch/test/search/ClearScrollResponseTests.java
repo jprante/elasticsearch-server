@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search;
+package org.elasticsearch.test.search;
 
 import org.elasticsearch.action.search.ClearScrollResponse;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -27,11 +27,11 @@ import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 
 public class ClearScrollResponseTests extends ESTestCase {
 

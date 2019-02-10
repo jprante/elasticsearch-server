@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.action.support.replication;
+package org.elasticsearch.test.action.support.replication;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.support.replication.ReplicationResponse.ShardInfo;
@@ -30,15 +30,15 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.RandomObjects;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.RandomObjects;
 
 import java.io.IOException;
 import java.util.Locale;
 
-import static org.elasticsearch.ElasticsearchExceptionTests.assertDeepEquals;
+import static org.elasticsearch.test.ElasticsearchExceptionTests.assertDeepEquals;
 import static org.elasticsearch.common.xcontent.XContentHelper.toXContent;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 
 public class ReplicationResponseTests extends ESTestCase {
 
@@ -108,13 +108,13 @@ public class ReplicationResponseTests extends ESTestCase {
             assertEquals(expected.getSuccessful(), actual.getSuccessful());
             assertEquals(expected.getFailed(), actual.getFailed());
 
-            ReplicationResponse.ShardInfo.Failure[] expectedFailures = expected.getFailures();
-            ReplicationResponse.ShardInfo.Failure[] actualFailures = actual.getFailures();
+            ShardInfo.Failure[] expectedFailures = expected.getFailures();
+            ShardInfo.Failure[] actualFailures = actual.getFailures();
             assertEquals(expectedFailures.length, actualFailures.length);
 
             for (int i = 0; i < expectedFailures.length; i++) {
-                ReplicationResponse.ShardInfo.Failure expectedFailure = expectedFailures[i];
-                ReplicationResponse.ShardInfo.Failure actualFailure = actualFailures[i];
+                ShardInfo.Failure expectedFailure = expectedFailures[i];
+                ShardInfo.Failure actualFailure = actualFailures[i];
 
                 assertEquals(expectedFailure.fullShardId(), actualFailure.fullShardId());
                 assertEquals(expectedFailure.status(), actualFailure.status());

@@ -225,7 +225,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
             DISCOVERY_REJOIN_ACTION_NAME, RejoinClusterRequest::new, ThreadPool.Names.SAME, new RejoinClusterRequestHandler());
     }
 
-    static Collection<BiConsumer<DiscoveryNode,ClusterState>> addBuiltInJoinValidators(
+    public static Collection<BiConsumer<DiscoveryNode,ClusterState>> addBuiltInJoinValidators(
         Collection<BiConsumer<DiscoveryNode,ClusterState>> onJoinValidators) {
         Collection<BiConsumer<DiscoveryNode, ClusterState>> validators = new ArrayList<>();
         validators.add((node, state) -> {
@@ -397,7 +397,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
      * Gets the current set of nodes involved in the node fault detection.
      * NB: for testing purposes
      */
-    Set<DiscoveryNode> getFaultDetectionNodes() {
+    public Set<DiscoveryNode> getFaultDetectionNodes() {
         return nodesFD.getNodes();
     }
 
@@ -418,12 +418,11 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
         return joinThreadControl.joinThreadActive();
     }
 
-    // used for testing
     public ClusterState[] pendingClusterStates() {
         return pendingStatesQueue.pendingClusterStates();
     }
 
-    PendingClusterStatesQueue pendingClusterStatesQueue() {
+    public PendingClusterStatesQueue pendingClusterStatesQueue() {
         return pendingStatesQueue;
     }
 
@@ -547,27 +546,25 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
         }
     }
 
-    // visible for testing
-    void setCommittedState(ClusterState clusterState) {
+    public void setCommittedState(ClusterState clusterState) {
         synchronized (stateMutex) {
             committedState.set(clusterState);
         }
     }
 
-    // visible for testing
-    static class NodeRemovalClusterStateTaskExecutor implements ClusterStateTaskExecutor<NodeRemovalClusterStateTaskExecutor.Task>, ClusterStateTaskListener {
+    public static class NodeRemovalClusterStateTaskExecutor implements ClusterStateTaskExecutor<NodeRemovalClusterStateTaskExecutor.Task>, ClusterStateTaskListener {
 
         private final AllocationService allocationService;
         private final ElectMasterService electMasterService;
         private final Consumer<String> rejoin;
         private final Logger logger;
 
-        static class Task {
+        public static class Task {
 
             private final DiscoveryNode node;
             private final String reason;
 
-            Task(final DiscoveryNode node, final String reason) {
+            public Task(final DiscoveryNode node, final String reason) {
                 this.node = node;
                 this.reason = reason;
             }
@@ -586,7 +583,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
             }
         }
 
-        NodeRemovalClusterStateTaskExecutor(
+        public NodeRemovalClusterStateTaskExecutor(
                 final AllocationService allocationService,
                 final ElectMasterService electMasterService,
                 final Consumer<String> rejoin,
@@ -631,7 +628,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
         // visible for testing
         // hook is used in testing to ensure that correct cluster state is used to test whether a
         // rejoin or reroute is needed
-        ClusterState remainingNodesClusterState(final ClusterState currentState, DiscoveryNodes.Builder remainingNodesBuilder) {
+        public ClusterState remainingNodesClusterState(final ClusterState currentState, DiscoveryNodes.Builder remainingNodesBuilder) {
             return ClusterState.builder(currentState).nodes(remainingNodesBuilder).build();
         }
 
@@ -853,7 +850,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
         }
     }
 
-    void handleJoinRequest(final DiscoveryNode node, final ClusterState state, final MembershipAction.JoinCallback callback) {
+    public void handleJoinRequest(final DiscoveryNode node, final ClusterState state, final MembershipAction.JoinCallback callback) {
         if (nodeJoinController == null) {
             throw new IllegalStateException("discovery module is not yet started");
         } else {
@@ -945,7 +942,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
         }
     }
 
-    static List<ZenPing.PingResponse> filterPingResponses(List<ZenPing.PingResponse> fullPingResponses, boolean masterElectionIgnoreNonMasters, Logger logger) {
+    public static List<ZenPing.PingResponse> filterPingResponses(List<ZenPing.PingResponse> fullPingResponses, boolean masterElectionIgnoreNonMasters, Logger logger) {
         List<ZenPing.PingResponse> pingResponses;
         if (masterElectionIgnoreNonMasters) {
             pingResponses = fullPingResponses.stream().filter(ping -> ping.node().isMasterNode()).collect(Collectors.toList());
@@ -1080,7 +1077,7 @@ public class ZenDiscovery extends AbstractLifecycleComponent implements Discover
     /**
      * does simple sanity check of the incoming cluster state. Throws an exception on rejections.
      */
-    static void validateIncomingState(Logger logger, ClusterState incomingState, ClusterState lastState) {
+    public static void validateIncomingState(Logger logger, ClusterState incomingState, ClusterState lastState) {
         final ClusterName incomingClusterName = incomingState.getClusterName();
         if (!incomingClusterName.equals(lastState.getClusterName())) {
             logger.warn("received cluster state from [{}] which is also master but with a different cluster name [{}]",

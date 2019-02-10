@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.action;
+package org.elasticsearch.test.action;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.action.NotifyOnceListener;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.concurrent.atomic.AtomicReference;
 

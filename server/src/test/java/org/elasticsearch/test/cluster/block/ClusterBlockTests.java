@@ -17,19 +17,23 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.block;
+package org.elasticsearch.test.cluster.block;
 
 import org.elasticsearch.Version;
+import org.elasticsearch.cluster.block.ClusterBlock;
+import org.elasticsearch.cluster.block.ClusterBlockException;
+import org.elasticsearch.cluster.block.ClusterBlockLevel;
+import org.elasticsearch.cluster.block.ClusterBlocks;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Collections;
 import java.util.EnumSet;
 
-import static org.elasticsearch.test.VersionUtils.randomVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersion;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;

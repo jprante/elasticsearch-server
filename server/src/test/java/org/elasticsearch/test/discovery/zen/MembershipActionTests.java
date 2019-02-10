@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.discovery.zen;
+package org.elasticsearch.test.discovery.zen;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -25,18 +25,19 @@ import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.discovery.zen.MembershipAction;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.util.stream.Collectors;
 
-import static org.elasticsearch.test.VersionUtils.allVersions;
-import static org.elasticsearch.test.VersionUtils.getPreviousVersion;
-import static org.elasticsearch.test.VersionUtils.incompatibleFutureVersion;
-import static org.elasticsearch.test.VersionUtils.maxCompatibleVersion;
-import static org.elasticsearch.test.VersionUtils.randomCompatibleVersion;
-import static org.elasticsearch.test.VersionUtils.randomVersion;
-import static org.elasticsearch.test.VersionUtils.randomVersionBetween;
+import static org.elasticsearch.testframework.VersionUtils.allVersions;
+import static org.elasticsearch.testframework.VersionUtils.getPreviousVersion;
+import static org.elasticsearch.testframework.VersionUtils.incompatibleFutureVersion;
+import static org.elasticsearch.testframework.VersionUtils.maxCompatibleVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomCompatibleVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersionBetween;
 
 public class MembershipActionTests extends ESTestCase {
 

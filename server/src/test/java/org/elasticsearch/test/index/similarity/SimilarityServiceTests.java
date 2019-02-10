@@ -16,14 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.similarity;
+package org.elasticsearch.test.index.similarity;
 
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.search.similarities.BooleanSimilarity;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.index.similarity.SimilarityService;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IndexSettingsModule;
 
 import java.util.Collections;
 

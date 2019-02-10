@@ -36,10 +36,10 @@ import java.util.Locale;
 
 public class ClusterStatsResponse extends BaseNodesResponse<ClusterStatsNodeResponse> implements ToXContentFragment {
 
-    ClusterStatsNodes nodesStats;
-    ClusterStatsIndices indicesStats;
-    ClusterHealthStatus status;
-    long timestamp;
+    public ClusterStatsNodes nodesStats;
+    public ClusterStatsIndices indicesStats;
+    public ClusterHealthStatus status;
+    public long timestamp;
 
     ClusterStatsResponse() {
     }

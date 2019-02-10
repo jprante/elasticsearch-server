@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.settings.PropertyPlaceholder;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.is;
 

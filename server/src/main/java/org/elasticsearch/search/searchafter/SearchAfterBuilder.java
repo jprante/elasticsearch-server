@@ -134,7 +134,7 @@ public class SearchAfterBuilder implements ToXContentObject, Writeable {
     /**
      * Returns the inner {@link SortField.Type} expected for this sort field.
      */
-    static SortField.Type extractSortType(SortField sortField) {
+    public static SortField.Type extractSortType(SortField sortField) {
         if (sortField.getComparatorSource() instanceof IndexFieldData.XFieldComparatorSource) {
             return ((IndexFieldData.XFieldComparatorSource) sortField.getComparatorSource()).reducedType();
         } else if (sortField instanceof SortedSetSortField) {
@@ -215,7 +215,7 @@ public class SearchAfterBuilder implements ToXContentObject, Writeable {
         return builder;
     }
 
-    void innerToXContent(XContentBuilder builder) throws IOException {
+    public void innerToXContent(XContentBuilder builder) throws IOException {
         builder.array(SEARCH_AFTER.getPreferredName(), sortValues);
     }
 

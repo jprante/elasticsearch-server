@@ -188,11 +188,11 @@ public class SortedNumericDVIndexFieldData extends DocValuesIndexFieldData imple
      * {@link FieldData#unwrapSingleton(SortedNumericDoubleValues)} will return
      * the underlying single-valued NumericDoubleValues representation.
      */
-    static final class SortedNumericHalfFloatFieldData extends AtomicDoubleFieldData {
+    public static final class SortedNumericHalfFloatFieldData extends AtomicDoubleFieldData {
         final LeafReader reader;
         final String field;
 
-        SortedNumericHalfFloatFieldData(LeafReader reader, String field) {
+        public SortedNumericHalfFloatFieldData(LeafReader reader, String field) {
             super(0L);
             this.reader = reader;
             this.field = field;

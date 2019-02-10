@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.os;
+package org.elasticsearch.test.monitor.os;
 
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.os.OsStats;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

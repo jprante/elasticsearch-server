@@ -17,9 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.common.io.stream;
+package org.elasticsearch.test.common.io.stream;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.io.stream.BytesStreamOutput;
+import org.elasticsearch.common.io.stream.StreamInput;
+import org.elasticsearch.common.io.stream.StreamOutput;
+import org.elasticsearch.common.io.stream.Writeable;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.support;
+package org.elasticsearch.test.action.support;
 
 import org.elasticsearch.action.ActionListener;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.action.support.GroupedActionListener;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;

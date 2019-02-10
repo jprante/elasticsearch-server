@@ -56,12 +56,12 @@ public class TransportTypesExistsAction extends TransportMasterNodeReadAction<Ty
     }
 
     @Override
-    protected ClusterBlockException checkBlock(TypesExistsRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(TypesExistsRequest request, ClusterState state) {
         return state.blocks().indicesBlockedException(ClusterBlockLevel.METADATA_READ, indexNameExpressionResolver.concreteIndexNames(state, request));
     }
 
     @Override
-    protected void masterOperation(final TypesExistsRequest request, final ClusterState state, final ActionListener<TypesExistsResponse> listener) {
+    public void masterOperation(final TypesExistsRequest request, final ClusterState state, final ActionListener<TypesExistsResponse> listener) {
         String[] concreteIndices = indexNameExpressionResolver.concreteIndexNames(state, request.indicesOptions(), request.indices());
         if (concreteIndices.length == 0) {
             listener.onResponse(new TypesExistsResponse(false));

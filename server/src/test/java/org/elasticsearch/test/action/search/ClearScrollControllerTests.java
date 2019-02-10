@@ -16,10 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.action.search.ClearScrollController;
+import org.elasticsearch.action.search.ClearScrollRequest;
+import org.elasticsearch.action.search.ClearScrollResponse;
+import org.elasticsearch.action.search.SearchTransportService;
+import org.elasticsearch.action.search.TransportSearchHelper;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.settings.Settings;
@@ -27,7 +32,7 @@ import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.search.SearchPhaseResult;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.transport.NodeNotConnectedException;
 import org.elasticsearch.transport.Transport;
 import org.elasticsearch.transport.TransportResponse;
@@ -79,7 +84,7 @@ public class ClearScrollControllerTests extends ESTestCase {
             }
 
             @Override
-            Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
+            public Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
                 return new SearchAsyncActionTests.MockConnection(node);
             }
         };
@@ -150,7 +155,7 @@ public class ClearScrollControllerTests extends ESTestCase {
             }
 
             @Override
-            Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
+            public Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
                 return new SearchAsyncActionTests.MockConnection(node);
             }
         };
@@ -236,7 +241,7 @@ public class ClearScrollControllerTests extends ESTestCase {
             }
 
             @Override
-            Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
+            public Transport.Connection getConnection(String clusterAlias, DiscoveryNode node) {
                 if (randomBoolean()) {
                     numFailures.incrementAndGet();
                     numConnectionFailures.incrementAndGet();

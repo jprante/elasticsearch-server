@@ -35,8 +35,6 @@ import org.apache.lucene.search.grouping.CollapseTopFieldDocs;
 import org.elasticsearch.common.collect.HppcMaps;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.util.BigArrays;
-import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -49,7 +47,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.dfs.AggregatedDfs;
 import org.elasticsearch.search.dfs.DfsSearchResult;
 import org.elasticsearch.search.fetch.FetchSearchResult;
-import org.elasticsearch.search.internal.InternalSearchResponse;
+import org.elasticsearch.search.InternalSearchResponse;
 import org.elasticsearch.search.profile.ProfileShardResult;
 import org.elasticsearch.search.profile.SearchProfileShardResults;
 import org.elasticsearch.search.query.QuerySearchResult;
@@ -540,39 +538,39 @@ public final class SearchPhaseController extends AbstractComponent {
 
     public static final class ReducedQueryPhase {
         // the sum of all hits across all reduces shards
-        final long totalHits;
+        public final long totalHits;
         // the number of returned hits (doc IDs) across all reduces shards
-        final long fetchHits;
+        public final long fetchHits;
         // the max score across all reduces hits or {@link Float#NaN} if no hits returned
-        final float maxScore;
+        public final float maxScore;
         // <code>true</code> if at least one reduced result timed out
-        final boolean timedOut;
+        public final boolean timedOut;
         // non null and true if at least one reduced result was terminated early
-        final Boolean terminatedEarly;
+        public final Boolean terminatedEarly;
         // the reduced suggest results
-        final Suggest suggest;
+        public final Suggest suggest;
         // the reduced internal aggregations
-        final InternalAggregations aggregations;
+        public final InternalAggregations aggregations;
         // the reduced profile results
-        final SearchProfileShardResults shardResults;
+        public final SearchProfileShardResults shardResults;
         // the number of reduces phases
-        final int numReducePhases;
+        public final int numReducePhases;
         // the searches merged top docs
-        final ScoreDoc[] scoreDocs;
+        public final ScoreDoc[] scoreDocs;
         // the top docs sort fields used to sort the score docs, <code>null</code> if the results are not sorted
-        final SortField[] sortField;
+        public final SortField[] sortField;
         // <code>true</code> iff the result score docs is sorted by a field (not score), this implies that <code>sortField</code> is set.
-        final boolean isSortedByField;
+        public final boolean isSortedByField;
         // the size of the top hits to return
-        final int size;
+        public final int size;
         // <code>true</code> iff the query phase had no results. Otherwise <code>false</code>
-        final boolean isEmptyResult;
+        public final boolean isEmptyResult;
         // the offset into the merged top hits
-        final int from;
+        public final int from;
         // sort value formats used to sort / format the result
-        final DocValueFormat[] sortValueFormats;
+        public final DocValueFormat[] sortValueFormats;
 
-        ReducedQueryPhase(long totalHits, long fetchHits, float maxScore, boolean timedOut, Boolean terminatedEarly, Suggest suggest,
+        public ReducedQueryPhase(long totalHits, long fetchHits, float maxScore, boolean timedOut, Boolean terminatedEarly, Suggest suggest,
                           InternalAggregations aggregations, SearchProfileShardResults shardResults, ScoreDoc[] scoreDocs,
                           SortField[] sortFields, DocValueFormat[] sortValueFormats, int numReducePhases, boolean isSortedByField, int size,
                           int from, boolean isEmptyResult) {
@@ -616,7 +614,7 @@ public final class SearchPhaseController extends AbstractComponent {
      * This implementation can be configured to batch up a certain amount of results and only reduce them
      * iff the buffer is exhausted.
      */
-    static final class QueryPhaseResultConsumer extends InitialSearchPhase.ArraySearchPhaseResults<SearchPhaseResult> {
+    public static final class QueryPhaseResultConsumer extends InitialSearchPhase.ArraySearchPhaseResults<SearchPhaseResult> {
         private final InternalAggregations[] aggsBuffer;
         private final TopDocs[] topDocsBuffer;
         private final boolean hasAggs;
@@ -710,17 +708,17 @@ public final class SearchPhaseController extends AbstractComponent {
         /**
          * Returns the number of buffered results
          */
-        int getNumBuffered() {
+        public int getNumBuffered() {
             return index;
         }
 
-        int getNumReducePhases() { return numReducePhases; }
+        public int getNumReducePhases() { return numReducePhases; }
     }
 
     /**
      * Returns a new ArraySearchPhaseResults instance. This might return an instance that reduces search responses incrementally.
      */
-    InitialSearchPhase.ArraySearchPhaseResults<SearchPhaseResult> newSearchPhaseResults(SearchRequest request, int numShards) {
+    public InitialSearchPhase.ArraySearchPhaseResults<SearchPhaseResult> newSearchPhaseResults(SearchRequest request, int numShards) {
         SearchSourceBuilder source = request.source();
         boolean isScrollRequest = request.scroll() != null;
         final boolean hasAggs = source != null && source.aggregations() != null;
@@ -742,22 +740,22 @@ public final class SearchPhaseController extends AbstractComponent {
         };
     }
 
-    static final class TopDocsStats {
-        final boolean trackTotalHits;
-        long totalHits;
-        long fetchHits;
-        float maxScore = Float.NEGATIVE_INFINITY;
+    public static final class TopDocsStats {
+        public final boolean trackTotalHits;
+        public long totalHits;
+        public long fetchHits;
+        public float maxScore = Float.NEGATIVE_INFINITY;
 
-        TopDocsStats() {
+        public TopDocsStats() {
             this(true);
         }
 
-        TopDocsStats(boolean trackTotalHits) {
+        public TopDocsStats(boolean trackTotalHits) {
             this.trackTotalHits = trackTotalHits;
             this.totalHits = trackTotalHits ? 0 : -1;
         }
 
-        void add(TopDocs topDocs) {
+        public void add(TopDocs topDocs) {
             if (trackTotalHits) {
                 totalHits += topDocs.totalHits;
             }
@@ -768,13 +766,13 @@ public final class SearchPhaseController extends AbstractComponent {
         }
     }
 
-    static final class SortedTopDocs {
-        static final SortedTopDocs EMPTY = new SortedTopDocs(EMPTY_DOCS, false, null);
-        final ScoreDoc[] scoreDocs;
-        final boolean isSortedByField;
-        final SortField[] sortFields;
+    public static final class SortedTopDocs {
+        public static final SortedTopDocs EMPTY = new SortedTopDocs(EMPTY_DOCS, false, null);
+        public final ScoreDoc[] scoreDocs;
+        public final boolean isSortedByField;
+        public final SortField[] sortFields;
 
-        SortedTopDocs(ScoreDoc[] scoreDocs, boolean isSortedByField, SortField[] sortFields) {
+        public SortedTopDocs(ScoreDoc[] scoreDocs, boolean isSortedByField, SortField[] sortFields) {
             this.scoreDocs = scoreDocs;
             this.isSortedByField = isSortedByField;
             this.sortFields = sortFields;

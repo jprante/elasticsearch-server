@@ -103,7 +103,7 @@ public abstract class Rounding implements Writeable {
         }
     }
 
-    static class TimeUnitRounding extends Rounding {
+    public static class TimeUnitRounding extends Rounding {
 
         static final byte ID = 1;
 
@@ -112,14 +112,14 @@ public abstract class Rounding implements Writeable {
         private final DateTimeZone timeZone;
         private final boolean unitRoundsToMidnight;
 
-        TimeUnitRounding(DateTimeUnit unit, DateTimeZone timeZone) {
+        public TimeUnitRounding(DateTimeUnit unit, DateTimeZone timeZone) {
             this.unit = unit;
             this.field = unit.field(timeZone);
             unitRoundsToMidnight = this.field.getDurationField().getUnitMillis() > 60L * 60L * 1000L;
             this.timeZone = timeZone;
         }
 
-        TimeUnitRounding(StreamInput in) throws IOException {
+        public TimeUnitRounding(StreamInput in) throws IOException {
             unit = DateTimeUnit.resolve(in.readByte());
             timeZone = DateTimeZone.forID(in.readString());
             field = unit.field(timeZone);
@@ -270,21 +270,21 @@ public abstract class Rounding implements Writeable {
         }
     }
 
-    static class TimeIntervalRounding extends Rounding {
+    public static class TimeIntervalRounding extends Rounding {
 
         static final byte ID = 2;
 
         private final long interval;
         private final DateTimeZone timeZone;
 
-        TimeIntervalRounding(long interval, DateTimeZone timeZone) {
+        public TimeIntervalRounding(long interval, DateTimeZone timeZone) {
             if (interval < 1)
                 throw new IllegalArgumentException("Zero or negative time interval not supported");
             this.interval = interval;
             this.timeZone = timeZone;
         }
 
-        TimeIntervalRounding(StreamInput in) throws IOException {
+        public TimeIntervalRounding(StreamInput in) throws IOException {
             interval = in.readVLong();
             timeZone = DateTimeZone.forID(in.readString());
         }

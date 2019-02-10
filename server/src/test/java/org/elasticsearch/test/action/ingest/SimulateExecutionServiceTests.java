@@ -17,16 +17,20 @@
  * under the License.
  */
 
-package org.elasticsearch.action.ingest;
+package org.elasticsearch.test.action.ingest;
 
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.ingest.SimulateDocumentBaseResult;
+import org.elasticsearch.action.ingest.SimulateDocumentResult;
+import org.elasticsearch.action.ingest.SimulateDocumentVerboseResult;
+import org.elasticsearch.action.ingest.SimulateExecutionService;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.ingest.RandomDocumentPicks;
-import org.elasticsearch.ingest.TestProcessor;
+import org.elasticsearch.testframework.ingest.RandomDocumentPicks;
+import org.elasticsearch.testframework.ingest.TestProcessor;
 import org.elasticsearch.ingest.CompoundProcessor;
 import org.elasticsearch.ingest.IngestDocument;
 import org.elasticsearch.ingest.Pipeline;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +38,7 @@ import org.junit.Before;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.elasticsearch.ingest.IngestDocumentMatcher.assertIngestDocument;
+import static org.elasticsearch.testframework.ingest.IngestDocumentMatcher.assertIngestDocument;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;

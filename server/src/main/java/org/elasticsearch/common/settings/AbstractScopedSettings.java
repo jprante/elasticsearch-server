@@ -110,8 +110,7 @@ public abstract class AbstractScopedSettings extends AbstractComponent {
         return GROUP_KEY_PATTERN.matcher(key).matches();
     }
 
-    // pkg private for tests
-    static boolean isValidAffixKey(String key) {
+    public static boolean isValidAffixKey(String key) {
         return AFFIX_KEY_PATTERN.matcher(key).matches();
     }
 
@@ -316,7 +315,7 @@ public abstract class AbstractScopedSettings extends AbstractComponent {
     /**
      * Validates that the setting is valid
      */
-    void validate(String key, Settings settings, boolean validateDependencies) {
+    public void validate(String key, Settings settings, boolean validateDependencies) {
         Setting setting = getRaw(key);
         if (setting == null) {
             LevensteinDistance ld = new LevensteinDistance();

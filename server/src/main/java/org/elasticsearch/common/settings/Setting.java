@@ -304,11 +304,11 @@ public class Setting<T> implements ToXContentObject {
      * The key, see {@link #getKey()}, in contrast to non-group settings is a prefix like <tt>cluster.store.</tt> that matches all settings
      * with this prefix.
      */
-    boolean isGroupSetting() {
+    public boolean isGroupSetting() {
         return false;
     }
 
-    boolean hasComplexMatcher() {
+    public boolean hasComplexMatcher() {
         return isGroupSetting();
     }
 
@@ -470,7 +470,7 @@ public class Setting<T> implements ToXContentObject {
     /**
      * Build a new updater with a noop validator.
      */
-    final AbstractScopedSettings.SettingUpdater<T> newUpdater(Consumer<T> consumer, Logger logger) {
+    public final AbstractScopedSettings.SettingUpdater<T> newUpdater(Consumer<T> consumer, Logger logger) {
         return newUpdater(consumer, logger, (s) -> {});
     }
 
@@ -478,7 +478,7 @@ public class Setting<T> implements ToXContentObject {
      * Build the updater responsible for validating new values, logging the new
      * value, and eventually setting the value where it belongs.
      */
-    AbstractScopedSettings.SettingUpdater<T> newUpdater(Consumer<T> consumer, Logger logger, Consumer<T> validator) {
+    public AbstractScopedSettings.SettingUpdater<T> newUpdater(Consumer<T> consumer, Logger logger, Consumer<T> validator) {
         if (isDynamic()) {
             return new Updater(consumer, logger, validator);
         } else {
@@ -490,7 +490,7 @@ public class Setting<T> implements ToXContentObject {
      * Updates settings that depend on each other.
      * See {@link AbstractScopedSettings#addSettingsUpdateConsumer(Setting, Setting, BiConsumer)} and its usage for details.
      */
-    static <A, B> AbstractScopedSettings.SettingUpdater<Tuple<A, B>> compoundUpdater(final BiConsumer<A, B> consumer,
+    public static <A, B> AbstractScopedSettings.SettingUpdater<Tuple<A, B>> compoundUpdater(final BiConsumer<A, B> consumer,
             final BiConsumer<A, B> validator, final Setting<A> aSetting, final Setting<B> bSetting, Logger logger) {
         final AbstractScopedSettings.SettingUpdater<A> aSettingUpdater = aSetting.newUpdater(null, logger);
         final AbstractScopedSettings.SettingUpdater<B> bSettingUpdater = bSetting.newUpdater(null, logger);
@@ -526,7 +526,7 @@ public class Setting<T> implements ToXContentObject {
         };
     }
 
-    static AbstractScopedSettings.SettingUpdater<Settings> groupedSettingsUpdater(Consumer<Settings> consumer, Logger logger,
+    public static AbstractScopedSettings.SettingUpdater<Settings> groupedSettingsUpdater(Consumer<Settings> consumer, Logger logger,
                                                                                   final List<? extends Setting<?>> configuredSettings) {
 
         return new AbstractScopedSettings.SettingUpdater<Settings>() {
@@ -578,7 +578,7 @@ public class Setting<T> implements ToXContentObject {
             this.dependencies = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(dependencies)));
         }
 
-        boolean isGroupSetting() {
+        public boolean isGroupSetting() {
             return true;
         }
 
@@ -883,7 +883,7 @@ public class Setting<T> implements ToXContentObject {
         }
 
         @Override
-        boolean hasComplexMatcher() {
+        public boolean hasComplexMatcher() {
             return true;
         }
 
@@ -1191,7 +1191,7 @@ public class Setting<T> implements ToXContentObject {
         }
     }
 
-    static void logSettingUpdate(Setting setting, Settings current, Settings previous, Logger logger) {
+    public static void logSettingUpdate(Setting setting, Settings current, Settings previous, Logger logger) {
         if (logger.isInfoEnabled()) {
             if (setting.isFiltered()) {
                 logger.info("updating [{}]", setting.key);

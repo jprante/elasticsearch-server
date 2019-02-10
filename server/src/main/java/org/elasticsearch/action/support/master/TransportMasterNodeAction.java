@@ -79,12 +79,12 @@ public abstract class TransportMasterNodeAction<Request extends MasterNodeReques
 
     protected abstract Response newResponse();
 
-    protected abstract void masterOperation(Request request, ClusterState state, ActionListener<Response> listener) throws Exception;
+    public abstract void masterOperation(Request request, ClusterState state, ActionListener<Response> listener) throws Exception;
 
     /**
      * Override this operation if access to the task parameter is needed
      */
-    protected void masterOperation(Task task, Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
+    public void masterOperation(Task task, Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
         masterOperation(request, state, listener);
     }
 
@@ -92,7 +92,7 @@ public abstract class TransportMasterNodeAction<Request extends MasterNodeReques
         return false;
     }
 
-    protected abstract ClusterBlockException checkBlock(Request request, ClusterState state);
+    public abstract ClusterBlockException checkBlock(Request request, ClusterState state);
 
     @Override
     protected final void doExecute(final Request request, ActionListener<Response> listener) {

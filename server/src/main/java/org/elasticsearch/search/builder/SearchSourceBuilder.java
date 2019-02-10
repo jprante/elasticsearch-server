@@ -49,7 +49,7 @@ import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.fetch.StoredFieldsContext;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.rescore.RescorerBuilder;
 import org.elasticsearch.search.searchafter.SearchAfterBuilder;
 import org.elasticsearch.search.slice.SliceBuilder;
@@ -1275,17 +1275,17 @@ public final class SearchSourceBuilder implements Writeable, ToXContentObject, R
         private final String index;
         private final float boost;
 
-        IndexBoost(String index, float boost) {
+        public IndexBoost(String index, float boost) {
             this.index = index;
             this.boost = boost;
         }
 
-        IndexBoost(StreamInput in) throws IOException {
+        public IndexBoost(StreamInput in) throws IOException {
             index = in.readString();
             boost = in.readFloat();
         }
 
-        IndexBoost(XContentParser parser) throws IOException {
+        public IndexBoost(XContentParser parser) throws IOException {
             XContentParser.Token token = parser.currentToken();
 
             if (token == XContentParser.Token.START_OBJECT) {

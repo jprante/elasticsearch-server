@@ -60,12 +60,12 @@ public class TransportDeleteIndexTemplateAction extends TransportMasterNodeActio
     }
 
     @Override
-    protected ClusterBlockException checkBlock(DeleteIndexTemplateRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(DeleteIndexTemplateRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
     }
 
     @Override
-    protected void masterOperation(final DeleteIndexTemplateRequest request, final ClusterState state, final ActionListener<DeleteIndexTemplateResponse> listener) {
+    public void masterOperation(final DeleteIndexTemplateRequest request, final ClusterState state, final ActionListener<DeleteIndexTemplateResponse> listener) {
         indexTemplateService.removeTemplates(new MetaDataIndexTemplateService.RemoveRequest(request.name()).masterTimeout(request.masterNodeTimeout()), new MetaDataIndexTemplateService.RemoveListener() {
             @Override
             public void onResponse(MetaDataIndexTemplateService.RemoveResponse response) {

@@ -88,7 +88,7 @@ public final class IndexingSlowLog implements IndexingOperationListener {
                 }
             }, Property.Dynamic, Property.IndexScope);
 
-    IndexingSlowLog(IndexSettings indexSettings) {
+    public IndexingSlowLog(IndexSettings indexSettings) {
         this.indexLogger = Loggers.getLogger(INDEX_INDEXING_SLOWLOG_PREFIX + ".index", indexSettings.getSettings());
         this.index = indexSettings.getIndex();
 
@@ -159,14 +159,14 @@ public final class IndexingSlowLog implements IndexingOperationListener {
         }
     }
 
-    static final class SlowLogParsedDocumentPrinter {
+    public static final class SlowLogParsedDocumentPrinter {
         private final ParsedDocument doc;
         private final long tookInNanos;
         private final boolean reformat;
         private final int maxSourceCharsToLog;
         private final Index index;
 
-        SlowLogParsedDocumentPrinter(Index index, ParsedDocument doc, long tookInNanos, boolean reformat, int maxSourceCharsToLog) {
+        public SlowLogParsedDocumentPrinter(Index index, ParsedDocument doc, long tookInNanos, boolean reformat, int maxSourceCharsToLog) {
             this.doc = doc;
             this.index = index;
             this.tookInNanos = tookInNanos;
@@ -207,31 +207,31 @@ public final class IndexingSlowLog implements IndexingOperationListener {
         }
     }
 
-    boolean isReformat() {
+    public boolean isReformat() {
         return reformat;
     }
 
-    long getIndexWarnThreshold() {
+    public long getIndexWarnThreshold() {
         return indexWarnThreshold;
     }
 
-    long getIndexInfoThreshold() {
+    public long getIndexInfoThreshold() {
         return indexInfoThreshold;
     }
 
-    long getIndexTraceThreshold() {
+    public long getIndexTraceThreshold() {
         return indexTraceThreshold;
     }
 
-    long getIndexDebugThreshold() {
+    public long getIndexDebugThreshold() {
         return indexDebugThreshold;
     }
 
-    int getMaxSourceCharsToLog() {
+    public int getMaxSourceCharsToLog() {
         return maxSourceCharsToLog;
     }
 
-    SlowLogLevel getLevel() {
+    public SlowLogLevel getLevel() {
         return level;
     }
 

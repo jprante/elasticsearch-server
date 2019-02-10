@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
 import org.apache.lucene.analysis.CharArraySet;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.env.TestEnvironment;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.env.TestEnvironment;
+import org.elasticsearch.index.analysis.Analysis;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;

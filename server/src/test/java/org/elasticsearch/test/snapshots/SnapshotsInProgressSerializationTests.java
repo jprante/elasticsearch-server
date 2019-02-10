@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.snapshots;
+package org.elasticsearch.test.snapshots;
 
 import org.elasticsearch.cluster.ClusterModule;
 import org.elasticsearch.cluster.ClusterState.Custom;
@@ -31,7 +31,9 @@ import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.repositories.IndexId;
-import org.elasticsearch.test.AbstractDiffableWireSerializationTestCase;
+import org.elasticsearch.snapshots.Snapshot;
+import org.elasticsearch.snapshots.SnapshotId;
+import org.elasticsearch.testframework.AbstractDiffableWireSerializationTestCase;
 
 import java.util.ArrayList;
 import java.util.List;

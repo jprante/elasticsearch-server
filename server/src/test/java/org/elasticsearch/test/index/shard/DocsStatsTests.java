@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.index.shard;
+package org.elasticsearch.test.index.shard;
 
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.shard.DocsStats;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 

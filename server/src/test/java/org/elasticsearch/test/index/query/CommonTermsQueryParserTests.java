@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.query.CommonTermsQueryBuilder;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 import java.io.IOException;
 

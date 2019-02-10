@@ -62,7 +62,7 @@ public class SnapshotStatus implements ToXContentObject, Streamable {
     @Nullable
     private Boolean includeGlobalState;
 
-    SnapshotStatus(final Snapshot snapshot, final State state, final List<SnapshotIndexShardStatus> shards,
+    public SnapshotStatus(final Snapshot snapshot, final State state, final List<SnapshotIndexShardStatus> shards,
                    final Boolean includeGlobalState) {
         this.snapshot = Objects.requireNonNull(snapshot);
         this.state = Objects.requireNonNull(state);
@@ -72,7 +72,7 @@ public class SnapshotStatus implements ToXContentObject, Streamable {
         updateShardStats();
     }
 
-    SnapshotStatus() {
+    public SnapshotStatus() {
     }
 
     /**

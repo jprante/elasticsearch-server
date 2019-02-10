@@ -81,7 +81,7 @@ public final class Laplace extends SmoothingModel {
     }
 
     @Override
-    protected XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException {
+    public XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException {
         builder.field(ALPHA_FIELD.getPreferredName(), alpha);
         return builder;
     }

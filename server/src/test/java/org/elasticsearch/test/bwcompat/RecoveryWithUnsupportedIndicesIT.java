@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.bwcompat;
+package org.elasticsearch.test.bwcompat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,12 +26,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.lucene.util.LuceneTestCase;
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.TestUtil;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.env.NodeEnvironment;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import static org.hamcrest.Matchers.containsString;
 
@@ -85,7 +85,8 @@ public class RecoveryWithUnsupportedIndicesIT extends ESIntegTestCase {
         String indexName = "unsupported-0.20.6";
 
         logger.info("Checking static index {}", indexName);
-        Settings nodeSettings = prepareBackwardsDataDir(getBwcIndicesPath().resolve(indexName + ".zip"));
+        Path bwc = getDataPath(RecoveryWithUnsupportedIndicesIT.class, "/org/elasticsearch/test/indices/bwc");
+        Settings nodeSettings = prepareBackwardsDataDir(bwc.resolve(indexName + ".zip"));
         try {
             internalCluster().startNode(nodeSettings);
             fail();

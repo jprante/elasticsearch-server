@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.action.get;
+package org.elasticsearch.test.action.get;
 
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.common.ParsingException;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesArray;
@@ -29,19 +30,19 @@ import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.get.GetResult;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.function.Predicate;
 
 import static org.elasticsearch.common.xcontent.XContentHelper.toXContent;
-import static org.elasticsearch.index.get.GetResultTests.copyGetResult;
-import static org.elasticsearch.index.get.GetResultTests.mutateGetResult;
-import static org.elasticsearch.index.get.GetResultTests.randomGetResult;
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
-import static org.elasticsearch.test.XContentTestUtils.insertRandomFields;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.test.index.get.GetResultTests.copyGetResult;
+import static org.elasticsearch.test.index.get.GetResultTests.mutateGetResult;
+import static org.elasticsearch.test.index.get.GetResultTests.randomGetResult;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.XContentTestUtils.insertRandomFields;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 
 public class GetResponseTests extends ESTestCase {
 

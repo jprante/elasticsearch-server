@@ -233,7 +233,7 @@ public abstract class TransportBroadcastByNodeAction<Request extends BroadcastRe
         new AsyncAction(task, request, listener).start();
     }
 
-    protected class AsyncAction {
+    public class AsyncAction {
         private final Task task;
         private final Request request;
         private final ActionListener<Response> listener;
@@ -244,7 +244,7 @@ public abstract class TransportBroadcastByNodeAction<Request extends BroadcastRe
         private final AtomicInteger counter = new AtomicInteger();
         private List<NoShardAvailableActionException> unavailableShardExceptions = new ArrayList<>();
 
-        protected AsyncAction(Task task, Request request, ActionListener<Response> listener) {
+        public AsyncAction(Task task, Request request, ActionListener<Response> listener) {
             this.task = task;
             this.request = request;
             this.listener = listener;
@@ -393,7 +393,7 @@ public abstract class TransportBroadcastByNodeAction<Request extends BroadcastRe
         }
     }
 
-    class BroadcastByNodeTransportRequestHandler implements TransportRequestHandler<NodeRequest> {
+    public class BroadcastByNodeTransportRequestHandler implements TransportRequestHandler<NodeRequest> {
         @Override
         public void messageReceived(final NodeRequest request, TransportChannel channel) throws Exception {
             List<ShardRouting> shards = request.getShards();
@@ -503,16 +503,16 @@ public abstract class TransportBroadcastByNodeAction<Request extends BroadcastRe
         }
     }
 
-    class NodeResponse extends TransportResponse {
+    public class NodeResponse extends TransportResponse {
         protected String nodeId;
         protected int totalShards;
         protected List<BroadcastShardOperationFailedException> exceptions;
         protected List<ShardOperationResult> results;
 
-        NodeResponse() {
+        public NodeResponse() {
         }
 
-        NodeResponse(String nodeId,
+        public NodeResponse(String nodeId,
                             int totalShards,
                             List<ShardOperationResult> results,
                             List<BroadcastShardOperationFailedException> exceptions) {

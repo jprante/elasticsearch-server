@@ -42,7 +42,7 @@ import java.util.Map;
  */
 public class SearchResponseSections implements ToXContentFragment {
 
-    protected final SearchHits hits;
+    public final SearchHits hits;
     protected final Aggregations aggregations;
     protected final Suggest suggest;
     protected final SearchProfileShardResults profileResults;

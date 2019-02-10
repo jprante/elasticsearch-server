@@ -178,9 +178,9 @@ public abstract class InternalTerms<A extends InternalTerms<A, B>, B extends Int
         }
     }
 
-    protected final BucketOrder order;
-    protected final int requiredSize;
-    protected final long minDocCount;
+    public final BucketOrder order;
+    public final int requiredSize;
+    public final long minDocCount;
 
     protected InternalTerms(String name, BucketOrder order, int requiredSize, long minDocCount,
             List<PipelineAggregator> pipelineAggregators, Map<String, Object> metaData) {

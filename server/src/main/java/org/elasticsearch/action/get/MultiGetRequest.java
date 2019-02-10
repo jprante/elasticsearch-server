@@ -286,7 +286,7 @@ public class MultiGetRequest extends ActionRequest
     String preference;
     boolean realtime = true;
     boolean refresh;
-    List<Item> items = new ArrayList<>();
+    public List<Item> items = new ArrayList<>();
 
     public List<Item> getItems() {
         return this.items;

@@ -356,7 +356,7 @@ public class MapperService extends AbstractIndexComponent implements Closeable {
         return internalMerge(defaultMapper, defaultMappingSource, documentMappers, reason, updateAllTypes);
     }
 
-    static void validateTypeName(String type) {
+    public static void validateTypeName(String type) {
         if (type.length() == 0) {
             throw new InvalidTypeNameException("mapping type name is empty");
         }

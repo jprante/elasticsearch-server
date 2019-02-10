@@ -76,7 +76,7 @@ public class TransportIndicesAliasesAction extends TransportMasterNodeAction<Ind
     }
 
     @Override
-    protected ClusterBlockException checkBlock(IndicesAliasesRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(IndicesAliasesRequest request, ClusterState state) {
         Set<String> indices = new HashSet<>();
         for (AliasActions aliasAction : request.aliasActions()) {
             Collections.addAll(indices, aliasAction.indices());
@@ -85,7 +85,7 @@ public class TransportIndicesAliasesAction extends TransportMasterNodeAction<Ind
     }
 
     @Override
-    protected void masterOperation(final IndicesAliasesRequest request, final ClusterState state, final ActionListener<IndicesAliasesResponse> listener) {
+    public void masterOperation(final IndicesAliasesRequest request, final ClusterState state, final ActionListener<IndicesAliasesResponse> listener) {
 
         //Expand the indices names
         List<AliasActions> actions = request.aliasActions();

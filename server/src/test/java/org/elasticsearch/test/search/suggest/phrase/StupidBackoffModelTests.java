@@ -17,9 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.phrase;
+package org.elasticsearch.test.search.suggest.phrase;
 
 import org.elasticsearch.common.xcontent.XContentParser;
+import org.elasticsearch.search.suggest.phrase.SmoothingModel;
+import org.elasticsearch.search.suggest.phrase.StupidBackoff;
+import org.elasticsearch.search.suggest.phrase.StupidBackoffScorer;
+import org.elasticsearch.search.suggest.phrase.WordScorer;
 
 import java.io.IOException;
 
@@ -46,7 +50,7 @@ public class StupidBackoffModelTests extends SmoothingModelTestCase {
     }
 
     @Override
-    void assertWordScorer(WordScorer wordScorer, SmoothingModel input) {
+    public void assertWordScorer(WordScorer wordScorer, SmoothingModel input) {
         assertThat(wordScorer, instanceOf(StupidBackoffScorer.class));
         StupidBackoff testModel = (StupidBackoff) input;
         assertEquals(testModel.getDiscount(), ((StupidBackoffScorer) wordScorer).discount(), Double.MIN_VALUE);

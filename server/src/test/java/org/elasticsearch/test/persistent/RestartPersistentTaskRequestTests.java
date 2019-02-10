@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.persistent;
+package org.elasticsearch.test.persistent;
 
-import org.elasticsearch.test.AbstractStreamableTestCase;
+import org.elasticsearch.testframework.AbstractStreamableTestCase;
 import org.elasticsearch.persistent.CompletionPersistentTaskAction.Request;
 
 public class RestartPersistentTaskRequestTests extends AbstractStreamableTestCase<Request> {

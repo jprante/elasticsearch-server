@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.common;
+package org.elasticsearch.test.common;
 
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.Channels;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;

@@ -23,6 +23,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.TermQuery;
 import org.elasticsearch.index.mapper.BooleanFieldMapper;
 import org.elasticsearch.index.mapper.MappedFieldType;
+import org.elasticsearch.testframework.index.mapper.FieldTypeTestCase;
 import org.junit.Before;
 
 public class BooleanFieldTypeTests extends FieldTypeTestCase {

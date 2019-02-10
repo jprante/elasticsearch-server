@@ -17,12 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.jvm;
+package org.elasticsearch.test.monitor.jvm;
 
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.jvm.JvmGcMonitorService;
+import org.elasticsearch.monitor.jvm.JvmStats;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

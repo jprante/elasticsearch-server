@@ -41,15 +41,15 @@ public class InternalGeoBounds extends InternalAggregation implements GeoBounds 
     static final ParseField LON_FIELD = new ParseField("lon");
 
 
-    final double top;
-    final double bottom;
-    final double posLeft;
-    final double posRight;
-    final double negLeft;
-    final double negRight;
-    final boolean wrapLongitude;
+    public final double top;
+    public final double bottom;
+    public final double posLeft;
+    public final double posRight;
+    public final double negLeft;
+    public final double negRight;
+    public final boolean wrapLongitude;
 
-    InternalGeoBounds(String name, double top, double bottom, double posLeft, double posRight,
+    public InternalGeoBounds(String name, double top, double bottom, double posLeft, double posRight,
                       double negLeft, double negRight, boolean wrapLongitude,
                       List<PipelineAggregator> pipelineAggregators, Map<String, Object> metaData) {
         super(name, pipelineAggregators, metaData);

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.sort;
+package org.elasticsearch.test.search.sort;
 
 
 import org.apache.lucene.document.LatLonDocValuesField;
@@ -47,6 +47,11 @@ import org.elasticsearch.index.query.QueryShardContext;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.MultiValueMode;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.NestedSortBuilder;
+import org.elasticsearch.search.sort.SortFieldAndFormat;
+import org.elasticsearch.search.sort.SortMode;
+import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.test.geo.RandomGeoGenerator;
 
 import java.io.IOException;

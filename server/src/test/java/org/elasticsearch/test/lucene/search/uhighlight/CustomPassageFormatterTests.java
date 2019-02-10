@@ -17,12 +17,15 @@
  * under the License.
  */
 
-package org.apache.lucene.search.uhighlight;
+package org.elasticsearch.test.lucene.search.uhighlight;
 
 import org.apache.lucene.search.highlight.DefaultEncoder;
 import org.apache.lucene.search.highlight.SimpleHTMLEncoder;
+import org.apache.lucene.search.uhighlight.CustomPassageFormatter;
+import org.apache.lucene.search.uhighlight.Passage;
+import org.apache.lucene.search.uhighlight.Snippet;
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;

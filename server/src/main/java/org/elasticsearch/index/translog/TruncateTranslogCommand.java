@@ -90,7 +90,7 @@ public class TruncateTranslogCommand extends EnvironmentAwareCommand {
     }
 
     @Override
-    protected void execute(Terminal terminal, OptionSet options, Environment env) throws Exception {
+    public void execute(Terminal terminal, OptionSet options, Environment env) throws Exception {
         boolean batch = options.has(batchMode);
 
         Path translogPath = getTranslogPath(options);

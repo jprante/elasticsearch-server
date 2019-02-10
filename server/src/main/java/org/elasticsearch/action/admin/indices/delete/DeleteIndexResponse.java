@@ -40,10 +40,10 @@ public class DeleteIndexResponse extends AcknowledgedResponse {
         declareAcknowledgedField(PARSER);
     }
 
-    DeleteIndexResponse() {
+    public DeleteIndexResponse() {
     }
 
-    DeleteIndexResponse(boolean acknowledged) {
+    public DeleteIndexResponse(boolean acknowledged) {
         super(acknowledged);
     }
 

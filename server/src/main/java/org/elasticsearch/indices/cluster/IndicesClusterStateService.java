@@ -97,7 +97,7 @@ import static org.elasticsearch.indices.cluster.IndicesClusterStateService.Alloc
 
 public class IndicesClusterStateService extends AbstractLifecycleComponent implements ClusterStateApplier {
 
-    final AllocatedIndices<? extends Shard, ? extends AllocatedIndex<? extends Shard>> indicesService;
+    public final AllocatedIndices<? extends Shard, ? extends AllocatedIndex<? extends Shard>> indicesService;
     private final ClusterService clusterService;
     private final ThreadPool threadPool;
     private final PeerRecoveryTargetService recoveryTargetService;
@@ -109,7 +109,7 @@ public class IndicesClusterStateService extends AbstractLifecycleComponent imple
 
     // a list of shards that failed during recovery
     // we keep track of these shards in order to prevent repeated recovery of these shards on each cluster state update
-    final ConcurrentMap<ShardId, ShardRouting> failedShardsCache = ConcurrentCollections.newConcurrentMap();
+    public final ConcurrentMap<ShardId, ShardRouting> failedShardsCache = ConcurrentCollections.newConcurrentMap();
     private final RepositoriesService repositoriesService;
 
     private final FailedShardHandler failedShardHandler = new FailedShardHandler();
@@ -140,8 +140,7 @@ public class IndicesClusterStateService extends AbstractLifecycleComponent imple
                 snapshotShardsService, primaryReplicaSyncer, globalCheckpointSyncAction::updateGlobalCheckpointForShard);
     }
 
-    // for tests
-    IndicesClusterStateService(Settings settings,
+    public IndicesClusterStateService(Settings settings,
                                AllocatedIndices<? extends Shard, ? extends AllocatedIndex<? extends Shard>> indicesService,
                                ClusterService clusterService,
                                ThreadPool threadPool,

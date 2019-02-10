@@ -17,15 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.Index;
-import org.elasticsearch.test.ESTokenStreamTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.index.analysis.PathHierarchyTokenizerFactory;
+import org.elasticsearch.testframework.ESTokenStreamTestCase;
+import org.elasticsearch.testframework.IndexSettingsModule;
 
 import java.io.IOException;
 import java.io.StringReader;

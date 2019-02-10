@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.metadata;
+package org.elasticsearch.test.cluster.metadata;
 
+import org.elasticsearch.cluster.metadata.ClusterNameExpressionResolver;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Arrays;
 import java.util.HashSet;

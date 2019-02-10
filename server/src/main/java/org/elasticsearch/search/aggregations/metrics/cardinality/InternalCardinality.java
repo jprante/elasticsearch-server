@@ -35,7 +35,7 @@ import java.util.Map;
 public final class InternalCardinality extends InternalNumericMetricsAggregation.SingleValue implements Cardinality {
     private final HyperLogLogPlusPlus counts;
 
-    InternalCardinality(String name, HyperLogLogPlusPlus counts, List<PipelineAggregator> pipelineAggregators,
+    public InternalCardinality(String name, HyperLogLogPlusPlus counts, List<PipelineAggregator> pipelineAggregators,
             Map<String, Object> metaData) {
         super(name, pipelineAggregators, metaData);
         this.counts = counts;
@@ -124,7 +124,7 @@ public final class InternalCardinality extends InternalNumericMetricsAggregation
         return counts.equals(0, other.counts);
     }
 
-    HyperLogLogPlusPlus getState() {
+    public HyperLogLogPlusPlus getState() {
         return counts;
     }
 }

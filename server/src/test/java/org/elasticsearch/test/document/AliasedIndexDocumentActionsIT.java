@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.document;
+package org.elasticsearch.test.document;
 
 import org.elasticsearch.action.admin.indices.alias.Alias;
 

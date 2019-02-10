@@ -51,7 +51,7 @@ public final class IngestDocument {
     private static final String INGEST_KEY_PREFIX = INGEST_KEY + ".";
     private static final String SOURCE_PREFIX = SourceFieldMapper.NAME + ".";
 
-    static final String TIMESTAMP = "timestamp";
+    public static final String TIMESTAMP = "timestamp";
 
     private final Map<String, Object> sourceAndMetadata;
     private final Map<String, Object> ingestMetadata;

@@ -16,9 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.bytes;
+package org.elasticsearch.test.common.bytes;
 
+import org.elasticsearch.common.bytes.BytesArray;
+import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
+import org.elasticsearch.testframework.common.bytes.AbstractBytesReferenceTestCase;
 import org.hamcrest.Matchers;
 
 import java.io.IOException;

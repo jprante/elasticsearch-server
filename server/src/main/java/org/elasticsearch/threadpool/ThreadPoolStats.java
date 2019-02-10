@@ -166,14 +166,14 @@ public class ThreadPoolStats implements Writeable, ToXContentFragment, Iterable<
         return stats.iterator();
     }
 
-    static final class Fields {
-        static final String THREAD_POOL = "thread_pool";
-        static final String THREADS = "threads";
-        static final String QUEUE = "queue";
-        static final String ACTIVE = "active";
-        static final String REJECTED = "rejected";
-        static final String LARGEST = "largest";
-        static final String COMPLETED = "completed";
+    public static final class Fields {
+        public static final String THREAD_POOL = "thread_pool";
+        public static final String THREADS = "threads";
+        public static final String QUEUE = "queue";
+        public static final String ACTIVE = "active";
+        public static final String REJECTED = "rejected";
+        public static final String LARGEST = "largest";
+        public static final String COMPLETED = "completed";
     }
 
     @Override

@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.search.sort;
+package org.elasticsearch.test.search.sort;
 
 
 import org.apache.lucene.search.SortField;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.search.DocValueFormat;
+import org.elasticsearch.search.sort.ScoreSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import java.io.IOException;
 

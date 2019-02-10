@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.gateway;
+package org.elasticsearch.test.gateway;
 
 import org.elasticsearch.cluster.service.ClusterService;
 import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.gateway.GatewayService;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 
 import java.io.IOException;

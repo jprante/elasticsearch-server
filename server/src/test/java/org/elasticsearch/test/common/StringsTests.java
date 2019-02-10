@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.common;
+package org.elasticsearch.test.common;
 
+import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.util.set.Sets;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.ToXContentObject;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.containsString;
 

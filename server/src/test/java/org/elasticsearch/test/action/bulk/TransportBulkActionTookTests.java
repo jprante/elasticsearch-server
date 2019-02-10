@@ -18,7 +18,7 @@
  */
 
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
 import org.apache.lucene.util.Constants;
 import org.elasticsearch.action.ActionListener;
@@ -26,6 +26,11 @@ import org.elasticsearch.action.IndicesRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.create.TransportCreateIndexAction;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.bulk.TransportBulkAction;
+import org.elasticsearch.action.bulk.TransportShardBulkAction;
 import org.elasticsearch.action.support.ActionFilters;
 import org.elasticsearch.action.support.AutoCreateIndex;
 import org.elasticsearch.cluster.ClusterState;
@@ -38,9 +43,9 @@ import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.tasks.Task;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.transport.CapturingTransport;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.transport.CapturingTransport;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 import org.junit.After;
@@ -56,8 +61,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongSupplier;
 
-import static org.elasticsearch.test.ClusterServiceUtils.createClusterService;
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.ClusterServiceUtils.createClusterService;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
@@ -123,7 +128,7 @@ public class TransportBulkActionTookTests extends ESTestCase {
                     expected::get) {
 
                 @Override
-                void executeBulk(
+                public void executeBulk(
                         Task task,
                         BulkRequest bulkRequest,
                         long startTimeNanos,
@@ -148,7 +153,7 @@ public class TransportBulkActionTookTests extends ESTestCase {
                     System::nanoTime) {
 
                 @Override
-                void executeBulk(
+                public void executeBulk(
                         Task task,
                         BulkRequest bulkRequest,
                         long startTimeNanos,
@@ -174,7 +179,8 @@ public class TransportBulkActionTookTests extends ESTestCase {
     }
 
     private void runTestTook(boolean controlled) throws Exception {
-        String bulkAction = copyToStringFromClasspath("/org/elasticsearch/action/bulk/simple-bulk.json");
+        String bulkAction = copyToStringFromClasspath(TransportBulkActionTookTests.class,
+                "/org/elasticsearch/test/action/bulk/simple-bulk.json");
         // translate Windows line endings (\r\n) to standard ones (\n)
         if (Constants.WINDOWS) {
             bulkAction = Strings.replace(bulkAction, "\r\n", "\n");
@@ -215,9 +221,9 @@ public class TransportBulkActionTookTests extends ESTestCase {
         }
     }
 
-    static class TestTransportBulkAction extends TransportBulkAction {
+    public static class TestTransportBulkAction extends TransportBulkAction {
 
-        TestTransportBulkAction(
+        public TestTransportBulkAction(
                 Settings settings,
                 ThreadPool threadPool,
                 TransportService transportService,
@@ -243,12 +249,12 @@ public class TransportBulkActionTookTests extends ESTestCase {
         }
 
         @Override
-        boolean needToCheck() {
+        public boolean needToCheck() {
             return randomBoolean();
         }
 
         @Override
-        boolean shouldAutoCreate(String index, ClusterState state) {
+        public boolean shouldAutoCreate(String index, ClusterState state) {
             return randomBoolean();
         }
 

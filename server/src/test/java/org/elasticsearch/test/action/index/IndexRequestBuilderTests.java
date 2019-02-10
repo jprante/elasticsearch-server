@@ -17,14 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.action.index;
+package org.elasticsearch.test.action.index;
 
+import org.elasticsearch.action.index.IndexAction;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.client.NoOpClient;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.client.NoOpClient;
 import org.junit.After;
 import org.junit.Before;
 

@@ -68,7 +68,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
-final class TransportClientNodesService extends AbstractComponent implements Closeable {
+public final class TransportClientNodesService extends AbstractComponent implements Closeable {
 
     private final TimeValue nodesSamplerInterval;
 
@@ -119,7 +119,7 @@ final class TransportClientNodesService extends AbstractComponent implements Clo
         LISTED_NODES_PROFILE = builder.build();
     }
 
-    TransportClientNodesService(Settings settings, TransportService transportService,
+    public TransportClientNodesService(Settings settings, TransportService transportService,
                                        ThreadPool threadPool, TransportClient.HostFailureListener hostFailureListener) {
         super(settings);
         this.clusterName = ClusterName.CLUSTER_NAME_SETTING.get(settings);
@@ -566,8 +566,7 @@ final class TransportClientNodesService extends AbstractComponent implements Clo
         void doWithNode(DiscoveryNode node, ActionListener<Response> listener);
     }
 
-    // pkg private for testing
-    void doSample() {
+    public void doSample() {
         nodesSampler.doSample();
     }
 }

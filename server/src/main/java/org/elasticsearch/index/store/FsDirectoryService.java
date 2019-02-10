@@ -76,7 +76,7 @@ public class FsDirectoryService extends DirectoryService {
         return wrapped;
     }
 
-    protected Directory newFSDirectory(Path location, LockFactory lockFactory) throws IOException {
+    public Directory newFSDirectory(Path location, LockFactory lockFactory) throws IOException {
         final String storeType = indexSettings.getSettings().get(IndexModule.INDEX_STORE_TYPE_SETTING.getKey(),
             IndexModule.Type.FS.getSettingsKey());
         if (IndexModule.Type.FS.match(storeType)) {

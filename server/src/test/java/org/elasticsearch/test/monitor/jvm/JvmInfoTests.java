@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.jvm;
+package org.elasticsearch.test.monitor.jvm;
 
 import org.apache.lucene.util.Constants;
 import org.elasticsearch.bootstrap.JavaVersion;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.jvm.JvmInfo;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class JvmInfoTests extends ESTestCase {
 

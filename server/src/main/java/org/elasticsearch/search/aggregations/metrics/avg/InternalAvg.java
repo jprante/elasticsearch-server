@@ -70,15 +70,15 @@ public class InternalAvg extends InternalNumericMetricsAggregation.SingleValue i
         return sum / count;
     }
 
-    double getSum() {
+    public double getSum() {
         return sum;
     }
 
-    long getCount() {
+    public long getCount() {
         return count;
     }
 
-    DocValueFormat getFormatter() {
+    public DocValueFormat getFormatter() {
         return format;
     }
 

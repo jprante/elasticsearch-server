@@ -51,7 +51,7 @@ public final class FixedExecutorBuilder extends ExecutorBuilder<FixedExecutorBui
      * @param size      the fixed number of threads
      * @param queueSize the size of the backing queue, -1 for unbounded
      */
-    FixedExecutorBuilder(final Settings settings, final String name, final int size, final int queueSize) {
+    public FixedExecutorBuilder(final Settings settings, final String name, final int size, final int queueSize) {
         this(settings, name, size, queueSize, false);
     }
 
@@ -64,7 +64,8 @@ public final class FixedExecutorBuilder extends ExecutorBuilder<FixedExecutorBui
      * @param size         the fixed number of threads
      * @param queueSize    the size of the backing queue, -1 for unbounded
      */
-    FixedExecutorBuilder(final Settings settings, final String name, final String fallbackName, final int size, final int queueSize) {
+    public FixedExecutorBuilder(final Settings settings, final String name, final String fallbackName, final int size,
+                                final int queueSize) {
         this(settings, name, fallbackName, size, queueSize, "thread_pool." + name, "thread_pool." + fallbackName, false);
     }
 
@@ -77,7 +78,7 @@ public final class FixedExecutorBuilder extends ExecutorBuilder<FixedExecutorBui
      * @param queueSize  the size of the backing queue, -1 for unbounded
      * @param deprecated whether or not the thread pool is deprecated
      */
-    FixedExecutorBuilder(final Settings settings, final String name, final int size, final int queueSize, final boolean deprecated) {
+    public FixedExecutorBuilder(final Settings settings, final String name, final int size, final int queueSize, final boolean deprecated) {
         this(settings, name, null, size, queueSize, "thread_pool." + name, null, deprecated);
     }
 

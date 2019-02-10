@@ -83,7 +83,7 @@ public class DiskThresholdDecider extends AllocationDecider {
      *
      * If subtractShardsMovingAway is true then the size of shards moving away is subtracted from the total size of all shards
      */
-    static long sizeOfRelocatingShards(RoutingNode node, RoutingAllocation allocation,
+    public static long sizeOfRelocatingShards(RoutingNode node, RoutingAllocation allocation,
                                        boolean subtractShardsMovingAway, String dataPath) {
         ClusterInfo clusterInfo = allocation.clusterInfo();
         long totalSize = 0;
@@ -336,7 +336,7 @@ public class DiskThresholdDecider extends AllocationDecider {
      * @param usages Map of nodeId to DiskUsage for all known nodes
      * @return DiskUsage representing given node using the average disk usage
      */
-    DiskUsage averageUsage(RoutingNode node, ImmutableOpenMap<String, DiskUsage> usages) {
+    public DiskUsage averageUsage(RoutingNode node, ImmutableOpenMap<String, DiskUsage> usages) {
         if (usages.size() == 0) {
             return new DiskUsage(node.nodeId(), node.node().getName(), "_na_", 0, 0);
         }
@@ -356,7 +356,7 @@ public class DiskThresholdDecider extends AllocationDecider {
      * @param shardSize Size in bytes of the shard
      * @return Percentage of free space after the shard is assigned to the node
      */
-    double freeDiskPercentageAfterShardAssigned(DiskUsage usage, Long shardSize) {
+    public double freeDiskPercentageAfterShardAssigned(DiskUsage usage, Long shardSize) {
         shardSize = (shardSize == null) ? 0 : shardSize;
         DiskUsage newUsage = new DiskUsage(usage.getNodeId(), usage.getNodeName(), usage.getPath(),
                 usage.getTotalBytes(),  usage.getFreeBytes() - shardSize);

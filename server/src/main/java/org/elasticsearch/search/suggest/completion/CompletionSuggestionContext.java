@@ -43,7 +43,7 @@ public class CompletionSuggestionContext extends SuggestionSearchContext.Suggest
     private boolean skipDuplicates;
     private Map<String, List<ContextMapping.InternalQueryContext>> queryContexts = Collections.emptyMap();
 
-    CompletionFieldMapper.CompletionFieldType getFieldType() {
+    public CompletionFieldMapper.CompletionFieldType getFieldType() {
         return this.fieldType;
     }
 

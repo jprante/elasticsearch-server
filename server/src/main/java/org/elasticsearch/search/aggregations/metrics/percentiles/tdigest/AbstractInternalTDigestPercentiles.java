@@ -35,9 +35,9 @@ import java.util.Objects;
 
 abstract class AbstractInternalTDigestPercentiles extends InternalNumericMetricsAggregation.MultiValue {
 
-    protected final double[] keys;
-    protected final TDigestState state;
-    final boolean keyed;
+    public final double[] keys;
+    public final TDigestState state;
+    public final boolean keyed;
 
     AbstractInternalTDigestPercentiles(String name, double[] keys, TDigestState state, boolean keyed, DocValueFormat formatter,
             List<PipelineAggregator> pipelineAggregators,
@@ -75,7 +75,7 @@ abstract class AbstractInternalTDigestPercentiles extends InternalNumericMetrics
 
     public abstract double value(double key);
 
-    DocValueFormat formatter() {
+    public DocValueFormat formatter() {
         return format;
     }
 

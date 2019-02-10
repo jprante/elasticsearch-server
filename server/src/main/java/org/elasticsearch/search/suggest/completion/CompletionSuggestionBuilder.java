@@ -59,8 +59,8 @@ import java.util.Objects;
 public class CompletionSuggestionBuilder extends SuggestionBuilder<CompletionSuggestionBuilder> {
     private static final XContentType CONTEXT_BYTES_XCONTENT_TYPE = XContentType.JSON;
     static final String SUGGESTION_NAME = "completion";
-    static final ParseField CONTEXTS_FIELD = new ParseField("contexts", "context");
-    static final ParseField SKIP_DUPLICATES_FIELD = new ParseField("skip_duplicates");
+    public static final ParseField CONTEXTS_FIELD = new ParseField("contexts", "context");
+    public static final ParseField SKIP_DUPLICATES_FIELD = new ParseField("skip_duplicates");
 
     /**
      * {
@@ -101,10 +101,10 @@ public class CompletionSuggestionBuilder extends SuggestionBuilder<CompletionSug
         PARSER.declareBoolean(CompletionSuggestionBuilder::skipDuplicates, SKIP_DUPLICATES_FIELD);
     }
 
-    protected FuzzyOptions fuzzyOptions;
-    protected RegexOptions regexOptions;
-    protected BytesReference contextBytes = null;
-    protected boolean skipDuplicates = false;
+    public FuzzyOptions fuzzyOptions;
+    public RegexOptions regexOptions;
+    public BytesReference contextBytes = null;
+    public boolean skipDuplicates = false;
 
     public CompletionSuggestionBuilder(String field) {
         super(field);
@@ -313,7 +313,7 @@ public class CompletionSuggestionBuilder extends SuggestionBuilder<CompletionSug
         return suggestionContext;
     }
 
-    static Map<String, List<ContextMapping.InternalQueryContext>> parseContextBytes(BytesReference contextBytes,
+    public static Map<String, List<ContextMapping.InternalQueryContext>> parseContextBytes(BytesReference contextBytes,
             NamedXContentRegistry xContentRegistry, ContextMappings contextMappings) throws IOException {
         try (XContentParser contextParser = XContentHelper.createParser(xContentRegistry,
             LoggingDeprecationHandler.INSTANCE, contextBytes, CONTEXT_BYTES_XCONTENT_TYPE)) {

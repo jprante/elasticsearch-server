@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package org.elasticsearch.common.network;
+package org.elasticsearch.test.common.network;
 
 import org.elasticsearch.common.collect.Tuple;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.network.InetAddresses;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 
 import java.net.InetAddress;

@@ -17,18 +17,19 @@
  * under the License.
  */
 
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.message.ParameterizedMessage;
 import org.apache.lucene.util.Constants;
+import org.elasticsearch.bootstrap.BootstrapChecks;
 import org.elasticsearch.common.io.PathUtils;
 import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.common.logging.Loggers;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.MockLogAppender;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.MockLogAppender;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class MaxMapCountCheckTests extends ESTestCase {
         final Path procSysVmMaxMapCountPath = PathUtils.get("/proc/sys/vm/max_map_count");
         BootstrapChecks.MaxMapCountCheck check = new BootstrapChecks.MaxMapCountCheck() {
             @Override
-            BufferedReader getBufferedReader(Path path) throws IOException {
+            public BufferedReader getBufferedReader(Path path) throws IOException {
                 assertEquals(path, procSysVmMaxMapCountPath);
                 return reader;
             }

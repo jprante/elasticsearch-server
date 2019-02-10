@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.indices.mapping;
+package org.elasticsearch.test.indices.mapping;
 
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.junit.Before;
 
-import static org.elasticsearch.test.ESIntegTestCase.ClusterScope;
-import static org.elasticsearch.test.ESIntegTestCase.Scope;
+import static org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
+import static org.elasticsearch.testframework.ESIntegTestCase.Scope;
 
 @ClusterScope(scope = Scope.TEST, numDataNodes = 0)
 public class DedicatedMasterGetFieldMappingIT extends SimpleGetFieldMappingsIT {

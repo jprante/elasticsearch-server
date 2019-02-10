@@ -167,7 +167,7 @@ public class NodeConnectionsService extends AbstractLifecycleComponent {
         }
     }
 
-    class ConnectionChecker extends AbstractRunnable {
+    public class ConnectionChecker extends AbstractRunnable {
 
         @Override
         public void onFailure(Exception e) {

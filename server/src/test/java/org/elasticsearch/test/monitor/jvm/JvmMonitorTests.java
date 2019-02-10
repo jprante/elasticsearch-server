@@ -17,10 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.jvm;
+package org.elasticsearch.test.monitor.jvm;
 
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.jvm.JvmGcMonitorService;
+import org.elasticsearch.monitor.jvm.JvmStats;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,25 +50,25 @@ public class JvmMonitorTests extends ESTestCase {
         AtomicBoolean invoked = new AtomicBoolean();
         JvmGcMonitorService.JvmMonitor monitor = new JvmGcMonitorService.JvmMonitor(Collections.emptyMap(), IGNORE) {
             @Override
-            void onMonitorFailure(Exception e) {
+            public void onMonitorFailure(Exception e) {
                 invoked.set(true);
                 assertThat(e, instanceOf(RuntimeException.class));
                 assertThat(e, hasToString(containsString("simulated")));
             }
 
             @Override
-            synchronized void monitorGc() {
+            public synchronized void monitorGc() {
                 if (shouldFail.get()) {
                     throw new RuntimeException("simulated");
                 }
             }
 
             @Override
-            void onSlowGc(final Threshold threshold, final long seq, final SlowGcEvent slowGcEvent) {
+            public void onSlowGc(final Threshold threshold, final long seq, final SlowGcEvent slowGcEvent) {
             }
 
             @Override
-            void onGcOverhead(Threshold threshold, long total, long elapsed, long seq) {
+            public void onGcOverhead(Threshold threshold, long total, long elapsed, long seq) {
             }
         };
 
@@ -174,11 +176,11 @@ public class JvmMonitorTests extends ESTestCase {
 
         JvmGcMonitorService.JvmMonitor monitor = new JvmGcMonitorService.JvmMonitor(gcThresholds, IGNORE) {
             @Override
-            void onMonitorFailure(Exception e) {
+            public void onMonitorFailure(Exception e) {
             }
 
             @Override
-            void onSlowGc(final Threshold threshold, final long seq, final SlowGcEvent slowGcEvent) {
+            public void onSlowGc(final Threshold threshold, final long seq, final SlowGcEvent slowGcEvent) {
                 count.incrementAndGet();
                 assertThat(seq, equalTo(1L));
                 assertThat(slowGcEvent.elapsed, equalTo(expectedElapsed));
@@ -205,16 +207,16 @@ public class JvmMonitorTests extends ESTestCase {
             }
 
             @Override
-            void onGcOverhead(Threshold threshold, long total, long elapsed, long seq) {
+            public void onGcOverhead(Threshold threshold, long total, long elapsed, long seq) {
             }
 
             @Override
-            long now() {
+            public long now() {
                 return now.get();
             }
 
             @Override
-            JvmStats jvmStats() {
+            public JvmStats jvmStats() {
                 return jvmStats.get();
             }
         };
@@ -284,26 +286,26 @@ public class JvmMonitorTests extends ESTestCase {
         final JvmGcMonitorService.JvmMonitor monitor = new JvmGcMonitorService.JvmMonitor(Collections.emptyMap(), IGNORE) {
 
             @Override
-            void onMonitorFailure(Exception e) {
+            public void onMonitorFailure(Exception e) {
             }
 
             @Override
-            void onSlowGc(Threshold threshold, long seq, SlowGcEvent slowGcEvent) {
+            public void onSlowGc(Threshold threshold, long seq, SlowGcEvent slowGcEvent) {
             }
 
             @Override
-            void onGcOverhead(Threshold threshold, long total, long elapsed, long seq) {
+            public void onGcOverhead(Threshold threshold, long total, long elapsed, long seq) {
             }
 
             @Override
-            void checkGcOverhead(long current, long elapsed, long seq) {
+            public void checkGcOverhead(long current, long elapsed, long seq) {
                 invoked.set(true);
                 assertThat(current, equalTo((long)(youngCollectionTimeIncrement + oldCollectionTimeIncrement)));
                 assertThat(elapsed, equalTo(expectedElapsed));
             }
 
             @Override
-            JvmStats jvmStats() {
+            public JvmStats jvmStats() {
                 return lastjvmStats;
             }
         };
@@ -358,15 +360,15 @@ public class JvmMonitorTests extends ESTestCase {
         final JvmGcMonitorService.JvmMonitor monitor = new JvmGcMonitorService.JvmMonitor(Collections.emptyMap(), gcOverheadThreshold) {
 
             @Override
-            void onMonitorFailure(final Exception e) {
+            public void onMonitorFailure(final Exception e) {
             }
 
             @Override
-            void onSlowGc(Threshold threshold, long seq, SlowGcEvent slowGcEvent) {
+            public void onSlowGc(Threshold threshold, long seq, SlowGcEvent slowGcEvent) {
             }
 
             @Override
-            void onGcOverhead(final Threshold threshold, final long current, final long elapsed, final long seq) {
+            public void onGcOverhead(final Threshold threshold, final long current, final long elapsed, final long seq) {
                 invoked.set(true);
                 assertThat(threshold, equalTo(expectedThreshold));
                 assertThat(current, equalTo(expectedCurrent));

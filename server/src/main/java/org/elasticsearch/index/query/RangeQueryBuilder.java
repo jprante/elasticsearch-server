@@ -283,7 +283,7 @@ public class RangeQueryBuilder extends AbstractQueryBuilder<RangeQueryBuilder> i
         return this.timeZone == null ? null : this.timeZone.getID();
     }
 
-    DateTimeZone getDateTimeZone() { // for testing
+    public DateTimeZone getDateTimeZone() { // for testing
         return timeZone;
     }
 
@@ -305,7 +305,7 @@ public class RangeQueryBuilder extends AbstractQueryBuilder<RangeQueryBuilder> i
         return this.format == null ? null : this.format.format();
     }
 
-    DateMathParser getForceDateParser() { // pkg private for testing
+    public DateMathParser getForceDateParser() {
         if (this.format != null) {
             return new DateMathParser(this.format);
         }
@@ -441,8 +441,7 @@ public class RangeQueryBuilder extends AbstractQueryBuilder<RangeQueryBuilder> i
         return NAME;
     }
 
-    // Overridable for testing only
-    protected MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) throws IOException {
+    public MappedFieldType.Relation getRelation(QueryRewriteContext queryRewriteContext) throws IOException {
         QueryShardContext shardContext = queryRewriteContext.convertToShardContext();
         // If the context is null we are not on the shard and cannot
         // rewrite so just pretend there is an intersection so that the rewrite is a noop

@@ -17,9 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
 import org.elasticsearch.action.OriginalIndices;
+import org.elasticsearch.action.search.AbstractSearchAsyncAction;
+import org.elasticsearch.action.search.InitialSearchPhase;
+import org.elasticsearch.action.search.SearchActionListener;
+import org.elasticsearch.action.search.SearchPhase;
+import org.elasticsearch.action.search.SearchPhaseContext;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchShardIterator;
+import org.elasticsearch.action.search.TransportSearchAction;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.cluster.routing.GroupShardsIterator;
 import org.elasticsearch.cluster.routing.ShardRouting;
@@ -27,9 +36,9 @@ import org.elasticsearch.index.Index;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.search.SearchPhaseResult;
-import org.elasticsearch.search.internal.AliasFilter;
-import org.elasticsearch.search.internal.ShardSearchTransportRequest;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.search.ShardSearchTransportRequest;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -79,7 +88,7 @@ public class AbstractSearchAsyncActionTests extends ESTestCase {
             }
 
             @Override
-            long buildTookInMillis() {
+            public long buildTookInMillis() {
                 runnable.run();
                 return super.buildTookInMillis();
             }

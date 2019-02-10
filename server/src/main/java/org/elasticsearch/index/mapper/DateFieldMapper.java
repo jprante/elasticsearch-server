@@ -182,7 +182,7 @@ public class DateFieldMapper extends FieldMapper {
         protected FormatDateTimeFormatter dateTimeFormatter;
         protected DateMathParser dateMathParser;
 
-        DateFieldType() {
+        public DateFieldType() {
             super();
             setTokenized(false);
             setHasDocValues(true);
@@ -190,7 +190,7 @@ public class DateFieldMapper extends FieldMapper {
             setDateTimeFormatter(DEFAULT_DATE_TIME_FORMATTER);
         }
 
-        DateFieldType(DateFieldType other) {
+        public DateFieldType(DateFieldType other) {
             super(other);
             setDateTimeFormatter(other.dateTimeFormatter);
         }

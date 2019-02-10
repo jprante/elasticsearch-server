@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class FilterPath {
 
-    static final FilterPath EMPTY = new FilterPath();
+    public static final FilterPath EMPTY = new FilterPath();
 
     private final String filter;
     private final String segment;
@@ -59,19 +59,19 @@ public class FilterPath {
         return next == null;
     }
 
-    boolean isDoubleWildcard() {
+    public boolean isDoubleWildcard() {
         return doubleWildcard;
     }
 
-    boolean isSimpleWildcard() {
+    public boolean isSimpleWildcard() {
         return simpleWildcard;
     }
 
-    String getSegment() {
+    public String getSegment() {
         return segment;
     }
 
-    FilterPath getNext() {
+    public FilterPath getNext() {
         return next;
     }
 

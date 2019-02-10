@@ -17,13 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.significant;
+package org.elasticsearch.test.search.aggregations.bucket.significant;
 
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.InternalAggregations;
 import org.elasticsearch.search.aggregations.ParsedMultiBucketAggregation;
+import org.elasticsearch.search.aggregations.bucket.significant.InternalSignificantTerms;
+import org.elasticsearch.search.aggregations.bucket.significant.ParsedSignificantStringTerms;
+import org.elasticsearch.search.aggregations.bucket.significant.SignificantStringTerms;
+import org.elasticsearch.search.aggregations.bucket.significant.UnmappedSignificantTerms;
 import org.elasticsearch.search.aggregations.bucket.significant.heuristics.SignificanceHeuristic;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 

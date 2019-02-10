@@ -67,7 +67,7 @@ public class TransportClusterHealthAction extends TransportMasterNodeReadAction<
     }
 
     @Override
-    protected ClusterBlockException checkBlock(ClusterHealthRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(ClusterHealthRequest request, ClusterState state) {
         return null; // we want users to be able to call this even when there are global blocks, just to check the health (are there blocks?)
     }
 
@@ -77,13 +77,13 @@ public class TransportClusterHealthAction extends TransportMasterNodeReadAction<
     }
 
     @Override
-    protected final void masterOperation(ClusterHealthRequest request, ClusterState state, ActionListener<ClusterHealthResponse> listener) throws Exception {
+    public final void masterOperation(ClusterHealthRequest request, ClusterState state, ActionListener<ClusterHealthResponse> listener) throws Exception {
         logger.warn("attempt to execute a cluster health operation without a task");
         throw new UnsupportedOperationException("task parameter is required for this operation");
     }
 
     @Override
-    protected void masterOperation(Task task, final ClusterHealthRequest request, final ClusterState unusedState, final ActionListener<ClusterHealthResponse> listener) {
+    public void masterOperation(Task task, final ClusterHealthRequest request, final ClusterState unusedState, final ActionListener<ClusterHealthResponse> listener) {
         if (request.waitForEvents() != null) {
             final long endTimeMS = TimeValue.nsecToMSec(System.nanoTime()) + request.timeout().millis();
             if (request.local()) {
@@ -218,7 +218,7 @@ public class TransportClusterHealthAction extends TransportMasterNodeReadAction<
         return response;
     }
 
-    static int prepareResponse(final ClusterHealthRequest request, final ClusterHealthResponse response,
+    public static int prepareResponse(final ClusterHealthRequest request, final ClusterHealthResponse response,
                                    final ClusterState clusterState, final IndexNameExpressionResolver indexNameExpressionResolver) {
         int waitForCounter = 0;
         if (request.waitForStatus() != null && response.getStatus().value() <= request.waitForStatus().value()) {

@@ -23,8 +23,8 @@ import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.OriginalIndices;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.internal.InternalSearchResponse;
-import org.elasticsearch.search.internal.ShardSearchTransportRequest;
+import org.elasticsearch.search.InternalSearchResponse;
+import org.elasticsearch.search.ShardSearchTransportRequest;
 import org.elasticsearch.transport.Transport;
 
 import java.util.concurrent.Executor;
@@ -32,7 +32,7 @@ import java.util.concurrent.Executor;
 /**
  * This class provide contextual state and access to resources across multiple search phases.
  */
-interface SearchPhaseContext extends ActionListener<SearchResponse>, Executor {
+public interface SearchPhaseContext extends ActionListener<SearchResponse>, Executor {
     // TODO maybe we can make this concrete later - for now we just implement this in the base class for all initial phases
 
     /**

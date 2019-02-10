@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.action.support;
+package org.elasticsearch.test.action.support;
 
 import org.elasticsearch.Version;
+import org.elasticsearch.action.support.AutoCreateIndex;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -30,7 +31,7 @@ import org.elasticsearch.common.settings.ClusterSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.mapper.MapperService;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.HashMap;
 import java.util.List;

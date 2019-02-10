@@ -98,15 +98,15 @@ public final class AutoCreateIndex {
                 + "]) doesn't match", index);
     }
 
-    AutoCreate getAutoCreate() {
+    public AutoCreate getAutoCreate() {
         return autoCreate;
     }
 
-    void setAutoCreate(AutoCreate autoCreate) {
+    public void setAutoCreate(AutoCreate autoCreate) {
         this.autoCreate = autoCreate;
     }
 
-    static class AutoCreate {
+    public static class AutoCreate {
         private final boolean autoCreateIndex;
         private final List<Tuple<String, Boolean>> expressions;
         private final String string;
@@ -154,11 +154,11 @@ public final class AutoCreateIndex {
             this.string = value;
         }
 
-        boolean isAutoCreateIndex() {
+        public boolean isAutoCreateIndex() {
             return autoCreateIndex;
         }
 
-        List<Tuple<String, Boolean>> getExpressions() {
+        public List<Tuple<String, Boolean>> getExpressions() {
             return expressions;
         }
 

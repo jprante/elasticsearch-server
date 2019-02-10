@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.scroll;
+package org.elasticsearch.test.search.scroll;
 
 import org.elasticsearch.action.search.ClearScrollRequest;
 import org.elasticsearch.client.node.NodeClient;
@@ -27,17 +27,16 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.action.search.RestClearScrollAction;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestChannel;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestChannel;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -64,7 +63,7 @@ public class RestClearScrollActionTests extends ESTestCase {
         action.handleRequest(request, channel, nodeClient);
 
         ArgumentCaptor<ClearScrollRequest> argument = ArgumentCaptor.forClass(ClearScrollRequest.class);
-        verify(nodeClient).clearScroll(argument.capture(), anyObject());
+        verify(nodeClient).clearScroll(argument.capture(), any());
         ClearScrollRequest clearScrollRequest = argument.getValue();
         List<String> scrollIds = clearScrollRequest.getScrollIds();
         assertEquals(1, scrollIds.size());

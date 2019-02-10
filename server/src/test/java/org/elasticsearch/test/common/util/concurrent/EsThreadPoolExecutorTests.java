@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util.concurrent;
+package org.elasticsearch.test.common.util.concurrent;
 
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.common.util.concurrent.AbstractRunnable;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.concurrent.CountDownLatch;

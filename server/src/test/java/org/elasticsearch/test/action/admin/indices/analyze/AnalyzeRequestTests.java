@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.analyze;
+package org.elasticsearch.test.action.admin.indices.analyze;
 
 import org.elasticsearch.action.ActionRequestValidationException;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.shard;
+package org.elasticsearch.test.index.shard;
 
 
 import org.apache.lucene.document.Document;
@@ -25,11 +25,14 @@ import org.apache.lucene.index.CompositeReaderContext;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.LeafReaderContext;
-import org.apache.lucene.store.BaseDirectoryWrapper;
-import org.elasticsearch.core.internal.io.IOUtils;
+import org.apache.lucene.testframework.store.BaseDirectoryWrapper;
 import org.elasticsearch.common.lucene.index.ElasticsearchDirectoryReader;
 import org.elasticsearch.index.engine.Engine;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.shard.IndexShard;
+import org.elasticsearch.index.shard.ShardId;
+import org.elasticsearch.index.shard.ShardUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
 
 import java.io.IOException;
 

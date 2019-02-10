@@ -17,10 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.tasks;
+package org.elasticsearch.test.tasks;
 
 import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksResponse;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.tasks.TaskId;
+import org.elasticsearch.tasks.TaskInfo;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Collections;
 

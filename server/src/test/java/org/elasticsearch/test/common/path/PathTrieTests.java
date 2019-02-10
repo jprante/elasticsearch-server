@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.path;
+package org.elasticsearch.test.common.path;
 
+import org.elasticsearch.common.path.PathTrie;
 import org.elasticsearch.rest.RestUtils;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.HashMap;
 import java.util.Iterator;

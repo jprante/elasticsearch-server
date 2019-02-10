@@ -369,7 +369,7 @@ public final class NodeEnvironment  implements Closeable {
     }
 
     @SuppressForbidden(reason = "System.out.*")
-    static void applySegmentInfosTrace(Settings settings) {
+    public static void applySegmentInfosTrace(Settings settings) {
         if (ENABLE_LUCENE_SEGMENT_INFOS_TRACE_SETTING.get(settings)) {
             SegmentInfos.setInfoStream(System.out);
         }
@@ -445,14 +445,11 @@ public final class NodeEnvironment  implements Closeable {
         final ShardId shardId = lock.getShardId();
         assert isShardLocked(shardId) : "shard " + shardId + " is not locked";
         final Path[] paths = availableShardPaths(shardId);
-        logger.trace("acquiring locks for {}, paths: [{}]", shardId, paths);
         acquireFSLockForPaths(indexSettings, paths);
         IOUtils.rm(paths);
         if (indexSettings.hasCustomDataPath()) {
             Path customLocation = resolveCustomLocation(indexSettings, shardId);
-            logger.trace("acquiring lock for {}, custom path: [{}]", shardId, customLocation);
             acquireFSLockForPaths(indexSettings, customLocation);
-            logger.trace("deleting custom shard {} directory [{}]", shardId, customLocation);
             IOUtils.rm(customLocation);
         }
         logger.trace("deleted shard {} directory, paths: [{}]", shardId, paths);
@@ -533,7 +530,6 @@ public final class NodeEnvironment  implements Closeable {
         if (numShards <= 0) {
             throw new IllegalArgumentException("settings must contain a non-null > 0 number of shards");
         }
-        logger.trace("locking all shards for index {} - [{}]", index, numShards);
         List<ShardLock> allLocks = new ArrayList<>(numShards);
         boolean success = false;
         long startTimeNS = System.nanoTime();
@@ -577,7 +573,6 @@ public final class NodeEnvironment  implements Closeable {
      * @return the shard lock. Call {@link ShardLock#close()} to release the lock
      */
     public ShardLock shardLock(final ShardId shardId, long lockTimeoutMS) throws ShardLockObtainFailedException {
-        logger.trace("acquiring node shardlock on [{}], timeout [{}]", shardId, lockTimeoutMS);
         final InternalShardLock shardLock;
         final boolean acquired;
         synchronized (shardLocks) {
@@ -602,12 +597,10 @@ public final class NodeEnvironment  implements Closeable {
                 }
             }
         }
-        logger.trace("successfully acquired shardlock for [{}]", shardId);
         return new ShardLock(shardId) { // new instance prevents double closing
             @Override
             protected void closeInternal() {
                 shardLock.release();
-                logger.trace("released shard lock for [{}]", shardId);
             }
         };
     }
@@ -663,9 +656,7 @@ public final class NodeEnvironment  implements Closeable {
             synchronized (shardLocks) {
                 assert waitCount > 0 : "waitCount is " + waitCount + " but should be > 0";
                 --waitCount;
-                logger.trace("shard lock wait count for {} is now [{}]", shardId, waitCount);
                 if (waitCount == 0) {
-                    logger.trace("last shard lock wait decremented, removing lock for {}", shardId);
                     InternalShardLock remove = shardLocks.remove(shardId);
                     assert remove != null : "Removed lock was null";
                 }
@@ -1039,8 +1030,7 @@ public final class NodeEnvironment  implements Closeable {
         }
     }
 
-    // package private for testing
-    static final String TEMP_FILE_NAME = ".es_temp_file";
+    public static final String TEMP_FILE_NAME = ".es_temp_file";
 
     private static void tryWriteTempFile(Path path) throws IOException {
         if (Files.exists(path)) {

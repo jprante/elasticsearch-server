@@ -33,7 +33,7 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentParser.Token;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.SearchParseException;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -41,7 +41,7 @@ import java.util.Objects;
 import static org.elasticsearch.common.xcontent.ConstructingObjectParser.optionalConstructorArg;
 
 public class ExtendedBounds implements ToXContentFragment, Writeable {
-    static final ParseField EXTENDED_BOUNDS_FIELD = Histogram.EXTENDED_BOUNDS_FIELD;
+    public static final ParseField EXTENDED_BOUNDS_FIELD = Histogram.EXTENDED_BOUNDS_FIELD;
     static final ParseField MIN_FIELD = new ParseField("min");
     static final ParseField MAX_FIELD = new ParseField("max");
 
@@ -148,7 +148,7 @@ public class ExtendedBounds implements ToXContentFragment, Writeable {
     /**
      * Parse the bounds and perform any delayed validation. Returns the result of the parsing.
      */
-    ExtendedBounds parseAndValidate(String aggName, SearchContext context, DocValueFormat format) {
+    public ExtendedBounds parseAndValidate(String aggName, SearchContext context, DocValueFormat format) {
         Long min = this.min;
         Long max = this.max;
         assert format != null;

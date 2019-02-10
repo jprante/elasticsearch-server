@@ -34,7 +34,7 @@ import org.elasticsearch.search.aggregations.AggregatorFactories.Builder;
 import org.elasticsearch.search.aggregations.AggregatorFactory;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.adjacency.AdjacencyMatrixAggregator.KeyedFilter;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.query.QueryPhaseExecutionException;
 
 import java.io.IOException;
@@ -124,7 +124,7 @@ public class AdjacencyMatrixAggregationBuilder extends AbstractAggregationBuilde
     }
 
     @Override
-    protected AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
+    public AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
         return new AdjacencyMatrixAggregationBuilder(this, factoriesBuilder, metaData);
     }
 

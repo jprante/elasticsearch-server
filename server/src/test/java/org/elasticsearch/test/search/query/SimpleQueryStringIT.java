@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.query;
+package org.elasticsearch.test.search.query;
 
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -34,8 +34,8 @@ import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,14 +50,14 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.simpleQueryStringQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertFailures;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertFirstHit;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertHitCount;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertNoFailures;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSearchHits;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.hasId;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertFirstHit;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertHitCount;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertNoFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSearchHits;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.hasId;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -378,7 +378,8 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
     }
 
     public void testBasicAllQuery() throws Exception {
-        String indexBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-query-index.json");
+        String indexBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-query-index.json");
         prepareCreate("test").setSource(indexBody, XContentType.JSON).get();
         ensureGreen("test");
 
@@ -402,7 +403,8 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
     }
 
     public void testWithDate() throws Exception {
-        String indexBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-query-index.json");
+        String indexBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-query-index.json");
         prepareCreate("test").setSource(indexBody, XContentType.JSON).get();
         ensureGreen("test");
 
@@ -429,7 +431,8 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
     }
 
     public void testWithLotsOfTypes() throws Exception {
-        String indexBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-query-index.json");
+        String indexBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-query-index.json");
         prepareCreate("test").setSource(indexBody, XContentType.JSON).get();
         ensureGreen("test");
 
@@ -462,12 +465,14 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
     }
 
     public void testDocWithAllTypes() throws Exception {
-        String indexBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-query-index.json");
+        String indexBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-query-index.json");
         prepareCreate("test").setSource(indexBody, XContentType.JSON).get();
         ensureGreen("test");
 
         List<IndexRequestBuilder> reqs = new ArrayList<>();
-        String docBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-example-document.json");
+        String docBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-example-document.json");
         reqs.add(client().prepareIndex("test", "_doc", "1").setSource(docBody, XContentType.JSON));
         indexRandom(true, false, reqs);
 
@@ -508,7 +513,8 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
     }
 
     public void testKeywordWithWhitespace() throws Exception {
-        String indexBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-query-index.json");
+        String indexBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-query-index.json");
         prepareCreate("test").setSource(indexBody, XContentType.JSON).get();
         ensureGreen("test");
 
@@ -528,7 +534,8 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
     }
 
     public void testExplicitAllFieldsRequested() throws Exception {
-        String indexBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-query-index-with-all.json");
+        String indexBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-query-index-with-all.json");
         prepareCreate("test")
                 .setSource(indexBody, XContentType.JSON)
                 // .setSettings(Settings.builder().put("index.version.created", Version.V_5_0_0.id)).get();
@@ -550,7 +557,8 @@ public class SimpleQueryStringIT extends ESIntegTestCase {
     }
 
     public void testAllFieldsWithSpecifiedLeniency() throws IOException {
-        String indexBody = copyToStringFromClasspath("/org/elasticsearch/search/query/all-query-index.json");
+        String indexBody = copyToStringFromClasspath(SimpleQueryStringIT.class,
+                "/org/elasticsearch/search/query/all-query-index.json");
         prepareCreate("test").setSource(indexBody, XContentType.JSON).get();
         ensureGreen("test");
 

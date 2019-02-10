@@ -261,7 +261,7 @@ public class PersistentTasksClusterService extends AbstractComponent implements 
      * situations: a node left or is added, the routing table changed, the master node changed, the metadata changed or the
      * persistent tasks changed.
      */
-    boolean shouldReassignPersistentTasks(final ClusterChangedEvent event) {
+    public boolean shouldReassignPersistentTasks(final ClusterChangedEvent event) {
         final PersistentTasksCustomMetaData tasks = event.state().getMetaData().custom(PersistentTasksCustomMetaData.TYPE);
         if (tasks == null) {
             return false;
@@ -293,7 +293,7 @@ public class PersistentTasksClusterService extends AbstractComponent implements 
      * @param currentState the cluster state to analyze
      * @return an updated version of the cluster state
      */
-    ClusterState reassignTasks(final ClusterState currentState) {
+    public ClusterState reassignTasks(final ClusterState currentState) {
         ClusterState clusterState = currentState;
 
         final PersistentTasksCustomMetaData tasks = currentState.getMetaData().custom(PersistentTasksCustomMetaData.TYPE);
@@ -321,7 +321,7 @@ public class PersistentTasksClusterService extends AbstractComponent implements 
     }
 
     /** Returns true if the persistent tasks are not equal between the previous and the current cluster state **/
-    static boolean persistentTasksChanged(final ClusterChangedEvent event) {
+    public static boolean persistentTasksChanged(final ClusterChangedEvent event) {
         String type = PersistentTasksCustomMetaData.TYPE;
         return Objects.equals(event.state().metaData().custom(type), event.previousState().metaData().custom(type)) == false;
     }

@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.open;
+package org.elasticsearch.test.action.admin.indices.open;
 
+import org.elasticsearch.action.admin.indices.open.OpenIndexResponse;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 public class OpenIndexResponseTests extends AbstractStreamableXContentTestCase<OpenIndexResponse> {
 

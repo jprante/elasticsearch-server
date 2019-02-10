@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.index.seqno;
+package org.elasticsearch.test.index.seqno;
 
 import org.apache.lucene.util.FixedBitSet;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.seqno.CountedBitSet;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.List;
 import java.util.stream.Collectors;

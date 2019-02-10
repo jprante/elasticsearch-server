@@ -168,7 +168,7 @@ public class Key<T> {
         return annotationStrategy.getAnnotationType().toString();
     }
 
-    Class<? super T> getRawType() {
+    public Class<? super T> getRawType() {
         return typeLiteral.getRawType();
     }
 

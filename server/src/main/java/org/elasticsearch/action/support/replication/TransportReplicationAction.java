@@ -169,7 +169,7 @@ public abstract class TransportReplicationAction<
         new ReroutePhase((ReplicationTask) task, request, listener).run();
     }
 
-    protected ReplicationOperation.Replicas<ReplicaRequest> newReplicasProxy(long primaryTerm) {
+    public ReplicationOperation.Replicas<ReplicaRequest> newReplicasProxy(long primaryTerm) {
         return new ReplicasProxy(primaryTerm);
     }
 
@@ -182,7 +182,7 @@ public abstract class TransportReplicationAction<
      * @param indexMetaData index metadata of the concrete index this request is going to operate on
      * @param request       the request to resolve
      */
-    protected void resolveRequest(final IndexMetaData indexMetaData, final Request request) {
+    public void resolveRequest(final IndexMetaData indexMetaData, final Request request) {
         if (request.waitForActiveShards() == ActiveShardCount.DEFAULT) {
             // if the wait for active shard count has not been set in the request,
             // resolve it from the index settings
@@ -235,7 +235,7 @@ public abstract class TransportReplicationAction<
         return TransportRequestOptions.EMPTY;
     }
 
-    protected boolean retryPrimaryException(final Throwable e) {
+    public boolean retryPrimaryException(final Throwable e) {
         return e.getClass() == ReplicationOperation.RetryOnPrimaryException.class
                 || TransportActions.isShardNotAvailableException(e);
     }
@@ -276,7 +276,7 @@ public abstract class TransportReplicationAction<
         }
     }
 
-    protected class PrimaryOperationTransportHandler implements TransportRequestHandler<ConcreteShardRequest<Request>> {
+    public class PrimaryOperationTransportHandler implements TransportRequestHandler<ConcreteShardRequest<Request>> {
 
         public PrimaryOperationTransportHandler() {
 
@@ -293,7 +293,7 @@ public abstract class TransportReplicationAction<
         }
     }
 
-    class AsyncPrimaryAction extends AbstractRunnable implements ActionListener<PrimaryShardReference> {
+    public class AsyncPrimaryAction extends AbstractRunnable implements ActionListener<PrimaryShardReference> {
 
         private final Request request;
         // targetAllocationID of the shard this request is meant for
@@ -303,7 +303,7 @@ public abstract class TransportReplicationAction<
         private final TransportChannel channel;
         private final ReplicationTask replicationTask;
 
-        AsyncPrimaryAction(Request request, String targetAllocationID, long primaryTerm, TransportChannel channel,
+        public AsyncPrimaryAction(Request request, String targetAllocationID, long primaryTerm, TransportChannel channel,
                            ReplicationTask replicationTask) {
             this.request = request;
             this.targetAllocationID = targetAllocationID;
@@ -422,10 +422,10 @@ public abstract class TransportReplicationAction<
         }
     }
 
-    protected static class PrimaryResult<ReplicaRequest extends ReplicationRequest<ReplicaRequest>,
+    public static class PrimaryResult<ReplicaRequest extends ReplicationRequest<ReplicaRequest>,
             Response extends ReplicationResponse>
             implements ReplicationOperation.PrimaryResult<ReplicaRequest> {
-        final ReplicaRequest replicaRequest;
+        public final ReplicaRequest replicaRequest;
         public final Response finalResponseIfSuccessful;
         public final Exception finalFailure;
 
@@ -676,14 +676,14 @@ public abstract class TransportReplicationAction<
      *
      * Resolves index and shard id for the request before routing it to target node
      */
-    final class ReroutePhase extends AbstractRunnable {
+    public final class ReroutePhase extends AbstractRunnable {
         private final ActionListener<Response> listener;
         private final Request request;
         private final ReplicationTask task;
         private final ClusterStateObserver observer;
         private final AtomicBoolean finished = new AtomicBoolean();
 
-        ReroutePhase(ReplicationTask task, Request request, ActionListener<Response> listener) {
+        public ReroutePhase(ReplicationTask task, Request request, ActionListener<Response> listener) {
             this.request = request;
             if (task != null) {
                 this.request.setParentTask(clusterService.localNode().getId(), task.getId());
@@ -992,10 +992,10 @@ public abstract class TransportReplicationAction<
 
     }
 
-    class PrimaryShardReference extends ShardReference
+    public class PrimaryShardReference extends ShardReference
             implements ReplicationOperation.Primary<Request, ReplicaRequest, PrimaryResult<ReplicaRequest, Response>> {
 
-        PrimaryShardReference(IndexShard indexShard, Releasable operationLock) {
+        public PrimaryShardReference(IndexShard indexShard, Releasable operationLock) {
             super(indexShard, operationLock);
         }
 
@@ -1277,7 +1277,7 @@ public abstract class TransportReplicationAction<
         }
     }
 
-    protected static final class ConcreteReplicaRequest<R extends TransportRequest> extends ConcreteShardRequest<R> {
+    public static final class ConcreteReplicaRequest<R extends TransportRequest> extends ConcreteShardRequest<R> {
 
         private long globalCheckpoint;
 

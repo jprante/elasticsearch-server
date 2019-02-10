@@ -59,7 +59,7 @@ public class ResourceWatcherService extends AbstractLifecycleComponent {
          */
         LOW(TimeValue.timeValueSeconds(60));
 
-        final TimeValue interval;
+        public final TimeValue interval;
 
         Frequency(TimeValue interval) {
             this.interval = interval;
@@ -77,9 +77,9 @@ public class ResourceWatcherService extends AbstractLifecycleComponent {
     private final boolean enabled;
     private final ThreadPool threadPool;
 
-    final ResourceMonitor lowMonitor;
-    final ResourceMonitor mediumMonitor;
-    final ResourceMonitor highMonitor;
+    public final ResourceMonitor lowMonitor;
+    public final ResourceMonitor mediumMonitor;
+    public final ResourceMonitor highMonitor;
 
     private volatile Cancellable lowFuture;
     private volatile Cancellable mediumFuture;
@@ -173,12 +173,12 @@ public class ResourceWatcherService extends AbstractLifecycleComponent {
         }
     }
 
-    class ResourceMonitor implements Runnable {
+    public class ResourceMonitor implements Runnable {
 
-        final TimeValue interval;
-        final Frequency frequency;
+        public final TimeValue interval;
+        public final Frequency frequency;
 
-        final Set<ResourceWatcher> watchers = new CopyOnWriteArraySet<>();
+        public final Set<ResourceWatcher> watchers = new CopyOnWriteArraySet<>();
 
         private ResourceMonitor(TimeValue interval, Frequency frequency) {
             this.interval = interval;

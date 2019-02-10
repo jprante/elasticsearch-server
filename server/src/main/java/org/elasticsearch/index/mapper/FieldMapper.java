@@ -248,7 +248,7 @@ public abstract class FieldMapper extends Mapper implements Cloneable {
     }
 
     protected final Version indexCreatedVersion;
-    protected MappedFieldType fieldType;
+    public MappedFieldType fieldType;
     protected final MappedFieldType defaultFieldType;
     protected MultiFields multiFields;
     protected CopyTo copyTo;

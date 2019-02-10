@@ -36,13 +36,13 @@ import java.io.IOException;
 /**
  * A {@link SingleDimensionValuesSource} for binary source ({@link BytesRef}).
  */
-class BinaryValuesSource extends SingleDimensionValuesSource<BytesRef> {
+public class BinaryValuesSource extends SingleDimensionValuesSource<BytesRef> {
     private final CheckedFunction<LeafReaderContext, SortedBinaryDocValues, IOException> docValuesFunc;
     private final BytesRef[] values;
     private BytesRef currentValue;
 
-    BinaryValuesSource(MappedFieldType fieldType, CheckedFunction<LeafReaderContext, SortedBinaryDocValues, IOException> docValuesFunc,
-                       DocValueFormat format, Object missing, int size, int reverseMul) {
+    public BinaryValuesSource(MappedFieldType fieldType, CheckedFunction<LeafReaderContext, SortedBinaryDocValues,
+            IOException> docValuesFunc, DocValueFormat format, Object missing, int size, int reverseMul) {
         super(format, fieldType, missing, size, reverseMul);
         this.docValuesFunc = docValuesFunc;
         this.values = new BytesRef[size];
@@ -59,21 +59,21 @@ class BinaryValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    int compareCurrent(int slot) {
+    public int compareCurrent(int slot) {
         return compareValues(currentValue, values[slot]);
     }
 
     @Override
-    int compareCurrentWithAfter() {
+    public int compareCurrentWithAfter() {
         return compareValues(currentValue, afterValue);
     }
 
-    int compareValues(BytesRef v1, BytesRef v2) {
+    public int compareValues(BytesRef v1, BytesRef v2) {
         return v1.compareTo(v2) * reverseMul;
     }
 
     @Override
-    void setAfter(Comparable<?> value) {
+    public void setAfter(Comparable<?> value) {
         if (value.getClass() == String.class) {
             afterValue = format.parseBytesRef(value.toString());
         } else {
@@ -82,12 +82,12 @@ class BinaryValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    BytesRef toComparable(int slot) {
+    public BytesRef toComparable(int slot) {
         return values[slot];
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
+    public LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
         final SortedBinaryDocValues dvs = docValuesFunc.apply(context);
         return new LeafBucketCollector() {
             @Override
@@ -104,7 +104,7 @@ class BinaryValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next) {
+    public LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next) {
         if (value.getClass() != BytesRef.class) {
             throw new IllegalArgumentException("Expected BytesRef, got " + value.getClass());
         }
@@ -118,7 +118,7 @@ class BinaryValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
+    public SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
         if (checkIfSortedDocsIsApplicable(reader, fieldType) == false ||
                 fieldType instanceof StringFieldType == false ||
                     (query != null && query.getClass() != MatchAllDocsQuery.class)) {

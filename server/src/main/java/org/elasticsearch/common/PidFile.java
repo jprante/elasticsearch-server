@@ -55,7 +55,7 @@ public final class PidFile {
         return create(path, deleteOnExit, JvmInfo.jvmInfo().pid());
     }
 
-    static PidFile create(Path path, boolean deleteOnExit, long pid) throws IOException {
+    public static PidFile create(Path path, boolean deleteOnExit, long pid) throws IOException {
         Path parent = path.getParent();
         if (parent != null) {
             if (Files.exists(parent) && Files.isDirectory(parent) == false) {

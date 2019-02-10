@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.env;
+package org.elasticsearch.test.env;
 
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.env.Environment;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

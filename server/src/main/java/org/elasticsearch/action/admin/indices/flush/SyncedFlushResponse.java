@@ -44,11 +44,10 @@ import static java.util.Collections.unmodifiableMap;
  */
 public class SyncedFlushResponse extends ActionResponse implements ToXContentFragment {
 
-    Map<String, List<ShardsSyncedFlushResult>> shardsResultPerIndex;
+    public Map<String, List<ShardsSyncedFlushResult>> shardsResultPerIndex;
     ShardCounts shardCounts;
 
-    SyncedFlushResponse() {
-
+    public SyncedFlushResponse() {
     }
 
     public SyncedFlushResponse(Map<String, List<ShardsSyncedFlushResult>> shardsResultPerIndex) {
@@ -140,19 +139,19 @@ public class SyncedFlushResponse extends ActionResponse implements ToXContentFra
         return new ShardCounts(total, successful, failed);
     }
 
-    static final class ShardCounts implements ToXContentFragment, Streamable {
+    public static final class ShardCounts implements ToXContentFragment, Streamable {
 
         public int total;
         public int successful;
         public int failed;
 
-        ShardCounts(int total, int successful, int failed) {
+        public ShardCounts(int total, int successful, int failed) {
             this.total = total;
             this.successful = successful;
             this.failed = failed;
         }
 
-        ShardCounts() {
+        public ShardCounts() {
 
         }
 

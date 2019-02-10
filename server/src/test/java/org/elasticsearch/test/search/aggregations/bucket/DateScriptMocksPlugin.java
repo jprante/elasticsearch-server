@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket;
+package org.elasticsearch.test.search.aggregations.bucket;
 
-import org.elasticsearch.script.MockScriptPlugin;
+import org.elasticsearch.testframework.script.MockScriptPlugin;
 import org.elasticsearch.search.lookup.LeafDocLookup;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;

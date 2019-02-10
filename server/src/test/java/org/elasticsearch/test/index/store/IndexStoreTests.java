@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.store;
+package org.elasticsearch.test.index.store;
 
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.MMapDirectory;
@@ -32,8 +32,9 @@ import org.elasticsearch.index.IndexModule;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.shard.ShardPath;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.index.store.FsDirectoryService;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IndexSettingsModule;
 
 import java.io.IOException;
 import java.nio.file.Path;

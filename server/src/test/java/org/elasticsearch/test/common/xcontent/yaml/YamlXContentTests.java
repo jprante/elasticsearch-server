@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent.yaml;
+package org.elasticsearch.test.common.xcontent.yaml;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import org.elasticsearch.common.xcontent.BaseXContentTestCase;
+import org.elasticsearch.test.common.xcontent.BaseXContentTestCase;
 import org.elasticsearch.common.xcontent.XContentType;
 
 import java.io.ByteArrayOutputStream;

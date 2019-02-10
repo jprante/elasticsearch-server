@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.sort;
+package org.elasticsearch.test.search.sort;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.search.SearchResponse;
@@ -30,9 +30,13 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.query.GeoValidationMethod;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortMode;
+import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,9 +48,9 @@ import java.util.concurrent.ExecutionException;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertOrderedSearchHits;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertSortValues;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertOrderedSearchHits;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertSortValues;
 import static org.hamcrest.Matchers.closeTo;
 
 public class GeoDistanceSortBuilderIT extends ESIntegTestCase {

@@ -170,7 +170,7 @@ public class InternalOrder extends BucketOrder {
 
         static final byte ID = -1;
 
-        final List<BucketOrder> orderElements;
+        public final List<BucketOrder> orderElements;
 
         /**
          * Create a new ordering strategy to sort by multiple criteria. A tie-breaker may be added to avoid
@@ -286,22 +286,22 @@ public class InternalOrder extends BucketOrder {
     /**
      * Order by the (higher) count of each bucket.
      */
-    static final InternalOrder COUNT_DESC = new InternalOrder(COUNT_DESC_ID, "_count", false, comparingCounts().reversed());
+    public static final InternalOrder COUNT_DESC = new InternalOrder(COUNT_DESC_ID, "_count", false, comparingCounts().reversed());
 
     /**
      * Order by the (lower) count of each bucket.
      */
-    static final InternalOrder COUNT_ASC = new InternalOrder(COUNT_ASC_ID, "_count", true, comparingCounts());
+    public static final InternalOrder COUNT_ASC = new InternalOrder(COUNT_ASC_ID, "_count", true, comparingCounts());
 
     /**
      * Order by the key of each bucket descending.
      */
-    static final InternalOrder KEY_DESC = new InternalOrder(KEY_DESC_ID, "_key", false, comparingKeys().reversed());
+    public static final InternalOrder KEY_DESC = new InternalOrder(KEY_DESC_ID, "_key", false, comparingKeys().reversed());
 
     /**
      * Order by the key of each bucket ascending.
      */
-    static final InternalOrder KEY_ASC = new InternalOrder(KEY_ASC_ID, "_key", true, comparingKeys());
+    public static final InternalOrder KEY_ASC = new InternalOrder(KEY_ASC_ID, "_key", true, comparingKeys());
 
     /**
      * @return compare by {@link Bucket#getDocCount()}.

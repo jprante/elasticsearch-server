@@ -30,7 +30,7 @@ import static org.elasticsearch.common.util.BigArrays.LONG_PAGE_SIZE;
  * Double array abstraction able to support more than 2B values. This implementation slices data into fixed-sized blocks of
  * configurable length.
  */
-final class BigDoubleArray extends AbstractBigArray implements DoubleArray {
+public final class BigDoubleArray extends AbstractBigArray implements DoubleArray {
 
     private static final BigDoubleArray ESTIMATOR = new BigDoubleArray(0, BigArrays.NON_RECYCLING_INSTANCE, false);
 

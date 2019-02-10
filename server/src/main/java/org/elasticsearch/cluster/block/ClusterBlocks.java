@@ -57,7 +57,7 @@ public class ClusterBlocks extends AbstractDiffable<ClusterBlocks> {
 
     private final EnumMap<ClusterBlockLevel, ImmutableLevelHolder> levelHolders;
 
-    ClusterBlocks(Set<ClusterBlock> global, ImmutableOpenMap<String, Set<ClusterBlock>> indicesBlocks) {
+    public ClusterBlocks(Set<ClusterBlock> global, ImmutableOpenMap<String, Set<ClusterBlock>> indicesBlocks) {
         this.global = global;
         this.indicesBlocks = indicesBlocks;
         levelHolders = generateLevelHolders(global, indicesBlocks);

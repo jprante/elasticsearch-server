@@ -23,8 +23,6 @@ import org.elasticsearch.common.SuppressForbidden;
 import org.elasticsearch.common.io.PathUtils;
 
 import java.io.IOException;
-import java.lang.module.ModuleReference;
-import java.lang.module.ResolvedModule;
 import java.net.URI;
 import java.net.URLClassLoader;
 import java.nio.file.FileVisitResult;
@@ -32,21 +30,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.AbstractMap;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.jar.JarEntry;
@@ -151,68 +142,6 @@ public class JarHell {
             }
         }
         return Collections.unmodifiableSet(uriElements);
-    }
-
-    public static Set<URI> parseModulePath() {
-        Deque<ModuleLayer> layerOrder = new ArrayDeque<>();
-        Set<ModuleLayer> layerVisited = new HashSet<>();
-        CallerResolver callerResolver = new CallerResolver();
-        Class<?>[] callStack = callerResolver.getClassContext();
-        for (Class<?> cl : callStack) {
-            ModuleLayer layer = cl.getModule().getLayer();
-            if (layer != null) {
-                findLayerOrder(layer, layerVisited, layerOrder);
-            }
-        }
-        ModuleLayer bootLayer = ModuleLayer.boot();
-        findLayerOrder(bootLayer, layerVisited, layerOrder);
-        Set<ModuleReference> addedModules = new HashSet<>();
-        List<Map.Entry<ModuleReference, ModuleLayer>> nonSystemModuleRefs = new ArrayList<>();
-        for (ModuleLayer layer : layerOrder) {
-            List<ResolvedModule> modulesInLayer = new ArrayList<>(layer.configuration().modules());
-            modulesInLayer.sort(Comparator.comparing(e -> e.reference().descriptor().name()));
-            for (ResolvedModule module : modulesInLayer) {
-                ModuleReference moduleReference = module.reference();
-                if (addedModules.add(moduleReference)) {
-                    String moduleName = moduleReference.descriptor().name();
-                    if (!isSystemModule(moduleName)) {
-                        nonSystemModuleRefs.add(new AbstractMap.SimpleEntry<>(moduleReference, layer));
-                    }
-                }
-            }
-        }
-        Set<URI> uriElements = new LinkedHashSet<>();
-        for (Map.Entry<ModuleReference, ModuleLayer> e : nonSystemModuleRefs) {
-            ModuleReference ref = e.getKey();
-            Optional<URI> location = ref.location();
-            location.ifPresent(uriElements::add);
-        }
-        return Collections.unmodifiableSet(uriElements);
-    }
-
-    private static void findLayerOrder(ModuleLayer layer, Set<ModuleLayer> layerVisited, Deque<ModuleLayer> layersOut) {
-        if (layerVisited.add(layer)) {
-            List<ModuleLayer> parents = layer.parents();
-            for (ModuleLayer parent : parents) {
-                findLayerOrder(parent, layerVisited, layersOut);
-            }
-            layersOut.push(layer);
-        }
-    }
-
-    private static boolean isSystemModule(final String moduleName) {
-        return moduleName.startsWith("java.")
-                || moduleName.startsWith("javax.")
-                || moduleName.startsWith("javafx.")
-                || moduleName.startsWith("jdk.")
-                || moduleName.startsWith("oracle.");
-    }
-
-    private static final class CallerResolver extends SecurityManager {
-        @Override
-        protected Class<?>[] getClassContext() {
-            return super.getClassContext();
-        }
     }
 
     /**

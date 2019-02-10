@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.jvm;
+package org.elasticsearch.test.monitor.jvm;
 
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.jvm.JvmGcMonitorService;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.threadpool.Scheduler.Cancellable;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 
 import java.util.AbstractMap;

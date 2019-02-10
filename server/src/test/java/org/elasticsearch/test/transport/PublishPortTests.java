@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.transport;
+package org.elasticsearch.test.transport;
 
 import org.elasticsearch.common.network.NetworkUtils;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.transport.BindTransportException;
+import org.elasticsearch.transport.TcpTransport;
 
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;

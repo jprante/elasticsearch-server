@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.collect;
+package org.elasticsearch.test.common.collect;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.collect.CopyOnWriteHashMap;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.HashMap;
 import java.util.Map;

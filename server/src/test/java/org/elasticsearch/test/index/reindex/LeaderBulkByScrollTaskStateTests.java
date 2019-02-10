@@ -17,11 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.index.reindex;
+package org.elasticsearch.test.index.reindex;
 
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.BulkByScrollTask;
+import org.elasticsearch.index.reindex.LeaderBulkByScrollTaskState;
 import org.elasticsearch.tasks.TaskId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 import org.mockito.ArgumentCaptor;
 

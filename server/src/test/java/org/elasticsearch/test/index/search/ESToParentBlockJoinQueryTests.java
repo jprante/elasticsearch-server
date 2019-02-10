@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.search;
+package org.elasticsearch.test.index.search;
 
 import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.index.Term;
@@ -26,7 +26,8 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.join.QueryBitSetProducer;
 import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.search.ESToParentBlockJoinQuery;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

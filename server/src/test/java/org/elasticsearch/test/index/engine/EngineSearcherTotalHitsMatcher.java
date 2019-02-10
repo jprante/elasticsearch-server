@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.index.engine;
+package org.elasticsearch.test.index.engine;
 
 import org.apache.lucene.search.Query;
 import org.elasticsearch.common.lucene.search.Queries;
+import org.elasticsearch.index.engine.Engine;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

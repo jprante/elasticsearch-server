@@ -17,11 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.rollover;
+package org.elasticsearch.test.action.admin.indices.rollover;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesClusterStateUpdateRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexClusterStateUpdateRequest;
+import org.elasticsearch.action.admin.indices.rollover.Condition;
+import org.elasticsearch.action.admin.indices.rollover.MaxAgeCondition;
+import org.elasticsearch.action.admin.indices.rollover.MaxDocsCondition;
+import org.elasticsearch.action.admin.indices.rollover.MaxSizeCondition;
+import org.elasticsearch.action.admin.indices.rollover.RolloverRequest;
+import org.elasticsearch.action.admin.indices.rollover.TransportRolloverAction;
 import org.elasticsearch.action.admin.indices.stats.CommonStats;
 import org.elasticsearch.action.admin.indices.stats.IndicesStatsResponse;
 import org.elasticsearch.action.support.ActiveShardCount;
@@ -38,7 +44,7 @@ import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.util.set.Sets;
 import org.elasticsearch.index.shard.DocsStats;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
@@ -47,7 +53,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import static org.elasticsearch.action.admin.indices.rollover.TransportRolloverAction.evaluateConditions;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -64,7 +69,7 @@ public class TransportRolloverActionTests extends ESTestCase {
         long docsInShards = 200;
 
         final Condition condition = createTestCondition();
-        evaluateConditions(Sets.newHashSet(condition), createMetaData(), createIndicesStatResponse(docsInShards, docsInPrimaryShards));
+        TransportRolloverAction.evaluateConditions(Sets.newHashSet(condition), createMetaData(), createIndicesStatResponse(docsInShards, docsInPrimaryShards));
         final ArgumentCaptor<Condition.Stats> argument = ArgumentCaptor.forClass(Condition.Stats.class);
         verify(condition).evaluate(argument.capture());
 
@@ -90,14 +95,14 @@ public class TransportRolloverActionTests extends ESTestCase {
             .settings(settings)
             .build();
         final Set<Condition> conditions = Sets.newHashSet(maxDocsCondition, maxAgeCondition, maxSizeCondition);
-        Map<String, Boolean> results = evaluateConditions(conditions,
+        Map<String, Boolean> results = TransportRolloverAction.evaluateConditions(conditions,
             new DocsStats(matchMaxDocs, 0L, ByteSizeUnit.MB.toBytes(120)), metaData);
         assertThat(results.size(), equalTo(3));
         for (Boolean matched : results.values()) {
             assertThat(matched, equalTo(true));
         }
 
-        results = evaluateConditions(conditions, new DocsStats(notMatchMaxDocs, 0, notMatchMaxSize.getBytes()), metaData);
+        results = TransportRolloverAction.evaluateConditions(conditions, new DocsStats(notMatchMaxDocs, 0, notMatchMaxSize.getBytes()), metaData);
         assertThat(results.size(), equalTo(3));
         for (Map.Entry<String, Boolean> entry : results.entrySet()) {
             if (entry.getKey().equals(maxAgeCondition.toString())) {
@@ -129,7 +134,7 @@ public class TransportRolloverActionTests extends ESTestCase {
             .creationDate(System.currentTimeMillis() - TimeValue.timeValueHours(randomIntBetween(5, 10)).getMillis())
             .settings(settings)
             .build();
-        Map<String, Boolean> results = evaluateConditions(conditions, null, metaData);
+        Map<String, Boolean> results = TransportRolloverAction.evaluateConditions(conditions, null, metaData);
         assertThat(results.size(), equalTo(3));
 
         for (Map.Entry<String, Boolean> entry : results.entrySet()) {

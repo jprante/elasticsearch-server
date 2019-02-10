@@ -17,12 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
 import com.carrotsearch.hppc.LongObjectHashMap;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.util.BigArrays;
+import org.elasticsearch.common.util.LongObjectPagedHashMap;
 import org.elasticsearch.indices.breaker.NoneCircuitBreakerService;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.common.util.MockBigArrays;
+import org.elasticsearch.testframework.common.util.MockPageCacheRecycler;
 
 public class LongObjectHashMapTests extends ESSingleNodeTestCase {
 

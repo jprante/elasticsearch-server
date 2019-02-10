@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.bootstrap.ElasticsearchUncaughtExceptionHandler;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import java.io.IOError;
@@ -68,19 +69,19 @@ public class ElasticsearchUncaughtExceptionHandlerTests extends ESTestCase {
         thread.setUncaughtExceptionHandler(new ElasticsearchUncaughtExceptionHandler(() -> "testUncaughtError") {
 
             @Override
-            void halt(int status) {
+            public void halt(int status) {
                 halt.set(true);
                 observedStatus.set(status);
             }
 
             @Override
-            void onFatalUncaught(String threadName, Throwable t) {
+            public void onFatalUncaught(String threadName, Throwable t) {
                 threadNameReference.set(threadName);
                 throwableReference.set(t);
             }
 
             @Override
-            void onNonFatalUncaught(String threadName, Throwable t) {
+            public void onNonFatalUncaught(String threadName, Throwable t) {
                 fail();
             }
 
@@ -108,17 +109,17 @@ public class ElasticsearchUncaughtExceptionHandlerTests extends ESTestCase {
         final AtomicReference<Throwable> throwableReference = new AtomicReference<>();
         thread.setUncaughtExceptionHandler(new ElasticsearchUncaughtExceptionHandler(() -> "testUncaughtException") {
             @Override
-            void halt(int status) {
+            public void halt(int status) {
                 fail();
             }
 
             @Override
-            void onFatalUncaught(String threadName, Throwable t) {
+            public void onFatalUncaught(String threadName, Throwable t) {
                 fail();
             }
 
             @Override
-            void onNonFatalUncaught(String threadName, Throwable t) {
+            public void onNonFatalUncaught(String threadName, Throwable t) {
                 threadNameReference.set(threadName);
                 throwableReference.set(t);
             }

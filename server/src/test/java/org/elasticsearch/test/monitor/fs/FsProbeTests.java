@@ -17,14 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.fs;
+package org.elasticsearch.test.monitor.fs;
 
 import org.apache.lucene.util.Constants;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.NodeEnvironment;
 import org.elasticsearch.env.NodeEnvironment.NodePath;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.fs.FsInfo;
+import org.elasticsearch.monitor.fs.FsProbe;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.nio.file.FileStore;
@@ -168,7 +170,7 @@ public class FsProbeTests extends ESTestCase {
 
         final FsProbe probe = new FsProbe(Settings.EMPTY, null) {
             @Override
-            List<String> readProcDiskStats() throws IOException {
+            public List<String> readProcDiskStats() throws IOException {
                 return diskStats.get();
             }
         };

@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.apache.lucene.search.uhighlight;
+package org.elasticsearch.test.lucene.search.uhighlight;
 
-import org.elasticsearch.test.ESTestCase;
+import org.apache.lucene.search.uhighlight.BoundedBreakIteratorScanner;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.text.BreakIterator;
 import java.util.ArrayList;

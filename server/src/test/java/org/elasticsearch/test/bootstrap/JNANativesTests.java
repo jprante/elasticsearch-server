@@ -17,10 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
 import org.apache.lucene.util.Constants;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.bootstrap.JNAKernel32Library;
+import org.elasticsearch.bootstrap.JNANatives;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 

@@ -85,7 +85,7 @@ public class DanglingIndicesState extends AbstractComponent implements ClusterSt
     /**
      * The current set of dangling indices.
      */
-    Map<Index, IndexMetaData> getDanglingIndices() {
+    public Map<Index, IndexMetaData> getDanglingIndices() {
         // This might be a good use case for CopyOnWriteHashMap
         return unmodifiableMap(new HashMap<>(danglingIndices));
     }
@@ -93,7 +93,7 @@ public class DanglingIndicesState extends AbstractComponent implements ClusterSt
     /**
      * Cleans dangling indices if they are already allocated on the provided meta data.
      */
-    void cleanupAllocatedDangledIndices(MetaData metaData) {
+    public void cleanupAllocatedDangledIndices(MetaData metaData) {
         for (Index index : danglingIndices.keySet()) {
             final IndexMetaData indexMetaData = metaData.index(index);
             if (indexMetaData != null && indexMetaData.getIndex().getName().equals(index.getName())) {
@@ -112,7 +112,7 @@ public class DanglingIndicesState extends AbstractComponent implements ClusterSt
      * Finds (@{link #findNewAndAddDanglingIndices}) and adds the new dangling indices
      * to the currently tracked dangling indices.
      */
-    void findNewAndAddDanglingIndices(final MetaData metaData) {
+    public void findNewAndAddDanglingIndices(final MetaData metaData) {
         danglingIndices.putAll(findNewDanglingIndices(metaData));
     }
 
@@ -121,7 +121,7 @@ public class DanglingIndicesState extends AbstractComponent implements ClusterSt
      * that have state on disk, but are not part of the provided meta data, or not detected
      * as dangled already.
      */
-    Map<Index, IndexMetaData> findNewDanglingIndices(final MetaData metaData) {
+    public Map<Index, IndexMetaData> findNewDanglingIndices(final MetaData metaData) {
         final Set<String> excludeIndexPathIds = new HashSet<>(metaData.indices().size() + danglingIndices.size());
         for (ObjectCursor<IndexMetaData> cursor : metaData.indices().values()) {
             excludeIndexPathIds.add(cursor.value.getIndex().getUUID());

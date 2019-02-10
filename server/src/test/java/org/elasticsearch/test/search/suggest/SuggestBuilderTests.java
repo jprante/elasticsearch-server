@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest;
+package org.elasticsearch.test.search.suggest;
 
 import org.elasticsearch.common.io.stream.NamedWriteableRegistry;
 import org.elasticsearch.common.settings.Settings;
@@ -28,11 +28,13 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.search.SearchModule;
-import org.elasticsearch.search.suggest.completion.CompletionSuggesterBuilderTests;
-import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilderTests;
-import org.elasticsearch.search.suggest.term.TermSuggestionBuilderTests;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.EqualsHashCodeTestUtils;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestionBuilder;
+import org.elasticsearch.test.search.suggest.completion.CompletionSuggesterBuilderTests;
+import org.elasticsearch.test.search.suggest.phrase.PhraseSuggestionBuilderTests;
+import org.elasticsearch.test.search.suggest.term.TermSuggestionBuilderTests;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.EqualsHashCodeTestUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -40,7 +42,7 @@ import java.io.IOException;
 import java.util.Map.Entry;
 
 import static java.util.Collections.emptyList;
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
 
 public class SuggestBuilderTests extends ESTestCase {
 

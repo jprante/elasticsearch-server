@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.apache.lucene.index.IndexableField;
 import org.elasticsearch.common.bytes.BytesArray;
@@ -27,19 +27,22 @@ import org.elasticsearch.index.mapper.DocumentMapper;
 import org.elasticsearch.index.mapper.FieldMapper;
 import org.elasticsearch.index.mapper.ParseContext.Document;
 import org.elasticsearch.index.mapper.ParsedDocument;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.mapper.SourceToParse;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
-import static org.elasticsearch.test.StreamsUtils.copyToBytesFromClasspath;
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToBytesFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.Matchers.equalTo;
 
 public class GenericStoreDynamicTemplateTests extends ESSingleNodeTestCase {
     public void testSimple() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/dynamictemplate/genericstore/test-mapping.json");
+        String mapping = copyToStringFromClasspath(GenericStoreDynamicTemplateTests.class,
+                "/org/elasticsearch/test/index/mapper/dynamictemplate/genericstore/test-mapping.json");
         IndexService index = createIndex("test");
         client().admin().indices().preparePutMapping("test").setType("person").setSource(mapping, XContentType.JSON).get();
         DocumentMapper docMapper = index.mapperService().documentMapper("person");
-        byte[] json = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/dynamictemplate/genericstore/test-data.json");
+        byte[] json = copyToBytesFromClasspath(GenericStoreDynamicTemplateTests.class,
+                "/org/elasticsearch/test/index/mapper/dynamictemplate/genericstore/test-data.json");
         ParsedDocument parsedDoc = docMapper.parse(SourceToParse.source("test", "person", "1", new BytesArray(json),
                 XContentType.JSON));
         client().admin().indices().preparePutMapping("test").setType("person")

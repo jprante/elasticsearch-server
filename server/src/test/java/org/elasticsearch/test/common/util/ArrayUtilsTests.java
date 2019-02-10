@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.ArrayUtils;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;

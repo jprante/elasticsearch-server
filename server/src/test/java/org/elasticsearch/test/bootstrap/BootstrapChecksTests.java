@@ -17,17 +17,21 @@
  * under the License.
  */
 
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.util.Constants;
+import org.elasticsearch.bootstrap.BootstrapCheck;
+import org.elasticsearch.bootstrap.BootstrapChecks;
+import org.elasticsearch.bootstrap.BootstrapContext;
 import org.elasticsearch.cluster.metadata.MetaData;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.BoundTransportAddress;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.monitor.jvm.JvmInfo;
 import org.elasticsearch.node.NodeValidationException;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.junit.Ignore;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -148,14 +152,14 @@ public class BootstrapChecksTests extends ESTestCase {
         if (osX) {
             check = new BootstrapChecks.OsXFileDescriptorCheck() {
                 @Override
-                long getMaxFileDescriptorCount() {
+                public long getMaxFileDescriptorCount() {
                     return maxFileDescriptorCount.get();
                 }
             };
         } else {
             check = new BootstrapChecks.FileDescriptorCheck() {
                 @Override
-                long getMaxFileDescriptorCount() {
+                public long getMaxFileDescriptorCount() {
                     return maxFileDescriptorCount.get();
                 }
             };
@@ -208,7 +212,7 @@ public class BootstrapChecksTests extends ESTestCase {
         for (final MlockallCheckTestCase testCase : testCases) {
             final BootstrapChecks.MlockallCheck check = new BootstrapChecks.MlockallCheck() {
                 @Override
-                boolean isMemoryLocked() {
+                public boolean isMemoryLocked() {
                     return testCase.isMemoryLocked;
                 }
             };
@@ -238,7 +242,7 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicLong maxNumberOfThreads = new AtomicLong(randomIntBetween(1, limit - 1));
         final BootstrapChecks.MaxNumberOfThreadsCheck check = new BootstrapChecks.MaxNumberOfThreadsCheck() {
             @Override
-            long getMaxNumberOfThreads() {
+            public long getMaxNumberOfThreads() {
                 return maxNumberOfThreads.get();
             }
         };
@@ -263,12 +267,12 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicLong maxSizeVirtualMemory = new AtomicLong(randomIntBetween(0, Integer.MAX_VALUE));
         final BootstrapChecks.MaxSizeVirtualMemoryCheck check = new BootstrapChecks.MaxSizeVirtualMemoryCheck() {
             @Override
-            long getMaxSizeVirtualMemory() {
+            public long getMaxSizeVirtualMemory() {
                 return maxSizeVirtualMemory.get();
             }
 
             @Override
-            long getRlimInfinity() {
+            public long getRlimInfinity() {
                 return rlimInfinity;
             }
         };
@@ -292,12 +296,12 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicLong maxFileSize = new AtomicLong(randomIntBetween(0, Integer.MAX_VALUE));
         final BootstrapChecks.MaxFileSizeCheck check = new BootstrapChecks.MaxFileSizeCheck() {
             @Override
-            long getMaxFileSize() {
+            public long getMaxFileSize() {
                 return maxFileSize.get();
             }
 
             @Override
-            long getRlimInfinity() {
+            public long getRlimInfinity() {
                 return rlimInfinity;
             }
         };
@@ -316,12 +320,13 @@ public class BootstrapChecksTests extends ESTestCase {
         BootstrapChecks.check(defaultContext, true, Collections.singletonList(check), "testMaxFileSize");
     }
 
+    @Ignore // we do no longer enfore max map count!
     public void testMaxMapCountCheck() throws NodeValidationException {
         final int limit = 1 << 18;
         final AtomicLong maxMapCount = new AtomicLong(randomIntBetween(1, limit - 1));
         final BootstrapChecks.MaxMapCountCheck check = new BootstrapChecks.MaxMapCountCheck() {
             @Override
-            long getMaxMapCount() {
+            public long getMaxMapCount() {
                 return maxMapCount.get();
             }
         };
@@ -345,7 +350,7 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicReference<String> useSerialGC = new AtomicReference<>("true");
         final BootstrapCheck check = new BootstrapChecks.UseSerialGCCheck() {
             @Override
-            String getUseSerialGC() {
+            public String getUseSerialGC() {
                 return useSerialGC.get();
             }
         };
@@ -369,7 +374,7 @@ public class BootstrapChecksTests extends ESTestCase {
 
         final BootstrapChecks.SystemCallFilterCheck systemCallFilterEnabledCheck = new BootstrapChecks.SystemCallFilterCheck() {
             @Override
-            boolean isSystemCallFilterInstalled() {
+            public boolean isSystemCallFilterInstalled() {
                 return isSystemCallFilterInstalled.get();
             }
         };
@@ -388,7 +393,7 @@ public class BootstrapChecksTests extends ESTestCase {
         BootstrapContext context_1 = new BootstrapContext(Settings.builder().put("bootstrap.system_call_filter", false).build(), null);
         final BootstrapChecks.SystemCallFilterCheck systemCallFilterNotEnabledCheck = new BootstrapChecks.SystemCallFilterCheck() {
             @Override
-            boolean isSystemCallFilterInstalled() {
+            public boolean isSystemCallFilterInstalled() {
                 return isSystemCallFilterInstalled.get();
             }
         };
@@ -403,17 +408,17 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicBoolean mightFork = new AtomicBoolean();
         final BootstrapChecks.MightForkCheck check = new BootstrapChecks.MightForkCheck() {
             @Override
-            boolean isSystemCallFilterInstalled() {
+            public boolean isSystemCallFilterInstalled() {
                 return isSystemCallFilterInstalled.get();
             }
 
             @Override
-            boolean mightFork() {
+            public boolean mightFork() {
                 return mightFork.get();
             }
 
             @Override
-            String message(BootstrapContext context) {
+            public String message(BootstrapContext context) {
                 return "error";
             }
         };
@@ -431,12 +436,12 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicReference<String> onError = new AtomicReference<>();
         final BootstrapChecks.MightForkCheck check = new BootstrapChecks.OnErrorCheck() {
             @Override
-            boolean isSystemCallFilterInstalled() {
+            public boolean isSystemCallFilterInstalled() {
                 return isSystemCallFilterInstalled.get();
             }
 
             @Override
-            String onError() {
+            public String onError() {
                 return onError.get();
             }
         };
@@ -459,12 +464,12 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicReference<String> onOutOfMemoryError = new AtomicReference<>();
         final BootstrapChecks.MightForkCheck check = new BootstrapChecks.OnOutOfMemoryErrorCheck() {
             @Override
-            boolean isSystemCallFilterInstalled() {
+            public boolean isSystemCallFilterInstalled() {
                 return isSystemCallFilterInstalled.get();
             }
 
             @Override
-            String onOutOfMemoryError() {
+            public String onOutOfMemoryError() {
                 return onOutOfMemoryError.get();
             }
         };
@@ -522,7 +527,7 @@ public class BootstrapChecksTests extends ESTestCase {
         final AtomicBoolean isAllPermissionGranted = new AtomicBoolean(true);
         final BootstrapChecks.AllPermissionCheck allPermissionCheck = new BootstrapChecks.AllPermissionCheck() {
             @Override
-            boolean isAllPermissionGranted() {
+            public boolean isAllPermissionGranted() {
                 return isAllPermissionGranted.get();
             }
         };

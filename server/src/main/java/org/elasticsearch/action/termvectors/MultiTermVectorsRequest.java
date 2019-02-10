@@ -41,7 +41,7 @@ import java.util.Set;
 public class MultiTermVectorsRequest extends ActionRequest implements Iterable<TermVectorsRequest>, CompositeIndicesRequest, RealtimeRequest {
 
     String preference;
-    List<TermVectorsRequest> requests = new ArrayList<>();
+    public List<TermVectorsRequest> requests = new ArrayList<>();
 
     final Set<String> ids = new HashSet<>();
 

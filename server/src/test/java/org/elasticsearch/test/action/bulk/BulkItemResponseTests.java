@@ -17,28 +17,29 @@
  * under the License.
  */
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
+import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse.Failure;
-import org.elasticsearch.action.delete.DeleteResponseTests;
-import org.elasticsearch.action.index.IndexResponseTests;
+import org.elasticsearch.test.action.delete.DeleteResponseTests;
+import org.elasticsearch.test.action.index.IndexResponseTests;
 import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.action.update.UpdateResponseTests;
+import org.elasticsearch.test.action.update.UpdateResponseTests;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 
-import static org.elasticsearch.ElasticsearchExceptionTests.assertDeepEquals;
-import static org.elasticsearch.ElasticsearchExceptionTests.randomExceptions;
+import static org.elasticsearch.test.ElasticsearchExceptionTests.assertDeepEquals;
+import static org.elasticsearch.test.ElasticsearchExceptionTests.randomExceptions;
 import static org.hamcrest.Matchers.containsString;
 
 public class BulkItemResponseTests extends ESTestCase {

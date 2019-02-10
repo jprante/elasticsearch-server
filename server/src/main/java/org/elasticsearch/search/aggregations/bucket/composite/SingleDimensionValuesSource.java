@@ -35,7 +35,7 @@ import java.io.IOException;
 /**
  * A source that can record and compare values of similar type.
  */
-abstract class SingleDimensionValuesSource<T extends Comparable<T>> implements Releasable {
+public abstract class SingleDimensionValuesSource<T extends Comparable<T>> implements Releasable {
     protected final DocValueFormat format;
     @Nullable
     protected final MappedFieldType fieldType;
@@ -56,7 +56,7 @@ abstract class SingleDimensionValuesSource<T extends Comparable<T>> implements R
      * @param size The number of values to record.
      * @param reverseMul -1 if the natural order ({@link SortOrder#ASC} should be reversed.
      */
-    SingleDimensionValuesSource(DocValueFormat format, @Nullable MappedFieldType fieldType, @Nullable Object missing,
+    public SingleDimensionValuesSource(DocValueFormat format, @Nullable MappedFieldType fieldType, @Nullable Object missing,
                                 int size, int reverseMul) {
         this.format = format;
         this.fieldType = fieldType;
@@ -72,12 +72,12 @@ abstract class SingleDimensionValuesSource<T extends Comparable<T>> implements R
      * in the context of a collection.
      * See {@link this#getLeafCollector}.
      */
-    abstract void copyCurrent(int slot);
+    public abstract void copyCurrent(int slot);
 
     /**
      * Compares the value in <code>from</code> with the value in <code>to</code>.
      */
-    abstract int compare(int from, int to);
+    public abstract int compare(int from, int to);
 
     /**
      * The current value is filled by a {@link LeafBucketCollector} that visits all the
@@ -85,7 +85,7 @@ abstract class SingleDimensionValuesSource<T extends Comparable<T>> implements R
      * the provided slot and should only be used in the context of a collection.
      * See {@link this#getLeafCollector}.
      */
-    abstract int compareCurrent(int slot);
+    public abstract int compareCurrent(int slot);
 
     /**
      * The current value is filled by a {@link LeafBucketCollector} that visits all the
@@ -93,24 +93,24 @@ abstract class SingleDimensionValuesSource<T extends Comparable<T>> implements R
      * set on this source and should only be used in the context of a collection.
      * See {@link this#getLeafCollector}.
      */
-    abstract int compareCurrentWithAfter();
+    public abstract int compareCurrentWithAfter();
 
     /**
      * Sets the after value for this source. Values that compares smaller are filtered.
      */
-    abstract void setAfter(Comparable<?> value);
+    public abstract void setAfter(Comparable<?> value);
 
     /**
      * Returns the after value set for this source.
      */
-    T getAfter() {
+    public T getAfter() {
         return afterValue;
     }
 
     /**
      * Transforms the value in <code>slot</code> to a {@link Comparable} object.
      */
-    abstract T toComparable(int slot) throws IOException;
+    public abstract T toComparable(int slot) throws IOException;
 
     /**
      * Creates a {@link LeafBucketCollector} that extracts all values from a document and invokes
@@ -119,19 +119,19 @@ abstract class SingleDimensionValuesSource<T extends Comparable<T>> implements R
      * the {@link this#copyCurrent(int)} and {@link this#compareCurrent(int)} methods. Note that these methods
      * are only valid when invoked from the {@link LeafBucketCollector} created in this source.
      */
-    abstract LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException;
+    public abstract LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException;
 
     /**
      * Creates a {@link LeafBucketCollector} that sets the current value for each document to the provided
      * <code>value</code> and invokes {@link LeafBucketCollector#collect} on the provided <code>next</code> collector.
      */
-    abstract LeafBucketCollector getLeafCollector(Comparable<?> value,
+    public abstract LeafBucketCollector getLeafCollector(Comparable<?> value,
                                                   LeafReaderContext context, LeafBucketCollector next) throws IOException;
 
     /**
      * Returns a {@link SortedDocsProducer} or null if this source cannot produce sorted docs.
      */
-    abstract SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query);
+    public abstract SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query);
 
     /**
      * Returns true if a {@link SortedDocsProducer} should be used to optimize the execution.

@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query.functionscore;
+package org.elasticsearch.test.index.query.functionscore;
 
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 

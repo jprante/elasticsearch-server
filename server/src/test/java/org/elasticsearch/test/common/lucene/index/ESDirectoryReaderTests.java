@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.lucene.index;
+package org.elasticsearch.test.common.lucene.index;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -28,9 +28,10 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.NoMergePolicy;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
-import org.elasticsearch.core.internal.io.IOUtils;
+import org.elasticsearch.common.lucene.index.ElasticsearchDirectoryReader;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
 
 /** Simple tests for this filterreader */
 public class ESDirectoryReaderTests extends ESTestCase {

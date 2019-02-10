@@ -8,8 +8,7 @@ profile="${profile}"
 # declare JDKs here (for early exit to avoid ugly class file error message)
 
 jdk_versions=(
-  "10.0.1" "10.0.2"
-  "11-ea"
+  "11-ea" "11.0.1"
 )
 
 parse_jvm_options() {
@@ -44,10 +43,10 @@ ES_JAVA_OPTS=\$(eval "echo \$ES_JAVA_OPTS")
 if [ -x "\$JAVA_HOME/bin/java" ]; then
     JAVA="\$JAVA_HOME/bin/java"
 else
-    JAVA=`which java`
+    JAVA="/usr/lib/jvm/jre-11/bin"
 fi
 if [ ! -x "\$JAVA" ]; then
-    echo "Could not find any executable java binary. Please install java in your PATH or set JAVA_HOME"
+    echo "Could not find any executable java binary. Please install java in /usr/lib/jvm/jre-11/bin or set JAVA_HOME"
     exit 1
 fi
 
@@ -56,7 +55,7 @@ JAVA_VERSION=\$(\${JAVA} -version 2>&1 | sed -E -n 's/.* version "(.*)"/\\1/p' |
 containsElement "\${JAVA_VERSION}" "\${jdk_versions[@]}"
 if [ \$? == 1 ]; then
     java_versions=\$(join_by , "\${jdk_versions[@]}")
-    echo "Java version is \${JAVA_VERSION}, unable to execute. Please install one of the Java versions \${java_versions} in your PATH or set JAVA_HOME"
+    echo "Java version is \${JAVA_VERSION}, unable to execute. Please install one of the Java versions \${java_versions}"
     exit 1
 fi
 

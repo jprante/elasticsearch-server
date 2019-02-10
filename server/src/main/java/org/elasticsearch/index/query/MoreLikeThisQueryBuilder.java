@@ -166,7 +166,7 @@ public class MoreLikeThisQueryBuilder extends AbstractQueryBuilder<MoreLikeThisQ
         public Item() {
         }
 
-        Item(Item copy) {
+        public Item(Item copy) {
             if (copy.id == null && copy.doc == null) {
                 throw new IllegalArgumentException("Item requires either id or doc to be non-null");
             }
@@ -218,7 +218,7 @@ public class MoreLikeThisQueryBuilder extends AbstractQueryBuilder<MoreLikeThisQ
         /**
          * Read from a stream.
          */
-        Item(StreamInput in) throws IOException {
+        public Item(StreamInput in) throws IOException {
             index = in.readOptionalString();
             type = in.readOptionalString();
             if (in.readBoolean()) {
@@ -332,7 +332,7 @@ public class MoreLikeThisQueryBuilder extends AbstractQueryBuilder<MoreLikeThisQ
             return this;
         }
 
-        XContentType xContentType() {
+        public XContentType xContentType() {
             return xContentType;
         }
 

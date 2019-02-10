@@ -57,7 +57,7 @@ public class TransportClusterStateAction extends TransportMasterNodeReadAction<C
     }
 
     @Override
-    protected ClusterBlockException checkBlock(ClusterStateRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(ClusterStateRequest request, ClusterState state) {
         // cluster state calls are done also on a fully blocked cluster to figure out what is going
         // on in the cluster. For example, which nodes have joined yet the recovery has not yet kicked
         // in, we need to make sure we allow those calls
@@ -71,7 +71,7 @@ public class TransportClusterStateAction extends TransportMasterNodeReadAction<C
     }
 
     @Override
-    protected void masterOperation(final ClusterStateRequest request, final ClusterState state,
+    public void masterOperation(final ClusterStateRequest request, final ClusterState state,
                                    final ActionListener<ClusterStateResponse> listener) throws IOException {
         ClusterState currentState = clusterService.state();
         logger.trace("Serving cluster state request using version {}", currentState.version());

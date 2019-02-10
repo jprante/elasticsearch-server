@@ -17,9 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action;
+package org.elasticsearch.test.action;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.action.ActionResponse;
+import org.elasticsearch.action.GenericAction;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class GenericActionTests extends ESTestCase {
 

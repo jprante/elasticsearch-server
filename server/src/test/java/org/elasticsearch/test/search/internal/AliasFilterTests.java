@@ -17,14 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.test.search.internal;
 
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.EqualsHashCodeTestUtils;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.EqualsHashCodeTestUtils;
 
 import java.util.Arrays;
 

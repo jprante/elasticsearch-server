@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexableField;
@@ -25,17 +25,21 @@ import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.mapper.DocumentMapper;
+import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.mapper.ParseContext.Document;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.mapper.SourceToParse;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
     public void testMergeMultiField() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/test-mapping1.json");
+        String mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/test-mapping1.json");
         MapperService mapperService = createIndex("test").mapperService();
 
         DocumentMapper docMapper = mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
@@ -50,7 +54,8 @@ public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
         f = doc.getField("name.indexed");
         assertThat(f, nullValue());
 
-        mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/test-mapping2.json");
+        mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/test-mapping2.json");
         docMapper = mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
 
         assertNotSame(IndexOptions.NONE, docMapper.mappers().getMapper("name").fieldType().indexOptions());
@@ -67,7 +72,8 @@ public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
         f = doc.getField("name.indexed");
         assertThat(f, notNullValue());
 
-        mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/test-mapping3.json");
+        mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/test-mapping3.json");
         docMapper = mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
 
         assertNotSame(IndexOptions.NONE, docMapper.mappers().getMapper("name").fieldType().indexOptions());
@@ -78,7 +84,8 @@ public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
         assertThat(docMapper.mappers().getMapper("name.not_indexed2"), notNullValue());
         assertThat(docMapper.mappers().getMapper("name.not_indexed3"), nullValue());
 
-        mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/test-mapping4.json");
+        mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/test-mapping4.json");
         docMapper = mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
 
         assertNotSame(IndexOptions.NONE, docMapper.mappers().getMapper("name").fieldType().indexOptions());
@@ -91,7 +98,8 @@ public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
     }
 
     public void testUpgradeFromMultiFieldTypeToMultiFields() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/test-mapping1.json");
+        String mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/test-mapping1.json");
         MapperService mapperService = createIndex("test").mapperService();
 
         DocumentMapper docMapper = mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
@@ -107,7 +115,8 @@ public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
         assertThat(f, nullValue());
 
 
-        mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/upgrade1.json");
+        mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/upgrade1.json");
         docMapper = mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
 
         assertNotSame(IndexOptions.NONE, docMapper.mappers().getMapper("name").fieldType().indexOptions());
@@ -124,7 +133,8 @@ public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
         f = doc.getField("name.indexed");
         assertThat(f, notNullValue());
 
-        mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/upgrade2.json");
+        mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/upgrade2.json");
         docMapper = mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
 
         assertNotSame(IndexOptions.NONE, docMapper.mappers().getMapper("name").fieldType().indexOptions());
@@ -136,7 +146,8 @@ public class JavaMultiFieldMergeTests extends ESSingleNodeTestCase {
         assertThat(docMapper.mappers().getMapper("name.not_indexed3"), nullValue());
 
 
-        mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/multifield/merge/upgrade3.json");
+        mapping = copyToStringFromClasspath(JavaMultiFieldMergeTests.class,
+                "/org/elasticsearch/test/index/mapper/multifield/merge/upgrade3.json");
         try {
             mapperService.merge("person", new CompressedXContent(mapping), MapperService.MergeReason.MAPPING_UPDATE, false);
             fail();

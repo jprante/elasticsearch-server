@@ -81,7 +81,7 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
     private final TimeValue expire;
     private final Cache<Key, BytesReference> cache;
 
-    IndicesRequestCache(Settings settings) {
+    public IndicesRequestCache(Settings settings) {
         super(settings);
         this.size = INDICES_CACHE_QUERY_SIZE.get(settings);
         this.expire = INDICES_CACHE_QUERY_EXPIRE.exists(settings) ? INDICES_CACHE_QUERY_EXPIRE.get(settings) : null;
@@ -99,7 +99,7 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
         cache.invalidateAll();
     }
 
-    void clear(CacheEntity entity) {
+    public void clear(CacheEntity entity) {
         keysToClean.add(new CleanupKey(entity, -1));
         cleanCache();
     }
@@ -109,7 +109,7 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
         notification.getKey().entity.onRemoval(notification);
     }
 
-    BytesReference getOrCompute(CacheEntity cacheEntity, Supplier<BytesReference> loader,
+    public BytesReference getOrCompute(CacheEntity cacheEntity, Supplier<BytesReference> loader,
             DirectoryReader reader, BytesReference cacheKey) throws Exception {
         final Key key =  new Key(cacheEntity, reader.getVersion(), cacheKey);
         Loader cacheLoader = new Loader(cacheEntity, loader);
@@ -136,7 +136,7 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
      * @param reader the reader to invalidate the cache entry for
      * @param cacheKey the cache key to invalidate
      */
-    void invalidate(CacheEntity cacheEntity, DirectoryReader reader, BytesReference cacheKey) {
+    public void invalidate(CacheEntity cacheEntity, DirectoryReader reader, BytesReference cacheKey) {
         cache.invalidate(new Key(cacheEntity, reader.getVersion(), cacheKey));
     }
 
@@ -167,7 +167,7 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
     /**
      * Basic interface to make this cache testable.
      */
-    interface CacheEntity extends Accountable {
+    public interface CacheEntity extends Accountable {
 
         /**
          * Called after the value was loaded.
@@ -202,14 +202,14 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
         void onRemoval(RemovalNotification<Key, BytesReference> notification);
     }
 
-    static class Key implements Accountable {
+    public static class Key implements Accountable {
         private static final long BASE_RAM_BYTES_USED = RamUsageEstimator.shallowSizeOfInstance(Key.class);
 
         public final CacheEntity entity; // use as identity equality
         public final long readerVersion; // use the reader version to now keep a reference to a "short" lived reader until its reaped
         public final BytesReference value;
 
-        Key(CacheEntity entity, long readerVersion, BytesReference value) {
+        public Key(CacheEntity entity, long readerVersion, BytesReference value) {
             this.entity = entity;
             this.readerVersion = readerVersion;
             this.value = value;
@@ -283,9 +283,7 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
         }
     }
 
-
-
-    synchronized void cleanCache() {
+    public synchronized void cleanCache() {
         final ObjectSet<CleanupKey> currentKeysToClean = new ObjectHashSet<>();
         final ObjectSet<Object> currentFullClean = new ObjectHashSet<>();
         currentKeysToClean.clear();
@@ -320,11 +318,11 @@ public final class IndicesRequestCache extends AbstractComponent implements Remo
     /**
      * Returns the current size of the cache
      */
-    int count() {
+    public int count() {
         return cache.count();
     }
 
-    int numRegisteredCloseListeners() { // for testing
+    public int numRegisteredCloseListeners() { // for testing
         return registeredClosedListeners.size();
     }
 }

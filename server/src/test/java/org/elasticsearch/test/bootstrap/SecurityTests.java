@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.bootstrap.Security;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.nio.file.Files;

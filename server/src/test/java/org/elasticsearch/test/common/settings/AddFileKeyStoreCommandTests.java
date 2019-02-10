@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +28,8 @@ import org.elasticsearch.cli.Command;
 import org.elasticsearch.cli.ExitCodes;
 import org.elasticsearch.cli.Terminal;
 import org.elasticsearch.cli.UserException;
+import org.elasticsearch.common.settings.AddFileKeyStoreCommand;
+import org.elasticsearch.common.settings.KeyStoreWrapper;
 import org.elasticsearch.env.Environment;
 
 import static org.hamcrest.Matchers.containsString;

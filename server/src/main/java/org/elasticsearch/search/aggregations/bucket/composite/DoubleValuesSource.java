@@ -36,12 +36,12 @@ import java.io.IOException;
 /**
  * A {@link SingleDimensionValuesSource} for doubles.
  */
-class DoubleValuesSource extends SingleDimensionValuesSource<Double> {
+public class DoubleValuesSource extends SingleDimensionValuesSource<Double> {
     private final CheckedFunction<LeafReaderContext, SortedNumericDoubleValues, IOException> docValuesFunc;
     private final DoubleArray values;
     private double currentValue;
 
-    DoubleValuesSource(BigArrays bigArrays, MappedFieldType fieldType,
+    public DoubleValuesSource(BigArrays bigArrays, MappedFieldType fieldType,
                        CheckedFunction<LeafReaderContext, SortedNumericDoubleValues, IOException> docValuesFunc,
                        DocValueFormat format, Object missing, int size, int reverseMul) {
         super(format, fieldType, missing, size, reverseMul);
@@ -50,22 +50,22 @@ class DoubleValuesSource extends SingleDimensionValuesSource<Double> {
     }
 
     @Override
-    void copyCurrent(int slot) {
+    public void copyCurrent(int slot) {
         values.set(slot, currentValue);
     }
 
     @Override
-    int compare(int from, int to) {
+    public int compare(int from, int to) {
         return compareValues(values.get(from), values.get(to));
     }
 
     @Override
-    int compareCurrent(int slot) {
+    public int compareCurrent(int slot) {
         return compareValues(currentValue, values.get(slot));
     }
 
     @Override
-    int compareCurrentWithAfter() {
+    public int compareCurrentWithAfter() {
         return compareValues(currentValue, afterValue);
     }
 
@@ -74,7 +74,7 @@ class DoubleValuesSource extends SingleDimensionValuesSource<Double> {
     }
 
     @Override
-    void setAfter(Comparable<?> value) {
+    public void setAfter(Comparable<?> value) {
         if (value instanceof Number) {
             afterValue = ((Number) value).doubleValue();
         } else {
@@ -85,12 +85,12 @@ class DoubleValuesSource extends SingleDimensionValuesSource<Double> {
     }
 
     @Override
-    Double toComparable(int slot) {
+    public Double toComparable(int slot) {
         return values.get(slot);
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
+    public LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
         final SortedNumericDoubleValues dvs = docValuesFunc.apply(context);
         return new LeafBucketCollector() {
             @Override
@@ -107,7 +107,7 @@ class DoubleValuesSource extends SingleDimensionValuesSource<Double> {
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next) {
+    public LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next) {
         if (value.getClass() != Double.class) {
             throw new IllegalArgumentException("Expected Double, got " + value.getClass());
         }
@@ -121,7 +121,7 @@ class DoubleValuesSource extends SingleDimensionValuesSource<Double> {
     }
 
     @Override
-    SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
+    public SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
         return null;
     }
 

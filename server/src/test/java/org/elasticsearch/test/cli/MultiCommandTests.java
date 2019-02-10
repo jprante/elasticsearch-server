@@ -17,9 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.cli;
+package org.elasticsearch.test.cli;
 
 import joptsimple.OptionSet;
+import org.elasticsearch.cli.Command;
+import org.elasticsearch.cli.ExitCodes;
+import org.elasticsearch.cli.MultiCommand;
+import org.elasticsearch.cli.Terminal;
+import org.elasticsearch.cli.UserException;
+import org.elasticsearch.testframework.cli.CommandTestCase;
 import org.junit.Before;
 
 import java.io.IOException;

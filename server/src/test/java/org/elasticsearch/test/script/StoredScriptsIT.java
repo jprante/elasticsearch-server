@@ -16,13 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.script;
+package org.elasticsearch.test.script;
 
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.script.ScriptService;
+import org.elasticsearch.script.StoredScriptSource;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.script.MockScriptEngine;
+import org.elasticsearch.testframework.script.MockScriptPlugin;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,7 +34,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 
 public class StoredScriptsIT extends ESIntegTestCase {
 

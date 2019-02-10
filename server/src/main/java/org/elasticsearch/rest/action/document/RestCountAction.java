@@ -41,7 +41,7 @@ import java.io.IOException;
 import static org.elasticsearch.rest.RestRequest.Method.GET;
 import static org.elasticsearch.rest.RestRequest.Method.POST;
 import static org.elasticsearch.rest.action.RestActions.buildBroadcastShardsHeader;
-import static org.elasticsearch.search.internal.SearchContext.DEFAULT_TERMINATE_AFTER;
+import static org.elasticsearch.search.SearchContext.DEFAULT_TERMINATE_AFTER;
 
 public class RestCountAction extends BaseRestHandler {
     public RestCountAction(Settings settings, RestController controller) {

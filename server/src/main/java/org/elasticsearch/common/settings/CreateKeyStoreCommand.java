@@ -30,9 +30,9 @@ import org.elasticsearch.env.Environment;
 /**
  * A subcommand for the keystore cli to create a new keystore.
  */
-class CreateKeyStoreCommand extends EnvironmentAwareCommand {
+public class CreateKeyStoreCommand extends EnvironmentAwareCommand {
 
-    CreateKeyStoreCommand() {
+    public CreateKeyStoreCommand() {
         super("Creates a new elasticsearch keystore");
     }
 

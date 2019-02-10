@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.lucene.search.morelikethis;
+package org.elasticsearch.test.common.lucene.search.morelikethis;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -31,7 +31,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.elasticsearch.common.lucene.Lucene;
 import org.elasticsearch.common.lucene.search.MoreLikeThisQuery;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 

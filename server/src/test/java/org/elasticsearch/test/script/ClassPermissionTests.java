@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.script;
+package org.elasticsearch.test.script;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.script.ClassPermission;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.security.AllPermission;
 import java.security.PermissionCollection;

@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.scripted;
+package org.elasticsearch.test.search.aggregations.metrics.scripted;
 
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.io.stream.Writeable.Reader;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.script.MockScriptEngine;
+import org.elasticsearch.testframework.script.MockScriptEngine;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptEngine;
 import org.elasticsearch.script.ScriptModule;
@@ -30,8 +30,10 @@ import org.elasticsearch.script.ScriptService;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.aggregations.Aggregation.CommonFields;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
+import org.elasticsearch.search.aggregations.metrics.scripted.InternalScriptedMetric;
+import org.elasticsearch.search.aggregations.metrics.scripted.ParsedScriptedMetric;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.test.InternalAggregationTestCase;
+import org.elasticsearch.testframework.InternalAggregationTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -43,11 +43,10 @@ public class IndicesStatsResponse extends BroadcastResponse {
 
     private Map<ShardRouting, ShardStats> shardStatsMap;
 
-    IndicesStatsResponse() {
-
+    public IndicesStatsResponse() {
     }
 
-    IndicesStatsResponse(ShardStats[] shards, int totalShards, int successfulShards, int failedShards,
+    public IndicesStatsResponse(ShardStats[] shards, int totalShards, int successfulShards, int failedShards,
                          List<DefaultShardOperationFailedException> shardFailures) {
         super(totalShards, successfulShards, failedShards, shardFailures);
         this.shards = shards;

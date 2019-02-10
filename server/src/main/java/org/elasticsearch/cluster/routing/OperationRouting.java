@@ -62,7 +62,7 @@ public class OperationRouting extends AbstractComponent {
         clusterSettings.addSettingsUpdateConsumer(USE_ADAPTIVE_REPLICA_SELECTION_SETTING, this::setUseAdaptiveReplicaSelection);
     }
 
-    void setUseAdaptiveReplicaSelection(boolean useAdaptiveReplicaSelection) {
+    public void setUseAdaptiveReplicaSelection(boolean useAdaptiveReplicaSelection) {
         this.useAdaptiveReplicaSelection = useAdaptiveReplicaSelection;
     }
 

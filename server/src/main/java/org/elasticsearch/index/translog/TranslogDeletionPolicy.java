@@ -104,7 +104,7 @@ public class TranslogDeletionPolicy {
      * acquires the basis generation for a new snapshot. Any translog generation above, and including, the returned generation
      * will not be deleted until the returned {@link Releasable} is closed.
      */
-    synchronized Releasable acquireTranslogGen(final long translogGen) {
+    public synchronized Releasable acquireTranslogGen(final long translogGen) {
         translogRefCounts.computeIfAbsent(translogGen, l -> Counter.newCounter(false)).addAndGet(1);
         final AtomicBoolean closed = new AtomicBoolean();
         assert assertAddTranslogRef(closed);
@@ -153,7 +153,7 @@ public class TranslogDeletionPolicy {
      * @param readers current translog readers
      * @param writer  current translog writer
      */
-    synchronized long minTranslogGenRequired(List<TranslogReader> readers, TranslogWriter writer) throws IOException {
+    public synchronized long minTranslogGenRequired(List<TranslogReader> readers, TranslogWriter writer) throws IOException {
         long minByLocks = getMinTranslogGenRequiredByLocks();
         long minByAge = getMinTranslogGenByAge(readers, writer, retentionAgeInMillis, currentTime());
         long minBySize = getMinTranslogGenBySize(readers, writer, retentionSizeInBytes);
@@ -167,7 +167,7 @@ public class TranslogDeletionPolicy {
         return Math.min(minByAgeAndSize, Math.min(minByLocks, minTranslogGenerationForRecovery));
     }
 
-    static long getMinTranslogGenBySize(List<TranslogReader> readers, TranslogWriter writer, long retentionSizeInBytes) {
+    public static long getMinTranslogGenBySize(List<TranslogReader> readers, TranslogWriter writer, long retentionSizeInBytes) {
         if (retentionSizeInBytes >= 0) {
             long totalSize = writer.sizeInBytes();
             long minGen = writer.getGeneration();
@@ -182,7 +182,7 @@ public class TranslogDeletionPolicy {
         }
     }
 
-    static long getMinTranslogGenByAge(List<TranslogReader> readers, TranslogWriter writer, long maxRetentionAgeInMillis, long now)
+    public static long getMinTranslogGenByAge(List<TranslogReader> readers, TranslogWriter writer, long maxRetentionAgeInMillis, long now)
         throws IOException {
         if (maxRetentionAgeInMillis >= 0) {
             for (TranslogReader reader: readers) {
@@ -216,7 +216,7 @@ public class TranslogDeletionPolicy {
         return translogGenerationOfLastCommit;
     }
 
-    synchronized long getTranslogRefCount(long gen) {
+    public synchronized long getTranslogRefCount(long gen) {
         final Counter counter = translogRefCounts.get(gen);
         return counter == null ? 0 : counter.get();
     }

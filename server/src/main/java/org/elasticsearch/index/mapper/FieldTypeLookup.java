@@ -34,7 +34,7 @@ import java.util.Set;
 /**
  * An immutable container for looking up {@link MappedFieldType}s by their name.
  */
-class FieldTypeLookup implements Iterable<MappedFieldType> {
+public class FieldTypeLookup implements Iterable<MappedFieldType> {
 
     /** Full field name to field type */
     final CopyOnWriteHashMap<String, MappedFieldType> fullNameToFieldType;
@@ -43,7 +43,7 @@ class FieldTypeLookup implements Iterable<MappedFieldType> {
     final CopyOnWriteHashMap<String, Set<String>> fullNameToTypes;
 
     /** Create a new empty instance. */
-    FieldTypeLookup() {
+    public FieldTypeLookup() {
         fullNameToFieldType = new CopyOnWriteHashMap<>();
         fullNameToTypes = new CopyOnWriteHashMap<>();
     }

@@ -53,7 +53,7 @@ public class TransportPendingClusterTasksAction extends TransportMasterNodeReadA
     }
 
     @Override
-    protected ClusterBlockException checkBlock(PendingClusterTasksRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(PendingClusterTasksRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 
@@ -63,7 +63,7 @@ public class TransportPendingClusterTasksAction extends TransportMasterNodeReadA
     }
 
     @Override
-    protected void masterOperation(PendingClusterTasksRequest request, ClusterState state, ActionListener<PendingClusterTasksResponse> listener) {
+    public void masterOperation(PendingClusterTasksRequest request, ClusterState state, ActionListener<PendingClusterTasksResponse> listener) {
         logger.trace("fetching pending tasks from cluster service");
         final List<PendingClusterTask> pendingTasks = clusterService.getMasterService().pendingTasks();
         logger.trace("done fetching pending tasks from cluster service");

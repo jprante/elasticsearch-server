@@ -202,7 +202,7 @@ public class WorkerBulkByScrollTaskState implements SuccessfullyProcessed {
     /**
      * How many nanoseconds should a batch of lastBatchSize have taken if it were perfectly throttled? Package private for testing.
      */
-    float perfectlyThrottledBatchTime(int lastBatchSize) {
+    public float perfectlyThrottledBatchTime(int lastBatchSize) {
         if (requestsPerSecond == Float.POSITIVE_INFINITY) {
             return 0;
         }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.indices.cluster;
+package org.elasticsearch.test.indices.cluster;
 
 import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.Version;
@@ -73,12 +73,12 @@ import org.elasticsearch.common.settings.IndexScopedSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.env.TestEnvironment;
+import org.elasticsearch.testframework.env.TestEnvironment;
 import org.elasticsearch.index.IndexService;
 import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.shard.IndexEventListener;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.test.gateway.TestGatewayAllocator;
+import org.elasticsearch.testframework.gateway.TestGatewayAllocator;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.Transport;
 import org.elasticsearch.transport.TransportService;

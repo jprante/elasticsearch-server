@@ -17,10 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.os;
+package org.elasticsearch.test.monitor.os;
 
 import org.apache.lucene.util.Constants;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.os.OsInfo;
+import org.elasticsearch.monitor.os.OsProbe;
+import org.elasticsearch.monitor.os.OsStats;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -135,7 +138,7 @@ public class OsProbeTests extends ESTestCase {
 
         final OsProbe probe = new OsProbe() {
             @Override
-            String readProcLoadavg() {
+            public String readProcLoadavg() {
                 return "1.51 1.69 1.99 3/417 23251";
             }
         };
@@ -160,7 +163,7 @@ public class OsProbeTests extends ESTestCase {
         final OsProbe probe = new OsProbe() {
 
             @Override
-            List<String> readProcSelfCgroup() {
+            public List<String> readProcSelfCgroup() {
                 return Arrays.asList(
                         "10:freezer:/",
                         "9:net_cls,net_prio:/",
@@ -176,25 +179,25 @@ public class OsProbeTests extends ESTestCase {
             }
 
             @Override
-            String readSysFsCgroupCpuAcctCpuAcctUsage(String controlGroup) {
+            public String readSysFsCgroupCpuAcctCpuAcctUsage(String controlGroup) {
                 assertThat(controlGroup, equalTo("/" + hierarchy));
                 return "364869866063112";
             }
 
             @Override
-            String readSysFsCgroupCpuAcctCpuCfsPeriod(String controlGroup) {
+            public String readSysFsCgroupCpuAcctCpuCfsPeriod(String controlGroup) {
                 assertThat(controlGroup, equalTo("/" + hierarchy));
                 return "100000";
             }
 
             @Override
-            String readSysFsCgroupCpuAcctCpuAcctCfsQuota(String controlGroup) {
+            public String readSysFsCgroupCpuAcctCpuAcctCfsQuota(String controlGroup) {
                 assertThat(controlGroup, equalTo("/" + hierarchy));
                 return "50000";
             }
 
             @Override
-            List<String> readSysFsCgroupCpuAcctCpuStat(String controlGroup) {
+            public List<String> readSysFsCgroupCpuAcctCpuStat(String controlGroup) {
                 return Arrays.asList(
                     "nr_periods 17992",
                     "nr_throttled 1311",
@@ -202,20 +205,20 @@ public class OsProbeTests extends ESTestCase {
             }
 
             @Override
-            String readSysFsCgroupMemoryLimitInBytes(String controlGroup) {
+            public String readSysFsCgroupMemoryLimitInBytes(String controlGroup) {
                 assertThat(controlGroup, equalTo("/" + hierarchy));
                 // This is the highest value that can be stored in an unsigned 64 bit number, hence too big for long
                 return "18446744073709551615";
             }
 
             @Override
-            String readSysFsCgroupMemoryUsageInBytes(String controlGroup) {
+            public String readSysFsCgroupMemoryUsageInBytes(String controlGroup) {
                 assertThat(controlGroup, equalTo("/" + hierarchy));
                 return "4796416";
             }
 
             @Override
-            boolean areCgroupStatsAvailable() {
+            public boolean areCgroupStatsAvailable() {
                 return areCgroupStatsAvailable;
             }
 

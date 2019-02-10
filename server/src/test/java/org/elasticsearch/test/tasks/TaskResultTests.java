@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.tasks;
+package org.elasticsearch.test.tasks;
 
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -30,7 +30,12 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.tasks.RawTaskStatus;
+import org.elasticsearch.tasks.Task;
+import org.elasticsearch.tasks.TaskId;
+import org.elasticsearch.tasks.TaskInfo;
+import org.elasticsearch.tasks.TaskResult;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;

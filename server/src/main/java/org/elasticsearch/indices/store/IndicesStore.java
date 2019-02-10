@@ -179,7 +179,7 @@ public class IndicesStore extends AbstractComponent implements ClusterStateListe
         }
     }
 
-    static boolean shardCanBeDeleted(String localNodeId, IndexShardRoutingTable indexShardRoutingTable) {
+    public static boolean shardCanBeDeleted(String localNodeId, IndexShardRoutingTable indexShardRoutingTable) {
         // a shard can be deleted if all its copies are active, and its not allocated on this node
         if (indexShardRoutingTable.size() == 0) {
             // should not really happen, there should always be at least 1 (primary) shard in a

@@ -17,15 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.rest;
+package org.elasticsearch.test.rest;
 
 import org.elasticsearch.client.node.NodeClient;
 import org.elasticsearch.common.Table;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.rest.BaseRestHandler;
+import org.elasticsearch.rest.RestChannel;
+import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.action.cat.AbstractCatAction;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestChannel;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestChannel;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 
 import java.io.IOException;
 import java.util.Collections;

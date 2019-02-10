@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.engine;
+package org.elasticsearch.test.index.engine;
 
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortedNumericSelector;
@@ -28,7 +28,8 @@ import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.Version;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.engine.Segment;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;

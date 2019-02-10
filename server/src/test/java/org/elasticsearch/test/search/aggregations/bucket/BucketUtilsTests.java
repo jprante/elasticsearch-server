@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket;
+package org.elasticsearch.test.search.aggregations.bucket;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.aggregations.bucket.BucketUtils;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 

@@ -331,8 +331,7 @@ public class ShardStateAction extends AbstractComponent {
             return batchResultBuilder.build(maybeUpdatedState);
         }
 
-        // visible for testing
-        ClusterState applyFailedShards(ClusterState currentState, List<FailedShard> failedShards, List<StaleShard> staleShards) {
+        public ClusterState applyFailedShards(ClusterState currentState, List<FailedShard> failedShards, List<StaleShard> staleShards) {
             return allocationService.applyFailedShards(currentState, failedShards, staleShards);
         }
 
@@ -350,14 +349,14 @@ public class ShardStateAction extends AbstractComponent {
     }
 
     public static class FailedShardEntry extends TransportRequest {
-        final ShardId shardId;
-        final String allocationId;
-        final long primaryTerm;
-        final String message;
-        final Exception failure;
-        final boolean markAsStale;
+        public final ShardId shardId;
+        public final String allocationId;
+        public final long primaryTerm;
+        public final String message;
+        public final Exception failure;
+        public final boolean markAsStale;
 
-        FailedShardEntry(StreamInput in) throws IOException {
+        public FailedShardEntry(StreamInput in) throws IOException {
             super(in);
             shardId = ShardId.readShardId(in);
             allocationId = in.readString();
@@ -514,11 +513,11 @@ public class ShardStateAction extends AbstractComponent {
     }
 
     public static class StartedShardEntry extends TransportRequest {
-        final ShardId shardId;
-        final String allocationId;
-        final String message;
+        public final ShardId shardId;
+        public final String allocationId;
+        public final String message;
 
-        StartedShardEntry(StreamInput in) throws IOException {
+        public StartedShardEntry(StreamInput in) throws IOException {
             super(in);
             shardId = ShardId.readShardId(in);
             allocationId = in.readString();

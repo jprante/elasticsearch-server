@@ -17,19 +17,25 @@
  * under the License.
  */
 
-package org.elasticsearch.plugins;
+package org.elasticsearch.test.plugins;
 
 import org.apache.log4j.Level;
 import org.apache.lucene.util.Constants;
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase;
 import org.elasticsearch.Version;
 import org.elasticsearch.common.io.PathUtils;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.env.TestEnvironment;
+import org.elasticsearch.testframework.env.TestEnvironment;
 import org.elasticsearch.index.IndexModule;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.plugins.Plugin;
+import org.elasticsearch.plugins.PluginInfo;
+import org.elasticsearch.plugins.PluginsService;
+import org.elasticsearch.plugins.ScriptPlugin;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.plugins.PluginTestUtil;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -470,6 +476,7 @@ public class PluginsServiceTests extends ESTestCase {
 
     // Note: testing dup codebase with core is difficult because it requires a symlink, but we have mock filesystems and security manager
 
+    @Ignore // no jar hell test required in Java modules
     public void testJarHellDuplicateClassWithCore() throws Exception {
         // need a jar file of core dep, use log4j here
         Path pluginDir = createTempDir();
@@ -527,6 +534,7 @@ public class PluginsServiceTests extends ESTestCase {
         assertThat(e.getCause().getMessage(), containsString("DummyClass2"));
     }
 
+    @Ignore // no jar hell test required in Java modules
     public void testJarHellTransitiveMap() throws Exception {
         Path pluginDir = createTempDir();
         Path pluginJar = pluginDir.resolve("plugin.jar");

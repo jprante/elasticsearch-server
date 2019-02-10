@@ -17,9 +17,8 @@
  * under the License.
  */
 
-package org.elasticsearch.discovery.single;
+package org.elasticsearch.test.discovery.single;
 
-import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
@@ -30,11 +29,12 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.discovery.zen.UnicastHostsProvider;
 import org.elasticsearch.discovery.zen.UnicastZenPing;
 import org.elasticsearch.discovery.zen.ZenPing;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.InternalTestCluster;
-import org.elasticsearch.test.NodeConfigurationSource;
-import org.elasticsearch.test.transport.MockTransportService;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.InternalTestCluster;
+import org.elasticsearch.testframework.NodeConfigurationSource;
+import org.elasticsearch.testframework.transport.MockTransportService;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.Closeable;

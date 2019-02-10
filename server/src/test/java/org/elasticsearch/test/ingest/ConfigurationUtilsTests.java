@@ -17,10 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.ingest;
+package org.elasticsearch.test.ingest;
 
 import org.elasticsearch.ElasticsearchParseException;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.ingest.ConfigurationUtils;
+import org.elasticsearch.ingest.Processor;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import java.util.ArrayList;

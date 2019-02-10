@@ -35,7 +35,7 @@ public final class ResyncReplicationRequest extends ReplicatedWriteRequest<Resyn
 
     private Translog.Operation[] operations;
 
-    ResyncReplicationRequest() {
+    public ResyncReplicationRequest() {
         super();
     }
 

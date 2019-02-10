@@ -47,7 +47,7 @@ public class TransportAliasesExistAction extends TransportMasterNodeReadAction<G
     }
 
     @Override
-    protected ClusterBlockException checkBlock(GetAliasesRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(GetAliasesRequest request, ClusterState state) {
         return state.blocks().indicesBlockedException(ClusterBlockLevel.METADATA_READ, indexNameExpressionResolver.concreteIndexNames(state, request));
     }
 
@@ -57,7 +57,7 @@ public class TransportAliasesExistAction extends TransportMasterNodeReadAction<G
     }
 
     @Override
-    protected void masterOperation(GetAliasesRequest request, ClusterState state, ActionListener<AliasesExistResponse> listener) {
+    public void masterOperation(GetAliasesRequest request, ClusterState state, ActionListener<AliasesExistResponse> listener) {
         String[] concreteIndices = indexNameExpressionResolver.concreteIndexNames(state, request);
         boolean result = state.metaData().hasAliases(request.aliases(), concreteIndices);
         listener.onResponse(new AliasesExistResponse(result));

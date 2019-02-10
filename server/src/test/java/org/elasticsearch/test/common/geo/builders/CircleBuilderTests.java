@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.common.geo.builders;
+package org.elasticsearch.test.common.geo.builders;
 
+import org.elasticsearch.common.geo.builders.CircleBuilder;
 import org.locationtech.jts.geom.Coordinate;
 
 import org.elasticsearch.common.unit.DistanceUnit;

@@ -17,10 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.phrase;
+package org.elasticsearch.test.search.suggest.phrase;
 
 import org.elasticsearch.script.Script;
-import org.elasticsearch.search.suggest.AbstractSuggestionBuilderTestCase;
+import org.elasticsearch.search.suggest.phrase.NoisyChannelSpellChecker;
+import org.elasticsearch.search.suggest.phrase.PhraseSuggester;
+import org.elasticsearch.search.suggest.phrase.PhraseSuggestionBuilder;
+import org.elasticsearch.search.suggest.phrase.PhraseSuggestionContext;
+import org.elasticsearch.search.suggest.phrase.SmoothingModel;
+import org.elasticsearch.test.search.suggest.AbstractSuggestionBuilderTestCase;
 import org.elasticsearch.search.suggest.SuggestionSearchContext.SuggestionContext;
 
 import java.io.IOException;

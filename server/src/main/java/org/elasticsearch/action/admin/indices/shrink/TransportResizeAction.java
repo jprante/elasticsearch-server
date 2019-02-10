@@ -87,12 +87,12 @@ public class TransportResizeAction extends TransportMasterNodeAction<ResizeReque
     }
 
     @Override
-    protected ClusterBlockException checkBlock(ResizeRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(ResizeRequest request, ClusterState state) {
         return state.blocks().indexBlockedException(ClusterBlockLevel.METADATA_WRITE, request.getTargetIndexRequest().index());
     }
 
     @Override
-    protected void masterOperation(final ResizeRequest resizeRequest, final ClusterState state,
+    public void masterOperation(final ResizeRequest resizeRequest, final ClusterState state,
                                    final ActionListener<ResizeResponse> listener) {
 
         // there is no need to fetch docs stats for split but we keep it simple and do it anyway for simplicity of the code
@@ -123,8 +123,7 @@ public class TransportResizeAction extends TransportMasterNodeAction<ResizeReque
 
     }
 
-    // static for unittesting this method
-    static CreateIndexClusterStateUpdateRequest prepareCreateIndexRequest(final ResizeRequest resizeRequest, final ClusterState state
+    public static CreateIndexClusterStateUpdateRequest prepareCreateIndexRequest(final ResizeRequest resizeRequest, final ClusterState state
         , final IntFunction<DocsStats> perShardDocStats, String sourceIndexName, String targetIndexName) {
         final CreateIndexRequest targetIndex = resizeRequest.getTargetIndexRequest();
         final IndexMetaData metaData = state.metaData().index(sourceIndexName);

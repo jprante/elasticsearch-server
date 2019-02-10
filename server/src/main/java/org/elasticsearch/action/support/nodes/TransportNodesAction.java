@@ -102,7 +102,7 @@ public abstract class TransportNodesAction<NodesRequest extends BaseNodesRequest
      * @throws NullPointerException if {@code nodesResponses} is {@code null}
      * @see #newResponse(BaseNodesRequest, List, List)
      */
-    protected NodesResponse newResponse(NodesRequest request, AtomicReferenceArray nodesResponses) {
+    public NodesResponse newResponse(NodesRequest request, AtomicReferenceArray nodesResponses) {
         final List<NodeResponse> responses = new ArrayList<>();
         final List<FailedNodeException> failures = new ArrayList<>();
 
@@ -150,7 +150,7 @@ public abstract class TransportNodesAction<NodesRequest extends BaseNodesRequest
     }
 
 
-    class AsyncAction {
+    public class AsyncAction {
 
         private final NodesRequest request;
         private final ActionListener<NodesResponse> listener;
@@ -158,7 +158,7 @@ public abstract class TransportNodesAction<NodesRequest extends BaseNodesRequest
         private final AtomicInteger counter = new AtomicInteger();
         private final Task task;
 
-        AsyncAction(Task task, NodesRequest request, ActionListener<NodesResponse> listener) {
+        public AsyncAction(Task task, NodesRequest request, ActionListener<NodesResponse> listener) {
             this.task = task;
             this.request = request;
             this.listener = listener;
@@ -169,7 +169,7 @@ public abstract class TransportNodesAction<NodesRequest extends BaseNodesRequest
             this.responses = new AtomicReferenceArray<>(request.concreteNodes().length);
         }
 
-        void start() {
+        public void start() {
             final DiscoveryNode[] nodes = request.concreteNodes();
             if (nodes.length == 0) {
                 // nothing to notify

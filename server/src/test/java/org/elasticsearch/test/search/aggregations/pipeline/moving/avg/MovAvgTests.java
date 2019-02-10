@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.pipeline.moving.avg;
+package org.elasticsearch.test.search.aggregations.pipeline.moving.avg;
 
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.test.search.aggregations.BasePipelineAggregationTestCase;

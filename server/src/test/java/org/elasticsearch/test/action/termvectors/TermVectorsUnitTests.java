@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.test.action.support.termvectors;
+package org.elasticsearch.test.action.termvectors;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -37,7 +37,10 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.elasticsearch.Version;
+import org.elasticsearch.action.termvectors.MultiTermVectorsRequest;
+import org.elasticsearch.action.termvectors.TermVectorsRequest;
 import org.elasticsearch.action.termvectors.TermVectorsRequest.Flag;
+import org.elasticsearch.action.termvectors.TermVectorsResponse;
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
@@ -52,8 +55,8 @@ import org.elasticsearch.index.mapper.FieldMapper;
 import org.elasticsearch.index.mapper.MapperParsingException;
 import org.elasticsearch.index.mapper.TypeParsers;
 import org.elasticsearch.rest.action.document.RestTermVectorsAction;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.StreamsUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.StreamsUtils;
 import org.hamcrest.Matchers;
 
 import java.io.ByteArrayInputStream;
@@ -324,13 +327,15 @@ public class TermVectorsUnitTests extends ESTestCase {
     }
 
     public void testMultiParser() throws Exception {
-        byte[] bytes = StreamsUtils.copyToBytesFromClasspath("/org/elasticsearch/action/termvectors/multiRequest1.json");
+        byte[] bytes = StreamsUtils.copyToBytesFromClasspath(TermVectorsUnitTests.class,
+                "/org/elasticsearch/test/action/termvectors/multiRequest1.json");
         XContentParser data = createParser(JsonXContent.jsonXContent, bytes);
         MultiTermVectorsRequest request = new MultiTermVectorsRequest();
         request.add(new TermVectorsRequest(), data);
         checkParsedParameters(request);
 
-        bytes = StreamsUtils.copyToBytesFromClasspath("/org/elasticsearch/action/termvectors/multiRequest2.json");
+        bytes = StreamsUtils.copyToBytesFromClasspath(TermVectorsUnitTests.class,
+                "/org/elasticsearch/test/action/termvectors/multiRequest2.json");
         data = createParser(JsonXContent.jsonXContent, new BytesArray(bytes));
         request = new MultiTermVectorsRequest();
         request.add(new TermVectorsRequest(), data);
@@ -360,7 +365,8 @@ public class TermVectorsUnitTests extends ESTestCase {
 
     // issue #12311
     public void testMultiParserFilter() throws Exception {
-        byte[] bytes = StreamsUtils.copyToBytesFromClasspath("/org/elasticsearch/action/termvectors/multiRequest3.json");
+        byte[] bytes = StreamsUtils.copyToBytesFromClasspath(TermVectorsUnitTests.class,
+                "/org/elasticsearch/test/action/termvectors/multiRequest3.json");
         XContentParser data = createParser(JsonXContent.jsonXContent, bytes);
         MultiTermVectorsRequest request = new MultiTermVectorsRequest();
         request.add(new TermVectorsRequest(), data);

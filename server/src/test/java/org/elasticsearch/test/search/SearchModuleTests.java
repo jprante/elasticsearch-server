@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search;
+package org.elasticsearch.test.search;
 
-import org.elasticsearch.common.inject.ModuleTestCase;
+import org.elasticsearch.testframework.common.inject.ModuleTestCase;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.settings.Settings;
@@ -32,6 +32,8 @@ import org.elasticsearch.index.query.QueryShardContext;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.functionscore.GaussDecayFunctionBuilder;
 import org.elasticsearch.plugins.SearchPlugin;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.SearchModule;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregatorFactories.Builder;
 import org.elasticsearch.search.aggregations.AggregatorFactory;
@@ -60,11 +62,11 @@ import org.elasticsearch.search.fetch.subphase.highlight.FastVectorHighlighter;
 import org.elasticsearch.search.fetch.subphase.highlight.Highlighter;
 import org.elasticsearch.search.fetch.subphase.highlight.PlainHighlighter;
 import org.elasticsearch.search.fetch.subphase.highlight.UnifiedHighlighter;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.rescore.QueryRescorerBuilder;
 import org.elasticsearch.search.rescore.RescoreContext;
 import org.elasticsearch.search.rescore.RescorerBuilder;
-import org.elasticsearch.search.suggest.CustomSuggesterSearchIT.CustomSuggestionBuilder;
+import org.elasticsearch.test.search.suggest.CustomSuggesterSearchIT.CustomSuggestionBuilder;
 import org.elasticsearch.search.suggest.SuggestionBuilder;
 import org.elasticsearch.search.suggest.term.TermSuggestionBuilder;
 
@@ -351,7 +353,7 @@ public class SearchModuleTests extends ModuleTestCase {
         }
 
         @Override
-        protected AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
+        public AggregationBuilder shallowCopy(Builder factoriesBuilder, Map<String, Object> metaData) {
             return new TestAggregationBuilder(this, factoriesBuilder, metaData);
         }
         /**
@@ -372,7 +374,7 @@ public class SearchModuleTests extends ModuleTestCase {
 
         @Override
         protected ValuesSourceAggregatorFactory<ValuesSource, ?> innerBuild(SearchContext context,
-                ValuesSourceConfig<ValuesSource> config, AggregatorFactory<?> parent, Builder subFactoriesBuilder) throws IOException {
+                                                                            ValuesSourceConfig<ValuesSource> config, AggregatorFactory<?> parent, Builder subFactoriesBuilder) throws IOException {
             return null;
         }
 

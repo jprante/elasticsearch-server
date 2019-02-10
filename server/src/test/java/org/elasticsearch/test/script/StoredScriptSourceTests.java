@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.script;
+package org.elasticsearch.test.script;
 
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -25,7 +25,9 @@ import org.elasticsearch.common.io.stream.Writeable.Reader;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.AbstractSerializingTestCase;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.StoredScriptSource;
+import org.elasticsearch.testframework.AbstractSerializingTestCase;
 
 import java.io.IOException;
 import java.util.HashMap;

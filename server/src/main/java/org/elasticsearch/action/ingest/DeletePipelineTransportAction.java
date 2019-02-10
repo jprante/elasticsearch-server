@@ -59,12 +59,12 @@ public class DeletePipelineTransportAction extends TransportMasterNodeAction<Del
     }
 
     @Override
-    protected void masterOperation(DeletePipelineRequest request, ClusterState state, ActionListener<WritePipelineResponse> listener) throws Exception {
+    public void masterOperation(DeletePipelineRequest request, ClusterState state, ActionListener<WritePipelineResponse> listener) throws Exception {
         pipelineStore.delete(clusterService, request, listener);
     }
 
     @Override
-    protected ClusterBlockException checkBlock(DeletePipelineRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(DeletePipelineRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
     }
 

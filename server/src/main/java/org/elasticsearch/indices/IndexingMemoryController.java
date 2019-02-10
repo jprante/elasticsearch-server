@@ -93,7 +93,7 @@ public class IndexingMemoryController extends AbstractComponent implements Index
 
     private final ShardsIndicesStatusChecker statusChecker;
 
-    IndexingMemoryController(Settings settings, ThreadPool threadPool, Iterable<IndexShard> indexServices) {
+    public IndexingMemoryController(Settings settings, ThreadPool threadPool, Iterable<IndexShard> indexServices) {
         super(settings);
         this.indexShards = indexServices;
 
@@ -144,11 +144,11 @@ public class IndexingMemoryController extends AbstractComponent implements Index
      * returns the current budget for the total amount of indexing buffers of
      * active shards on this node
      */
-    ByteSizeValue indexingBufferSize() {
+    public ByteSizeValue indexingBufferSize() {
         return indexingBuffer;
     }
 
-    protected List<IndexShard> availableShards() {
+    public List<IndexShard> availableShards() {
         List<IndexShard> availableShards = new ArrayList<>();
         for (IndexShard shard : indexShards) {
             if (CAN_WRITE_INDEX_BUFFER_STATES.contains(shard.state())) {
@@ -184,7 +184,7 @@ public class IndexingMemoryController extends AbstractComponent implements Index
     }
 
     /** force checker to run now */
-    void forceCheck() {
+    public void forceCheck() {
         statusChecker.run();
     }
 

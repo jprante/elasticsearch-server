@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent.support.filtering;
+package org.elasticsearch.test.common.xcontent.support.filtering;
 
 import org.elasticsearch.common.util.set.Sets;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.xcontent.support.filtering.FilterPath;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Set;
 

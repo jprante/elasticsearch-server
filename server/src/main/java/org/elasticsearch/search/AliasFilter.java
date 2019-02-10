@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.search;
 
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.io.stream.StreamInput;

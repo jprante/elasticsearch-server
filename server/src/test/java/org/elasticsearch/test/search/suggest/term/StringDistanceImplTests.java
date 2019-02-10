@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.term;
+package org.elasticsearch.test.search.suggest.term;
 
-import org.elasticsearch.common.io.stream.AbstractWriteableEnumTestCase;
+import org.elasticsearch.test.common.io.stream.AbstractWriteableEnumTestCase;
 import org.elasticsearch.search.suggest.term.TermSuggestionBuilder.StringDistanceImpl;
 
 import java.io.IOException;

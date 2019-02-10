@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.indices;
+package org.elasticsearch.test.indices;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.indices.forcemerge.ForceMergeResponse;
@@ -31,11 +31,13 @@ import org.elasticsearch.index.IndexService;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.shard.IndexSearcherWrapper;
 import org.elasticsearch.index.shard.IndexShard;
-import org.elasticsearch.index.shard.IndexShardIT;
-import org.elasticsearch.index.shard.IndexShardTestCase;
+import org.elasticsearch.indices.IndexingMemoryController;
+import org.elasticsearch.indices.IndicesService;
+import org.elasticsearch.test.index.shard.IndexShardIT;
+import org.elasticsearch.testframework.index.shard.IndexShardTestCase;
 import org.elasticsearch.indices.breaker.NoneCircuitBreakerService;
 import org.elasticsearch.indices.recovery.RecoveryState;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 import org.elasticsearch.threadpool.Scheduler.Cancellable;
 import org.elasticsearch.threadpool.ThreadPool;
 
@@ -52,7 +54,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertNoFailures;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertNoFailures;
 import static org.hamcrest.Matchers.equalTo;
 
 public class IndexingMemoryControllerTests extends ESSingleNodeTestCase {
@@ -81,7 +83,7 @@ public class IndexingMemoryControllerTests extends ESSingleNodeTestCase {
         }
 
         @Override
-        protected List<IndexShard> availableShards() {
+        public List<IndexShard> availableShards() {
             return new ArrayList<>(indexBufferRAMBytesUsed.keySet());
         }
 
@@ -379,7 +381,7 @@ public class IndexingMemoryControllerTests extends ESSingleNodeTestCase {
         // TODO: would be cleaner if I could pass this 1kb setting to the single node this test created....
         IndexingMemoryController imc = new IndexingMemoryController(settings, null, null) {
             @Override
-            protected List<IndexShard> availableShards() {
+            public List<IndexShard> availableShards() {
                 return Collections.singletonList(shard);
             }
 

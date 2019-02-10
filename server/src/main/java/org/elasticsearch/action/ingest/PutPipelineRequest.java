@@ -55,7 +55,7 @@ public class PutPipelineRequest extends AcknowledgedRequest<PutPipelineRequest> 
         this.xContentType = Objects.requireNonNull(xContentType);
     }
 
-    PutPipelineRequest() {
+    public PutPipelineRequest() {
     }
 
     @Override

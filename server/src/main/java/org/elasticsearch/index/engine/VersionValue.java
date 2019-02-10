@@ -27,17 +27,17 @@ import org.elasticsearch.index.translog.Translog;
 import java.util.Collection;
 import java.util.Collections;
 
-abstract class VersionValue implements Accountable {
+public abstract class VersionValue implements Accountable {
 
     private static final long BASE_RAM_BYTES_USED = RamUsageEstimator.shallowSizeOfInstance(VersionValue.class);
 
     /** the version of the document. used for versioned indexed operations and as a BWC layer, where no seq# are set yet */
-    final long version;
+    public final long version;
 
     /** the seq number of the operation that last changed the associated uuid */
-    final long seqNo;
+    public final long seqNo;
     /** the term of the operation that last changed the associated uuid */
-    final long term;
+    public final long term;
 
     VersionValue(long version, long seqNo, long term) {
         this.version = version;

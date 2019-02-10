@@ -38,10 +38,10 @@ public class IndicesAliasesResponse extends AcknowledgedResponse {
         declareAcknowledgedField(PARSER);
     }
 
-    IndicesAliasesResponse() {
+    public IndicesAliasesResponse() {
     }
 
-    IndicesAliasesResponse(boolean acknowledged) {
+    public IndicesAliasesResponse(boolean acknowledged) {
         super(acknowledged);
     }
 

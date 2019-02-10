@@ -17,16 +17,22 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
-import org.apache.lucene.analysis.MockLowerCaseFilter;
+import org.apache.lucene.testframework.analysis.MockLowerCaseFilter;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
+import org.elasticsearch.index.analysis.CharFilterFactory;
+import org.elasticsearch.index.analysis.MultiTermAwareComponent;
+import org.elasticsearch.index.analysis.NamedAnalyzer;
+import org.elasticsearch.index.analysis.PreConfiguredCharFilter;
+import org.elasticsearch.index.analysis.PreConfiguredTokenFilter;
 import org.elasticsearch.indices.analysis.AnalysisModule.AnalysisProvider;
 import org.elasticsearch.plugins.AnalysisPlugin;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.ESTokenStreamTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.ESTokenStreamTestCase;
+import org.elasticsearch.testframework.index.analysis.AnalysisTestsHelper;
 
 import java.io.IOException;
 import java.io.Reader;

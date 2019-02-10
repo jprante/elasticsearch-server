@@ -29,14 +29,14 @@ import java.util.Arrays;
 /**
  * A key that is composed of multiple {@link Comparable} values.
  */
-class CompositeKey implements Writeable {
+public class CompositeKey implements Writeable {
     private final Comparable<?>[] values;
 
-    CompositeKey(Comparable<?>... values) {
+    public CompositeKey(Comparable<?>... values) {
         this.values = values;
     }
 
-    CompositeKey(StreamInput in) throws IOException {
+    public CompositeKey(StreamInput in) throws IOException {
         values = new Comparable<?>[in.readVInt()];
         for (int i = 0; i < values.length; i++) {
             values[i] = (Comparable<?>) in.readGenericValue();
@@ -51,15 +51,15 @@ class CompositeKey implements Writeable {
         }
     }
 
-    Comparable<?>[] values() {
+    public Comparable<?>[] values() {
         return values;
     }
 
-    int size() {
+    public int size() {
         return values.length;
     }
 
-    Comparable<?> get(int pos) {
+    public Comparable<?> get(int pos) {
         assert pos < values.length;
         return values[pos];
     }

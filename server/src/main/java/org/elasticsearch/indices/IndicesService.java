@@ -105,9 +105,9 @@ import org.elasticsearch.indices.recovery.RecoveryState;
 import org.elasticsearch.plugins.PluginsService;
 import org.elasticsearch.repositories.RepositoriesService;
 import org.elasticsearch.script.ScriptService;
-import org.elasticsearch.search.internal.AliasFilter;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.search.internal.ShardSearchRequest;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.ShardSearchRequest;
 import org.elasticsearch.search.query.QueryPhase;
 import org.elasticsearch.search.query.QuerySearchResult;
 import org.elasticsearch.threadpool.ThreadPool;
@@ -292,7 +292,7 @@ public class IndicesService extends AbstractLifecycleComponent
         return new NodeIndicesStats(oldStats, statsByShard(this, flags));
     }
 
-    Map<Index, List<IndexShardStats>> statsByShard(final IndicesService indicesService, final CommonStatsFlags flags) {
+    public Map<Index, List<IndexShardStats>> statsByShard(final IndicesService indicesService, final CommonStatsFlags flags) {
         final Map<Index, List<IndexShardStats>> statsByShard = new HashMap<>();
 
         for (final IndexService indexService : indicesService) {
@@ -319,7 +319,7 @@ public class IndicesService extends AbstractLifecycleComponent
         return statsByShard;
     }
 
-    IndexShardStats indexShardStats(final IndicesService indicesService, final IndexShard indexShard, final CommonStatsFlags flags) {
+    public IndexShardStats indexShardStats(final IndicesService indicesService, final IndexShard indexShard, final CommonStatsFlags flags) {
         if (indexShard.routingEntry() == null) {
             return null;
         }
@@ -628,7 +628,7 @@ public class IndicesService extends AbstractLifecycleComponent
      *
      * Package private for testing
      */
-    void deleteIndexStore(String reason, IndexMetaData metaData, ClusterState clusterState) throws IOException {
+    public void deleteIndexStore(String reason, IndexMetaData metaData, ClusterState clusterState) throws IOException {
         if (nodeEnv.hasNodeFile()) {
             synchronized (this) {
                 Index index = metaData.getIndex();
@@ -995,7 +995,7 @@ public class IndicesService extends AbstractLifecycleComponent
         }
     }
 
-    int numPendingDeletes(Index index) {
+    public int numPendingDeletes(Index index) {
         synchronized (pendingDeletes) {
             List<PendingDelete> deleteList = pendingDeletes.get(index);
             if (deleteList == null) {

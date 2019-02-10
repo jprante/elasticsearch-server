@@ -231,8 +231,8 @@ public class InternalRange<B extends InternalRange.Bucket, R extends InternalRan
     }
 
     private List<B> ranges;
-    protected DocValueFormat format;
-    protected boolean keyed;
+    public DocValueFormat format;
+    public boolean keyed;
 
     public InternalRange(String name, List<B> ranges, DocValueFormat format, boolean keyed,
             List<PipelineAggregator> pipelineAggregators,

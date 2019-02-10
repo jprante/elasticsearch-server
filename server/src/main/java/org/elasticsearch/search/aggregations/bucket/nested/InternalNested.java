@@ -31,7 +31,7 @@ import java.util.Map;
  * Result of the {@link NestedAggregator}.
  */
 public class InternalNested extends InternalSingleBucketAggregation implements Nested {
-    InternalNested(String name, long docCount, InternalAggregations aggregations, List<PipelineAggregator> pipelineAggregators,
+    public InternalNested(String name, long docCount, InternalAggregations aggregations, List<PipelineAggregator> pipelineAggregators,
             Map<String, Object> metaData) {
         super(name, docCount, aggregations, pipelineAggregators, metaData);
     }

@@ -38,8 +38,7 @@ public class Timer {
     private boolean doTiming;
     private long timing, count, lastCount, start;
 
-    /** pkg-private for testing */
-    long nanoTime() {
+    public long nanoTime() {
         return System.nanoTime();
     }
 

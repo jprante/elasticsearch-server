@@ -17,19 +17,22 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
 import org.apache.lucene.search.Query;
 import org.elasticsearch.common.ParsingException;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.AbstractQueryTestCase;
+import org.elasticsearch.index.query.CommonTermsQueryBuilder;
+import org.elasticsearch.index.query.ExtendedCommonTermsQuery;
+import org.elasticsearch.index.query.Operator;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.AbstractQueryTestCase;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.commonTermsQuery;
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.nullValue;
@@ -141,7 +144,8 @@ public class CommonTermsQueryBuilderTests extends AbstractQueryTestCase<CommonTe
     }
 
     public void testCommonTermsQuery1() throws IOException {
-        String query = copyToStringFromClasspath("/org/elasticsearch/index/query/commonTerms-query1.json");
+        String query = copyToStringFromClasspath(CommonTermsQueryBuilderTests.class,
+                "/org/elasticsearch/test/index/query/commonTerms-query1.json");
         Query parsedQuery = parseQuery(query).toQuery(createShardContext());
         assertThat(parsedQuery, instanceOf(ExtendedCommonTermsQuery.class));
         ExtendedCommonTermsQuery ectQuery = (ExtendedCommonTermsQuery) parsedQuery;
@@ -150,7 +154,8 @@ public class CommonTermsQueryBuilderTests extends AbstractQueryTestCase<CommonTe
     }
 
     public void testCommonTermsQuery2() throws IOException {
-        String query = copyToStringFromClasspath("/org/elasticsearch/index/query/commonTerms-query2.json");
+        String query = copyToStringFromClasspath(CommonTermsQueryBuilderTests.class,
+                "/org/elasticsearch/test/index/query/commonTerms-query2.json");
         Query parsedQuery = parseQuery(query).toQuery(createShardContext());
         assertThat(parsedQuery, instanceOf(ExtendedCommonTermsQuery.class));
         ExtendedCommonTermsQuery ectQuery = (ExtendedCommonTermsQuery) parsedQuery;
@@ -159,7 +164,8 @@ public class CommonTermsQueryBuilderTests extends AbstractQueryTestCase<CommonTe
     }
 
     public void testCommonTermsQuery3() throws IOException {
-        String query = copyToStringFromClasspath("/org/elasticsearch/index/query/commonTerms-query3.json");
+        String query = copyToStringFromClasspath(CommonTermsQueryBuilderTests.class,
+                "/org/elasticsearch/test/index/query/commonTerms-query3.json");
         Query parsedQuery = parseQuery(query).toQuery(createShardContext());
         assertThat(parsedQuery, instanceOf(ExtendedCommonTermsQuery.class));
         ExtendedCommonTermsQuery ectQuery = (ExtendedCommonTermsQuery) parsedQuery;

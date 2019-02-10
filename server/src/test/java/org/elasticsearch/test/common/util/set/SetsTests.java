@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util.set;
+package org.elasticsearch.test.common.util.set;
 
 import org.elasticsearch.common.collect.Tuple;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.set.Sets;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.HashSet;
 import java.util.Iterator;

@@ -96,5 +96,5 @@ public abstract class SmoothingModel implements NamedWriteable, ToXContentFragme
      */
     protected abstract boolean doEquals(SmoothingModel other);
 
-    protected abstract XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException;
+    public abstract XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException;
 }

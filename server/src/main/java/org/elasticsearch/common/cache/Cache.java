@@ -97,10 +97,10 @@ public class Cache<K, V> {
     };
 
     // use CacheBuilder to construct
-    Cache() {
+    public Cache() {
     }
 
-    void setExpireAfterAccessNanos(long expireAfterAccessNanos) {
+    public void setExpireAfterAccessNanos(long expireAfterAccessNanos) {
         if (expireAfterAccessNanos <= 0) {
             throw new IllegalArgumentException("expireAfterAccessNanos <= 0");
         }
@@ -108,12 +108,11 @@ public class Cache<K, V> {
         this.entriesExpireAfterAccess = true;
     }
 
-    // pkg-private for testing
-    long getExpireAfterAccessNanos() {
+    public long getExpireAfterAccessNanos() {
         return this.expireAfterAccessNanos;
     }
 
-    void setExpireAfterWriteNanos(long expireAfterWriteNanos) {
+    public void setExpireAfterWriteNanos(long expireAfterWriteNanos) {
         if (expireAfterWriteNanos <= 0) {
             throw new IllegalArgumentException("expireAfterWriteNanos <= 0");
         }
@@ -121,8 +120,7 @@ public class Cache<K, V> {
         this.entriesExpireAfterWrite = true;
     }
 
-    // pkg-private for testing
-    long getExpireAfterWriteNanos() {
+    public long getExpireAfterWriteNanos() {
         return this.expireAfterWriteNanos;
     }
 
@@ -138,7 +136,7 @@ public class Cache<K, V> {
         this.weigher = weigher;
     }
 
-    void setRemovalListener(RemovalListener<K, V> removalListener) {
+    public void setRemovalListener(RemovalListener<K, V> removalListener) {
         Objects.requireNonNull(removalListener);
         this.removalListener = removalListener;
     }

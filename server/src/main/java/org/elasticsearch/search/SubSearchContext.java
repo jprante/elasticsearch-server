@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.internal;
+package org.elasticsearch.search;
 
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Counter;

@@ -104,8 +104,7 @@ public final class IndexModule {
 
     private final IndexSettings indexSettings;
     private final AnalysisRegistry analysisRegistry;
-    // pkg private so tests can mock
-    final SetOnce<EngineFactory> engineFactory = new SetOnce<>();
+    public final SetOnce<EngineFactory> engineFactory = new SetOnce<>();
     private SetOnce<IndexSearcherWrapperFactory> indexSearcherWrapper = new SetOnce<>();
     private final Set<IndexEventListener> indexEventListeners = new HashSet<>();
     private final Map<String, TriFunction<Settings, Version, ScriptService, Similarity>> similarities = new HashMap<>();
@@ -275,7 +274,7 @@ public final class IndexModule {
         this.indexSearcherWrapper.set(indexSearcherWrapperFactory);
     }
 
-    IndexEventListener freeze() { // pkg private for testing
+    public IndexEventListener freeze() {
         if (this.frozen.compareAndSet(false, true)) {
             return new CompositeIndexEventListener(indexSettings, indexEventListeners);
         } else {

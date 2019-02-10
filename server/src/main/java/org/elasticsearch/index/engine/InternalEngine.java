@@ -157,7 +157,7 @@ public class InternalEngine extends Engine {
         this(engineConfig, LocalCheckpointTracker::new);
     }
 
-    InternalEngine(
+    public InternalEngine(
             final EngineConfig engineConfig,
             final BiFunction<Long, Long, LocalCheckpointTracker> localCheckpointTrackerSupplier) {
         super(engineConfig);
@@ -435,7 +435,7 @@ public class InternalEngine extends Engine {
     }
 
     @Override
-    Translog getTranslog() {
+    public Translog getTranslog() {
         ensureOpen();
         return translog;
     }
@@ -1003,8 +1003,7 @@ public class InternalEngine extends Engine {
         return mayHaveBeenIndexBefore;
     }
 
-    // for testing
-    long getMaxSeqNoOfNonAppendOnlyOperations() {
+    public long getMaxSeqNoOfNonAppendOnlyOperations() {
         return maxSeqNoOfNonAppendOnlyOperations.get();
     }
 
@@ -1335,7 +1334,7 @@ public class InternalEngine extends Engine {
         refresh(source, SearcherScope.EXTERNAL);
     }
 
-    final void refresh(String source, SearcherScope scope) throws EngineException {
+    public final void refresh(String source, SearcherScope scope) throws EngineException {
         // we obtain a read lock here, since we don't want a flush to happen while we are refreshing
         // since it flushes the index as well (though, in terms of concurrency, we are allowed to do it)
         // both refresh types will result in an internal refresh but only the external will also
@@ -1431,7 +1430,7 @@ public class InternalEngine extends Engine {
         }
     }
 
-    final boolean tryRenewSyncCommit() {
+    public final boolean tryRenewSyncCommit() {
         boolean renewed = false;
         try (ReleasableLock lock = writeLock.acquire()) {
             ensureOpen();
@@ -1644,13 +1643,11 @@ public class InternalEngine extends Engine {
         lastDeleteVersionPruneTimeMSec = timeMSec;
     }
 
-    // testing
-    void clearDeletedTombstones() {
+    public void clearDeletedTombstones() {
         versionMap.pruneTombstones(Long.MAX_VALUE, localCheckpointTracker.getMaxSeqNo());
     }
 
-    // for testing
-    final Collection<DeleteVersionValue> getDeletedTombstones() {
+    public final Collection<DeleteVersionValue> getDeletedTombstones() {
         return versionMap.getAllTombstones().values();
     }
 
@@ -1800,7 +1797,7 @@ public class InternalEngine extends Engine {
     }
 
     @Override
-    protected SegmentInfos getLastCommittedSegmentInfos() {
+    public SegmentInfos getLastCommittedSegmentInfos() {
         return lastCommittedSegmentInfos;
     }
 
@@ -1934,8 +1931,7 @@ public class InternalEngine extends Engine {
         }
     }
 
-    // pkg-private for testing
-    IndexWriter createWriter(Directory directory, IndexWriterConfig iwc) throws IOException {
+    public IndexWriter createWriter(Directory directory, IndexWriterConfig iwc) throws IOException {
         return new IndexWriter(directory, iwc);
     }
 
@@ -2031,11 +2027,11 @@ public class InternalEngine extends Engine {
         return throttle.getThrottleTimeInMillis();
     }
 
-    long getGcDeletesInMillis() {
+    public long getGcDeletesInMillis() {
         return engineConfig.getIndexSettings().getGcDeletesInMillis();
     }
 
-    LiveIndexWriterConfig getCurrentIndexWriterConfig() {
+    public LiveIndexWriterConfig getCurrentIndexWriterConfig() {
         return indexWriter.getConfig();
     }
 
@@ -2222,7 +2218,7 @@ public class InternalEngine extends Engine {
      * Returns the number of times a version was looked up either from the index.
      * Note this is only available if assertions are enabled
      */
-    long getNumIndexVersionsLookups() { // for testing
+    public long getNumIndexVersionsLookups() { // for testing
         return numIndexVersionsLookups.count();
     }
 
@@ -2230,7 +2226,7 @@ public class InternalEngine extends Engine {
      * Returns the number of times a version was looked up either from memory or from the index.
      * Note this is only available if assertions are enabled
      */
-    long getNumVersionLookups() { // for testing
+    public long getNumVersionLookups() {
         return numVersionLookups.count();
     }
 
@@ -2244,11 +2240,11 @@ public class InternalEngine extends Engine {
         return true;
     }
 
-    int getVersionMapSize() {
+    public int getVersionMapSize() {
         return versionMap.getAllCurrent().size();
     }
 
-    boolean isSafeAccessRequired() {
+    public boolean isSafeAccessRequired() {
         return versionMap.isSafeAccessRequired();
     }
 
@@ -2256,7 +2252,7 @@ public class InternalEngine extends Engine {
      * Returns the number of documents have been deleted since this engine was opened.
      * This count does not include the deletions from the existing segments before opening engine.
      */
-    long getNumDocDeletes() {
+    public long getNumDocDeletes() {
         return numDocDeletes.count();
     }
 
@@ -2264,7 +2260,7 @@ public class InternalEngine extends Engine {
      * Returns the number of documents have been appended since this engine was opened.
      * This count does not include the appends from the existing segments before opening engine.
      */
-    long getNumDocAppends() {
+    public long getNumDocAppends() {
         return numDocAppends.count();
     }
 
@@ -2272,7 +2268,7 @@ public class InternalEngine extends Engine {
      * Returns the number of documents have been updated since this engine was opened.
      * This count does not include the updates from the existing segments before opening engine.
      */
-    long getNumDocUpdates() {
+    public long getNumDocUpdates() {
         return numDocUpdates.count();
     }
 

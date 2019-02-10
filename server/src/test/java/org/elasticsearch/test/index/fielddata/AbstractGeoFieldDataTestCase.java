@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.fielddata;
+package org.elasticsearch.test.index.fielddata;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -24,6 +24,7 @@ import org.apache.lucene.document.LatLonDocValuesField;
 import org.apache.lucene.document.StringField;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.geo.GeoUtils;
+import org.elasticsearch.index.fielddata.MultiGeoPointValues;
 
 import java.io.IOException;
 

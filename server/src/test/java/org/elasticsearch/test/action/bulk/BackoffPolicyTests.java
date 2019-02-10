@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
+import org.elasticsearch.action.bulk.BackoffPolicy;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

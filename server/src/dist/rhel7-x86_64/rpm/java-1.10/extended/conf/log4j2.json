@@ -13,8 +13,8 @@
       "RollingFile": [
         {
           "name": "rolling",
-          "fileName": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}.log",
-          "filePattern": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}-%d{yyyy-MM-dd}-%i.log.gz",
+          "fileName": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}.log",
+          "filePattern": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}-%d{yyyy-MM-dd}-%i.log.gz",
           "PatternLayout" : {
             "pattern": "[%d{ISO8601}][%-5p][%-25c{1.}] %marker%.-10000m%n"
           },
@@ -30,9 +30,9 @@
           "DefaultRolloverStrategy": {
             "fileIndex": "nomax",
             "Delete": {
-              "basepath": "\${sys:es.logs.base_path}",
+              "basepath": "${sys:es.logs.base_path}",
               "IfFileName": {
-                "glob": "\${sys:es.logs.cluster_name}-*",
+                "glob": "${sys:es.logs.cluster_name}-*",
                 "IfAccumulatedFileSize": {
                   "exceeds": "2GB"
                 }
@@ -42,8 +42,8 @@
         },
         {
           "name": "deprecation_rolling",
-          "fileName": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_deprecation.log",
-          "filePattern": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_deprecation-%i.log.gz",
+          "fileName": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_deprecation.log",
+          "filePattern": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_deprecation-%i.log.gz",
           "PatternLayout": {
             "pattern": "[%d{ISO8601}][%-5p][%-25c{1.}] %marker%.-10000m%n"
           },
@@ -58,8 +58,8 @@
         },
         {
           "name": "index_search_slowlog_rolling",
-          "fileName": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_index_search_slowlog.log",
-          "filePattern" : "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_index_search_slowlog-%d{yyyy-MM-dd}.log",
+          "fileName": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_index_search_slowlog.log",
+          "filePattern" : "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_index_search_slowlog-%d{yyyy-MM-dd}.log",
           "PatternLayout": {
             "pattern": "[%d{ISO8601}][%-5p][%-25c] %marker%.-10000m%n"
           },
@@ -72,8 +72,8 @@
         },
         {
           "name": "index_indexing_slowlog_rolling",
-          "fileName": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_index_indexing_slowlog.log",
-          "filePattern" : "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_index_indexing_slowlog-%d{yyyy-MM-dd}.log",
+          "fileName": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_index_indexing_slowlog.log",
+          "filePattern" : "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_index_indexing_slowlog-%d{yyyy-MM-dd}.log",
           "PatternLayout": {
             "pattern": "[%d{ISO8601}][%-5p][%-25c] %marker%.-10000m%n"
           },
@@ -86,8 +86,8 @@
         },
         {
           "name": "audit_rolling",
-          "fileName": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_access.log",
-          "filePattern": "\${sys:es.logs.base_path}\${sys:file.separator}\${sys:es.logs.cluster_name}_access-%d{yyyy-MM-dd}.log",
+          "fileName": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_access.log",
+          "filePattern": "${sys:es.logs.base_path}${sys:file.separator}${sys:es.logs.cluster_name}_access-%d{yyyy-MM-dd}.log",
           "PatternLayout": {
             "pattern": "[%d{ISO8601}] %m%n"
           },

@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.nested;
+package org.elasticsearch.test.search.aggregations.bucket.nested;
 
-import org.elasticsearch.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.testframework.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
 
 public class NestedTests extends BaseAggregationTestCase<NestedAggregationBuilder> {
 

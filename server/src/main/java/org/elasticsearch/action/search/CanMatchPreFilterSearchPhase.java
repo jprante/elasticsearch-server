@@ -23,7 +23,7 @@ import org.apache.lucene.util.FixedBitSet;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.cluster.routing.GroupShardsIterator;
 import org.elasticsearch.cluster.routing.ShardRouting;
-import org.elasticsearch.search.internal.AliasFilter;
+import org.elasticsearch.search.AliasFilter;
 import org.elasticsearch.transport.Transport;
 
 import java.util.Map;
@@ -39,12 +39,12 @@ import java.util.stream.Stream;
  * which allows to fan out to more shards at the same time without running into rejections even if we are hitting a
  * large portion of the clusters indices.
  */
-final class CanMatchPreFilterSearchPhase extends AbstractSearchAsyncAction<SearchTransportService.CanMatchResponse> {
+public final class CanMatchPreFilterSearchPhase extends AbstractSearchAsyncAction<SearchTransportService.CanMatchResponse> {
 
     private final Function<GroupShardsIterator<SearchShardIterator>, SearchPhase> phaseFactory;
     private final GroupShardsIterator<SearchShardIterator> shardsIts;
 
-    CanMatchPreFilterSearchPhase(Logger logger, SearchTransportService searchTransportService,
+    public CanMatchPreFilterSearchPhase(Logger logger, SearchTransportService searchTransportService,
                                         BiFunction<String, String, Transport.Connection> nodeIdToConnection,
                                         Map<String, AliasFilter> aliasFilter, Map<String, Float> concreteIndexBoosts,
                                         Executor executor, SearchRequest request,

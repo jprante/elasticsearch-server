@@ -29,12 +29,12 @@ import org.apache.lucene.search.Scorer;
 import java.io.IOException;
 
 /** A collector that profiles how much time is spent calling it. */
-final class ProfileCollector extends FilterCollector {
+public final class ProfileCollector extends FilterCollector {
 
     private long time;
 
     /** Sole constructor. */
-    ProfileCollector(Collector in) {
+    public ProfileCollector(Collector in) {
         super(in);
     }
 

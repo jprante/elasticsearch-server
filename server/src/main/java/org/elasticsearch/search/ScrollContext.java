@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.search;
 
 import org.apache.lucene.search.ScoreDoc;
 import org.elasticsearch.search.Scroll;

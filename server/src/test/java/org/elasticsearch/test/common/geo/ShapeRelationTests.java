@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.common.geo;
+package org.elasticsearch.test.common.geo;
 
+import org.elasticsearch.common.geo.ShapeRelation;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

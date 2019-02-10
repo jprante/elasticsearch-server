@@ -400,7 +400,7 @@ public class Version implements Comparable<Version>, ToXContentFragment {
     public final byte build;
     public final org.apache.lucene.util.Version luceneVersion;
 
-    Version(int id, org.apache.lucene.util.Version luceneVersion) {
+    public Version(int id, org.apache.lucene.util.Version luceneVersion) {
         this.id = id;
         this.major = (byte) ((id / 1000000) % 100);
         this.minor = (byte) ((id / 10000) % 100);

@@ -52,7 +52,7 @@ public class MetaStateService extends AbstractComponent {
      * Loads the full state, which includes both the global state and all the indices
      * meta state.
      */
-    MetaData loadFullState() throws IOException {
+    public MetaData loadFullState() throws IOException {
         MetaData globalMetaData = loadGlobalState();
         MetaData.Builder metaDataBuilder;
         if (globalMetaData != null) {
@@ -108,7 +108,7 @@ public class MetaStateService extends AbstractComponent {
     /**
      * Loads the global state, *without* index state, see {@link #loadFullState()} for that.
      */
-    MetaData loadGlobalState() throws IOException {
+    public MetaData loadGlobalState() throws IOException {
         return MetaData.FORMAT.loadLatestState(logger, namedXContentRegistry, nodeEnv.nodeDataPaths());
     }
 
@@ -132,7 +132,7 @@ public class MetaStateService extends AbstractComponent {
     /**
      * Writes the global state, *without* the indices states.
      */
-    void writeGlobalState(String reason, MetaData metaData) throws IOException {
+    public void writeGlobalState(String reason, MetaData metaData) throws IOException {
         logger.trace("[_global] writing state, reason [{}]",  reason);
         try {
             MetaData.FORMAT.write(metaData, nodeEnv.nodeDataPaths());

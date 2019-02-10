@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
 import java.util.Map;
 
@@ -25,6 +25,7 @@ import org.elasticsearch.cli.Command;
 import org.elasticsearch.cli.ExitCodes;
 import org.elasticsearch.cli.Terminal;
 import org.elasticsearch.cli.UserException;
+import org.elasticsearch.common.settings.ListKeyStoreCommand;
 import org.elasticsearch.env.Environment;
 
 import static org.hamcrest.Matchers.containsString;

@@ -29,7 +29,7 @@ import org.elasticsearch.search.SearchPhaseResult;
 import org.elasticsearch.search.SearchShardTarget;
 import org.elasticsearch.search.fetch.FetchSearchResult;
 import org.elasticsearch.search.fetch.ShardFetchSearchRequest;
-import org.elasticsearch.search.internal.InternalSearchResponse;
+import org.elasticsearch.search.InternalSearchResponse;
 import org.elasticsearch.search.query.QuerySearchResult;
 import org.elasticsearch.transport.Transport;
 
@@ -41,7 +41,7 @@ import java.util.function.BiFunction;
  * This search phase merges the query results from the previous phase together and calculates the topN hits for this search.
  * Then it reaches out to all relevant shards to fetch the topN hits.
  */
-final class FetchSearchPhase extends SearchPhase {
+public final class FetchSearchPhase extends SearchPhase {
     private final AtomicArray<FetchSearchResult> fetchResults;
     private final SearchPhaseController searchPhaseController;
     private final AtomicArray<SearchPhaseResult> queryResults;
@@ -50,7 +50,7 @@ final class FetchSearchPhase extends SearchPhase {
     private final Logger logger;
     private final InitialSearchPhase.SearchPhaseResults<SearchPhaseResult> resultConsumer;
 
-    FetchSearchPhase(InitialSearchPhase.SearchPhaseResults<SearchPhaseResult> resultConsumer,
+    public FetchSearchPhase(InitialSearchPhase.SearchPhaseResults<SearchPhaseResult> resultConsumer,
                      SearchPhaseController searchPhaseController,
                      SearchPhaseContext context) {
         this(resultConsumer, searchPhaseController, context,
@@ -58,7 +58,7 @@ final class FetchSearchPhase extends SearchPhase {
                 (finalResponse) -> sendResponsePhase(finalResponse, scrollId, context)));
     }
 
-    FetchSearchPhase(InitialSearchPhase.SearchPhaseResults<SearchPhaseResult> resultConsumer,
+    public FetchSearchPhase(InitialSearchPhase.SearchPhaseResults<SearchPhaseResult> resultConsumer,
                      SearchPhaseController searchPhaseController,
                      SearchPhaseContext context, BiFunction<InternalSearchResponse, String, SearchPhase> nextPhaseFactory) {
         super("fetch");

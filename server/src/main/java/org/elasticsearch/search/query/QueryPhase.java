@@ -45,9 +45,9 @@ import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.SearchPhase;
 import org.elasticsearch.search.SearchService;
 import org.elasticsearch.search.aggregations.AggregationPhase;
-import org.elasticsearch.search.internal.ContextIndexSearcher;
-import org.elasticsearch.search.internal.ScrollContext;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.ContextIndexSearcher;
+import org.elasticsearch.search.ScrollContext;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.profile.ProfileShardResult;
 import org.elasticsearch.search.profile.SearchProfileShardResults;
 import org.elasticsearch.search.profile.query.InternalProfileCollector;
@@ -119,12 +119,7 @@ public class QueryPhase implements SearchPhase {
         }
     }
 
-    /**
-     * In a package-private method so that it can be tested without having to
-     * wire everything (mapperService, etc.)
-     * @return whether the rescoring phase should be executed
-     */
-    static boolean execute(SearchContext searchContext,
+    public static boolean execute(SearchContext searchContext,
                            final IndexSearcher searcher,
                            Consumer<Runnable> checkCancellationSetter) throws QueryPhaseExecutionException {
         final IndexReader reader = searcher.getIndexReader();

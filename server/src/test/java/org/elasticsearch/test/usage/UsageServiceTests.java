@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.usage;
+package org.elasticsearch.test.usage;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.cluster.node.usage.NodeUsage;
@@ -27,8 +27,9 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.rest.BaseRestHandler;
 import org.elasticsearch.rest.RestRequest;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
+import org.elasticsearch.usage.UsageService;
 
 import java.io.IOException;
 import java.net.InetAddress;

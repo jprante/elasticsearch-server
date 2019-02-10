@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.source;
+package org.elasticsearch.test.search.source;
 
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;

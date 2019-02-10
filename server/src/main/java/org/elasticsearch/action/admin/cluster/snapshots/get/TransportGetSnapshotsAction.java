@@ -75,12 +75,12 @@ public class TransportGetSnapshotsAction extends TransportMasterNodeAction<GetSn
     }
 
     @Override
-    protected ClusterBlockException checkBlock(GetSnapshotsRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(GetSnapshotsRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 
     @Override
-    protected void masterOperation(final GetSnapshotsRequest request, final ClusterState state,
+    public void masterOperation(final GetSnapshotsRequest request, final ClusterState state,
                                    final ActionListener<GetSnapshotsResponse> listener) {
         try {
             final String repository = request.repository();

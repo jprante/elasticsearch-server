@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.deps.joda;
+package org.elasticsearch.test.deps.joda;
 
 import org.elasticsearch.common.joda.FormatDateTimeFormatter;
 import org.elasticsearch.common.joda.Joda;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.mapper.RootObjectMapper;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;

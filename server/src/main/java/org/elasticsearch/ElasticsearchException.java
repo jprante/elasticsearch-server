@@ -186,7 +186,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
         return metadata.get(key);
     }
 
-    protected Map<String, List<String>> getMetadata() {
+    public Map<String, List<String>> getMetadata() {
         return metadata;
     }
 
@@ -225,7 +225,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
         return headers.get(key);
     }
 
-    protected Map<String, List<String>> getHeaders() {
+    public Map<String, List<String>> getHeaders() {
         return headers;
     }
 
@@ -319,7 +319,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
         return false;
     }
 
-    static Set<Class<? extends ElasticsearchException>> getRegisteredKeys() { // for testing
+    public static Set<Class<? extends ElasticsearchException>> getRegisteredKeys() { // for testing
         return CLASS_TO_ELASTICSEARCH_EXCEPTION_HANDLE.keySet();
     }
 
@@ -658,13 +658,13 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
         }
         return new ElasticsearchException[]{new ElasticsearchException(t.getMessage(), t) {
             @Override
-            protected String getExceptionName() {
+            public String getExceptionName() {
                 return getExceptionName(getCause());
             }
         }};
     }
 
-    protected String getExceptionName() {
+    public String getExceptionName() {
         return getExceptionName(this);
     }
 
@@ -680,7 +680,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
         return toUnderscoreCase(simpleName);
     }
 
-    static String buildMessage(String type, String reason, String stack) {
+    public static String buildMessage(String type, String reason, String stack) {
         StringBuilder message = new StringBuilder("Elasticsearch exception [");
         message.append(TYPE).append('=').append(type).append(", ");
         message.append(REASON).append('=').append(reason);
@@ -1053,7 +1053,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
      *
      * @return an array of all registered handle IDs
      */
-    static int[] ids() {
+    public static int[] ids() {
         return Arrays.stream(ElasticsearchExceptionHandle.values()).mapToInt(h -> h.id).toArray();
     }
 
@@ -1063,7 +1063,7 @@ public class ElasticsearchException extends RuntimeException implements ToXConte
      *
      * @return an array of all registered pairs of handle IDs and exception classes
      */
-    static Tuple<Integer, Class<? extends ElasticsearchException>>[] classes() {
+    public static Tuple<Integer, Class<? extends ElasticsearchException>>[] classes() {
         @SuppressWarnings("unchecked")
         final Tuple<Integer, Class<? extends ElasticsearchException>>[] ts =
                 Arrays.stream(ElasticsearchExceptionHandle.values())

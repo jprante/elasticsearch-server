@@ -17,10 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.DocWriteRequest;
+import org.elasticsearch.action.bulk.BulkAction;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.bulk.TransportBulkAction;
+import org.elasticsearch.action.bulk.TransportSingleItemBulkWriteAction;
 import org.elasticsearch.action.index.IndexAction;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
@@ -38,7 +44,7 @@ import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.ingest.IngestService;
 import org.elasticsearch.ingest.PipelineExecutionService;
 import org.elasticsearch.tasks.Task;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportResponseHandler;
 import org.elasticsearch.transport.TransportService;
@@ -56,14 +62,14 @@ import java.util.function.Consumer;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.sameInstance;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 public class TransportBulkActionIngestTests extends ESTestCase {
@@ -108,12 +114,12 @@ public class TransportBulkActionIngestTests extends ESTestCase {
                 null, null, new ActionFilters(Collections.emptySet()), null, null);
         }
         @Override
-        protected boolean needToCheck() {
+        public boolean needToCheck() {
             return false;
         }
         @Override
-        void executeBulk(Task task, final BulkRequest bulkRequest, final long startTimeNanos, final ActionListener<BulkResponse> listener,
-                final AtomicArray<BulkItemResponse> responses, Map<String, IndexNotFoundException> indicesThatCannotBeCreated) {
+        public void executeBulk(Task task, final BulkRequest bulkRequest, final long startTimeNanos, final ActionListener<BulkResponse> listener,
+                         final AtomicArray<BulkItemResponse> responses, Map<String, IndexNotFoundException> indicesThatCannotBeCreated) {
             isExecuted = true;
         }
     }
@@ -178,7 +184,7 @@ public class TransportBulkActionIngestTests extends ESTestCase {
             throw new AssertionError(exception);
         }));
         assertTrue(action.isExecuted);
-        verifyZeroInteractions(ingestService);
+        verifyNoInteractions(ingestService);
     }
 
     public void testSingleItemBulkActionIngestSkipped() throws Exception {
@@ -188,7 +194,7 @@ public class TransportBulkActionIngestTests extends ESTestCase {
             throw new AssertionError(exception);
         }));
         assertTrue(action.isExecuted);
-        verifyZeroInteractions(ingestService);
+        verifyNoInteractions(ingestService);
     }
 
     public void testIngestLocal() throws Exception {
@@ -231,7 +237,7 @@ public class TransportBulkActionIngestTests extends ESTestCase {
         completionHandler.getValue().accept(null);
         assertTrue(action.isExecuted);
         assertFalse(responseCalled.get()); // listener would only be called by real index action, not our mocked one
-        verifyZeroInteractions(transportService);
+        verifyNoInteractions(transportService);
     }
 
     public void testSingleItemBulkActionIngestLocal() throws Exception {
@@ -263,7 +269,7 @@ public class TransportBulkActionIngestTests extends ESTestCase {
         completionHandler.getValue().accept(null);
         assertTrue(action.isExecuted);
         assertFalse(responseCalled.get()); // listener would only be called by real index action, not our mocked one
-        verifyZeroInteractions(transportService);
+        verifyNoInteractions(transportService);
     }
 
     public void testIngestForward() throws Exception {

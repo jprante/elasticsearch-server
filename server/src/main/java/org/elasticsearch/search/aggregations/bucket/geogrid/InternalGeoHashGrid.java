@@ -47,13 +47,13 @@ import static java.util.Collections.unmodifiableList;
  */
 public class InternalGeoHashGrid extends InternalMultiBucketAggregation<InternalGeoHashGrid, InternalGeoHashGrid.Bucket> implements
         GeoHashGrid {
-    static class Bucket extends InternalMultiBucketAggregation.InternalBucket implements GeoHashGrid.Bucket, Comparable<Bucket> {
+    public static class Bucket extends InternalMultiBucketAggregation.InternalBucket implements GeoHashGrid.Bucket, Comparable<Bucket> {
 
-        protected long geohashAsLong;
-        protected long docCount;
-        protected InternalAggregations aggregations;
+        public long geohashAsLong;
+        public long docCount;
+        public InternalAggregations aggregations;
 
-        Bucket(long geohashAsLong, long docCount, InternalAggregations aggregations) {
+        public Bucket(long geohashAsLong, long docCount, InternalAggregations aggregations) {
             this.docCount = docCount;
             this.aggregations = aggregations;
             this.geohashAsLong = geohashAsLong;
@@ -147,7 +147,7 @@ public class InternalGeoHashGrid extends InternalMultiBucketAggregation<Internal
     private final int requiredSize;
     private final List<Bucket> buckets;
 
-    InternalGeoHashGrid(String name, int requiredSize, List<Bucket> buckets, List<PipelineAggregator> pipelineAggregators,
+    public InternalGeoHashGrid(String name, int requiredSize, List<Bucket> buckets, List<PipelineAggregator> pipelineAggregators,
             Map<String, Object> metaData) {
         super(name, pipelineAggregators, metaData);
         this.requiredSize = requiredSize;
@@ -236,8 +236,7 @@ public class InternalGeoHashGrid extends InternalMultiBucketAggregation<Internal
         return builder;
     }
 
-    // package protected for testing
-    int getRequiredSize() {
+    public int getRequiredSize() {
         return requiredSize;
     }
 

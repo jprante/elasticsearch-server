@@ -21,7 +21,7 @@ package org.elasticsearch.search.fetch.subphase;
 import org.apache.lucene.search.Explanation;
 import org.elasticsearch.search.fetch.FetchPhaseExecutionException;
 import org.elasticsearch.search.fetch.FetchSubPhase;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.rescore.RescoreContext;
 
 import java.io.IOException;

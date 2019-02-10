@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest;
+package org.elasticsearch.test.search.suggest;
 
 import org.elasticsearch.common.ParseField;
 import org.elasticsearch.common.ParsingException;
@@ -30,13 +30,15 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.action.search.RestSearchAction;
+import org.elasticsearch.search.suggest.SortBy;
+import org.elasticsearch.search.suggest.Suggest;
 import org.elasticsearch.search.suggest.Suggest.Suggestion;
 import org.elasticsearch.search.suggest.Suggest.Suggestion.Entry;
 import org.elasticsearch.search.suggest.Suggest.Suggestion.Entry.Option;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.search.suggest.phrase.PhraseSuggestion;
 import org.elasticsearch.search.suggest.term.TermSuggestion;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ import java.util.List;
 import static org.elasticsearch.common.xcontent.XContentHelper.toXContent;
 import static org.elasticsearch.common.xcontent.XContentParserUtils.ensureExpectedToken;
 import static org.elasticsearch.common.xcontent.XContentParserUtils.ensureFieldName;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 import static org.hamcrest.Matchers.equalTo;
 
 public class SuggestTests extends ESTestCase {
@@ -57,11 +59,11 @@ public class SuggestTests extends ESTestCase {
 
     static {
         namedXContents = new ArrayList<>();
-        namedXContents.add(new NamedXContentRegistry.Entry(Suggest.Suggestion.class, new ParseField("term"),
+        namedXContents.add(new NamedXContentRegistry.Entry(Suggestion.class, new ParseField("term"),
                 (parser, context) -> TermSuggestion.fromXContent(parser, (String)context)));
-        namedXContents.add(new NamedXContentRegistry.Entry(Suggest.Suggestion.class, new ParseField("phrase"),
+        namedXContents.add(new NamedXContentRegistry.Entry(Suggestion.class, new ParseField("phrase"),
                 (parser, context) -> PhraseSuggestion.fromXContent(parser, (String)context)));
-        namedXContents.add(new NamedXContentRegistry.Entry(Suggest.Suggestion.class, new ParseField("completion"),
+        namedXContents.add(new NamedXContentRegistry.Entry(Suggestion.class, new ParseField("completion"),
                 (parser, context) -> CompletionSuggestion.fromXContent(parser, (String)context)));
         xContentRegistry = new NamedXContentRegistry(namedXContents);
     }

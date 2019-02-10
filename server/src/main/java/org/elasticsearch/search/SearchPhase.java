@@ -19,8 +19,6 @@
 
 package org.elasticsearch.search;
 
-import org.elasticsearch.search.internal.SearchContext;
-
 /**
  * Represents a phase of a search request e.g. query, fetch etc.
  */

@@ -229,7 +229,7 @@ public class BoostingQueryBuilder extends AbstractQueryBuilder<BoostingQueryBuil
     }
 
     @Override
-    protected void extractInnerHitBuilders(Map<String, InnerHitContextBuilder> innerHits) {
+    public void extractInnerHitBuilders(Map<String, InnerHitContextBuilder> innerHits) {
         InnerHitContextBuilder.extractInnerHits(positiveQuery, innerHits);
         InnerHitContextBuilder.extractInnerHits(negativeQuery, innerHits);
     }

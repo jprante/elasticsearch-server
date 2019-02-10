@@ -21,11 +21,15 @@ package org.elasticsearch.common.io;
 
 import org.elasticsearch.common.SuppressForbidden;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 /** 
  * Utilities for creating a Path from names,
@@ -41,10 +45,10 @@ public final class PathUtils {
     private PathUtils() {}
     
     /** the actual JDK default */
-    static final FileSystem ACTUAL_DEFAULT = FileSystems.getDefault();
+    public static final FileSystem ACTUAL_DEFAULT = FileSystems.getDefault();
     
     /** can be changed by tests */
-    static volatile FileSystem DEFAULT = ACTUAL_DEFAULT;
+    public static volatile FileSystem DEFAULT = ACTUAL_DEFAULT;
     
     /** 
      * Returns a {@code Path} from name components.
@@ -68,11 +72,19 @@ public final class PathUtils {
      * Remember: this should almost never be used. Usually resolve
      * a path against an existing one!
      */
-    public static Path get(URI uri) {
+    public static Path get(URI uri) throws IOException {
         if (uri.getScheme().equalsIgnoreCase("file")) {
             return DEFAULT.provider().getPath(uri);
         } else {
-            return Paths.get(uri);
+            try {
+                FileSystems.getFileSystem(uri);
+                return Paths.get(uri);
+            } catch (FileSystemNotFoundException e) {
+                Map<String, String> env = new HashMap<>();
+                env.put("create", "true");
+                FileSystems.newFileSystem(uri, env);
+                return Paths.get(uri);
+            }
         }
     }
 
@@ -97,7 +109,7 @@ public final class PathUtils {
      *
      * If uri starts with one of the listed roots, it returned back by this method, otherwise null is returned.
      */
-    public static Path get(Path[] roots, URI uri) {
+    public static Path get(Path[] roots, URI uri) throws IOException {
         return get(roots, PathUtils.get(uri).normalize().toString());
     }
 

@@ -57,9 +57,9 @@ import static java.util.Collections.emptyMap;
 public class IndexShardRoutingTable implements Iterable<ShardRouting> {
 
     final ShardShuffler shuffler;
-    final ShardId shardId;
+    public final ShardId shardId;
 
-    final ShardRouting primary;
+    public final ShardRouting primary;
     final List<ShardRouting> primaryAsList;
     final List<ShardRouting> replicas;
     final List<ShardRouting> shards;
@@ -79,7 +79,7 @@ public class IndexShardRoutingTable implements Iterable<ShardRouting> {
      */
     final List<ShardRouting> allInitializingShards;
 
-    IndexShardRoutingTable(ShardId shardId, List<ShardRouting> shards) {
+    public IndexShardRoutingTable(ShardId shardId, List<ShardRouting> shards) {
         this.shardId = shardId;
         this.shuffler = new RotationShardShuffler(Randomness.get().nextInt());
         this.shards = Collections.unmodifiableList(shards);
@@ -622,11 +622,11 @@ public class IndexShardRoutingTable implements Iterable<ShardRouting> {
         return allAllocationIds;
     }
 
-    static class AttributesKey {
+    public static class AttributesKey {
 
         final List<String> attributes;
 
-        AttributesKey(List<String> attributes) {
+        public AttributesKey(List<String> attributes) {
             this.attributes = attributes;
         }
 
@@ -784,7 +784,7 @@ public class IndexShardRoutingTable implements Iterable<ShardRouting> {
             return new IndexShardRoutingTable(shardId, Collections.unmodifiableList(new ArrayList<>(shards)));
         }
 
-        static boolean distinctNodes(List<ShardRouting> shards) {
+        public static boolean distinctNodes(List<ShardRouting> shards) {
             Set<String> nodes = new HashSet<>();
             for (ShardRouting shard : shards) {
                 if (shard.assignedToNode()) {

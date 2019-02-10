@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.support;
+package org.elasticsearch.test.search.aggregations.support;
 
 import org.elasticsearch.search.aggregations.AggregationExecutionException;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.aggregations.support.AggregationPath;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.List;

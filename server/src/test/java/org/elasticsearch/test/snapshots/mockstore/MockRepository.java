@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.snapshots.mockstore;
+package org.elasticsearch.test.snapshots.mockstore;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -161,7 +161,7 @@ public class MockRepository extends FsRepository {
     }
 
     @Override
-    protected BlobStore blobStore() {
+    public BlobStore blobStore() {
         return mockBlobStore;
     }
 

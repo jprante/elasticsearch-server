@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.indices;
+package org.elasticsearch.test.indices;
 
 import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.indices.NodeIndicesStats;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Collections;
 

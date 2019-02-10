@@ -149,8 +149,7 @@ public final class SimilarityService extends AbstractIndexComponent {
         return new SimilarityProvider(name, sim.get());
     }
 
-    // for testing
-    Similarity getDefaultSimilarity() {
+    public Similarity getDefaultSimilarity() {
         return defaultSimilarity;
     }
 

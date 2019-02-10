@@ -130,7 +130,7 @@ public final class Uid {
     private static final int NUMERIC = 0xfe;
     private static final int BASE64_ESCAPE = 0xfd;
 
-    static boolean isURLBase64WithoutPadding(String id) {
+    public static boolean isURLBase64WithoutPadding(String id) {
         // We are not lenient about padding chars ('=') otherwise
         // 'xxx=' and 'xxx' could be considered the same id
         final int length = id.length();

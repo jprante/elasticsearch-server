@@ -34,9 +34,9 @@ import org.elasticsearch.env.Environment;
 /**
  * A subcommand for the keystore cli to list all settings in the keystore.
  */
-class ListKeyStoreCommand extends EnvironmentAwareCommand {
+public class ListKeyStoreCommand extends EnvironmentAwareCommand {
 
-    ListKeyStoreCommand() {
+    public ListKeyStoreCommand() {
         super("List entries in the keystore");
     }
 

@@ -139,7 +139,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
         return concreteIndices(context, indexExpressions);
     }
 
-    String[] concreteIndexNames(Context context, String... indexExpressions) {
+    public String[] concreteIndexNames(Context context, String... indexExpressions) {
         Index[] indexes = concreteIndices(context, indexExpressions);
         String[] names = new String[indexes.length];
         for (int i = 0; i < indexes.length; i++) {
@@ -148,7 +148,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
         return names;
     }
 
-    Index[] concreteIndices(Context context, String... indexExpressions) {
+    public Index[] concreteIndices(Context context, String... indexExpressions) {
         if (indexExpressions == null || indexExpressions.length == 0) {
             indexExpressions = new String[]{MetaData.ALL};
         }
@@ -475,7 +475,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
      * @param aliasesOrIndices the array containing index names
      * @return true if the provided array explicitly maps to all indices, false otherwise
      */
-    static boolean isExplicitAllPattern(List<String> aliasesOrIndices) {
+    public static boolean isExplicitAllPattern(List<String> aliasesOrIndices) {
         return aliasesOrIndices != null && aliasesOrIndices.size() == 1 && MetaData.ALL.equals(aliasesOrIndices.get(0));
     }
 
@@ -486,7 +486,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
      * @param concreteIndices  array containing the concrete indices that the first argument refers to
      * @return true if the first argument is a pattern that maps to all available indices, false otherwise
      */
-    boolean isPatternMatchingAllIndices(MetaData metaData, String[] indicesOrAliases, String[] concreteIndices) {
+    public boolean isPatternMatchingAllIndices(MetaData metaData, String[] indicesOrAliases, String[] concreteIndices) {
         // if we end up matching on all indices, check, if its a wildcard parameter, or a "-something" structure
         if (concreteIndices.length == metaData.getConcreteAllIndices().length && indicesOrAliases.length > 0) {
 
@@ -506,26 +506,26 @@ public class IndexNameExpressionResolver extends AbstractComponent {
         return false;
     }
 
-    static final class Context {
+    public static final class Context {
 
         private final ClusterState state;
         private final IndicesOptions options;
         private final long startTime;
         private final boolean preserveAliases;
 
-        Context(ClusterState state, IndicesOptions options) {
+        public Context(ClusterState state, IndicesOptions options) {
             this(state, options, System.currentTimeMillis());
         }
 
-        Context(ClusterState state, IndicesOptions options, boolean preserveAliases) {
+        public Context(ClusterState state, IndicesOptions options, boolean preserveAliases) {
             this(state, options, System.currentTimeMillis(), preserveAliases);
         }
 
-        Context(ClusterState state, IndicesOptions options, long startTime) {
+        public Context(ClusterState state, IndicesOptions options, long startTime) {
            this(state, options, startTime, false);
         }
 
-        Context(ClusterState state, IndicesOptions options, long startTime, boolean preserveAliases) {
+        public Context(ClusterState state, IndicesOptions options, long startTime, boolean preserveAliases) {
             this.state = state;
             this.options = options;
             this.startTime = startTime;
@@ -549,7 +549,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
          * that we might return aliases that point to a closed index. This is currently only used
          * by {@link #filteringAliases(ClusterState, String, String...)} since it's the only one that needs aliases
          */
-        boolean isPreserveAliases() {
+        public boolean isPreserveAliases() {
             return preserveAliases;
         }
     }
@@ -569,7 +569,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
     /**
      * Resolves alias/index name expressions with wildcards into the corresponding concrete indices/aliases
      */
-    static final class WildcardExpressionResolver implements ExpressionResolver {
+    public static final class WildcardExpressionResolver implements ExpressionResolver {
 
         @Override
         public List<String> resolve(Context context, List<String> expressions) {
@@ -771,7 +771,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
         }
     }
 
-    static final class DateMathExpressionResolver implements ExpressionResolver {
+    public static final class DateMathExpressionResolver implements ExpressionResolver {
 
         private static final String EXPRESSION_LEFT_BOUND = "<";
         private static final String EXPRESSION_RIGHT_BOUND = ">";
@@ -784,7 +784,7 @@ public class IndexNameExpressionResolver extends AbstractComponent {
         private final String defaultDateFormatterPattern;
         private final DateTimeFormatter defaultDateFormatter;
 
-        DateMathExpressionResolver(Settings settings) {
+        public DateMathExpressionResolver(Settings settings) {
             String defaultTimeZoneId = settings.get("date_math_expression_resolver.default_time_zone", "UTC");
             this.defaultTimeZone = DateTimeZone.forID(defaultTimeZoneId);
             defaultDateFormatterPattern = settings.get("date_math_expression_resolver.default_date_format", "YYYY.MM.dd");

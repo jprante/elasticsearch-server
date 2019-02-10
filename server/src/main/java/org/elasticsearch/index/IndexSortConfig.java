@@ -110,8 +110,7 @@ public final class IndexSortConfig {
         return mode;
     }
 
-    // visible for tests
-    final FieldSortSpec[] sortSpecs;
+    public final FieldSortSpec[] sortSpecs;
 
     public IndexSortConfig(IndexSettings indexSettings) {
         final Settings settings = indexSettings.getSettings();
@@ -215,11 +214,11 @@ public final class IndexSortConfig {
         }
     }
 
-    static class FieldSortSpec {
-        final String field;
-        SortOrder order;
-        MultiValueMode mode;
-        String missingValue;
+    public static class FieldSortSpec {
+        public final String field;
+        public SortOrder order;
+        public MultiValueMode mode;
+        public String missingValue;
 
         FieldSortSpec(String field) {
             this.field = field;

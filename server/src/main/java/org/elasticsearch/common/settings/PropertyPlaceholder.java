@@ -34,7 +34,7 @@ import java.util.Set;
  * Values for substitution can be supplied using a {@link Properties} instance or using a
  * {@link PlaceholderResolver}.
  */
-class PropertyPlaceholder {
+public class PropertyPlaceholder {
 
     private final String placeholderPrefix;
     private final String placeholderSuffix;
@@ -48,7 +48,7 @@ class PropertyPlaceholder {
      * @param ignoreUnresolvablePlaceholders indicates whether unresolvable placeholders should be ignored
      *                                       (<code>true</code>) or cause an exception (<code>false</code>).
      */
-    PropertyPlaceholder(String placeholderPrefix, String placeholderSuffix,
+    public PropertyPlaceholder(String placeholderPrefix, String placeholderSuffix,
                                boolean ignoreUnresolvablePlaceholders) {
         this.placeholderPrefix = Objects.requireNonNull(placeholderPrefix);
         this.placeholderSuffix = Objects.requireNonNull(placeholderSuffix);
@@ -64,7 +64,7 @@ class PropertyPlaceholder {
      * @return the supplied value with placeholders replaced inline.
      * @throws NullPointerException if value is null
      */
-    String replacePlaceholders(String value, PlaceholderResolver placeholderResolver) {
+    public String replacePlaceholders(String value, PlaceholderResolver placeholderResolver) {
         Objects.requireNonNull(value);
         return parseStringValue(value, placeholderResolver, new HashSet<>());
     }
@@ -151,7 +151,7 @@ class PropertyPlaceholder {
      *
      * @see PropertyPlaceholder
      */
-    interface PlaceholderResolver {
+    public interface PlaceholderResolver {
 
         /**
          * Resolves the supplied placeholder name into the replacement value.

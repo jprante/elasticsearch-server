@@ -23,7 +23,6 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.index.query.QueryShardContext;
-import org.elasticsearch.script.ExecutableScript;
 import org.elasticsearch.script.TemplateScript;
 import org.elasticsearch.search.suggest.DirectSpellcheckerSettings;
 import org.elasticsearch.search.suggest.SuggestionSearchContext.SuggestionContext;
@@ -32,18 +31,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
-class PhraseSuggestionContext extends SuggestionContext {
-    static final boolean DEFAULT_COLLATE_PRUNE = false;
-    static final boolean DEFAULT_REQUIRE_UNIGRAM = true;
-    static final float DEFAULT_CONFIDENCE = 1.0f;
-    static final int DEFAULT_GRAM_SIZE = 1;
-    static final float DEFAULT_RWE_ERRORLIKELIHOOD = 0.95f;
-    static final float DEFAULT_MAX_ERRORS = 0.5f;
-    static final String DEFAULT_SEPARATOR = " ";
-    static final WordScorer.WordScorerFactory DEFAULT_SCORER = (IndexReader reader, Terms terms, String field, double realWordLikelyhood,
-            BytesRef separator) -> new StupidBackoffScorer(reader, terms, field, realWordLikelyhood, separator, 0.4f);
+public class PhraseSuggestionContext extends SuggestionContext {
+    public static final boolean DEFAULT_COLLATE_PRUNE = false;
+    public static final boolean DEFAULT_REQUIRE_UNIGRAM = true;
+    public static final float DEFAULT_CONFIDENCE = 1.0f;
+    public static final int DEFAULT_GRAM_SIZE = 1;
+    public static final float DEFAULT_RWE_ERRORLIKELIHOOD = 0.95f;
+    public static final float DEFAULT_MAX_ERRORS = 0.5f;
+    public static final String DEFAULT_SEPARATOR = " ";
+    public static final WordScorer.WordScorerFactory DEFAULT_SCORER =
+            (IndexReader reader, Terms terms, String field, double realWordLikelyhood, BytesRef separator) ->
+            new StupidBackoffScorer(reader, terms, field, realWordLikelyhood, separator, 0.4f);
 
     private float maxErrors = DEFAULT_MAX_ERRORS;
     private BytesRef separator = new BytesRef(DEFAULT_SEPARATOR);
@@ -120,7 +119,7 @@ class PhraseSuggestionContext extends SuggestionContext {
         return scorer;
     }
 
-    static class DirectCandidateGenerator extends DirectSpellcheckerSettings {
+    public static class DirectCandidateGenerator extends DirectSpellcheckerSettings {
         private Analyzer preFilter;
         private Analyzer postFilter;
         private String field;
@@ -194,27 +193,27 @@ class PhraseSuggestionContext extends SuggestionContext {
         return postTag;
     }
 
-    TemplateScript.Factory getCollateQueryScript() {
+    public TemplateScript.Factory getCollateQueryScript() {
         return scriptFactory;
     }
 
-    void setCollateQueryScript(TemplateScript.Factory scriptFactory) {
+    public void setCollateQueryScript(TemplateScript.Factory scriptFactory) {
         this.scriptFactory = scriptFactory;
     }
 
-    Map<String, Object> getCollateScriptParams() {
+    public Map<String, Object> getCollateScriptParams() {
         return collateScriptParams;
     }
 
-    void setCollateScriptParams(Map<String, Object> collateScriptParams) {
+    public void setCollateScriptParams(Map<String, Object> collateScriptParams) {
         this.collateScriptParams = new HashMap<>(collateScriptParams);
     }
 
-    void setCollatePrune(boolean prune) {
+    public void setCollatePrune(boolean prune) {
         this.prune = prune;
     }
 
-    boolean collatePrune() {
+    public boolean collatePrune() {
         return prune;
     }
 }

@@ -27,8 +27,7 @@ import java.io.IOException;
 
 public class WritePipelineResponse extends AcknowledgedResponse {
 
-    WritePipelineResponse() {
-
+    public WritePipelineResponse() {
     }
 
     public WritePipelineResponse(boolean acknowledged) {

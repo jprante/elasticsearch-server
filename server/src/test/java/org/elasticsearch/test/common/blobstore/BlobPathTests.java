@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.blobstore;
+package org.elasticsearch.test.common.blobstore;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.blobstore.BlobPath;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.is;
 

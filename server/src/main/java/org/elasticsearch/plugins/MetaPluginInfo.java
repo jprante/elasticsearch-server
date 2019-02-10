@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * An in-memory representation of the meta plugin descriptor.
  */
 public class MetaPluginInfo {
-    static final String ES_META_PLUGIN_PROPERTIES = "meta-plugin-descriptor.properties";
+    public static final String ES_META_PLUGIN_PROPERTIES = "meta-plugin-descriptor.properties";
 
     private final String name;
     private final String description;

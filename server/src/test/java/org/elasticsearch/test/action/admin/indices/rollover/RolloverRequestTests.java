@@ -17,10 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.rollover;
+package org.elasticsearch.test.action.admin.indices.rollover;
 
 import org.elasticsearch.action.ActionRequestValidationException;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.rollover.Condition;
+import org.elasticsearch.action.admin.indices.rollover.MaxAgeCondition;
+import org.elasticsearch.action.admin.indices.rollover.MaxDocsCondition;
+import org.elasticsearch.action.admin.indices.rollover.MaxSizeCondition;
+import org.elasticsearch.action.admin.indices.rollover.RolloverRequest;
 import org.elasticsearch.test.action.admin.indices.create.CreateIndexRequestTests;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
@@ -34,11 +39,11 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParseException;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.RandomCreateIndexGenerator;
+import org.elasticsearch.testframework.index.RandomCreateIndexGenerator;
 import org.elasticsearch.indices.IndicesModule;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.XContentTestUtils;
-import org.elasticsearch.test.hamcrest.ElasticsearchAssertions;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.XContentTestUtils;
+import org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions;
 import org.junit.Before;
 
 import java.io.IOException;

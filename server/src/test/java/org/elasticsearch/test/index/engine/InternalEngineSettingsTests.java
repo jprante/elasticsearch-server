@@ -16,14 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.engine;
+package org.elasticsearch.test.index.engine;
 
 import org.apache.lucene.index.LiveIndexWriterConfig;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.IndexService;
 import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.index.shard.EngineAccess;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.engine.InternalEngine;
+import org.elasticsearch.test.index.shard.EngineAccess;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 import java.util.concurrent.TimeUnit;
 

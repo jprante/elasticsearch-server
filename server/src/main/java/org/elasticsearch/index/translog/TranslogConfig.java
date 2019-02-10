@@ -52,7 +52,7 @@ public final class TranslogConfig {
         this(shardId, translogPath, indexSettings, bigArrays, DEFAULT_BUFFER_SIZE);
     }
 
-    TranslogConfig(ShardId shardId, Path translogPath, IndexSettings indexSettings, BigArrays bigArrays, ByteSizeValue bufferSize) {
+    public TranslogConfig(ShardId shardId, Path translogPath, IndexSettings indexSettings, BigArrays bigArrays, ByteSizeValue bufferSize) {
         this.bufferSize = bufferSize;
         this.indexSettings = indexSettings;
         this.shardId = shardId;

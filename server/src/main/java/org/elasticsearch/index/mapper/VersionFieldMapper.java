@@ -69,9 +69,9 @@ public class VersionFieldMapper extends MetadataFieldMapper {
         }
     }
 
-    static final class VersionFieldType extends MappedFieldType {
+    public static final class VersionFieldType extends MappedFieldType {
 
-        VersionFieldType() {
+        public VersionFieldType() {
         }
 
         protected VersionFieldType(VersionFieldType ref) {

@@ -16,15 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
 import org.elasticsearch.common.collect.Tuple;
+import org.elasticsearch.common.settings.AbstractScopedSettings;
+import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.settings.Setting.Property;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.ByteSizeUnit;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.monitor.jvm.JvmInfo;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -95,7 +98,7 @@ public class SettingTests extends ESTestCase {
         final ByteSizeValue byteSizeValue = byteSizeValueSetting.get(Settings.EMPTY);
         assertThat(byteSizeValue.getBytes(), equalTo(2048L));
         AtomicReference<ByteSizeValue> value = new AtomicReference<>(null);
-        ClusterSettings.SettingUpdater<ByteSizeValue> settingUpdater = byteSizeValueSetting.newUpdater(value::set, logger);
+        AbstractScopedSettings.SettingUpdater<ByteSizeValue> settingUpdater = byteSizeValueSetting.newUpdater(value::set, logger);
 
         final IllegalArgumentException e = expectThrows(
                 IllegalArgumentException.class,
@@ -132,7 +135,7 @@ public class SettingTests extends ESTestCase {
         assertEquals(memorySizeValue.getBytes(), JvmInfo.jvmInfo().getMem().getHeapMax().getBytes() * 0.25, 1.0);
 
         AtomicReference<ByteSizeValue> value = new AtomicReference<>(null);
-        ClusterSettings.SettingUpdater<ByteSizeValue> settingUpdater = memorySizeValueSetting.newUpdater(value::set, logger);
+        AbstractScopedSettings.SettingUpdater<ByteSizeValue> settingUpdater = memorySizeValueSetting.newUpdater(value::set, logger);
         try {
             settingUpdater.apply(Settings.builder().put("a.byte.size", 12).build(), Settings.EMPTY);
             fail("no unit");
@@ -156,7 +159,7 @@ public class SettingTests extends ESTestCase {
     public void testSimpleUpdate() {
         Setting<Boolean> booleanSetting = Setting.boolSetting("foo.bar", false, Property.Dynamic, Property.NodeScope);
         AtomicReference<Boolean> atomicBoolean = new AtomicReference<>(null);
-        ClusterSettings.SettingUpdater<Boolean> settingUpdater = booleanSetting.newUpdater(atomicBoolean::set, logger);
+        AbstractScopedSettings.SettingUpdater<Boolean> settingUpdater = booleanSetting.newUpdater(atomicBoolean::set, logger);
         Settings build = Settings.builder().put("foo.bar", false).build();
         settingUpdater.apply(build, Settings.EMPTY);
         assertNull(atomicBoolean.get());
@@ -238,7 +241,7 @@ public class SettingTests extends ESTestCase {
         Setting<Boolean> booleanSetting = Setting.boolSetting("foo.bar", false, Property.Dynamic, Property.NodeScope);
         AtomicReference<Boolean> ab1 = new AtomicReference<>(null);
         AtomicReference<Boolean> ab2 = new AtomicReference<>(null);
-        ClusterSettings.SettingUpdater<Boolean> settingUpdater = booleanSetting.newUpdater(ab1::set, logger);
+        AbstractScopedSettings.SettingUpdater<Boolean> settingUpdater = booleanSetting.newUpdater(ab1::set, logger);
         settingUpdater.apply(Settings.builder().put("foo.bar", true).build(), Settings.EMPTY);
         assertTrue(ab1.get());
         assertNull(ab2.get());
@@ -285,7 +288,7 @@ public class SettingTests extends ESTestCase {
         assertFalse(setting.isGroupSetting());
         ref.set(setting.get(Settings.EMPTY));
         ComplexType type = ref.get();
-        ClusterSettings.SettingUpdater<ComplexType> settingUpdater = setting.newUpdater(ref::set, logger);
+        AbstractScopedSettings.SettingUpdater<ComplexType> settingUpdater = setting.newUpdater(ref::set, logger);
         assertFalse(settingUpdater.apply(Settings.EMPTY, Settings.EMPTY));
         assertSame("no update - type has not changed", type, ref.get());
 
@@ -314,7 +317,7 @@ public class SettingTests extends ESTestCase {
         AtomicReference<Settings> ref = new AtomicReference<>(null);
         Setting<Settings> setting = Setting.groupSetting("foo.bar.", Property.Dynamic, Property.NodeScope);
         assertTrue(setting.isGroupSetting());
-        ClusterSettings.SettingUpdater<Settings> settingUpdater = setting.newUpdater(ref::set, logger);
+        AbstractScopedSettings.SettingUpdater<Settings> settingUpdater = setting.newUpdater(ref::set, logger);
 
         Settings currentInput = Settings.builder()
                 .put("foo.bar.1.value", "1")
@@ -361,7 +364,7 @@ public class SettingTests extends ESTestCase {
         assertTrue(setting.match("foo.bar.baz"));
         assertFalse(setting.match("foo.baz.bar"));
 
-        ClusterSettings.SettingUpdater<Settings> predicateSettingUpdater = setting.newUpdater(ref::set, logger,(s) -> assertFalse(true));
+        AbstractScopedSettings.SettingUpdater<Settings> predicateSettingUpdater = setting.newUpdater(ref::set, logger,(s) -> assertFalse(true));
         try {
             predicateSettingUpdater.apply(Settings.builder().put("foo.bar.1.value", "1").put("foo.bar.2.value", "2").build(),
                     Settings.EMPTY);
@@ -402,7 +405,7 @@ public class SettingTests extends ESTestCase {
         Composite c = new Composite();
         Setting<Integer> a = Setting.intSetting("foo.int.bar.a", 1, Property.Dynamic, Property.NodeScope);
         Setting<Integer> b = Setting.intSetting("foo.int.bar.b", 1, Property.Dynamic, Property.NodeScope);
-        ClusterSettings.SettingUpdater<Tuple<Integer, Integer>> settingUpdater = Setting.compoundUpdater(c::set, c::validate, a, b, logger);
+        AbstractScopedSettings.SettingUpdater<Tuple<Integer, Integer>> settingUpdater = Setting.compoundUpdater(c::set, c::validate, a, b, logger);
         assertFalse(settingUpdater.apply(Settings.EMPTY, Settings.EMPTY));
         assertNull(c.a);
         assertNull(c.b);
@@ -432,7 +435,7 @@ public class SettingTests extends ESTestCase {
         Composite c = new Composite();
         Setting<Integer> a = Setting.intSetting("foo.int.bar.a", 1, Property.Dynamic, Property.NodeScope);
         Setting<Integer> b = Setting.intSetting("foo.int.bar.b", 1, Property.Dynamic, Property.NodeScope);
-        ClusterSettings.SettingUpdater<Tuple<Integer, Integer>> settingUpdater = Setting.compoundUpdater(c::set, c::validate, a, b, logger);
+        AbstractScopedSettings.SettingUpdater<Tuple<Integer, Integer>> settingUpdater = Setting.compoundUpdater(c::set, c::validate, a, b, logger);
         assertFalse(settingUpdater.apply(Settings.EMPTY, Settings.EMPTY));
         assertNull(c.a);
         assertNull(c.b);

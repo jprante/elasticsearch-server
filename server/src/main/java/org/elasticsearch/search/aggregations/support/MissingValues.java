@@ -52,7 +52,7 @@ public enum MissingValues {
         };
     }
 
-    static SortedBinaryDocValues replaceMissing(final SortedBinaryDocValues values, final BytesRef missing) {
+    public static SortedBinaryDocValues replaceMissing(final SortedBinaryDocValues values, final BytesRef missing) {
         return new SortedBinaryDocValues() {
 
             private int count;
@@ -114,7 +114,7 @@ public enum MissingValues {
         };
     }
 
-    static SortedNumericDocValues replaceMissing(final SortedNumericDocValues values, final long missing) {
+    public static SortedNumericDocValues replaceMissing(final SortedNumericDocValues values, final long missing) {
         return new AbstractSortedNumericDocValues() {
 
             private int count;
@@ -148,7 +148,7 @@ public enum MissingValues {
         };
     }
 
-    static SortedNumericDoubleValues replaceMissing(final SortedNumericDoubleValues values, final double missing) {
+    public static SortedNumericDoubleValues replaceMissing(final SortedNumericDoubleValues values, final double missing) {
         return new SortedNumericDoubleValues() {
 
             private int count;
@@ -212,7 +212,7 @@ public enum MissingValues {
         };
     }
 
-    static SortedSetDocValues replaceMissing(final SortedSetDocValues values,
+    public static SortedSetDocValues replaceMissing(final SortedSetDocValues values,
             final BytesRef missing) throws IOException {
         final long missingOrd = values.lookupTerm(missing);
         if (missingOrd >= 0) {
@@ -224,7 +224,7 @@ public enum MissingValues {
         }
     }
 
-    static SortedSetDocValues replaceMissingOrd(final SortedSetDocValues values,
+    public static SortedSetDocValues replaceMissingOrd(final SortedSetDocValues values,
             final long missingOrd) {
         return new AbstractSortedSetDocValues() {
 
@@ -266,7 +266,7 @@ public enum MissingValues {
         };
     }
 
-    static SortedSetDocValues insertOrd(final SortedSetDocValues values, final long insertedOrd,
+    public static SortedSetDocValues insertOrd(final SortedSetDocValues values, final long insertedOrd,
             final BytesRef missingValue) {
         return new AbstractSortedSetDocValues() {
 
@@ -319,7 +319,7 @@ public enum MissingValues {
         };
     }
 
-    static LongUnaryOperator getGlobalMapping(SortedSetDocValues values, SortedSetDocValues globalValues,
+    public static LongUnaryOperator getGlobalMapping(SortedSetDocValues values, SortedSetDocValues globalValues,
             LongUnaryOperator segmentToGlobalOrd, BytesRef missing) throws IOException {
         final long missingGlobalOrd = globalValues.lookupTerm(missing);
         final long missingSegmentOrd = values.lookupTerm(missing);
@@ -372,7 +372,7 @@ public enum MissingValues {
         };
     }
 
-    static MultiGeoPointValues replaceMissing(final MultiGeoPointValues values, final GeoPoint missing) {
+    public static MultiGeoPointValues replaceMissing(final MultiGeoPointValues values, final GeoPoint missing) {
         return new MultiGeoPointValues() {
 
             private int count;

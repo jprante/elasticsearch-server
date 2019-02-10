@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.fetch.subphase;
+package org.elasticsearch.test.search.fetch.subphase;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.SortedDocValuesField;
@@ -31,7 +31,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.mapper.ContentPath;
 import org.elasticsearch.index.mapper.Mapper;
 import org.elasticsearch.index.mapper.ParentFieldMapper;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.fetch.subphase.ParentFieldSubFetchPhase;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class ParentFieldSubFetchPhaseTests extends ESTestCase {
 

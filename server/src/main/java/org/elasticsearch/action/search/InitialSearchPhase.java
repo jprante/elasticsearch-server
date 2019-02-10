@@ -45,7 +45,7 @@ import java.util.stream.Stream;
  * The fan out and collect algorithm is traditionally used as the initial phase which can either be a query execution or collection
  * distributed frequencies
  */
-abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends SearchPhase {
+public abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends SearchPhase {
     private final SearchRequest request;
     private final GroupShardsIterator<SearchShardIterator> toSkipShardsIts;
     private final GroupShardsIterator<SearchShardIterator> shardsIts;
@@ -56,7 +56,7 @@ abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends
     private final int maxConcurrentShardRequests;
     private final Executor executor;
 
-    InitialSearchPhase(String name, SearchRequest request, GroupShardsIterator<SearchShardIterator> shardsIts, Logger logger,
+    public InitialSearchPhase(String name, SearchRequest request, GroupShardsIterator<SearchShardIterator> shardsIts, Logger logger,
                        int maxConcurrentShardRequests, Executor executor) {
         super(name);
         this.request = request;
@@ -268,7 +268,7 @@ abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends
      * @see #onShardFailure(int, SearchShardTarget, Exception)
      * @see #onShardSuccess(SearchPhaseResult)
      */
-    abstract void onPhaseDone(); // as a tribute to @kimchy aka. finishHim()
+    public abstract void onPhaseDone(); // as a tribute to @kimchy aka. finishHim()
 
     /**
      * Executed once for every failed shard level request. This method is invoked before the next replica is tried for the given
@@ -278,14 +278,14 @@ abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends
      * @param shardTarget the shard target for this failure
      * @param ex the failure reason
      */
-    abstract void onShardFailure(int shardIndex, SearchShardTarget shardTarget, Exception ex);
+    public abstract void onShardFailure(int shardIndex, SearchShardTarget shardTarget, Exception ex);
 
     /**
      * Executed once for every successful shard level request.
      * @param result the result returned form the shard
      *
      */
-    abstract void onShardSuccess(FirstResult result);
+    public abstract void onShardSuccess(FirstResult result);
 
     /**
      * Sends the request to the actual shard.
@@ -299,7 +299,7 @@ abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends
     /**
      * This class acts as a basic result collection that can be extended to do on-the-fly reduction or result processing
      */
-    abstract static class SearchPhaseResults<Result extends SearchPhaseResult> {
+    public abstract static class SearchPhaseResults<Result extends SearchPhaseResult> {
         private final int numShards;
 
         protected SearchPhaseResults(int numShards) {
@@ -308,7 +308,7 @@ abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends
         /**
          * Returns the number of expected results this class should collect
          */
-        final int getNumShards() {
+        public final int getNumShards() {
             return numShards;
         }
 
@@ -330,14 +330,14 @@ abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends
 
         void consumeShardFailure(int shardIndex) {}
 
-        AtomicArray<Result> getAtomicArray() {
+        public AtomicArray<Result> getAtomicArray() {
             throw new UnsupportedOperationException();
         }
 
         /**
          * Reduces the collected results
          */
-        SearchPhaseController.ReducedQueryPhase reduce() {
+        public SearchPhaseController.ReducedQueryPhase reduce() {
             throw new UnsupportedOperationException("reduce is not supported");
         }
     }
@@ -345,29 +345,29 @@ abstract class InitialSearchPhase<FirstResult extends SearchPhaseResult> extends
     /**
      * This class acts as a basic result collection that can be extended to do on-the-fly reduction or result processing
      */
-    static class ArraySearchPhaseResults<Result extends SearchPhaseResult> extends SearchPhaseResults<Result> {
-        final AtomicArray<Result> results;
+    public static class ArraySearchPhaseResults<Result extends SearchPhaseResult> extends SearchPhaseResults<Result> {
+        public final AtomicArray<Result> results;
 
-        ArraySearchPhaseResults(int size) {
+        public ArraySearchPhaseResults(int size) {
             super(size);
             this.results = new AtomicArray<>(size);
         }
 
-        Stream<Result> getSuccessfulResults() {
+        public Stream<Result> getSuccessfulResults() {
             return results.asList().stream();
         }
 
-        void consumeResult(Result result) {
+        public void consumeResult(Result result) {
             assert results.get(result.getShardIndex()) == null : "shardIndex: " + result.getShardIndex() + " is already set";
             results.set(result.getShardIndex(), result);
         }
 
-        boolean hasResult(int shardIndex) {
+        public boolean hasResult(int shardIndex) {
             return results.get(shardIndex) != null;
         }
 
         @Override
-        AtomicArray<Result> getAtomicArray() {
+        public AtomicArray<Result> getAtomicArray() {
             return results;
         }
     }

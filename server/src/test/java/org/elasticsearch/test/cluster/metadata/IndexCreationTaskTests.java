@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.cluster.metadata;
+package org.elasticsearch.test.cluster.metadata;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.search.Sort;
@@ -30,11 +30,18 @@ import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.block.ClusterBlock;
 import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.cluster.block.ClusterBlocks;
+import org.elasticsearch.cluster.metadata.AliasMetaData;
+import org.elasticsearch.cluster.metadata.AliasValidator;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
+import org.elasticsearch.cluster.metadata.IndexTemplateMetaData;
+import org.elasticsearch.cluster.metadata.MappingMetaData;
+import org.elasticsearch.cluster.metadata.MetaData;
+import org.elasticsearch.cluster.metadata.MetaDataCreateIndexService;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.cluster.routing.IndexRoutingTable;
 import org.elasticsearch.cluster.routing.RoutingTable;
 import org.elasticsearch.cluster.routing.ShardRoutingState;
-import org.elasticsearch.cluster.routing.TestShardRouting;
+import org.elasticsearch.testframework.cluster.routing.TestShardRouting;
 import org.elasticsearch.cluster.routing.allocation.AllocationService;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
@@ -51,7 +58,7 @@ import org.elasticsearch.index.mapper.ParentFieldMapper;
 import org.elasticsearch.index.mapper.RoutingFieldMapper;
 import org.elasticsearch.index.shard.IndexEventListener;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 import org.mockito.ArgumentCaptor;
 
@@ -64,13 +71,13 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 
 import static org.elasticsearch.cluster.metadata.IndexMetaData.SETTING_NUMBER_OF_SHARDS;
-import static org.elasticsearch.test.hamcrest.CollectionAssertions.hasAllKeys;
-import static org.elasticsearch.test.hamcrest.CollectionAssertions.hasKey;
+import static org.elasticsearch.testframework.hamcrest.CollectionAssertions.hasAllKeys;
+import static org.elasticsearch.testframework.hamcrest.CollectionAssertions.hasKey;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doThrow;
@@ -245,16 +252,16 @@ public class IndexCreationTaskTests extends ESTestCase {
 
         executeTask();
 
-        verify(allocationService, times(1)).reroute(anyObject(), anyObject());
+        verify(allocationService, times(1)).reroute(any(), any());
     }
 
     @SuppressWarnings("unchecked")
     public void testIndexRemovalOnFailure() throws Exception {
-        doThrow(new RuntimeException("oops")).when(mapper).merge(anyMap(), anyObject(), anyBoolean());
+        doThrow(new RuntimeException("oops")).when(mapper).merge(anyMap(), any(), anyBoolean());
 
         expectThrows(RuntimeException.class, this::executeTask);
 
-        verify(indicesService, times(1)).removeIndex(anyObject(), anyObject(), anyObject());
+        verify(indicesService, times(1)).removeIndex(any(), any(), any());
     }
 
     public void testShrinkIndexIgnoresTemplates() throws Exception {
@@ -334,7 +341,7 @@ public class IndexCreationTaskTests extends ESTestCase {
     @SuppressWarnings("unchecked")
     private Map<String, Map<String, Object>> getMappingsFromResponse() {
         final ArgumentCaptor<Map> argument = ArgumentCaptor.forClass(Map.class);
-        verify(mapper).merge(argument.capture(), anyObject(), anyBoolean());
+        verify(mapper).merge(argument.capture(), any(), anyBoolean());
         return argument.getValue();
     }
 
@@ -445,6 +452,6 @@ public class IndexCreationTaskTests extends ESTestCase {
         when(service.getIndexSortSupplier()).thenReturn(supplier);
         when(service.getIndexEventListener()).thenReturn(mock(IndexEventListener.class));
 
-        when(indicesService.createIndex(anyObject(), anyObject())).thenReturn(service);
+        when(indicesService.createIndex(any(), any())).thenReturn(service);
     }
 }

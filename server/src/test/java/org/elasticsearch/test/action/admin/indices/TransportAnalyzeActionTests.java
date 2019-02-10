@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.admin.indices;
+package org.elasticsearch.test.action.admin.indices;
 
-import org.apache.lucene.analysis.MockTokenFilter;
+import org.apache.lucene.testframework.analysis.MockTokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
@@ -28,7 +28,7 @@ import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.env.TestEnvironment;
+import org.elasticsearch.testframework.env.TestEnvironment;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.analysis.AbstractCharFilterFactory;
 import org.elasticsearch.index.analysis.AbstractTokenFilterFactory;
@@ -40,10 +40,10 @@ import org.elasticsearch.index.analysis.TokenFilterFactory;
 import org.elasticsearch.index.mapper.AllFieldMapper;
 import org.elasticsearch.indices.analysis.AnalysisModule;
 import org.elasticsearch.indices.analysis.AnalysisModule.AnalysisProvider;
-import org.elasticsearch.indices.analysis.AnalysisModuleTests.AppendCharFilter;
+import org.elasticsearch.test.indices.analysis.AnalysisModuleTests.AppendCharFilter;
 import org.elasticsearch.plugins.AnalysisPlugin;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IndexSettingsModule;
 
 import java.io.IOException;
 import java.io.Reader;

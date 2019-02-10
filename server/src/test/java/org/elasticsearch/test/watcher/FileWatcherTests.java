@@ -16,11 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.watcher;
+package org.elasticsearch.test.watcher;
 
-import org.elasticsearch.core.internal.io.IOUtils;
-import org.apache.lucene.util.LuceneTestCase;
-import org.elasticsearch.test.ESTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.watcher.FileChangesListener;
+import org.elasticsearch.watcher.FileWatcher;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

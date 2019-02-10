@@ -17,10 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.terms;
+package org.elasticsearch.test.search.aggregations.bucket.terms;
 
 import org.elasticsearch.search.aggregations.InternalAggregations;
-import org.elasticsearch.test.InternalMultiBucketAggregationTestCase;
+import org.elasticsearch.search.aggregations.bucket.terms.InternalTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.UnmappedTerms;
+import org.elasticsearch.testframework.InternalMultiBucketAggregationTestCase;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 import org.junit.Before;
 

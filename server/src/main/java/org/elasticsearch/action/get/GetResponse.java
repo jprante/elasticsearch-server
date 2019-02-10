@@ -46,9 +46,9 @@ import java.util.Objects;
  */
 public class GetResponse extends ActionResponse implements Iterable<DocumentField>, ToXContentObject {
 
-    GetResult getResult;
+    public GetResult getResult;
 
-    GetResponse() {
+    public GetResponse() {
     }
 
     public GetResponse(GetResult getResult) {

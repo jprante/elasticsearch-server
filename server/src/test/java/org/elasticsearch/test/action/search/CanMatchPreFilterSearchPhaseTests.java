@@ -16,11 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.OriginalIndices;
+import org.elasticsearch.action.search.CanMatchPreFilterSearchPhase;
+import org.elasticsearch.action.search.InitialSearchPhase;
+import org.elasticsearch.action.search.SearchActionListener;
+import org.elasticsearch.action.search.SearchPhase;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchShardIterator;
+import org.elasticsearch.action.search.SearchTask;
+import org.elasticsearch.action.search.SearchTransportService;
+import org.elasticsearch.action.search.TransportSearchAction;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.routing.GroupShardsIterator;
@@ -30,10 +40,10 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.concurrent.EsExecutors;
 import org.elasticsearch.search.SearchPhaseResult;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.internal.AliasFilter;
-import org.elasticsearch.search.internal.ShardSearchTransportRequest;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.search.ShardSearchTransportRequest;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 import org.elasticsearch.transport.Transport;
 
 import java.io.IOException;
@@ -232,17 +242,17 @@ public class CanMatchPreFilterSearchPhaseTests extends ESTestCase {
                 (iter) -> new InitialSearchPhase<SearchPhaseResult>("test", searchRequest,
                         iter, logger, randomIntBetween(1, 32), executor) {
                     @Override
-                    void onPhaseDone() {
+                    public void onPhaseDone() {
                         latch.countDown();
                     }
 
                     @Override
-                    void onShardFailure(final int shardIndex, final SearchShardTarget shardTarget, final Exception ex) {
+                    public void onShardFailure(final int shardIndex, final SearchShardTarget shardTarget, final Exception ex) {
 
                     }
 
                     @Override
-                    void onShardSuccess(final SearchPhaseResult result) {
+                    public void onShardSuccess(final SearchPhaseResult result) {
 
                     }
 

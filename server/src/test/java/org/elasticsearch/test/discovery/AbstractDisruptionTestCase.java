@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.discovery;
+package org.elasticsearch.test.discovery;
 
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.block.ClusterBlock;
@@ -26,24 +26,26 @@ import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.discovery.Discovery;
+import org.elasticsearch.discovery.DiscoverySettings;
 import org.elasticsearch.discovery.zen.ElectMasterService;
 import org.elasticsearch.discovery.zen.FaultDetection;
 import org.elasticsearch.discovery.zen.UnicastZenPing;
 import org.elasticsearch.discovery.zen.ZenPing;
 import org.elasticsearch.env.NodeEnvironment;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.discovery.ClusterDiscoveryConfiguration;
-import org.elasticsearch.test.discovery.TestZenDiscovery;
-import org.elasticsearch.test.disruption.NetworkDisruption;
-import org.elasticsearch.test.disruption.NetworkDisruption.Bridge;
-import org.elasticsearch.test.disruption.NetworkDisruption.DisruptedLinks;
-import org.elasticsearch.test.disruption.NetworkDisruption.NetworkDisconnect;
-import org.elasticsearch.test.disruption.NetworkDisruption.NetworkLinkDisruptionType;
-import org.elasticsearch.test.disruption.NetworkDisruption.TwoPartitions;
-import org.elasticsearch.test.disruption.ServiceDisruptionScheme;
-import org.elasticsearch.test.disruption.SlowClusterStateProcessing;
-import org.elasticsearch.test.transport.MockTransportService;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.discovery.ClusterDiscoveryConfiguration;
+import org.elasticsearch.testframework.discovery.TestZenDiscovery;
+import org.elasticsearch.testframework.disruption.NetworkDisruption;
+import org.elasticsearch.testframework.disruption.NetworkDisruption.Bridge;
+import org.elasticsearch.testframework.disruption.NetworkDisruption.DisruptedLinks;
+import org.elasticsearch.testframework.disruption.NetworkDisruption.NetworkDisconnect;
+import org.elasticsearch.testframework.disruption.NetworkDisruption.NetworkLinkDisruptionType;
+import org.elasticsearch.testframework.disruption.NetworkDisruption.TwoPartitions;
+import org.elasticsearch.testframework.disruption.ServiceDisruptionScheme;
+import org.elasticsearch.testframework.disruption.SlowClusterStateProcessing;
+import org.elasticsearch.testframework.transport.MockTransportService;
 import org.elasticsearch.transport.TcpTransport;
 import org.junit.Before;
 

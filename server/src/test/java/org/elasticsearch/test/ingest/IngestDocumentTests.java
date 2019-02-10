@@ -17,9 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.ingest;
+package org.elasticsearch.test.ingest;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.ingest.IngestDocument;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.ingest.RandomDocumentPicks;
 import org.junit.Before;
 
 import java.time.Instant;
@@ -34,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.ingest.IngestDocumentMatcher.assertIngestDocument;
+import static org.elasticsearch.testframework.ingest.IngestDocumentMatcher.assertIngestDocument;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;

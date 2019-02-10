@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.blocks;
+package org.elasticsearch.test.blocks;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
@@ -28,7 +28,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.cluster.block.ClusterBlockException;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import java.util.HashMap;
 

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.persistent.decider;
+package org.elasticsearch.test.persistent.decider;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.cluster.node.tasks.list.ListTasksResponse;
@@ -27,11 +27,12 @@ import org.elasticsearch.persistent.PersistentTaskParams;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData.PersistentTask;
 import org.elasticsearch.persistent.PersistentTasksService;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.TestParams;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.TestPersistentTasksExecutor;
+import org.elasticsearch.persistent.decider.EnableAssignmentDecider;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.TestParams;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.TestPersistentTasksExecutor;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
@@ -39,7 +40,7 @@ import java.util.concurrent.CountDownLatch;
 import static java.util.Collections.singletonList;
 import static org.elasticsearch.persistent.decider.EnableAssignmentDecider.Allocation;
 import static org.elasticsearch.persistent.decider.EnableAssignmentDecider.CLUSTER_TASKS_ALLOCATION_ENABLE_SETTING;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.equalTo;
 
 @ESIntegTestCase.ClusterScope(minNumDataNodes = 1)

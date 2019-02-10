@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.index.seqno;
+package org.elasticsearch.test.index.seqno;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.seqno.SequenceNumbers;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;

@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.mapping.put;
+package org.elasticsearch.test.action.admin.indices.mapping.put;
 
+import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 public class PutMappingResponseTests extends AbstractStreamableXContentTestCase<PutMappingResponse> {
 

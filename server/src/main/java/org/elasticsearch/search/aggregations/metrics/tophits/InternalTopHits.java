@@ -85,15 +85,15 @@ public class InternalTopHits extends InternalAggregation implements TopHits {
         return searchHits;
     }
 
-    TopDocs getTopDocs() {
+    public TopDocs getTopDocs() {
         return topDocs;
     }
 
-    int getFrom() {
+    public int getFrom() {
         return from;
     }
 
-    int getSize() {
+    public int getSize() {
         return size;
     }
 

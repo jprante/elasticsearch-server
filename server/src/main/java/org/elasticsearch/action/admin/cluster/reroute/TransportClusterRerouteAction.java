@@ -56,7 +56,7 @@ public class TransportClusterRerouteAction extends TransportMasterNodeAction<Clu
     }
 
     @Override
-    protected ClusterBlockException checkBlock(ClusterRerouteRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(ClusterRerouteRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
     }
 
@@ -66,7 +66,7 @@ public class TransportClusterRerouteAction extends TransportMasterNodeAction<Clu
     }
 
     @Override
-    protected void masterOperation(final ClusterRerouteRequest request, final ClusterState state, final ActionListener<ClusterRerouteResponse> listener) {
+    public void masterOperation(final ClusterRerouteRequest request, final ClusterState state, final ActionListener<ClusterRerouteResponse> listener) {
         ActionListener<ClusterRerouteResponse> logWrapper = ActionListener.wrap(
             response -> {
                 if (request.dryRun() == false) {
@@ -81,7 +81,7 @@ public class TransportClusterRerouteAction extends TransportMasterNodeAction<Clu
             allocationService, request, logWrapper));
     }
 
-    static class ClusterRerouteResponseAckedClusterStateUpdateTask extends AckedClusterStateUpdateTask<ClusterRerouteResponse> {
+    public static class ClusterRerouteResponseAckedClusterStateUpdateTask extends AckedClusterStateUpdateTask<ClusterRerouteResponse> {
 
         private final ClusterRerouteRequest request;
         private final ActionListener<ClusterRerouteResponse> listener;
@@ -90,7 +90,7 @@ public class TransportClusterRerouteAction extends TransportMasterNodeAction<Clu
         private volatile ClusterState clusterStateToSend;
         private volatile RoutingExplanations explanations;
 
-        ClusterRerouteResponseAckedClusterStateUpdateTask(Logger logger, AllocationService allocationService, ClusterRerouteRequest request,
+        public ClusterRerouteResponseAckedClusterStateUpdateTask(Logger logger, AllocationService allocationService, ClusterRerouteRequest request,
                                                           ActionListener<ClusterRerouteResponse> listener) {
             super(Priority.IMMEDIATE, request, listener);
             this.request = request;

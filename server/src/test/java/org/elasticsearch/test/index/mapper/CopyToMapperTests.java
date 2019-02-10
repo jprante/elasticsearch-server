@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.apache.lucene.index.IndexableField;
 import org.elasticsearch.common.Strings;
@@ -30,9 +30,17 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.IndexService;
+import org.elasticsearch.index.mapper.DocumentMapper;
+import org.elasticsearch.index.mapper.DocumentMapperParser;
+import org.elasticsearch.index.mapper.FieldMapper;
+import org.elasticsearch.index.mapper.MapperParsingException;
+import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.mapper.MapperService.MergeReason;
 import org.elasticsearch.index.mapper.ParseContext.Document;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.mapper.ParsedDocument;
+import org.elasticsearch.index.mapper.SourceToParse;
+import org.elasticsearch.index.mapper.TextFieldMapper;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 import org.hamcrest.Matchers;
 
 import java.util.Arrays;
@@ -98,7 +106,7 @@ public class CopyToMapperTests extends ESSingleNodeTestCase {
                 .endObject());
 
         ParsedDocument parsedDoc = docMapper.parse(SourceToParse.source("test", "type1", "1", json, XContentType.JSON));
-        ParseContext.Document doc = parsedDoc.rootDoc();
+        Document doc = parsedDoc.rootDoc();
         assertThat(doc.getFields("copy_test").length, equalTo(2));
         assertThat(doc.getFields("copy_test")[0].stringValue(), equalTo("foo"));
         assertThat(doc.getFields("copy_test")[1].stringValue(), equalTo("bar"));
@@ -152,7 +160,7 @@ public class CopyToMapperTests extends ESSingleNodeTestCase {
                 .startObject("foo").startObject("bar").field("baz", "zoo").endObject().endObject()
                 .endObject());
 
-        ParseContext.Document doc = docMapper.parse(SourceToParse.source("test", "type1", "1", json,
+        Document doc = docMapper.parse(SourceToParse.source("test", "type1", "1", json,
                 XContentType.JSON)).rootDoc();
         assertThat(doc.getFields("copy_test").length, equalTo(1));
         assertThat(doc.getFields("copy_test")[0].stringValue(), equalTo("foo"));
@@ -179,7 +187,7 @@ public class CopyToMapperTests extends ESSingleNodeTestCase {
                 .field("new_field", "bar")
                 .endObject());
 
-        ParseContext.Document doc = docMapper.parse(SourceToParse.source("test", "type1", "1", json,
+        Document doc = docMapper.parse(SourceToParse.source("test", "type1", "1", json,
                 XContentType.JSON)).rootDoc();
         assertThat(doc.getFields("copy_test").length, equalTo(1));
         assertThat(doc.getFields("copy_test")[0].stringValue(), equalTo("foo"));
@@ -216,7 +224,7 @@ public class CopyToMapperTests extends ESSingleNodeTestCase {
             .field("new_field", "bar")
             .endObject());
 
-        ParseContext.Document doc = docMapper.parse(SourceToParse.source("test", "type1", "1", json,
+        Document doc = docMapper.parse(SourceToParse.source("test", "type1", "1", json,
                 XContentType.JSON)).rootDoc();
         assertThat(doc.getFields("copy_test").length, equalTo(1));
         assertThat(doc.getFields("copy_test")[0].stringValue(), equalTo("foo"));

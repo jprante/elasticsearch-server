@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.support;
+package org.elasticsearch.test.search.aggregations.support;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.aggregations.support.ValueType;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class ValueTypeTests extends ESTestCase {
 

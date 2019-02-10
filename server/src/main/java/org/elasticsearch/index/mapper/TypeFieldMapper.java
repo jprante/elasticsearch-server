@@ -89,9 +89,9 @@ public class TypeFieldMapper extends MetadataFieldMapper {
         }
     }
 
-    static final class TypeFieldType extends StringFieldType {
+    public static final class TypeFieldType extends StringFieldType {
 
-        TypeFieldType() {
+        public TypeFieldType() {
         }
 
         protected TypeFieldType(TypeFieldType ref) {

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.admin.cluster.node.tasks;
+package org.elasticsearch.test.action.admin.cluster.node.tasks;
 
 import org.elasticsearch.action.Action;
 import org.elasticsearch.action.ActionListener;
@@ -65,7 +65,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.test.ESTestCase.awaitBusy;
+import static org.elasticsearch.testframework.ESTestCase.awaitBusy;
 
 /**
  * A plugin that adds a cancellable blocking test task of integration testing of the task manager.

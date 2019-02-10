@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.cluster.routing.allocation;
+package org.elasticsearch.test.cluster.routing.allocation;
 
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.TestUtil;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -26,6 +26,7 @@ import org.elasticsearch.cluster.metadata.MetaData;
 import org.elasticsearch.cluster.routing.IndexShardRoutingTable;
 import org.elasticsearch.cluster.routing.RoutingTable;
 import org.elasticsearch.cluster.routing.ShardRouting;
+import org.elasticsearch.cluster.routing.allocation.AllocationService;
 import org.elasticsearch.common.settings.Settings;
 
 import java.io.IOException;
@@ -45,7 +46,8 @@ public class BalanceUnbalancedClusterTests extends CatAllocationTestCase {
     @Override
     protected Path getCatPath() throws IOException {
         Path tmp = createTempDir();
-        try (InputStream stream = Files.newInputStream(getDataPath("/org/elasticsearch/cluster/routing/issue_9023.zip"))) {
+        try (InputStream stream = getDataInputStream(BalanceUnbalancedClusterTests.class,
+                "/org/elasticsearch/test/cluster/routing/issue_9023.zip")) {
             TestUtil.unzip(stream, tmp);
         }
         return tmp.resolve("issue_9023");

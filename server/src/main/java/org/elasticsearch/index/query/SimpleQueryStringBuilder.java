@@ -334,13 +334,13 @@ public class SimpleQueryStringBuilder extends AbstractQueryBuilder<SimpleQuerySt
     }
 
     /** For testing and serialisation only. */
-    SimpleQueryStringBuilder flags(int flags) {
+    public SimpleQueryStringBuilder flags(int flags) {
         this.flags = flags;
         return this;
     }
 
     /** For testing only: Return the flags set for this query. */
-    int flags() {
+    public int flags() {
         return this.flags;
     }
 
@@ -447,7 +447,7 @@ public class SimpleQueryStringBuilder extends AbstractQueryBuilder<SimpleQuerySt
     }
 
     @Override
-    protected Query doToQuery(QueryShardContext context) throws IOException {
+    public  Query doToQuery(QueryShardContext context) throws IOException {
         Settings newSettings = new Settings(settings);
         final Map<String, Float> resolvedFieldsAndWeights;
         if (fieldsAndWeights.isEmpty() == false) {

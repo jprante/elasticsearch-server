@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.pipeline.bucketmetrics;
+package org.elasticsearch.test.search.aggregations.pipeline.bucketmetrics;
 
 import org.elasticsearch.common.io.stream.Writeable.Reader;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.test.InternalAggregationTestCase;
+import org.elasticsearch.search.aggregations.pipeline.bucketmetrics.BucketMetricValue;
+import org.elasticsearch.search.aggregations.pipeline.bucketmetrics.InternalBucketMetricValue;
+import org.elasticsearch.testframework.InternalAggregationTestCase;
 
 import java.util.Arrays;
 import java.util.Collections;

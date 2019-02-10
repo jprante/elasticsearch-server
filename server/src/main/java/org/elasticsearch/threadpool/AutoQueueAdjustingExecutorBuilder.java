@@ -46,7 +46,7 @@ public final class AutoQueueAdjustingExecutorBuilder extends ExecutorBuilder<Aut
     private final Setting<TimeValue> targetedResponseTimeSetting;
     private final Setting<Integer> frameSizeSetting;
 
-    AutoQueueAdjustingExecutorBuilder(final Settings settings, final String name, final int size,
+    public AutoQueueAdjustingExecutorBuilder(final Settings settings, final String name, final int size,
                                       final int initialQueueSize, final int minQueueSize,
                                       final int maxQueueSize, final int frameSize) {
         super(name);

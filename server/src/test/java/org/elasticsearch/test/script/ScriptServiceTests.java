@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.script;
+package org.elasticsearch.test.script;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.action.admin.cluster.storedscripts.GetStoredScriptRequest;
@@ -32,7 +32,18 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.script.ExecutableScript;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptContext;
+import org.elasticsearch.script.ScriptEngine;
+import org.elasticsearch.script.ScriptMetaData;
+import org.elasticsearch.script.ScriptModule;
+import org.elasticsearch.script.ScriptService;
+import org.elasticsearch.script.ScriptType;
+import org.elasticsearch.script.SearchScript;
+import org.elasticsearch.script.StoredScriptSource;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.script.MockScriptEngine;
 import org.junit.Before;
 
 import java.io.IOException;
@@ -79,7 +90,7 @@ public class ScriptServiceTests extends ESTestCase {
         Settings finalSettings = Settings.builder().put(baseSettings).put(additionalSettings).build();
         scriptService = new ScriptService(finalSettings, engines, contexts) {
             @Override
-            StoredScriptSource getScriptFromClusterState(String id) {
+            public StoredScriptSource getScriptFromClusterState(String id) {
                 //mock the script that gets retrieved from an index
                 return new StoredScriptSource("test", "1+1", Collections.emptyMap());
             }

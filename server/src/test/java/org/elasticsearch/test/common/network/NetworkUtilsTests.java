@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.network;
+package org.elasticsearch.test.common.network;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.network.NetworkUtils;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

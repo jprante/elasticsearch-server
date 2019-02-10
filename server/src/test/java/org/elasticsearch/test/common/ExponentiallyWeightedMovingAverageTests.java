@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common;
+package org.elasticsearch.test.common;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.ExponentiallyWeightedMovingAverage;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;

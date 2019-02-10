@@ -50,11 +50,11 @@ public final class InternalHistogram extends InternalMultiBucketAggregation<Inte
         implements Histogram, HistogramFactory {
     public static class Bucket extends InternalMultiBucketAggregation.InternalBucket implements Histogram.Bucket, KeyComparable<Bucket> {
 
-        final double key;
-        final long docCount;
-        final InternalAggregations aggregations;
+        public final double key;
+        public final long docCount;
+        public final InternalAggregations aggregations;
         private final transient boolean keyed;
-        protected final transient DocValueFormat format;
+        public final transient DocValueFormat format;
 
         public Bucket(double key, long docCount, boolean keyed, DocValueFormat format,
                 InternalAggregations aggregations) {
@@ -215,7 +215,7 @@ public final class InternalHistogram extends InternalMultiBucketAggregation<Inte
     private final long minDocCount;
     private final EmptyBucketInfo emptyBucketInfo;
 
-    InternalHistogram(String name, List<Bucket> buckets, BucketOrder order, long minDocCount, EmptyBucketInfo emptyBucketInfo,
+    public InternalHistogram(String name, List<Bucket> buckets, BucketOrder order, long minDocCount, EmptyBucketInfo emptyBucketInfo,
             DocValueFormat formatter, boolean keyed, List<PipelineAggregator> pipelineAggregators,
             Map<String, Object> metaData) {
         super(name, pipelineAggregators, metaData);
@@ -267,11 +267,11 @@ public final class InternalHistogram extends InternalMultiBucketAggregation<Inte
         return Collections.unmodifiableList(buckets);
     }
 
-    long getMinDocCount() {
+    public long getMinDocCount() {
         return minDocCount;
     }
 
-    BucketOrder getOrder() {
+    public BucketOrder getOrder() {
         return order;
     }
 

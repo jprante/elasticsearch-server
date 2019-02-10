@@ -280,7 +280,7 @@ public class SyncedFlushService extends AbstractComponent implements IndexEventL
         listener.onResponse(new ShardsSyncedFlushResult(shardId, existingSyncId, totalShards, results));
     }
 
-    final IndexShardRoutingTable getShardRoutingTable(ShardId shardId, ClusterState state) {
+    public final IndexShardRoutingTable getShardRoutingTable(ShardId shardId, ClusterState state) {
         final IndexRoutingTable indexRoutingTable = state.routingTable().index(shardId.getIndexName());
         if (indexRoutingTable == null) {
             IndexMetaData index = state.getMetaData().index(shardId.getIndex());
@@ -349,7 +349,7 @@ public class SyncedFlushService extends AbstractComponent implements IndexEventL
         return PreSyncedFlushResponse.UNKNOWN_NUM_DOCS;
     }
 
-    void sendSyncRequests(final String syncId, final List<ShardRouting> shards, ClusterState state, Map<String, PreSyncedFlushResponse> preSyncResponses,
+    public void sendSyncRequests(final String syncId, final List<ShardRouting> shards, ClusterState state, Map<String, PreSyncedFlushResponse> preSyncResponses,
                           final ShardId shardId, final int totalShards, final ActionListener<ShardsSyncedFlushResult> listener) {
         final CountDown countDown = new CountDown(shards.size());
         final Map<ShardRouting, ShardSyncedFlushResponse> results = ConcurrentCollections.newConcurrentMap();
@@ -421,7 +421,7 @@ public class SyncedFlushService extends AbstractComponent implements IndexEventL
     /**
      * send presync requests to all started copies of the given shard
      */
-    void sendPreSyncRequests(final List<ShardRouting> shards, final ClusterState state, final ShardId shardId, final ActionListener<Map<String, PreSyncedFlushResponse>> listener) {
+    public void sendPreSyncRequests(final List<ShardRouting> shards, final ClusterState state, final ShardId shardId, final ActionListener<Map<String, PreSyncedFlushResponse>> listener) {
         final CountDown countDown = new CountDown(shards.size());
         final ConcurrentMap<String, PreSyncedFlushResponse> presyncResponses = ConcurrentCollections.newConcurrentMap();
         for (final ShardRouting shard : shards) {
@@ -543,17 +543,17 @@ public class SyncedFlushService extends AbstractComponent implements IndexEventL
     /**
      * Response for first step of synced flush (flush) for one shard copy
      */
-    static final class PreSyncedFlushResponse extends TransportResponse {
+    public static final class PreSyncedFlushResponse extends TransportResponse {
         static final int UNKNOWN_NUM_DOCS = -1;
 
         Engine.CommitId commitId;
         int numDocs;
         @Nullable String existingSyncId = null;
 
-        PreSyncedFlushResponse() {
+        public PreSyncedFlushResponse() {
         }
 
-        PreSyncedFlushResponse(Engine.CommitId commitId, int numDocs, String existingSyncId) {
+        public PreSyncedFlushResponse(Engine.CommitId commitId, int numDocs, String existingSyncId) {
             this.commitId = commitId;
             this.numDocs = numDocs;
             this.existingSyncId = existingSyncId;
@@ -657,7 +657,7 @@ public class SyncedFlushService extends AbstractComponent implements IndexEventL
         /**
          * a non null value indicates a failure to sync flush. null means success
          */
-        String failureReason;
+        public String failureReason;
 
         public ShardSyncedFlushResponse() {
             failureReason = null;

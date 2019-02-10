@@ -129,7 +129,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         out.writeOptionalString(postFilter);
     }
 
-    String field() {
+    public String field() {
         return this.field;
     }
 
@@ -151,7 +151,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    String suggestMode() {
+    public String suggestMode() {
         return suggestMode;
     }
 
@@ -168,7 +168,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Float accuracy() {
+    public Float accuracy() {
         return this.accuracy;
     }
 
@@ -183,7 +183,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Integer size() {
+    public Integer size() {
         return size;
     }
 
@@ -204,7 +204,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    String sort() {
+    public String sort() {
         return sort;
     }
 
@@ -230,7 +230,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    String stringDistance() {
+    public String stringDistance() {
         return stringDistance;
     }
 
@@ -248,7 +248,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Integer maxEdits() {
+    public Integer maxEdits() {
         return maxEdits;
     }
 
@@ -262,7 +262,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Integer maxInspections() {
+    public Integer maxInspections() {
         return maxInspections;
     }
 
@@ -282,7 +282,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Float maxTermFreq() {
+    public Float maxTermFreq() {
         return maxTermFreq;
     }
 
@@ -297,7 +297,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Integer prefixLength() {
+    public Integer prefixLength() {
         return prefixLength;
     }
 
@@ -310,7 +310,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Integer minWordLength() {
+    public Integer minWordLength() {
         return minWordLength;
     }
 
@@ -327,7 +327,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    Float minDocFreq() {
+    public Float minDocFreq() {
         return minDocFreq;
     }
 
@@ -340,7 +340,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    String preFilter() {
+    public String preFilter() {
         return preFilter;
     }
 
@@ -353,7 +353,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         return this;
     }
 
-    String postFilter() {
+    public String postFilter() {
         return postFilter;
     }
 
@@ -464,7 +464,7 @@ public final class DirectCandidateGeneratorBuilder implements CandidateGenerator
         }
     }
 
-    static StringDistance resolveDistance(String distanceVal) {
+    public static StringDistance resolveDistance(String distanceVal) {
         distanceVal = distanceVal.toLowerCase(Locale.US);
         if ("internal".equals(distanceVal)) {
             return DirectSpellChecker.INTERNAL_LEVENSHTEIN;

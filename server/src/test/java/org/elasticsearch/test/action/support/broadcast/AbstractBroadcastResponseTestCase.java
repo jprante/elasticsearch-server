@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.support.broadcast;
+package org.elasticsearch.test.action.support.broadcast;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.support.DefaultShardOperationFailedException;
+import org.elasticsearch.action.support.broadcast.BroadcastResponse;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.ToXContent;
@@ -29,7 +30,7 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.test.AbstractXContentTestCase;
+import org.elasticsearch.testframework.AbstractXContentTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;

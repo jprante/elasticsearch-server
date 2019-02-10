@@ -33,17 +33,17 @@ import java.util.Map;
 public class InternalGeoDistance extends InternalRange<InternalGeoDistance.Bucket, InternalGeoDistance> {
     public static final Factory FACTORY = new Factory();
 
-    static class Bucket extends InternalRange.Bucket {
+    public static class Bucket extends InternalRange.Bucket {
 
-        Bucket(boolean keyed) {
+        public Bucket(boolean keyed) {
             super(keyed, DocValueFormat.RAW);
         }
 
-        Bucket(String key, double from, double to, long docCount, List<InternalAggregation> aggregations, boolean keyed) {
+        public Bucket(String key, double from, double to, long docCount, List<InternalAggregation> aggregations, boolean keyed) {
             this(key, from, to, docCount, new InternalAggregations(aggregations), keyed);
         }
 
-        Bucket(String key, double from, double to, long docCount, InternalAggregations aggregations, boolean keyed) {
+        public Bucket(String key, double from, double to, long docCount, InternalAggregations aggregations, boolean keyed) {
             super(key, from, to, docCount, aggregations, keyed, DocValueFormat.RAW);
         }
 

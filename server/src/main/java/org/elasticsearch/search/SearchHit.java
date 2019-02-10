@@ -857,7 +857,7 @@ public final class SearchHit implements Streamable, ToXContentObject, Iterable<D
             this.child = child;
         }
 
-        NestedIdentity(StreamInput in) throws IOException {
+        public NestedIdentity(StreamInput in) throws IOException {
             field = in.readOptionalText();
             offset = in.readInt();
             child = in.readOptionalWriteable(NestedIdentity::new);
@@ -903,7 +903,7 @@ public final class SearchHit implements Streamable, ToXContentObject, Iterable<D
          * Rendering of the inner XContent object without the leading field name. This way the structure innerToXContent renders and
          * fromXContent parses correspond to each other.
          */
-        XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException {
+        public XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException {
             builder.startObject();
             if (field != null) {
                 builder.field(FIELD, field);

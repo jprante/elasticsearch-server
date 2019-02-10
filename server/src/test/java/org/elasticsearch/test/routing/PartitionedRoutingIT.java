@@ -17,15 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.routing;
+package org.elasticsearch.test.routing;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.util.set.Sets;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.mockito.internal.util.collections.Sets;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,7 +51,7 @@ public class PartitionedRoutingIT extends ESIntegTestCase {
 
                 verifyGets(index, routingToDocumentIds);
                 verifyBroadSearches(index, routingToDocumentIds, shards);
-                verifyRoutedSearches(index, routingToDocumentIds, Sets.newSet(partitionSize));
+                verifyRoutedSearches(index, routingToDocumentIds, Sets.newHashSet(partitionSize));
             }
         }
     }
@@ -85,8 +85,8 @@ public class PartitionedRoutingIT extends ESIntegTestCase {
             // index will be one of those, depending on the routing value
             verifyRoutedSearches(index, routingToDocumentIds,
                 Math.floorDiv(partitionSize, factor) == 0 ?
-                    Sets.newSet(1, 2) :
-                    Sets.newSet(Math.floorDiv(partitionSize, factor), -Math.floorDiv(-partitionSize, factor)));
+                    Sets.newHashSet(1, 2) :
+                    Sets.newHashSet(Math.floorDiv(partitionSize, factor), -Math.floorDiv(-partitionSize, factor)));
 
             client().admin().indices().prepareUpdateSettings(index)
                 .setSettings(Settings.builder()

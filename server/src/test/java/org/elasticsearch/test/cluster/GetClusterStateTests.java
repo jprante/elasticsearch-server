@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster;
+package org.elasticsearch.test.cluster;
 
 import org.elasticsearch.action.admin.cluster.state.ClusterStateResponse;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.cluster.ClusterState;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 

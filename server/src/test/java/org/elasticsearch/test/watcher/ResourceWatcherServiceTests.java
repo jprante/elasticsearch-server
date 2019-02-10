@@ -17,12 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.watcher;
+package org.elasticsearch.test.watcher;
 
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
+import org.elasticsearch.watcher.ResourceWatcher;
+import org.elasticsearch.watcher.ResourceWatcherService;
+import org.elasticsearch.watcher.WatcherHandle;
 
 import static org.elasticsearch.common.unit.TimeValue.timeValueSeconds;
 import static org.hamcrest.Matchers.equalTo;

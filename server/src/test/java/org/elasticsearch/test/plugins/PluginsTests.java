@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.plugins;
+package org.elasticsearch.test.plugins;
 
 import org.apache.lucene.util.Constants;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.plugins.Platforms;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Locale;
 

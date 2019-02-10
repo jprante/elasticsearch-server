@@ -57,7 +57,7 @@ public class PipelineStore extends AbstractComponent implements ClusterStateAppl
     // We know of all the processor factories when a node with all its plugin have been initialized. Also some
     // processor factories rely on other node services. Custom metadata is statically registered when classes
     // are loaded, so in the cluster state we just save the pipeline config and here we keep the actual pipelines around.
-    volatile Map<String, Pipeline> pipelines = new HashMap<>();
+    public volatile Map<String, Pipeline> pipelines = new HashMap<>();
 
     public PipelineStore(Settings settings, Map<String, Processor.Factory> processorFactories) {
         super(settings);
@@ -69,7 +69,7 @@ public class PipelineStore extends AbstractComponent implements ClusterStateAppl
         innerUpdatePipelines(event.previousState(), event.state());
     }
 
-    void innerUpdatePipelines(ClusterState previousState, ClusterState state) {
+    public void innerUpdatePipelines(ClusterState previousState, ClusterState state) {
         if (state.blocks().hasGlobalBlock(GatewayService.STATE_NOT_RECOVERED_BLOCK)) {
             return;
         }
@@ -137,7 +137,7 @@ public class PipelineStore extends AbstractComponent implements ClusterStateAppl
         });
     }
 
-    ClusterState innerDelete(DeletePipelineRequest request, ClusterState currentState) {
+    public ClusterState innerDelete(DeletePipelineRequest request, ClusterState currentState) {
         IngestMetadata currentIngestMetadata = currentState.metaData().custom(IngestMetadata.TYPE);
         if (currentIngestMetadata == null) {
             return currentState;
@@ -187,7 +187,7 @@ public class PipelineStore extends AbstractComponent implements ClusterStateAppl
         });
     }
 
-    void validatePipeline(Map<DiscoveryNode, IngestInfo> ingestInfos, PutPipelineRequest request) throws Exception {
+    public void validatePipeline(Map<DiscoveryNode, IngestInfo> ingestInfos, PutPipelineRequest request) throws Exception {
         if (ingestInfos.isEmpty()) {
             throw new IllegalStateException("Ingest info is empty");
         }
@@ -206,7 +206,7 @@ public class PipelineStore extends AbstractComponent implements ClusterStateAppl
         ExceptionsHelper.rethrowAndSuppress(exceptions);
     }
 
-    ClusterState innerPut(PutPipelineRequest request, ClusterState currentState) {
+    public ClusterState innerPut(PutPipelineRequest request, ClusterState currentState) {
         IngestMetadata currentIngestMetadata = currentState.metaData().custom(IngestMetadata.TYPE);
         Map<String, PipelineConfiguration> pipelines;
         if (currentIngestMetadata != null) {
@@ -245,7 +245,7 @@ public class PipelineStore extends AbstractComponent implements ClusterStateAppl
         return innerGetPipelines(ingestMetadata, ids);
     }
 
-    List<PipelineConfiguration> innerGetPipelines(IngestMetadata ingestMetadata, String... ids) {
+    public List<PipelineConfiguration> innerGetPipelines(IngestMetadata ingestMetadata, String... ids) {
         if (ingestMetadata == null) {
             return Collections.emptyList();
         }

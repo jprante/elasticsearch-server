@@ -30,13 +30,13 @@ import java.util.function.Consumer;
  * {@link #onResult(SearchPhaseResult)} will be set to the provided result array
  * where the given index is used to set the result on the array.
  */
-final class CountedCollector<R extends SearchPhaseResult> {
+public final class CountedCollector<R extends SearchPhaseResult> {
     private final Consumer<R> resultConsumer;
     private final CountDown counter;
     private final Runnable onFinish;
     private final SearchPhaseContext context;
 
-    CountedCollector(Consumer<R> resultConsumer, int expectedOps, Runnable onFinish, SearchPhaseContext context) {
+    public CountedCollector(Consumer<R> resultConsumer, int expectedOps, Runnable onFinish, SearchPhaseContext context) {
         this.resultConsumer = resultConsumer;
         this.counter = new CountDown(expectedOps);
         this.onFinish = onFinish;
@@ -47,7 +47,7 @@ final class CountedCollector<R extends SearchPhaseResult> {
      * Forcefully counts down an operation and executes the provided runnable
      * if all expected operations where executed
      */
-    void countDown() {
+    public void countDown() {
         assert counter.isCountedDown() == false : "more operations executed than specified";
         if (counter.countDown()) {
             onFinish.run();
@@ -57,7 +57,7 @@ final class CountedCollector<R extends SearchPhaseResult> {
     /**
      * Sets the result to the given array index and then runs {@link #countDown()}
      */
-    void onResult(R result) {
+    public void onResult(R result) {
         try {
             resultConsumer.accept(result);
         } finally {
@@ -69,7 +69,7 @@ final class CountedCollector<R extends SearchPhaseResult> {
      * Escalates the failure via {@link SearchPhaseContext#onShardFailure(int, SearchShardTarget, Exception)}
      * and then runs {@link #countDown()}
      */
-    void onFailure(final int shardIndex, @Nullable SearchShardTarget shardTarget, Exception e) {
+    public void onFailure(final int shardIndex, @Nullable SearchShardTarget shardTarget, Exception e) {
         try {
             context.onShardFailure(shardIndex, shardTarget, e);
         } finally {

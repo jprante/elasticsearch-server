@@ -58,7 +58,7 @@ public class Segment implements Streamable {
     public Accountable ramTree = null;
     public Map<String, String> attributes;
 
-    Segment() {
+    public Segment() {
     }
 
     public Segment(String name) {

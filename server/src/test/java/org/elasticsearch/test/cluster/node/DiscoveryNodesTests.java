@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.node;
+package org.elasticsearch.test.cluster.node;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 import org.elasticsearch.Version;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.cluster.node.DiscoveryNode;
+import org.elasticsearch.cluster.node.DiscoveryNodes;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;

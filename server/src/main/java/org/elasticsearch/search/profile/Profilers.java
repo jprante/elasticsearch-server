@@ -19,7 +19,7 @@
 
 package org.elasticsearch.search.profile;
 
-import org.elasticsearch.search.internal.ContextIndexSearcher;
+import org.elasticsearch.search.ContextIndexSearcher;
 import org.elasticsearch.search.profile.aggregation.AggregationProfiler;
 import org.elasticsearch.search.profile.query.QueryProfiler;
 

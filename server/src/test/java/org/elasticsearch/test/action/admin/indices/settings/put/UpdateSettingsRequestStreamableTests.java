@@ -17,14 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.settings.put;
+package org.elasticsearch.test.action.admin.indices.settings.put;
 
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.Settings.Builder;
 import org.elasticsearch.common.util.CollectionUtils;
-import org.elasticsearch.test.AbstractStreamableTestCase;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.AbstractStreamableTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -29,7 +29,7 @@ import org.elasticsearch.index.IndexSettings;
 
 public class WhitespaceTokenizerFactory extends AbstractTokenizerFactory {
 
-    static final String MAX_TOKEN_LENGTH = "max_token_length";
+    public static final String MAX_TOKEN_LENGTH = "max_token_length";
     private Integer maxTokenLength;
 
     public WhitespaceTokenizerFactory(IndexSettings indexSettings, Environment environment, String name, Settings settings) {

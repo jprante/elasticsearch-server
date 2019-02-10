@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.hash;
+package org.elasticsearch.test.common.hash;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.hash.MessageDigests;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;

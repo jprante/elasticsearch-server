@@ -60,12 +60,12 @@ public class TransportPutRepositoryAction extends TransportMasterNodeAction<PutR
     }
 
     @Override
-    protected ClusterBlockException checkBlock(PutRepositoryRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(PutRepositoryRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
     }
 
     @Override
-    protected void masterOperation(final PutRepositoryRequest request, ClusterState state, final ActionListener<PutRepositoryResponse> listener) {
+    public void masterOperation(final PutRepositoryRequest request, ClusterState state, final ActionListener<PutRepositoryResponse> listener) {
 
         repositoriesService.registerRepository(
                 new RepositoriesService.RegisterRepositoryRequest("put_repository [" + request.name() + "]",

@@ -310,7 +310,7 @@ public final class HyperLogLogPlusPlus implements Releasable {
         }
     }
 
-    void upgradeToHll(long bucket) {
+    public void upgradeToHll(long bucket) {
         ensureCapacity(bucket + 1);
         final IntArray values = hashSet.values(bucket);
         try {
@@ -336,7 +336,7 @@ public final class HyperLogLogPlusPlus implements Releasable {
     /**
      * Encode the hash on 32 bits. The encoded hash cannot be equal to <code>0</code>.
      */
-    static int encodeHash(long hash, int p) {
+    public static int encodeHash(long hash, int p) {
         final long e = hash >>> (64 - P2);
         final long encoded;
         if ((e & mask(P2 - p)) == 0) {
@@ -350,7 +350,7 @@ public final class HyperLogLogPlusPlus implements Releasable {
         return (int) encoded;
     }
 
-    static int decodeRunLen(int encoded, int p) {
+    public static int decodeRunLen(int encoded, int p) {
         if ((encoded & 1) == 1) {
             return (((encoded >>> 1) & 0x3F) + (P2 - p));
         } else {
@@ -360,7 +360,7 @@ public final class HyperLogLogPlusPlus implements Releasable {
         }
     }
 
-    static int decodeIndex(int encoded, int p) {
+    public static int decodeIndex(int encoded, int p) {
         long index;
         if ((encoded & 1) == 1) {
             index = encoded >>> 7;
@@ -370,11 +370,11 @@ public final class HyperLogLogPlusPlus implements Releasable {
         return (int) (index >>> (P2 - p));
     }
 
-    static long index(long hash, int p) {
+    public static long index(long hash, int p) {
         return hash >>> (64 - p);
     }
 
-    static int runLen(long hash, int p) {
+    public static int runLen(long hash, int p) {
         return 1 + Math.min(Long.numberOfLeadingZeros(hash << p), 64 - p);
     }
 

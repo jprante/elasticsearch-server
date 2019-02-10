@@ -208,9 +208,9 @@ public class RangeFieldMapper extends FieldMapper {
     public static final class RangeFieldType extends MappedFieldType {
         protected RangeType rangeType;
         protected FormatDateTimeFormatter dateTimeFormatter;
-        protected DateMathParser dateMathParser;
+        public DateMathParser dateMathParser;
 
-        RangeFieldType(RangeType type, Version indexVersionCreated) {
+        public RangeFieldType(RangeType type, Version indexVersionCreated) {
             super();
             this.rangeType = Objects.requireNonNull(type);
             setTokenized(false);
@@ -433,7 +433,7 @@ public class RangeFieldMapper extends FieldMapper {
     }
 
     @Override
-    protected void doXContentBody(XContentBuilder builder, boolean includeDefaults, Params params) throws IOException {
+    public void doXContentBody(XContentBuilder builder, boolean includeDefaults, Params params) throws IOException {
         super.doXContentBody(builder, includeDefaults, params);
 
         if (fieldType().rangeType == RangeType.DATE

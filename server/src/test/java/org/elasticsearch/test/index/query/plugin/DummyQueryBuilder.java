@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query.plugin;
+package org.elasticsearch.test.index.query.plugin;
 
 import org.apache.lucene.search.Query;
 import org.elasticsearch.common.io.stream.StreamInput;
@@ -26,7 +26,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.index.query.AbstractQueryBuilder;
 import org.elasticsearch.index.query.QueryShardContext;
-import org.elasticsearch.index.query.plugin.DummyQueryParserPlugin.DummyQuery;
+import org.elasticsearch.test.index.query.plugin.DummyQueryParserPlugin.DummyQuery;
 
 import java.io.IOException;
 

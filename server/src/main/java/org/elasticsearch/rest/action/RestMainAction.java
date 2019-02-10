@@ -59,7 +59,8 @@ public class RestMainAction extends BaseRestHandler {
         });
     }
 
-    static BytesRestResponse convertMainResponse(MainResponse response, RestRequest request, XContentBuilder builder) throws IOException {
+    public static BytesRestResponse convertMainResponse(MainResponse response, RestRequest request, XContentBuilder builder)
+            throws IOException {
         RestStatus status = response.isAvailable() ? RestStatus.OK : RestStatus.SERVICE_UNAVAILABLE;
 
         // Default to pretty printing, but allow ?pretty=false to disable

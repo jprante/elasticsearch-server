@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.action.index;
+package org.elasticsearch.test.action.index;
 
 import org.elasticsearch.action.DocWriteResponse;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -29,15 +30,15 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.seqno.SequenceNumbers;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.RandomObjects;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.RandomObjects;
 
 import java.io.IOException;
 import java.util.function.Predicate;
 
-import static org.elasticsearch.action.support.replication.ReplicationResponseTests.assertShardInfo;
+import static org.elasticsearch.test.action.support.replication.ReplicationResponseTests.assertShardInfo;
 import static org.elasticsearch.cluster.metadata.IndexMetaData.INDEX_UUID_NA_VALUE;
-import static org.elasticsearch.test.XContentTestUtils.insertRandomFields;
+import static org.elasticsearch.testframework.XContentTestUtils.insertRandomFields;
 
 public class IndexResponseTests extends ESTestCase {
 

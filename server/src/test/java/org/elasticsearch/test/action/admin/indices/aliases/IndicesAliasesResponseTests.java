@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.alias;
+package org.elasticsearch.test.action.admin.indices.aliases;
 
+import org.elasticsearch.action.admin.indices.alias.IndicesAliasesResponse;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 public class IndicesAliasesResponseTests extends AbstractStreamableXContentTestCase<IndicesAliasesResponse> {
 

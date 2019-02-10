@@ -135,7 +135,7 @@ public final class ExceptionsHelper {
         return Arrays.stream(stackTrace).skip(1).map(e -> "\tat " + e).collect(Collectors.joining("\n"));
     }
 
-    static final int MAX_ITERATIONS = 1024;
+    public static final int MAX_ITERATIONS = 1024;
 
     /**
      * Unwrap the specified throwable looking for any suppressed errors or errors as a root cause of the specified throwable.

@@ -64,7 +64,7 @@ public class TransportPutMappingAction extends TransportMasterNodeAction<PutMapp
     }
 
     @Override
-    protected ClusterBlockException checkBlock(PutMappingRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(PutMappingRequest request, ClusterState state) {
         String[] indices;
         if (request.getConcreteIndex() == null) {
             indices = indexNameExpressionResolver.concreteIndexNames(state, request);
@@ -75,7 +75,7 @@ public class TransportPutMappingAction extends TransportMasterNodeAction<PutMapp
     }
 
     @Override
-    protected void masterOperation(final PutMappingRequest request, final ClusterState state, final ActionListener<PutMappingResponse> listener) {
+    public void masterOperation(final PutMappingRequest request, final ClusterState state, final ActionListener<PutMappingResponse> listener) {
         try {
             final Index[] concreteIndices = request.getConcreteIndex() == null ? indexNameExpressionResolver.concreteIndices(state, request) : new Index[] {request.getConcreteIndex()};
             PutMappingClusterStateUpdateRequest updateRequest = new PutMappingClusterStateUpdateRequest()

@@ -37,23 +37,23 @@ import java.util.Objects;
 public class SignificantLongTerms extends InternalMappedSignificantTerms<SignificantLongTerms, SignificantLongTerms.Bucket> {
     public static final String NAME = "siglterms";
 
-    static class Bucket extends InternalSignificantTerms.Bucket<Bucket> {
+    public static class Bucket extends InternalSignificantTerms.Bucket<Bucket> {
 
         long term;
 
-        Bucket(long subsetDf, long subsetSize, long supersetDf, long supersetSize, long term, InternalAggregations aggregations,
+        public Bucket(long subsetDf, long subsetSize, long supersetDf, long supersetSize, long term, InternalAggregations aggregations,
                 DocValueFormat format) {
             super(subsetDf, subsetSize, supersetDf, supersetSize, aggregations, format);
             this.term = term;
         }
 
-        Bucket(long subsetDf, long subsetSize, long supersetDf, long supersetSize, long term, InternalAggregations aggregations,
+        public Bucket(long subsetDf, long subsetSize, long supersetDf, long supersetSize, long term, InternalAggregations aggregations,
                 double score) {
             this(subsetDf, subsetSize, supersetDf, supersetSize, term, aggregations, null);
             this.score = score;
         }
 
-        Bucket(StreamInput in, long subsetSize, long supersetSize, DocValueFormat format) throws IOException {
+        public Bucket(StreamInput in, long subsetSize, long supersetSize, DocValueFormat format) throws IOException {
             super(in, subsetSize, supersetSize, format);
             subsetDf = in.readVLong();
             supersetDf = in.readVLong();

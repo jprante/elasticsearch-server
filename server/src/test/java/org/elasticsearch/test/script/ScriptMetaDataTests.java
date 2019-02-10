@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.script;
+package org.elasticsearch.test.script;
 
 import org.elasticsearch.cluster.DiffableUtils;
 import org.elasticsearch.common.bytes.BytesArray;
@@ -28,7 +28,9 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.AbstractSerializingTestCase;
+import org.elasticsearch.script.ScriptMetaData;
+import org.elasticsearch.script.StoredScriptSource;
+import org.elasticsearch.testframework.AbstractSerializingTestCase;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

@@ -320,7 +320,7 @@ public class AllocationService extends AbstractComponent {
      * <p>
      * If the same instance of ClusterState is returned, then no change has been made.
      */
-    protected ClusterState reroute(final ClusterState clusterState, String reason, boolean debug) {
+    public ClusterState reroute(final ClusterState clusterState, String reason, boolean debug) {
         RoutingNodes routingNodes = getMutableRoutingNodes(clusterState);
         // shuffle the unassigned nodes, just so we won't have things like poison failed shards
         routingNodes.unassigned().shuffle();

@@ -72,7 +72,7 @@ public class TemplateUpgradeService extends AbstractComponent implements Cluster
 
     public final Client client;
 
-    final AtomicInteger upgradesInProgress = new AtomicInteger();
+    public final AtomicInteger upgradesInProgress = new AtomicInteger();
 
     private ImmutableOpenMap<String, IndexTemplateMetaData> lastTemplateMetaData;
 
@@ -137,7 +137,7 @@ public class TemplateUpgradeService extends AbstractComponent implements Cluster
         }
     }
 
-    void upgradeTemplates(Map<String, BytesReference> changes, Set<String> deletions) {
+    public void upgradeTemplates(Map<String, BytesReference> changes, Set<String> deletions) {
         final AtomicBoolean anyUpgradeFailed = new AtomicBoolean(false);
         if (threadPool.getThreadContext().isSystemContext() == false) {
             throw new IllegalStateException("template updates from the template upgrade service should always happen in a system context");
@@ -193,7 +193,7 @@ public class TemplateUpgradeService extends AbstractComponent implements Cluster
         }
     }
 
-    void tryFinishUpgrade(AtomicBoolean anyUpgradeFailed) {
+    public void tryFinishUpgrade(AtomicBoolean anyUpgradeFailed) {
         assert upgradesInProgress.get() > 0;
         if (upgradesInProgress.decrementAndGet() == 1) {
             try {
@@ -219,7 +219,7 @@ public class TemplateUpgradeService extends AbstractComponent implements Cluster
         }
     }
 
-    Optional<Tuple<Map<String, BytesReference>, Set<String>>> calculateTemplateChanges(
+    public Optional<Tuple<Map<String, BytesReference>, Set<String>>> calculateTemplateChanges(
         ImmutableOpenMap<String, IndexTemplateMetaData> templates) {
         // collect current templates
         Map<String, IndexTemplateMetaData> existingMap = new HashMap<>();

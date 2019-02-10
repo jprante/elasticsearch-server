@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.translog;
+package org.elasticsearch.test.index.translog;
 
 import com.carrotsearch.randomizedtesting.generators.RandomNumbers;
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
@@ -26,6 +26,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexCommit;
 import org.apache.lucene.store.NIOFSDirectory;
 import org.elasticsearch.index.engine.CombinedDeletionPolicy;
+import org.elasticsearch.index.translog.Translog;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

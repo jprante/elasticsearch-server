@@ -17,16 +17,22 @@
  * under the License.
  */
 
-package org.elasticsearch.index.translog;
+package org.elasticsearch.test.index.translog;
 
 import org.apache.lucene.store.ByteArrayDataOutput;
-import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.lease.Releasable;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.translog.BaseTranslogReader;
+import org.elasticsearch.index.translog.Translog;
+import org.elasticsearch.index.translog.TranslogConfig;
+import org.elasticsearch.index.translog.TranslogDeletionPolicy;
+import org.elasticsearch.index.translog.TranslogReader;
+import org.elasticsearch.index.translog.TranslogWriter;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
 import org.mockito.Mockito;
 
 import java.io.IOException;

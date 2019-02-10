@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.indices;
+package org.elasticsearch.test.indices;
 
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.indices.TermsLookup;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

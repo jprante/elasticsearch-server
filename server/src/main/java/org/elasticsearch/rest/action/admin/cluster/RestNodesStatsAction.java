@@ -55,7 +55,7 @@ public class RestNodesStatsAction extends BaseRestHandler {
         controller.registerHandler(GET, "/_nodes/{nodeId}/stats/{metric}/{index_metric}", this);
     }
 
-    static final Map<String, Consumer<NodesStatsRequest>> METRICS;
+    public static final Map<String, Consumer<NodesStatsRequest>> METRICS;
 
     static {
         final Map<String, Consumer<NodesStatsRequest>> metrics = new HashMap<>();
@@ -75,7 +75,7 @@ public class RestNodesStatsAction extends BaseRestHandler {
         METRICS = Collections.unmodifiableMap(metrics);
     }
 
-    static final Map<String, Consumer<CommonStatsFlags>> FLAGS;
+    public static final Map<String, Consumer<CommonStatsFlags>> FLAGS;
 
     static {
         final Map<String, Consumer<CommonStatsFlags>> flags = new HashMap<>();

@@ -56,7 +56,7 @@ public class ResizeRequest extends AcknowledgedRequest<ResizeRequest> implements
     private String sourceIndex;
     private ResizeType type = ResizeType.SHRINK;
 
-    ResizeRequest() {}
+    public ResizeRequest() {}
 
     public ResizeRequest(String targetIndex, String sourceIndex) {
         this.targetIndexRequest = new CreateIndexRequest(targetIndex);

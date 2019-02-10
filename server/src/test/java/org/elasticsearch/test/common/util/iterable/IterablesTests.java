@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util.iterable;
+package org.elasticsearch.test.common.util.iterable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.iterable.Iterables;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.object.HasToString.hasToString;
 

@@ -39,10 +39,10 @@ public class UpdateSettingsResponse extends AcknowledgedResponse {
         declareAcknowledgedField(PARSER);
     }
 
-    UpdateSettingsResponse() {
+    public UpdateSettingsResponse() {
     }
 
-    UpdateSettingsResponse(boolean acknowledged) {
+    public UpdateSettingsResponse(boolean acknowledged) {
         super(acknowledged);
     }
 

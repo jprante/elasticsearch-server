@@ -17,13 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.common.compress;
+package org.elasticsearch.test.common.compress;
 
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.TestUtil;
 import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.common.compress.CompressedXContent;
+import org.elasticsearch.common.compress.Compressor;
+import org.elasticsearch.common.compress.DeflateCompressor;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamOutput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Assert;
 
 import java.io.IOException;

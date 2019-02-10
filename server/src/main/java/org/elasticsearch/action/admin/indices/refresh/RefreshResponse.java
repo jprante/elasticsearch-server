@@ -43,10 +43,11 @@ public class RefreshResponse extends BroadcastResponse {
         declareBroadcastFields(PARSER);
     }
 
-    RefreshResponse() {
+    public RefreshResponse() {
     }
 
-    RefreshResponse(int totalShards, int successfulShards, int failedShards, List<DefaultShardOperationFailedException> shardFailures) {
+    public RefreshResponse(int totalShards, int successfulShards, int failedShards,
+                           List<DefaultShardOperationFailedException> shardFailures) {
         super(totalShards, successfulShards, failedShards, shardFailures);
     }
 

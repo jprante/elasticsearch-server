@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.slice;
+package org.elasticsearch.test.search.slice;
 
-import org.apache.lucene.analysis.MockAnalyzer;
+import org.apache.lucene.testframework.analysis.MockAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.DocValuesType;
 import org.apache.lucene.index.IndexReader;
@@ -44,7 +44,10 @@ import org.elasticsearch.index.mapper.IdFieldMapper;
 import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.UidFieldMapper;
 import org.elasticsearch.index.query.QueryShardContext;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.slice.DocValuesSliceQuery;
+import org.elasticsearch.search.slice.SliceBuilder;
+import org.elasticsearch.search.slice.TermsSliceQuery;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;

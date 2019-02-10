@@ -17,10 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.common.recycler;
+package org.elasticsearch.test.common.recycler;
 
+import org.elasticsearch.common.recycler.AbstractRecyclerC;
+import org.elasticsearch.common.recycler.Recycler;
 import org.elasticsearch.common.recycler.Recycler.V;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.Arrays;

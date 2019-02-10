@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.bootstrap.JavaVersion;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.List;
 

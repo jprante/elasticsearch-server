@@ -29,8 +29,8 @@ import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.common.util.concurrent.CountDown;
 import org.elasticsearch.search.SearchPhaseResult;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.search.internal.InternalScrollSearchRequest;
-import org.elasticsearch.search.internal.InternalSearchResponse;
+import org.elasticsearch.search.InternalScrollSearchRequest;
+import org.elasticsearch.search.InternalSearchResponse;
 import org.elasticsearch.transport.RemoteClusterService;
 import org.elasticsearch.transport.Transport;
 
@@ -51,7 +51,7 @@ import static org.elasticsearch.action.search.TransportSearchHelper.internalScro
  * fan out to nodes and execute the query part of the scroll request. Subclasses can for instance
  * run separate fetch phases etc.
  */
-abstract class SearchScrollAsyncAction<T extends SearchPhaseResult> implements Runnable {
+public abstract class SearchScrollAsyncAction<T extends SearchPhaseResult> implements Runnable {
     /*
      * Some random TODO:
      * Today we still have a dedicated executing mode for scrolls while we could simplify this by implementing
@@ -207,7 +207,7 @@ abstract class SearchScrollAsyncAction<T extends SearchPhaseResult> implements R
         }
     }
 
-    synchronized ShardSearchFailure[] buildShardFailures() { // pkg private for testing
+    public synchronized ShardSearchFailure[] buildShardFailures() { // pkg private for testing
         if (shardFailures.isEmpty()) {
             return ShardSearchFailure.EMPTY_ARRAY;
         }

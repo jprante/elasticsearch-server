@@ -103,7 +103,7 @@ public class AliasValidator extends AbstractComponent {
         }
     }
 
-    void validateAliasStandalone(String alias, String indexRouting) {
+    public void validateAliasStandalone(String alias, String indexRouting) {
         if (!Strings.hasText(alias)) {
             throw new IllegalArgumentException("alias name is required");
         }

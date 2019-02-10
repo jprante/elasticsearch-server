@@ -17,12 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.valuecount;
+package org.elasticsearch.test.search.aggregations.metrics.valuecount;
 
 import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
+import org.elasticsearch.search.aggregations.metrics.valuecount.InternalValueCount;
+import org.elasticsearch.search.aggregations.metrics.valuecount.ParsedValueCount;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.test.InternalAggregationTestCase;
+import org.elasticsearch.testframework.InternalAggregationTestCase;
 
 import java.util.HashMap;
 import java.util.List;

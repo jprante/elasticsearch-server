@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.hppc;
+package org.elasticsearch.test.common.hppc;
 
 import com.carrotsearch.hppc.ObjectHashSet;
 import org.elasticsearch.Assertions;
 import org.elasticsearch.common.collect.HppcMaps;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.List;

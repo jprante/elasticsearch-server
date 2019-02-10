@@ -17,9 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.cluster.allocation;
+package org.elasticsearch.test.action.admin.cluster.allocation;
 
-import org.elasticsearch.action.support.replication.ClusterStateCreationUtils;
+import org.elasticsearch.action.admin.cluster.allocation.ClusterAllocationExplainRequest;
+import org.elasticsearch.action.admin.cluster.allocation.ClusterAllocationExplanation;
+import org.elasticsearch.action.admin.cluster.allocation.TransportClusterAllocationExplainAction;
+import org.elasticsearch.test.action.support.replication.ClusterStateCreationUtils;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.routing.RoutingNode;
 import org.elasticsearch.cluster.routing.ShardRouting;
@@ -33,8 +36,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.gateway.TestGatewayAllocator;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.gateway.TestGatewayAllocator;
 
 import java.util.Collections;
 import java.util.Locale;

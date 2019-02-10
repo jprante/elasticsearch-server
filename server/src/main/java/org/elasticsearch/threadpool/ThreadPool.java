@@ -409,19 +409,19 @@ public class ThreadPool extends AbstractComponent implements Scheduler, Closeabl
      * @return min if value is less than min, max if value is greater
      * than value, otherwise value
      */
-    static int boundedBy(int value, int min, int max) {
+    public static int boundedBy(int value, int min, int max) {
         return Math.min(max, Math.max(min, value));
     }
 
-    static int halfNumberOfProcessorsMaxFive(int numberOfProcessors) {
+    public static int halfNumberOfProcessorsMaxFive(int numberOfProcessors) {
         return boundedBy((numberOfProcessors + 1) / 2, 1, 5);
     }
 
-    static int halfNumberOfProcessorsMaxTen(int numberOfProcessors) {
+    public static int halfNumberOfProcessorsMaxTen(int numberOfProcessors) {
         return boundedBy((numberOfProcessors + 1) / 2, 1, 10);
     }
 
-    static int twiceNumberOfProcessors(int numberOfProcessors) {
+    public static int twiceNumberOfProcessors(int numberOfProcessors) {
         return boundedBy(2 * numberOfProcessors, 2, Integer.MAX_VALUE);
     }
 

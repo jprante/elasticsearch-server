@@ -125,8 +125,8 @@ public interface DocValueFormat extends NamedWriteable {
 
         public static final String NAME = "date_time";
 
-        final FormatDateTimeFormatter formatter;
-        final DateTimeZone timeZone;
+        public final FormatDateTimeFormatter formatter;
+        public final DateTimeZone timeZone;
         private final DateMathParser parser;
 
         public DateTime(FormatDateTimeFormatter formatter, DateTimeZone timeZone) {
@@ -320,7 +320,7 @@ public interface DocValueFormat extends NamedWriteable {
         public static final String NAME = "decimal";
         private static final DecimalFormatSymbols SYMBOLS = new DecimalFormatSymbols(Locale.ROOT);
 
-        final String pattern;
+        public final String pattern;
         private final NumberFormat format;
 
         public Decimal(String pattern) {

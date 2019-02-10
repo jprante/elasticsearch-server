@@ -242,12 +242,12 @@ public class TextFieldMapper extends FieldMapper {
         }
     }
 
-    static final class PrefixFieldType extends StringFieldType {
+    public static final class PrefixFieldType extends StringFieldType {
 
         final int minChars;
         final int maxChars;
 
-        PrefixFieldType(String name, int minChars, int maxChars) {
+        public PrefixFieldType(String name, int minChars, int maxChars) {
             setTokenized(true);
             setOmitNorms(true);
             setIndexOptions(IndexOptions.DOCS);
@@ -256,7 +256,7 @@ public class TextFieldMapper extends FieldMapper {
             this.maxChars = maxChars;
         }
 
-        PrefixFieldType setAnalyzer(NamedAnalyzer delegate) {
+        public PrefixFieldType setAnalyzer(NamedAnalyzer delegate) {
             setIndexAnalyzer(new NamedAnalyzer(delegate.name(), AnalyzerScope.INDEX,
                 new PrefixWrappedAnalyzer(delegate.analyzer(), minChars, maxChars)));
             return this;
@@ -467,7 +467,7 @@ public class TextFieldMapper extends FieldMapper {
             this.fielddataMinSegmentSize = fielddataMinSegmentSize;
         }
 
-        void setPrefixFieldType(PrefixFieldType prefixFieldType) {
+        public void setPrefixFieldType(PrefixFieldType prefixFieldType) {
             checkIfFrozen();
             this.prefixFieldType = prefixFieldType;
         }

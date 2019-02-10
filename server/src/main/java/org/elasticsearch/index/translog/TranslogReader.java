@@ -79,14 +79,14 @@ public class TranslogReader extends BaseTranslogReader implements Closeable {
     }
 
     @Override
-    final Checkpoint getCheckpoint() {
+    public final Checkpoint getCheckpoint() {
         return checkpoint;
     }
 
     /**
      * reads an operation at the given position into the given buffer.
      */
-    protected void readBytes(ByteBuffer buffer, long position) throws IOException {
+    public void readBytes(ByteBuffer buffer, long position) throws IOException {
         if (position >= length) {
             throw new EOFException("read requested past EOF. pos [" + position + "] end: [" + length + "]");
         }

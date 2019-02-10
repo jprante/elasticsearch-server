@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import org.apache.lucene.index.Term;
@@ -27,7 +27,9 @@ import org.apache.lucene.search.spans.SpanTermQuery;
 import org.elasticsearch.common.ParsingException;
 import org.elasticsearch.common.lucene.BytesRefs;
 import org.elasticsearch.index.mapper.MappedFieldType;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.index.query.QueryShardContext;
+import org.elasticsearch.index.query.SpanTermQueryBuilder;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 

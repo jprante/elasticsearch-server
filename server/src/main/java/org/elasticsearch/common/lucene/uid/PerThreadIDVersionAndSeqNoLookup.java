@@ -47,7 +47,7 @@ import java.io.IOException;
  *  {@link org.apache.lucene.index.IndexReader#getReaderCacheHelper() reader cache helper}
  *  rather than the {@link LeafReader#getCoreCacheHelper() core cache helper}.
  */
-final class PerThreadIDVersionAndSeqNoLookup {
+public final class PerThreadIDVersionAndSeqNoLookup {
     // TODO: do we really need to store all this stuff? some if it might not speed up anything.
     // we keep it around for now, to reduce the amount of e.g. hash lookups by field and stuff
 
@@ -64,7 +64,7 @@ final class PerThreadIDVersionAndSeqNoLookup {
     /**
      * Initialize lookup for the provided segment
      */
-    PerThreadIDVersionAndSeqNoLookup(LeafReader reader, String uidField) throws IOException {
+    public PerThreadIDVersionAndSeqNoLookup(LeafReader reader, String uidField) throws IOException {
         this.uidField = uidField;
         Terms terms = reader.terms(uidField);
         if (terms == null) {

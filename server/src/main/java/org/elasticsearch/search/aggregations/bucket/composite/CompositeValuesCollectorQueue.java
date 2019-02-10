@@ -32,7 +32,7 @@ import java.util.TreeMap;
 /**
  * A specialized queue implementation for composite buckets
  */
-final class CompositeValuesCollectorQueue implements Releasable {
+public final class CompositeValuesCollectorQueue implements Releasable {
     // the slot for the current candidate
     private static final int CANDIDATE_SLOT = Integer.MAX_VALUE;
 
@@ -48,14 +48,14 @@ final class CompositeValuesCollectorQueue implements Releasable {
      * @param sources The list of {@link CompositeValuesSourceConfig} to build the composite buckets.
      * @param size The number of composite buckets to keep.
      */
-    CompositeValuesCollectorQueue(SingleDimensionValuesSource<?>[] sources, int size) {
+    public CompositeValuesCollectorQueue(SingleDimensionValuesSource<?>[] sources, int size) {
         this.maxSize = size;
         this.arrays = sources;
         this.docCounts = new int[size];
         this.keys = new TreeMap<>(this::compare);
     }
 
-    void clear() {
+    public void clear() {
         keys.clear();
         Arrays.fill(docCounts, 0);
         afterValueSet = false;
@@ -64,21 +64,21 @@ final class CompositeValuesCollectorQueue implements Releasable {
     /**
      * The current size of the queue.
      */
-    int size() {
+    public int size() {
         return keys.size();
     }
 
     /**
      * Whether the queue is full or not.
      */
-    boolean isFull() {
+    public boolean isFull() {
         return keys.size() == maxSize;
     }
 
     /**
      * Returns a sorted {@link Set} view of the slots contained in this queue.
      */
-    Set<Integer> getSortedSlot() {
+    public Set<Integer> getSortedSlot() {
         return keys.keySet();
     }
 
@@ -86,27 +86,27 @@ final class CompositeValuesCollectorQueue implements Releasable {
      * Compares the current candidate with the values in the queue and returns
      * the slot if the candidate is already in the queue or null if the candidate is not present.
      */
-    Integer compareCurrent() {
+    public Integer compareCurrent() {
         return keys.get(CANDIDATE_SLOT);
     }
 
     /**
      * Returns the lowest value (exclusive) of the leading source.
      */
-    Comparable<?> getLowerValueLeadSource() {
+    public Comparable<?> getLowerValueLeadSource() {
         return afterValueSet ? arrays[0].getAfter() : null;
     }
 
     /**
      * Returns the upper value (inclusive) of the leading source.
      */
-    Comparable<?> getUpperValueLeadSource() throws IOException {
+    public Comparable<?> getUpperValueLeadSource() throws IOException {
         return size() >= maxSize ? arrays[0].toComparable(keys.lastKey()) : null;
     }
     /**
      * Returns the document count in <code>slot</code>.
      */
-    int getDocCount(int slot) {
+    public int getDocCount(int slot) {
         return docCounts[slot];
     }
 
@@ -123,7 +123,7 @@ final class CompositeValuesCollectorQueue implements Releasable {
     /**
      * Compares the values in <code>slot1</code> with <code>slot2</code>.
      */
-    int compare(int slot1, int slot2) {
+    public int compare(int slot1, int slot2) {
         for (int i = 0; i < arrays.length; i++) {
             int cmp = (slot1 == CANDIDATE_SLOT) ? arrays[i].compareCurrent(slot2) :
                 arrays[i].compare(slot1, slot2);
@@ -137,7 +137,7 @@ final class CompositeValuesCollectorQueue implements Releasable {
     /**
      * Sets the after values for this comparator.
      */
-    void setAfter(Comparable<?>[] values) {
+    public void setAfter(Comparable<?>[] values) {
         assert values.length == arrays.length;
         afterValueSet = true;
         for (int i = 0; i < arrays.length; i++) {
@@ -161,7 +161,7 @@ final class CompositeValuesCollectorQueue implements Releasable {
     /**
      * Builds the {@link CompositeKey} for <code>slot</code>.
      */
-    CompositeKey toCompositeKey(int slot) throws IOException {
+    public CompositeKey toCompositeKey(int slot) throws IOException {
         assert slot < maxSize;
         Comparable<?>[] values = new Comparable<?>[arrays.length];
         for (int i = 0; i < values.length; i++) {
@@ -174,7 +174,7 @@ final class CompositeValuesCollectorQueue implements Releasable {
      * Creates the collector that will visit the composite buckets of the matching documents.
      * The provided collector <code>in</code> is called on each composite bucket.
      */
-    LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector in) throws IOException {
+    public LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector in) throws IOException {
         return getLeafCollector(null, context, in);
     }
     /**
@@ -183,7 +183,7 @@ final class CompositeValuesCollectorQueue implements Releasable {
      * for each document.
      * The provided collector <code>in</code> is called on each composite bucket.
      */
-    LeafBucketCollector getLeafCollector(Comparable<?> forceLeadSourceValue,
+    public LeafBucketCollector getLeafCollector(Comparable<?> forceLeadSourceValue,
                                          LeafReaderContext context, LeafBucketCollector in) throws IOException {
         int last = arrays.length - 1;
         LeafBucketCollector collector = in;
@@ -202,7 +202,7 @@ final class CompositeValuesCollectorQueue implements Releasable {
      * Check if the current candidate should be added in the queue.
      * @return The target slot of the candidate or -1 is the candidate is not competitive.
      */
-    int addIfCompetitive() {
+    public int addIfCompetitive() {
         // checks if the candidate key is competitive
         Integer topSlot = compareCurrent();
         if (topSlot != null) {

@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.lucene.store;
+package org.elasticsearch.test.common.lucene.store;
 
 import org.apache.lucene.store.IndexInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.lucene.store.ByteArrayIndexInput;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

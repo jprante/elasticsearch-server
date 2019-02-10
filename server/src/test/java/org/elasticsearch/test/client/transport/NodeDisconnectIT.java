@@ -16,13 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.client.transport;
+package org.elasticsearch.test.client.transport;
 
+import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.transport.MockTransportClient;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.transport.MockTransportClient;
 import org.elasticsearch.transport.TransportService;
 
 import java.io.IOException;

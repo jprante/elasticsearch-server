@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.env;
+package org.elasticsearch.test.env;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.env.ESFileStore;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.nio.file.FileStore;

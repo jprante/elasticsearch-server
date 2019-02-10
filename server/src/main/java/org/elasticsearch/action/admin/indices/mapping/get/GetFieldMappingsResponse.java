@@ -43,11 +43,11 @@ public class GetFieldMappingsResponse extends ActionResponse implements ToXConte
 
     private Map<String, Map<String, Map<String, FieldMappingMetaData>>> mappings = emptyMap();
 
-    GetFieldMappingsResponse(Map<String, Map<String, Map<String, FieldMappingMetaData>>> mappings) {
+    public GetFieldMappingsResponse(Map<String, Map<String, Map<String, FieldMappingMetaData>>> mappings) {
         this.mappings = mappings;
     }
 
-    GetFieldMappingsResponse() {
+    public GetFieldMappingsResponse() {
     }
 
     /** returns the retrieved field mapping. The return map keys are index, type, field (as specified in the request). */
@@ -117,8 +117,7 @@ public class GetFieldMappingsResponse extends ActionResponse implements ToXConte
             return NULL.fullName().equals(fullName) && NULL.source.length() == source.length();
         }
 
-        //pkg-private for testing
-        BytesReference getSource() {
+        public BytesReference getSource() {
             return source;
         }
 

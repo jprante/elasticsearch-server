@@ -64,11 +64,11 @@ public class InternalDerivative extends InternalSimpleValue implements Derivativ
         return normalizationFactor > 0 ? (value() / normalizationFactor) : value();
     }
 
-    DocValueFormat formatter() {
+    public DocValueFormat formatter() {
         return format;
     }
 
-    double getNormalizationFactor() {
+    public double getNormalizationFactor() {
         return normalizationFactor;
     }
 

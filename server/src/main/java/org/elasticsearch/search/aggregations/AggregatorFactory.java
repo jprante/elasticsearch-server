@@ -25,8 +25,8 @@ import org.elasticsearch.common.lease.Releasables;
 import org.elasticsearch.common.util.BigArrays;
 import org.elasticsearch.common.util.ObjectArray;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.search.internal.SearchContext.Lifetime;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.SearchContext.Lifetime;
 
 import java.io.IOException;
 import java.util.List;
@@ -225,7 +225,7 @@ public abstract class AggregatorFactory<AF extends AggregatorFactory<AF>> {
      * {@link Aggregator}s that only know how to collect bucket <tt>0</tt>, this
      * returns an aggregator that can collect any bucket.
      */
-    protected static Aggregator asMultiBucketAggregator(final AggregatorFactory<?> factory, final SearchContext context,
+    public static Aggregator asMultiBucketAggregator(final AggregatorFactory<?> factory, final SearchContext context,
             final Aggregator parent) throws IOException {
         final Aggregator first = factory.create(parent, true);
         final BigArrays bigArrays = context.bigArrays();

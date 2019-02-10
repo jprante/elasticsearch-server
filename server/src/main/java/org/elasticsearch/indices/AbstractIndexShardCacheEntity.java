@@ -27,7 +27,7 @@ import org.elasticsearch.index.shard.IndexShard;
 /**
  * Abstract base class for the an {@link IndexShard} level {@linkplain IndicesRequestCache.CacheEntity}.
  */
-abstract class AbstractIndexShardCacheEntity implements IndicesRequestCache.CacheEntity {
+public abstract class AbstractIndexShardCacheEntity implements IndicesRequestCache.CacheEntity {
 
     /**
      * Get the {@linkplain ShardRequestCache} used to track cache statistics.

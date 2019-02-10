@@ -17,21 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.plugins.spi;
+package org.elasticsearch.test.plugins.spi;
 
-import org.elasticsearch.common.ParseField;
 import org.elasticsearch.common.io.Streams;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
+import org.elasticsearch.plugins.spi.NamedXContentProvider;
 import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.pipeline.ParsedSimpleValue;
 import org.elasticsearch.search.suggest.Suggest;
-import org.elasticsearch.search.suggest.term.TermSuggestion;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.function.Predicate;
@@ -46,7 +43,7 @@ public class NamedXContentProviderTests extends ESTestCase {
         }
 
         assertEquals(1, implementations.size());
-        assertEquals(TestNamedXContentProvider.class.getName(), implementations.get(0));
+        assertEquals(DummyNamedXContentProvider.class.getName(), implementations.get(0));
     }
 
     public void testNamedXContents() {
@@ -61,21 +58,5 @@ public class NamedXContentProviderTests extends ESTestCase {
         predicates.add(e -> Aggregation.class.equals(e.categoryClass) && "test_aggregation".equals(e.name.getPreferredName()));
         predicates.add(e -> Suggest.Suggestion.class.equals(e.categoryClass) && "test_suggestion".equals(e.name.getPreferredName()));
         predicates.forEach(predicate -> assertEquals(1, namedXContents.stream().filter(predicate).count()));
-    }
-
-    public static class TestNamedXContentProvider implements NamedXContentProvider {
-
-        public TestNamedXContentProvider() {
-        }
-
-        @Override
-        public List<NamedXContentRegistry.Entry> getNamedXContentParsers() {
-            return Arrays.asList(
-                    new NamedXContentRegistry.Entry(Aggregation.class, new ParseField("test_aggregation"),
-                            (parser, context) -> ParsedSimpleValue.fromXContent(parser, (String) context)),
-                    new NamedXContentRegistry.Entry(Suggest.Suggestion.class, new ParseField("test_suggestion"),
-                            (parser, context) -> TermSuggestion.fromXContent(parser, (String) context))
-            );
-        }
     }
 }

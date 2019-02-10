@@ -21,7 +21,7 @@ package org.elasticsearch.search.fetch.subphase.highlight;
 import org.apache.lucene.search.Query;
 import org.elasticsearch.index.mapper.FieldMapper;
 import org.elasticsearch.search.fetch.FetchSubPhase;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 public class HighlighterContext {
 

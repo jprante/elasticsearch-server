@@ -95,7 +95,7 @@ public class Environment {
     }
 
     // Should only be called directly by this class's unit tests
-    Environment(final Settings settings, final Path configPath, final Path tmpPath) {
+    public Environment(final Settings settings, final Path configPath, final Path tmpPath) {
         final Path homeFile;
         if (PATH_HOME_SETTING.exists(settings)) {
             homeFile = PathUtils.get(PATH_HOME_SETTING.get(settings)).normalize();
@@ -230,7 +230,7 @@ public class Environment {
      *
      * If the specified url doesn't match any of the roots, returns null.
      */
-    public URL resolveRepoURL(URL url) {
+    public URL resolveRepoURL(URL url) throws IOException {
         try {
             if ("file".equalsIgnoreCase(url.getProtocol())) {
                 if (url.getHost() == null || "".equals(url.getHost())) {

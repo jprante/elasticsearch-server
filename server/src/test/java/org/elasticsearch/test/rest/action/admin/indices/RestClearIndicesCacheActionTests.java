@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.rest.action.admin.indices;
+package org.elasticsearch.test.rest.action.admin.indices;
 
 import org.elasticsearch.action.admin.indices.cache.clear.ClearIndicesCacheRequest;
 import org.elasticsearch.rest.RestRequest;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.rest.FakeRestRequest;
+import org.elasticsearch.rest.action.admin.indices.RestClearIndicesCacheAction;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.rest.FakeRestRequest;
 
 import java.util.HashMap;
 

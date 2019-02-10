@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.phrase;
+package org.elasticsearch.test.search.suggest.phrase;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
@@ -38,7 +38,9 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.search.SearchModule;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.suggest.phrase.SmoothingModel;
+import org.elasticsearch.search.suggest.phrase.WordScorer;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -48,7 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.test.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
+import static org.elasticsearch.testframework.EqualsHashCodeTestUtils.checkEqualsAndHashCode;
 
 public abstract class SmoothingModelTestCase extends ESTestCase {
 
@@ -125,7 +127,7 @@ public abstract class SmoothingModelTestCase extends ESTestCase {
     /**
      * implementation dependant assertions on the wordScorer produced by the smoothing model under test
      */
-    abstract void assertWordScorer(WordScorer wordScorer, SmoothingModel testModel);
+    public abstract void assertWordScorer(WordScorer wordScorer, SmoothingModel testModel);
 
     /**
      * Test serialization and deserialization of the tested model.

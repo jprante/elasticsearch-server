@@ -45,8 +45,7 @@ public abstract class TaskBatcher {
 
     private final Logger logger;
     private final PrioritizedEsThreadPoolExecutor threadExecutor;
-    // package visible for tests
-    final Map<Object, LinkedHashSet<BatchedTask>> tasksPerBatchingKey = new HashMap<>();
+    public final Map<Object, LinkedHashSet<BatchedTask>> tasksPerBatchingKey = new HashMap<>();
 
     public TaskBatcher(Logger logger, PrioritizedEsThreadPoolExecutor threadExecutor) {
         this.logger = logger;
@@ -175,7 +174,7 @@ public abstract class TaskBatcher {
         /**
          * the task object that is wrapped
          */
-        protected final Object task;
+        public final Object task;
 
         protected BatchedTask(Priority priority, String source, Object batchingKey, Object task) {
             super(priority, source);

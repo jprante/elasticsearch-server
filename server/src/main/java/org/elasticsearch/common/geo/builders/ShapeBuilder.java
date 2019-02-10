@@ -189,7 +189,7 @@ public abstract class ShapeBuilder<T extends Shape, E extends ShapeBuilder<T,E>>
      * @param closed if set to true the first point of the array is repeated as last element
      * @return Array of coordinates
      */
-    protected Coordinate[] coordinates(boolean closed) {
+    public Coordinate[] coordinates(boolean closed) {
         Coordinate[] result = coordinates.toArray(new Coordinate[coordinates.size() + (closed?1:0)]);
         if(closed) {
             result[result.length-1] = result[0];
@@ -197,7 +197,7 @@ public abstract class ShapeBuilder<T extends Shape, E extends ShapeBuilder<T,E>>
         return result;
     }
 
-    protected JtsGeometry jtsGeometry(Geometry geom) {
+    public JtsGeometry jtsGeometry(Geometry geom) {
         //dateline180Check is false because ElasticSearch does it's own dateline wrapping
         JtsGeometry jtsGeometry = new JtsGeometry(geom, SPATIAL_CONTEXT, false, MULTI_POLYGON_MAY_OVERLAP);
         if (AUTO_VALIDATE_JTS_GEOMETRY)

@@ -128,7 +128,7 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
     }
 
     @Override
-    protected void doExecute(Task task, BulkRequest bulkRequest, ActionListener<BulkResponse> listener) {
+    public void doExecute(Task task, BulkRequest bulkRequest, ActionListener<BulkResponse> listener) {
         if (bulkRequest.hasIndexRequestsWithPipelines()) {
             if (clusterService.localNode().isIngestNode()) {
                 processBulkIndexIngestRequest(task, bulkRequest, listener);
@@ -209,15 +209,15 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
         }
     }
 
-    boolean needToCheck() {
+    public boolean needToCheck() {
         return autoCreateIndex.needToCheck();
     }
 
-    boolean shouldAutoCreate(String index, ClusterState state) {
+    public boolean shouldAutoCreate(String index, ClusterState state) {
         return autoCreateIndex.shouldAutoCreate(index, state);
     }
 
-    void createIndex(String index, TimeValue timeout, ActionListener<CreateIndexResponse> listener) {
+    public void createIndex(String index, TimeValue timeout, ActionListener<CreateIndexResponse> listener) {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest();
         createIndexRequest.index(index);
         createIndexRequest.cause("auto(bulk api)");
@@ -456,7 +456,7 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
         }
     }
 
-    void executeBulk(Task task, final BulkRequest bulkRequest, final long startTimeNanos, final ActionListener<BulkResponse> listener,
+    public void executeBulk(Task task, final BulkRequest bulkRequest, final long startTimeNanos, final ActionListener<BulkResponse> listener,
             final AtomicArray<BulkItemResponse> responses, Map<String, IndexNotFoundException> indicesThatCannotBeCreated) {
         new BulkOperation(task, bulkRequest, listener, responses, startTimeNanos, indicesThatCannotBeCreated).run();
     }
@@ -516,7 +516,7 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
         });
     }
 
-    static final class BulkRequestModifier implements Iterator<DocWriteRequest> {
+    public static final class BulkRequestModifier implements Iterator<DocWriteRequest> {
 
         final BulkRequest bulkRequest;
         final SparseFixedBitSet failedSlots;
@@ -525,7 +525,7 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
         int currentSlot = -1;
         int[] originalSlots;
 
-        BulkRequestModifier(BulkRequest bulkRequest) {
+        public BulkRequestModifier(BulkRequest bulkRequest) {
             this.bulkRequest = bulkRequest;
             this.failedSlots = new SparseFixedBitSet(bulkRequest.requests().size());
             this.itemResponses = new ArrayList<>(bulkRequest.requests().size());
@@ -541,7 +541,7 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
             return (currentSlot + 1) < bulkRequest.requests().size();
         }
 
-        BulkRequest getBulkRequest() {
+        public BulkRequest getBulkRequest() {
             if (itemResponses.isEmpty()) {
                 return bulkRequest;
             } else {
@@ -564,7 +564,7 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
             }
         }
 
-        ActionListener<BulkResponse> wrapActionListenerIfNeeded(long ingestTookInMillis, ActionListener<BulkResponse> actionListener) {
+        public ActionListener<BulkResponse> wrapActionListenerIfNeeded(long ingestTookInMillis, ActionListener<BulkResponse> actionListener) {
             if (itemResponses.isEmpty()) {
                 return ActionListener.wrap(
                         response -> actionListener.onResponse(new BulkResponse(response.getItems(),
@@ -575,7 +575,7 @@ public class TransportBulkAction extends HandledTransportAction<BulkRequest, Bul
             }
         }
 
-        void markCurrentItemAsFailed(Exception e) {
+        public void markCurrentItemAsFailed(Exception e) {
             IndexRequest indexRequest = (IndexRequest) bulkRequest.requests().get(currentSlot);
             // We hit a error during preprocessing a request, so we:
             // 1) Remember the request item slot from the bulk, so that we're done processing all requests we know what failed

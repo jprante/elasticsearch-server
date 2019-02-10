@@ -19,7 +19,9 @@
 
 package org.elasticsearch.bootstrap;
 
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.common.SuppressForbidden;
+import org.elasticsearch.common.logging.ESLoggerFactory;
 
 import java.io.FilePermission;
 import java.io.IOException;
@@ -28,17 +30,20 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
+import java.security.NoSuchAlgorithmException;
 import java.security.Permission;
 import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
-import java.util.Collections;
+import java.security.URIParameter;
 import java.util.Map;
 import java.util.function.Predicate;
 
 /** custom policy for union of static and dynamic permissions */
-final class ESPolicy extends Policy {
+public final class ESPolicy extends Policy {
+
+    private static final Logger logger = ESLoggerFactory.getLogger(ESPolicy.class);
 
     /** template policy file, the one used in tests */
     static final String POLICY_RESOURCE = "security.policy";
@@ -51,10 +56,12 @@ final class ESPolicy extends Policy {
     final PermissionCollection dynamic;
     final Map<String,Policy> plugins;
 
-    ESPolicy(Map<String, URI> codebases, PermissionCollection dynamic, Map<String,Policy> plugins, boolean filterBadDefaults)
+    public ESPolicy(PermissionCollection dynamic, Map<String,Policy> plugins, boolean filterBadDefaults)
             throws URISyntaxException {
-        this.template = Security.readPolicy(getClass().getResource(POLICY_RESOURCE).toURI(), codebases);
-        this.untrusted = Security.readPolicy(getClass().getResource(UNTRUSTED_RESOURCE).toURI(), Collections.emptyMap());
+        logger.info("reading policy: " + POLICY_RESOURCE);
+        this.template = readPolicy(getClass().getResource(POLICY_RESOURCE).toURI());
+        logger.info("reading untrusted policy: " + UNTRUSTED_RESOURCE);
+        this.untrusted = readPolicy(getClass().getResource(UNTRUSTED_RESOURCE).toURI());
         if (filterBadDefaults) {
             this.system = new SystemPolicy(Policy.getPolicy());
         } else {
@@ -62,6 +69,18 @@ final class ESPolicy extends Policy {
         }
         this.dynamic = dynamic;
         this.plugins = plugins;
+    }
+
+    /**
+     * Reads and returns the specified {@code policyFile}.
+     */
+    @SuppressForbidden(reason = "accesses fully qualified URIs to configure security")
+    public static Policy readPolicy(URI policyFile) {
+        try {
+            return Policy.getInstance("JavaPolicy", new URIParameter(policyFile));
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException("unable to parse policy file `" + policyFile + "`", e);
+        }
     }
 
     @Override @SuppressForbidden(reason = "fast equals check is desired")

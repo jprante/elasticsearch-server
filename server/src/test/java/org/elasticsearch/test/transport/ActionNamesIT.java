@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.transport;
+package org.elasticsearch.test.transport;
 
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.transport.TransportService;
 
 import static org.hamcrest.CoreMatchers.either;
 import static org.hamcrest.CoreMatchers.startsWith;

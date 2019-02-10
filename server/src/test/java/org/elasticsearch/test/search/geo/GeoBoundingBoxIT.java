@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.geo;
+package org.elasticsearch.test.search.geo;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.search.SearchResponse;
@@ -28,9 +28,9 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.GeoValidationMethod;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,7 +40,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.geoBoundingBoxQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
 

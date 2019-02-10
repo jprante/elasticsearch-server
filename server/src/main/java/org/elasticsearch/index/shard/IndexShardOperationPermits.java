@@ -51,14 +51,14 @@ import java.util.stream.Collectors;
  * and return their permits. Delayed operations will acquire permits and be completed after the operation that blocked all operations has
  * completed.
  */
-final class IndexShardOperationPermits implements Closeable {
+public final class IndexShardOperationPermits implements Closeable {
 
     private final ShardId shardId;
     private final Logger logger;
     private final ThreadPool threadPool;
 
-    static final int TOTAL_PERMITS = Integer.MAX_VALUE;
-    final Semaphore semaphore = new Semaphore(TOTAL_PERMITS, true); // fair to ensure a blocking thread is not starved
+    public static final int TOTAL_PERMITS = Integer.MAX_VALUE;
+    public final Semaphore semaphore = new Semaphore(TOTAL_PERMITS, true); // fair to ensure a blocking thread is not starved
     private final List<DelayedOperation> delayedOperations = new ArrayList<>(); // operations that are delayed
     private volatile boolean closed;
     private boolean delayed; // does not need to be volatile as all accesses are done under a lock on this
@@ -74,7 +74,7 @@ final class IndexShardOperationPermits implements Closeable {
      * @param logger     the logger for the shard
      * @param threadPool the thread pool (used to execute delayed operations)
      */
-    IndexShardOperationPermits(final ShardId shardId, final Logger logger, final ThreadPool threadPool) {
+    public IndexShardOperationPermits(final ShardId shardId, final Logger logger, final ThreadPool threadPool) {
         this.shardId = shardId;
         this.logger = logger;
         this.threadPool = threadPool;
@@ -102,7 +102,7 @@ final class IndexShardOperationPermits implements Closeable {
      * @throws TimeoutException          if timed out waiting for in-flight operations to finish
      * @throws IndexShardClosedException if operation permit has been closed
      */
-    <E extends Exception> void blockOperations(
+    public <E extends Exception> void blockOperations(
             final long timeout,
             final TimeUnit timeUnit,
             final CheckedRunnable<E> onBlocked) throws InterruptedException, TimeoutException, E {
@@ -129,7 +129,7 @@ final class IndexShardOperationPermits implements Closeable {
      * @param onFailure the action to run if a failure occurs while blocking operations
      * @param <E>       the type of checked exception thrown by {@code onBlocked} (not thrown on the calling thread)
      */
-    <E extends Exception> void asyncBlockOperations(
+    public <E extends Exception> void asyncBlockOperations(
             final long timeout, final TimeUnit timeUnit, final CheckedRunnable<E> onBlocked, final Consumer<Exception> onFailure) {
         delayOperations();
         threadPool.executor(ThreadPool.Names.GENERIC).execute(new AbstractRunnable() {
@@ -298,7 +298,7 @@ final class IndexShardOperationPermits implements Closeable {
      *
      * @return the active operation count, or zero when all permits ar eheld
      */
-    int getActiveOperationsCount() {
+    public int getActiveOperationsCount() {
         int availablePermits = semaphore.availablePermits();
         if (availablePermits == 0) {
             /*
@@ -316,7 +316,7 @@ final class IndexShardOperationPermits implements Closeable {
      * @return a list of describing each permit that wasn't released yet. The description consist of the debugInfo supplied
      *         when the permit was acquired plus a stack traces that was captured when the permit was request.
      */
-    List<String> getActiveOperations() {
+    public List<String> getActiveOperations() {
         return issuedPermits.values().stream().map(
             t -> t.v1() + "\n" + ExceptionsHelper.formatStackTrace(t.v2()))
             .collect(Collectors.toList());

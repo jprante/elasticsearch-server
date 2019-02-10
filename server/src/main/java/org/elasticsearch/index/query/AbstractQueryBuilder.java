@@ -56,7 +56,7 @@ public abstract class AbstractQueryBuilder<QB extends AbstractQueryBuilder<QB>> 
     public static final ParseField BOOST_FIELD = new ParseField("boost");
 
     protected String queryName;
-    protected float boost = DEFAULT_BOOST;
+    public float boost = DEFAULT_BOOST;
 
     protected AbstractQueryBuilder() {
 
@@ -230,7 +230,7 @@ public abstract class AbstractQueryBuilder<QB extends AbstractQueryBuilder<QB>> 
      * their {@link QueryBuilder#toQuery(QueryShardContext)} method are not added to the
      * resulting collection.
      */
-    static Collection<Query> toQueries(Collection<QueryBuilder> queryBuilders, QueryShardContext context) throws QueryShardException,
+    public static Collection<Query> toQueries(Collection<QueryBuilder> queryBuilders, QueryShardContext context) throws QueryShardException,
             IOException {
         List<Query> queries = new ArrayList<>(queryBuilders.size());
         for (QueryBuilder queryBuilder : queryBuilders) {
@@ -289,7 +289,7 @@ public abstract class AbstractQueryBuilder<QB extends AbstractQueryBuilder<QB>> 
      * Extracts the inner hits from the query tree.
      * While it extracts inner hits, child inner hits are inlined into the inner hit builder they belong to.
      */
-    protected void extractInnerHitBuilders(Map<String, InnerHitContextBuilder> innerHits) {
+    public void extractInnerHitBuilders(Map<String, InnerHitContextBuilder> innerHits) {
     }
 
     /**

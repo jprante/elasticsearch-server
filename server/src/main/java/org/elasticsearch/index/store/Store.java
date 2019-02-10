@@ -132,12 +132,12 @@ import static java.util.Collections.unmodifiableMap;
  * </pre>
  */
 public class Store extends AbstractIndexShardComponent implements Closeable, RefCounted {
-    static final String CODEC = "store";
-    static final int VERSION_WRITE_THROWABLE= 2; // we write throwable since 2.0
-    static final int VERSION_STACK_TRACE = 1; // we write the stack trace too since 1.4.0
-    static final int VERSION_START = 0;
-    static final int VERSION = VERSION_WRITE_THROWABLE;
-    static final String CORRUPTED = "corrupted_";
+    public static final String CODEC = "store";
+    public static final int VERSION_WRITE_THROWABLE= 2; // we write throwable since 2.0
+    public static final int VERSION_STACK_TRACE = 1; // we write the stack trace too since 1.4.0
+    public static final int VERSION_START = 0;
+    public static final int VERSION = VERSION_WRITE_THROWABLE;
+    public static final String CORRUPTED = "corrupted_";
     public static final Setting<TimeValue> INDEX_STORE_STATS_REFRESH_INTERVAL_SETTING =
         Setting.timeSetting("index.store.stats_refresh_interval", TimeValue.timeValueSeconds(10), Property.IndexScope);
 
@@ -228,7 +228,7 @@ public class Store extends AbstractIndexShardComponent implements Closeable, Ref
         return SequenceNumbers.loadSeqNoInfoFromLuceneCommit(userData.entrySet());
     }
 
-    final void ensureOpen() {
+    public final void ensureOpen() {
         if (this.refCounter.refCount() <= 0) {
             throw new AlreadyClosedException("store is already closed");
         }
@@ -1173,7 +1173,7 @@ public class Store extends AbstractIndexShardComponent implements Closeable, Ref
     }
 
 
-    static class LuceneVerifyingIndexOutput extends VerifyingIndexOutput {
+    public static class LuceneVerifyingIndexOutput extends VerifyingIndexOutput {
 
         private final StoreFileMetaData metadata;
         private long writtenBytes;
@@ -1181,7 +1181,7 @@ public class Store extends AbstractIndexShardComponent implements Closeable, Ref
         private String actualChecksum;
         private final byte[] footerChecksum = new byte[8]; // this holds the actual footer checksum data written by to this output
 
-        LuceneVerifyingIndexOutput(StoreFileMetaData metadata, IndexOutput out) {
+        public LuceneVerifyingIndexOutput(StoreFileMetaData metadata, IndexOutput out) {
             super(out);
             this.metadata = metadata;
             checksumPosition = metadata.length() - 8; // the last 8 bytes are the checksum - we store it in footerChecksum
@@ -1252,18 +1252,18 @@ public class Store extends AbstractIndexShardComponent implements Closeable, Ref
      * mechanism that is used in some repository plugins (S3 for example). However, the checksum is only calculated on
      * the first read. All consecutive reads of the same data are not used to calculate the checksum.
      */
-    static class VerifyingIndexInput extends ChecksumIndexInput {
+    public static class VerifyingIndexInput extends ChecksumIndexInput {
         private final IndexInput input;
         private final Checksum digest;
         private final long checksumPosition;
         private final byte[] checksum = new byte[8];
         private long verifiedPosition = 0;
 
-        VerifyingIndexInput(IndexInput input) {
+        public VerifyingIndexInput(IndexInput input) {
             this(input, new BufferedChecksum(new CRC32()));
         }
 
-        VerifyingIndexInput(IndexInput input, Checksum digest) {
+        public VerifyingIndexInput(IndexInput input, Checksum digest) {
             super("VerifyingIndexInput(" + input + ")");
             this.input = input;
             this.digest = digest;

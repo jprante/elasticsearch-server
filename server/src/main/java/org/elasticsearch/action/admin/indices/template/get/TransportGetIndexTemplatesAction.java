@@ -52,7 +52,7 @@ public class TransportGetIndexTemplatesAction extends TransportMasterNodeReadAct
     }
 
     @Override
-    protected ClusterBlockException checkBlock(GetIndexTemplatesRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(GetIndexTemplatesRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 
@@ -62,7 +62,7 @@ public class TransportGetIndexTemplatesAction extends TransportMasterNodeReadAct
     }
 
     @Override
-    protected void masterOperation(GetIndexTemplatesRequest request, ClusterState state, ActionListener<GetIndexTemplatesResponse> listener) {
+    public void masterOperation(GetIndexTemplatesRequest request, ClusterState state, ActionListener<GetIndexTemplatesResponse> listener) {
         List<IndexTemplateMetaData> results;
 
         // If we did not ask for a specific name, then we return all templates

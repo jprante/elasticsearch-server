@@ -53,7 +53,7 @@ task sonatypeUpload(type: Upload) {
                     description description
                     packaging 'jar'
                     inceptionYear '2018'
-                    url 'https://github.com/jprante/elasticsearch-xbib'
+                    url 'https://github.com/jprante/elasticsearch-server'
                     organization {
                         name 'xbib'
                         url 'http://xbib.org'
@@ -67,9 +67,9 @@ task sonatypeUpload(type: Upload) {
                         }
                     }
                     scm {
-                        url 'https://github.com/jprante/elasticsearch-xbib'
-                        connection 'scm:git:git@github.com/jprante/elasticsearch-xbib.git'
-                        developerConnection 'scm:git:git@github.com/jprante/elasticsearch-xbib.git'
+                        url 'https://github.com/jprante/elasticsearch-server'
+                        connection 'scm:git:git@github.com/jprante/elasticsearch-server.git'
+                        developerConnection 'scm:git:git@github.com/jprante/elasticsearch-server.git'
                     }
                     licenses {
                         license {

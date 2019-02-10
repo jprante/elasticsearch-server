@@ -275,7 +275,7 @@ public final class CompletionSuggestion extends Suggest.Suggestion<CompletionSug
             }
 
             @Override
-            protected void mergeInto(Suggest.Suggestion.Entry.Option otherOption) {
+            public void mergeInto(Suggest.Suggestion.Entry.Option otherOption) {
                 // Completion suggestions are reduced by
                 // org.elasticsearch.search.suggest.completion.CompletionSuggestion.reduce()
                 throw new UnsupportedOperationException();

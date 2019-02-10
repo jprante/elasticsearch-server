@@ -229,7 +229,7 @@ public class RecoverySourceHandler {
         return targetHistoryUUID != null && targetHistoryUUID.equals(shard.getHistoryUUID());
     }
 
-    static void runUnderPrimaryPermit(CancellableThreads.Interruptable runnable, String reason,
+    public static void runUnderPrimaryPermit(CancellableThreads.Interruptable runnable, String reason,
                                       IndexShard primary, CancellableThreads cancellableThreads, Logger logger) {
         cancellableThreads.execute(() -> {
             CompletableFuture<Releasable> permit = new CompletableFuture<>();
@@ -276,7 +276,7 @@ public class RecoverySourceHandler {
      * @return {@code true} if the source is ready for a sequence-number-based recovery
      * @throws IOException if an I/O exception occurred reading the translog snapshot
      */
-    boolean isTranslogReadyForSequenceNumberBasedRecovery() throws IOException {
+    public boolean isTranslogReadyForSequenceNumberBasedRecovery() throws IOException {
         final long startingSeqNo = request.startingSeqNo();
         assert startingSeqNo >= 0;
         final long localCheckpoint = shard.getLocalCheckpoint();
@@ -449,7 +449,7 @@ public class RecoverySourceHandler {
         }
     }
 
-    void prepareTargetForTranslog(final boolean fileBasedRecovery, final int totalTranslogOps) throws IOException {
+    public void prepareTargetForTranslog(final boolean fileBasedRecovery, final int totalTranslogOps) throws IOException {
         StopWatch stopWatch = new StopWatch().start();
         logger.trace("recovery [phase1]: prepare remote engine for translog");
         final long startEngineStart = stopWatch.totalTime().millis();
@@ -476,7 +476,7 @@ public class RecoverySourceHandler {
      * @param snapshot                a snapshot of the translog
      * @return the local checkpoint on the target
      */
-    long phase2(final long startingSeqNo, long requiredSeqNoRangeStart, long endingSeqNo, final Translog.Snapshot snapshot)
+    public long phase2(final long startingSeqNo, long requiredSeqNoRangeStart, long endingSeqNo, final Translog.Snapshot snapshot)
         throws IOException {
         if (shard.state() == IndexShardState.CLOSED) {
             throw new IndexShardClosedException(request.shardId());
@@ -534,12 +534,12 @@ public class RecoverySourceHandler {
         logger.trace("finalizing recovery took [{}]", stopWatch.totalTime());
     }
 
-    static class SendSnapshotResult {
+    public static class SendSnapshotResult {
 
-        final long targetLocalCheckpoint;
-        final int totalOperations;
+        public final long targetLocalCheckpoint;
+        public final int totalOperations;
 
-        SendSnapshotResult(final long targetLocalCheckpoint, final int totalOperations) {
+        public SendSnapshotResult(final long targetLocalCheckpoint, final int totalOperations) {
             this.targetLocalCheckpoint = targetLocalCheckpoint;
             this.totalOperations = totalOperations;
         }
@@ -559,7 +559,7 @@ public class RecoverySourceHandler {
      *                                total number of operations sent
      * @throws IOException if an I/O exception occurred reading the translog snapshot
      */
-    protected SendSnapshotResult sendSnapshot(final long startingSeqNo, long requiredSeqNoRangeStart, long endingSeqNo,
+    public SendSnapshotResult sendSnapshot(final long startingSeqNo, long requiredSeqNoRangeStart, long endingSeqNo,
                                               final Translog.Snapshot snapshot) throws IOException {
         assert requiredSeqNoRangeStart <= endingSeqNo + 1:
             "requiredSeqNoRangeStart " + requiredSeqNoRangeStart + " is larger than endingSeqNo " + endingSeqNo;
@@ -680,7 +680,8 @@ public class RecoverySourceHandler {
         }
     }
 
-    void sendFiles(Store store, StoreFileMetaData[] files, Function<StoreFileMetaData, OutputStream> outputStreamFactory) throws Exception {
+    public void sendFiles(Store store, StoreFileMetaData[] files, Function<StoreFileMetaData, OutputStream> outputStreamFactory)
+            throws Exception {
         store.incRef();
         try {
             ArrayUtil.timSort(files, Comparator.comparingLong(StoreFileMetaData::length)); // send smallest first

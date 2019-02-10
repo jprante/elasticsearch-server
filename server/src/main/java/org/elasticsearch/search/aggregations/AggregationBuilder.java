@@ -25,7 +25,7 @@ import org.elasticsearch.common.io.stream.NamedWriteable;
 import org.elasticsearch.common.xcontent.ToXContentFragment;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.index.query.QueryRewriteContext;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,7 +38,7 @@ public abstract class AggregationBuilder
         implements NamedWriteable, ToXContentFragment, BaseAggregationBuilder {
 
     protected final String name;
-    protected AggregatorFactories.Builder factoriesBuilder = AggregatorFactories.builder();
+    public AggregatorFactories.Builder factoriesBuilder = AggregatorFactories.builder();
 
     /**
      * Constructs a new aggregation builder.
@@ -63,7 +63,7 @@ public abstract class AggregationBuilder
     }
 
     /** Internal: build an {@link AggregatorFactory} based on the configuration of this builder. */
-    protected abstract AggregatorFactory<?> build(SearchContext context, AggregatorFactory<?> parent) throws IOException;
+    public abstract AggregatorFactory<?> build(SearchContext context, AggregatorFactory<?> parent) throws IOException;
 
     /** Associate metadata with this {@link AggregationBuilder}. */
     @Override
@@ -105,7 +105,7 @@ public abstract class AggregationBuilder
      * Create a shallow copy of this builder and replacing {@link #factoriesBuilder} and <code>metaData</code>.
      * Used by {@link #rewrite(QueryRewriteContext)}.
      */
-    protected abstract AggregationBuilder shallowCopy(AggregatorFactories.Builder factoriesBuilder, Map<String, Object> metaData);
+    public abstract AggregationBuilder shallowCopy(AggregatorFactories.Builder factoriesBuilder, Map<String, Object> metaData);
 
     public final AggregationBuilder rewrite(QueryRewriteContext context) throws IOException {
         AggregationBuilder rewritten = doRewrite(context);
@@ -135,7 +135,7 @@ public abstract class AggregationBuilder
      * rewrites the aggregation until it doesn't change anymore.
      * @throws IOException if an {@link IOException} occurs
      */
-    static AggregationBuilder rewriteAggregation(AggregationBuilder original, QueryRewriteContext context) throws IOException {
+    public static AggregationBuilder rewriteAggregation(AggregationBuilder original, QueryRewriteContext context) throws IOException {
         AggregationBuilder builder = original;
         for (AggregationBuilder rewrittenBuilder = builder.rewrite(context); rewrittenBuilder != builder;
              rewrittenBuilder = builder.rewrite(context)) {

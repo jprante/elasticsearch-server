@@ -79,7 +79,7 @@ public class TransportClusterAllocationExplainAction
     }
 
     @Override
-    protected ClusterBlockException checkBlock(ClusterAllocationExplainRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(ClusterAllocationExplainRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 
@@ -89,7 +89,7 @@ public class TransportClusterAllocationExplainAction
     }
 
     @Override
-    protected void masterOperation(final ClusterAllocationExplainRequest request, final ClusterState state,
+    public void masterOperation(final ClusterAllocationExplainRequest request, final ClusterState state,
                                    final ActionListener<ClusterAllocationExplainResponse> listener) {
         final RoutingNodes routingNodes = state.getRoutingNodes();
         final ClusterInfo clusterInfo = clusterInfoService.getClusterInfo();

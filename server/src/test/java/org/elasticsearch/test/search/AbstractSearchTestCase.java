@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search;
+package org.elasticsearch.test.search;
 
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.common.CheckedFunction;
@@ -32,12 +32,15 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.indices.IndicesModule;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.plugins.SearchPlugin;
+import org.elasticsearch.search.SearchExtBuilder;
+import org.elasticsearch.search.SearchModule;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.test.search.collapse.CollapseBuilderTests;
 import org.elasticsearch.test.search.fetch.subphase.highlight.HighlightBuilderTests;
 import org.elasticsearch.test.search.rescore.QueryRescorerBuilderTests;
-import org.elasticsearch.search.suggest.SuggestBuilderTests;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.test.search.suggest.SuggestBuilderTests;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.search.RandomSearchRequestGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.profile.query;
+package org.elasticsearch.test.search.profile.query;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
@@ -26,13 +26,13 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.LeafReaderContext;
-import org.apache.lucene.index.RandomIndexWriter;
+import org.apache.lucene.testframework.index.RandomIndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.LeafCollector;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.RandomApproximationQuery;
+import org.apache.lucene.testframework.search.RandomApproximationQuery;
 import org.apache.lucene.search.Scorer;
 import org.apache.lucene.search.ScorerSupplier;
 import org.apache.lucene.search.Sort;
@@ -40,12 +40,15 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.apache.lucene.search.Weight;
 import org.apache.lucene.store.Directory;
-import org.elasticsearch.core.internal.io.IOUtils;
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.TestUtil;
 import org.elasticsearch.index.engine.Engine;
-import org.elasticsearch.search.internal.ContextIndexSearcher;
+import org.elasticsearch.search.ContextIndexSearcher;
 import org.elasticsearch.search.profile.ProfileResult;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.profile.query.ProfileCollector;
+import org.elasticsearch.search.profile.query.QueryProfiler;
+import org.elasticsearch.search.profile.query.QueryTimingType;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

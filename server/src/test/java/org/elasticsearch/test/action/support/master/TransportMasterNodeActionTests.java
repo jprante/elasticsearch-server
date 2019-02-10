@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action.support.master;
+package org.elasticsearch.test.action.support.master;
 
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.Version;
@@ -27,7 +27,9 @@ import org.elasticsearch.action.ActionResponse;
 import org.elasticsearch.action.support.ActionFilters;
 import org.elasticsearch.action.support.PlainActionFuture;
 import org.elasticsearch.action.support.ThreadedActionListener;
-import org.elasticsearch.action.support.replication.ClusterStateCreationUtils;
+import org.elasticsearch.action.support.master.MasterNodeRequest;
+import org.elasticsearch.action.support.master.TransportMasterNodeAction;
+import org.elasticsearch.test.action.support.replication.ClusterStateCreationUtils;
 import org.elasticsearch.cluster.ClusterState;
 import org.elasticsearch.cluster.NotMasterException;
 import org.elasticsearch.cluster.block.ClusterBlock;
@@ -44,9 +46,9 @@ import org.elasticsearch.discovery.Discovery;
 import org.elasticsearch.discovery.MasterNotDiscoveredException;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.tasks.Task;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.transport.CapturingTransport;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.transport.CapturingTransport;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.ConnectTransportException;
 import org.elasticsearch.transport.TransportService;
@@ -61,8 +63,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import static org.elasticsearch.test.ClusterServiceUtils.createClusterService;
-import static org.elasticsearch.test.ClusterServiceUtils.setState;
+import static org.elasticsearch.testframework.ClusterServiceUtils.createClusterService;
+import static org.elasticsearch.testframework.ClusterServiceUtils.setState;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 
@@ -153,12 +155,12 @@ public class TransportMasterNodeActionTests extends ESTestCase {
         }
 
         @Override
-        protected void masterOperation(Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
+        public void masterOperation(Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
             listener.onResponse(new Response()); // default implementation, overridden in specific tests
         }
 
         @Override
-        protected ClusterBlockException checkBlock(Request request, ClusterState state) {
+        public ClusterBlockException checkBlock(Request request, ClusterState state) {
             return null; // default implementation, overridden in specific tests
         }
     }
@@ -176,7 +178,7 @@ public class TransportMasterNodeActionTests extends ESTestCase {
 
         new Action(Settings.EMPTY, "testAction", transportService, clusterService, threadPool) {
             @Override
-            protected void masterOperation(Task task, Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
+            public void masterOperation(Task task, Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
                 if (masterOperationFailure) {
                     listener.onFailure(exception);
                 } else {
@@ -213,7 +215,7 @@ public class TransportMasterNodeActionTests extends ESTestCase {
 
         new Action(Settings.EMPTY, "testAction", transportService, clusterService, threadPool) {
             @Override
-            protected ClusterBlockException checkBlock(Request request, ClusterState state) {
+            public ClusterBlockException checkBlock(Request request, ClusterState state) {
                 Set<ClusterBlock> blocks = state.blocks().global();
                 return blocks.isEmpty() ? null : new ClusterBlockException(blocks);
             }
@@ -255,7 +257,7 @@ public class TransportMasterNodeActionTests extends ESTestCase {
 
         new Action(Settings.EMPTY, "testAction", transportService, clusterService, threadPool) {
             @Override
-            protected ClusterBlockException checkBlock(Request request, ClusterState state) {
+            public ClusterBlockException checkBlock(Request request, ClusterState state) {
                 Set<ClusterBlock> blocks = state.blocks().global();
                 if (throwExceptionOnRetry == false || blocks.isEmpty()) {
                     throw new RuntimeException("checkBlock has thrown exception");
@@ -415,7 +417,7 @@ public class TransportMasterNodeActionTests extends ESTestCase {
 
         new Action(Settings.EMPTY, "testAction", transportService, clusterService, threadPool) {
             @Override
-            protected void masterOperation(Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
+            public void masterOperation(Request request, ClusterState state, ActionListener<Response> listener) throws Exception {
                 // The other node has become master, simulate failures of this node while publishing cluster state through ZenDiscovery
                 setState(clusterService, ClusterStateCreationUtils.state(localNode, remoteNode, allNodes));
                 Exception failure = randomBoolean()

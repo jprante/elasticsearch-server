@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.shrink;
+package org.elasticsearch.test.action.admin.indices.shrink;
 
 import org.apache.lucene.index.IndexWriter;
 import org.elasticsearch.Version;
 import org.elasticsearch.action.admin.indices.create.CreateIndexClusterStateUpdateRequest;
+import org.elasticsearch.action.admin.indices.shrink.ResizeRequest;
+import org.elasticsearch.action.admin.indices.shrink.TransportResizeAction;
 import org.elasticsearch.action.support.ActiveShardCount;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
@@ -39,8 +41,8 @@ import org.elasticsearch.cluster.routing.allocation.decider.AllocationDeciders;
 import org.elasticsearch.cluster.routing.allocation.decider.MaxRetryAllocationDecider;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.shard.DocsStats;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.gateway.TestGatewayAllocator;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.gateway.TestGatewayAllocator;
 
 import java.util.Arrays;
 import java.util.Collections;

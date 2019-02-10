@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent.builder;
+package org.elasticsearch.test.common.xcontent.builder;
 
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.Strings;
@@ -33,7 +33,7 @@ import org.elasticsearch.common.xcontent.XContentGenerator;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

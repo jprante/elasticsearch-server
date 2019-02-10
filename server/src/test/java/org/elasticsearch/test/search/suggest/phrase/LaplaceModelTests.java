@@ -17,9 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.phrase;
+package org.elasticsearch.test.search.suggest.phrase;
 
 import org.elasticsearch.common.xcontent.XContentParser;
+import org.elasticsearch.search.suggest.phrase.Laplace;
+import org.elasticsearch.search.suggest.phrase.LaplaceScorer;
+import org.elasticsearch.search.suggest.phrase.SmoothingModel;
+import org.elasticsearch.search.suggest.phrase.WordScorer;
 
 import java.io.IOException;
 
@@ -41,13 +45,13 @@ public class LaplaceModelTests extends SmoothingModelTestCase {
      * mutate the given model so the returned smoothing model is different
      */
     @Override
-    protected Laplace createMutation(SmoothingModel input) {
+    public Laplace createMutation(SmoothingModel input) {
         Laplace original = (Laplace) input;
         return new Laplace(original.getAlpha() + 0.1);
     }
 
     @Override
-    void assertWordScorer(WordScorer wordScorer, SmoothingModel input) {
+    public void assertWordScorer(WordScorer wordScorer, SmoothingModel input) {
         Laplace model = (Laplace) input;
         assertThat(wordScorer, instanceOf(LaplaceScorer.class));
         assertEquals(model.getAlpha(), ((LaplaceScorer) wordScorer).alpha(), Double.MIN_VALUE);

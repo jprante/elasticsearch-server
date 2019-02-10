@@ -17,15 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.action.search;
+package org.elasticsearch.test.action.search;
 
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.transport.MockTransportClient;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.transport.MockTransportClient;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

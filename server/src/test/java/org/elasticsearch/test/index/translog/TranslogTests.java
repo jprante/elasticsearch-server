@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.translog;
+package org.elasticsearch.test.index.translog;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 import org.apache.logging.log4j.message.ParameterizedMessage;
@@ -26,13 +26,12 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.NumericDocValuesField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.mockfile.FilterFileChannel;
+import org.apache.lucene.testframework.mockfile.FilterFileChannel;
 import org.apache.lucene.store.AlreadyClosedException;
 import org.apache.lucene.store.ByteArrayDataOutput;
-import org.apache.lucene.store.MockDirectoryWrapper;
-import org.elasticsearch.core.internal.io.IOUtils;
-import org.apache.lucene.util.LineFileDocs;
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.testframework.store.MockDirectoryWrapper;
+import org.apache.lucene.testframework.util.LineFileDocs;
+import org.apache.lucene.testframework.util.LuceneTestCase;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.Randomness;
@@ -64,12 +63,26 @@ import org.elasticsearch.index.mapper.SeqNoFieldMapper;
 import org.elasticsearch.index.mapper.Uid;
 import org.elasticsearch.index.mapper.UidFieldMapper;
 import org.elasticsearch.index.seqno.LocalCheckpointTracker;
-import org.elasticsearch.index.seqno.LocalCheckpointTrackerTests;
+import org.elasticsearch.index.translog.BaseTranslogReader;
+import org.elasticsearch.index.translog.ChannelFactory;
+import org.elasticsearch.index.translog.Checkpoint;
+import org.elasticsearch.index.translog.Translog;
+import org.elasticsearch.index.translog.TranslogConfig;
+import org.elasticsearch.index.translog.TranslogCorruptedException;
+import org.elasticsearch.index.translog.TranslogDeletionPolicy;
+import org.elasticsearch.index.translog.TranslogException;
+import org.elasticsearch.index.translog.TranslogHeader;
+import org.elasticsearch.index.translog.TranslogReader;
+import org.elasticsearch.index.translog.TranslogSnapshot;
+import org.elasticsearch.index.translog.TranslogStats;
+import org.elasticsearch.index.translog.TranslogWriter;
+import org.elasticsearch.test.index.seqno.LocalCheckpointTrackerTests;
 import org.elasticsearch.index.seqno.SequenceNumbers;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.index.translog.Translog.Location;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.IndexSettingsModule;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -112,8 +125,8 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static org.elasticsearch.common.util.BigArrays.NON_RECYCLING_INSTANCE;
-import static org.elasticsearch.index.translog.SnapshotMatchers.containsOperationsInAnyOrder;
-import static org.elasticsearch.index.translog.TranslogDeletionPolicies.createTranslogDeletionPolicy;
+import static org.elasticsearch.test.index.translog.SnapshotMatchers.containsOperationsInAnyOrder;
+import static org.elasticsearch.testframework.index.translog.TranslogDeletionPolicies.createTranslogDeletionPolicy;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
@@ -2057,12 +2070,12 @@ public class TranslogTests extends ESTestCase {
         }
         return new Translog(config, translogUUID, deletionPolicy, () -> SequenceNumbers.NO_OPS_PERFORMED, primaryTerm::get) {
             @Override
-            ChannelFactory getChannelFactory() {
+            public ChannelFactory getChannelFactory() {
                 return channelFactory;
             }
 
             @Override
-            void deleteReaderFiles(TranslogReader reader) {
+            public void deleteReaderFiles(TranslogReader reader) {
                 if (fail.fail()) {
                     // simulate going OOM and dieing just at the wrong moment.
                     throw new RuntimeException("simulated");
@@ -2168,7 +2181,7 @@ public class TranslogTests extends ESTestCase {
         try {
             new Translog(config, translog.getTranslogUUID(), createTranslogDeletionPolicy(), () -> SequenceNumbers.NO_OPS_PERFORMED, primaryTerm::get) {
                 @Override
-                protected TranslogWriter createWriter(long fileGeneration, long initialMinTranslogGen, long initialGlobalCheckpoint)
+                public TranslogWriter createWriter(long fileGeneration, long initialMinTranslogGen, long initialGlobalCheckpoint)
                     throws IOException {
                     throw new MockDirectoryWrapper.FakeIOException();
                 }

@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.sort;
+package org.elasticsearch.test.search.sort;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.sort.SortMode;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Locale;
 

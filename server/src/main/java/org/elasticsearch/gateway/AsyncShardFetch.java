@@ -171,7 +171,7 @@ public abstract class AsyncShardFetch<T extends BaseNodeResponse> implements Rel
      * the shard (response + failures), issuing a reroute at the end of it to make sure there will be another round
      * of allocations taking this new data into account.
      */
-    protected synchronized void processAsyncFetch(List<T> responses, List<FailedNodeException> failures, long fetchingRound) {
+    public synchronized void processAsyncFetch(List<T> responses, List<FailedNodeException> failures, long fetchingRound) {
         if (closed) {
             // we are closed, no need to process this async fetch at all
             logger.trace("{} ignoring fetched [{}] results, already closed", shardId, type);
@@ -282,8 +282,7 @@ public abstract class AsyncShardFetch<T extends BaseNodeResponse> implements Rel
     /**
      * Async fetches data for the provided shard with the set of nodes that need to be fetched from.
      */
-    // visible for testing
-    void asyncFetch(final DiscoveryNode[] nodes, long fetchingRound) {
+    public void asyncFetch(final DiscoveryNode[] nodes, long fetchingRound) {
         logger.trace("{} fetching [{}] from {}", shardId, type, nodes);
         action.list(shardId, nodes, new ActionListener<BaseNodesResponse<T>>() {
             @Override

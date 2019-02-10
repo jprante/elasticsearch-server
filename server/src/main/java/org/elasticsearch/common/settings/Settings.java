@@ -1215,7 +1215,7 @@ public final class Settings implements ToXContentFragment {
         }
 
         // visible for testing
-        Builder replacePropertyPlaceholders(Function<String, String> getenv) {
+        public Builder replacePropertyPlaceholders(Function<String, String> getenv) {
             PropertyPlaceholder propertyPlaceholder = new PropertyPlaceholder("${", "}", false);
             PropertyPlaceholder.PlaceholderResolver placeholderResolver = new PropertyPlaceholder.PlaceholderResolver() {
                 @Override

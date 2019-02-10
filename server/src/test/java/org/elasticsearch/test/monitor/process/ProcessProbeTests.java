@@ -17,11 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.monitor.process;
+package org.elasticsearch.test.monitor.process;
 
 import org.apache.lucene.util.Constants;
 import org.elasticsearch.bootstrap.BootstrapInfo;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.monitor.process.ProcessInfo;
+import org.elasticsearch.monitor.process.ProcessProbe;
+import org.elasticsearch.monitor.process.ProcessStats;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.elasticsearch.monitor.jvm.JvmInfo.jvmInfo;
 import static org.hamcrest.Matchers.allOf;

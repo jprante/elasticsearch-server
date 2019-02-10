@@ -33,13 +33,13 @@ import java.io.IOException;
 /**
  * A {@link SortedDocsProducer} that can sort documents based on terms indexed in the provided field.
  */
-class TermsSortedDocsProducer extends SortedDocsProducer {
-    TermsSortedDocsProducer(String field) {
+public class TermsSortedDocsProducer extends SortedDocsProducer {
+    public TermsSortedDocsProducer(String field) {
         super(field);
     }
 
     @Override
-    DocIdSet processLeaf(Query query, CompositeValuesCollectorQueue queue,
+    public DocIdSet processLeaf(Query query, CompositeValuesCollectorQueue queue,
                          LeafReaderContext context, boolean fillDocIdSet) throws IOException {
         final Terms terms = context.reader().terms(field);
         if (terms == null) {

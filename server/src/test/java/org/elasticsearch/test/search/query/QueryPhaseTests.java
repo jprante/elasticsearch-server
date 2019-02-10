@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.query;
+package org.elasticsearch.test.search.query;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
@@ -28,7 +28,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.LeafReaderContext;
 import org.apache.lucene.index.NoMergePolicy;
-import org.apache.lucene.index.RandomIndexWriter;
+import org.apache.lucene.testframework.index.RandomIndexWriter;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queries.MinDocQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -54,11 +54,13 @@ import org.elasticsearch.action.search.SearchTask;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.query.ParsedQuery;
 import org.elasticsearch.index.shard.IndexShard;
-import org.elasticsearch.index.shard.IndexShardTestCase;
+import org.elasticsearch.testframework.index.shard.IndexShardTestCase;
 import org.elasticsearch.search.DocValueFormat;
-import org.elasticsearch.search.internal.ScrollContext;
+import org.elasticsearch.search.ScrollContext;
+import org.elasticsearch.search.query.QueryPhase;
+import org.elasticsearch.search.query.QuerySearchResult;
 import org.elasticsearch.search.sort.SortAndFormats;
-import org.elasticsearch.test.TestSearchContext;
+import org.elasticsearch.testframework.TestSearchContext;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -33,12 +33,12 @@ import java.util.function.ToLongFunction;
 /**
  * A {@link SortedDocsProducer} that can sort documents based on numerics indexed in the provided field.
  */
-class PointsSortedDocsProducer extends SortedDocsProducer {
+public class PointsSortedDocsProducer extends SortedDocsProducer {
     private final ToLongFunction<byte[]> bucketFunction;
     private final byte[] lowerPointQuery;
     private final byte[] upperPointQuery;
 
-    PointsSortedDocsProducer(String field, ToLongFunction<byte[]> bucketFunction, byte[] lowerPointQuery, byte[] upperPointQuery) {
+    public PointsSortedDocsProducer(String field, ToLongFunction<byte[]> bucketFunction, byte[] lowerPointQuery, byte[] upperPointQuery) {
         super(field);
         this.bucketFunction = bucketFunction;
         this.lowerPointQuery = lowerPointQuery;
@@ -46,7 +46,7 @@ class PointsSortedDocsProducer extends SortedDocsProducer {
     }
 
     @Override
-    DocIdSet processLeaf(Query query, CompositeValuesCollectorQueue queue,
+    public DocIdSet processLeaf(Query query, CompositeValuesCollectorQueue queue,
                          LeafReaderContext context, boolean fillDocIdSet) throws IOException {
         final PointValues values = context.reader().getPointValues(field);
         if (values == null) {

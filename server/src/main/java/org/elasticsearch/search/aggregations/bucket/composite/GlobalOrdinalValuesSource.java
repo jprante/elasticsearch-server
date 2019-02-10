@@ -41,7 +41,7 @@ import static org.apache.lucene.index.SortedSetDocValues.NO_MORE_ORDS;
 /**
  * A {@link SingleDimensionValuesSource} for global ordinals.
  */
-class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
+public class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     private final CheckedFunction<LeafReaderContext, SortedSetDocValues, IOException> docValuesFunc;
     private final LongArray values;
     private SortedSetDocValues lookup;
@@ -52,7 +52,7 @@ class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     private long lastLookupOrd = -1;
     private BytesRef lastLookupValue;
 
-    GlobalOrdinalValuesSource(BigArrays bigArrays,
+    public GlobalOrdinalValuesSource(BigArrays bigArrays,
                               MappedFieldType type, CheckedFunction<LeafReaderContext, SortedSetDocValues, IOException> docValuesFunc,
                               DocValueFormat format, Object missing, int size, int reverseMul) {
         super(format, type, missing, size, reverseMul);
@@ -61,22 +61,22 @@ class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    void copyCurrent(int slot) {
+    public void copyCurrent(int slot) {
         values.set(slot, currentValue);
     }
 
     @Override
-    int compare(int from, int to) {
+    public int compare(int from, int to) {
         return Long.compare(values.get(from), values.get(to)) * reverseMul;
     }
 
     @Override
-    int compareCurrent(int slot) {
+    public int compareCurrent(int slot) {
         return Long.compare(currentValue, values.get(slot)) * reverseMul;
     }
 
     @Override
-    int compareCurrentWithAfter() {
+    public int compareCurrentWithAfter() {
         int cmp = Long.compare(currentValue, afterValueGlobalOrd);
         if (cmp == 0 && isTopValueInsertionPoint) {
             // the top value is missing in this shard, the comparison is against
@@ -88,7 +88,7 @@ class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    void setAfter(Comparable<?> value) {
+    public void setAfter(Comparable<?> value) {
         if (value.getClass() == String.class) {
             afterValue = format.parseBytesRef(value.toString());
         } else {
@@ -97,7 +97,7 @@ class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    BytesRef toComparable(int slot) throws IOException {
+    public BytesRef toComparable(int slot) throws IOException {
         long globalOrd = values.get(slot);
         if (globalOrd == lastLookupOrd) {
             return lastLookupValue;
@@ -109,7 +109,7 @@ class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
+    public LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
         final SortedSetDocValues dvs = docValuesFunc.apply(context);
         if (lookup == null) {
             initLookup(dvs);
@@ -129,7 +129,8 @@ class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next) throws IOException {
+    public LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next)
+            throws IOException {
         if (value.getClass() != BytesRef.class) {
             throw new IllegalArgumentException("Expected BytesRef, got " + value.getClass());
         }
@@ -162,7 +163,7 @@ class GlobalOrdinalValuesSource extends SingleDimensionValuesSource<BytesRef> {
     }
 
     @Override
-    SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
+    public SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
         if (checkIfSortedDocsIsApplicable(reader, fieldType) == false ||
                 fieldType instanceof StringFieldType == false ||
                     (query != null && query.getClass() != MatchAllDocsQuery.class)) {

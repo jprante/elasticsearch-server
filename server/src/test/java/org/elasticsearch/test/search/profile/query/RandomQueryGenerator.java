@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.profile.query;
+package org.elasticsearch.test.search.profile.query;
 
-import org.apache.lucene.util.English;
+import org.apache.lucene.testframework.util.English;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.CommonTermsQueryBuilder;

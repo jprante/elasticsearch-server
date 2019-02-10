@@ -80,7 +80,7 @@ public class UpdateHelper extends AbstractComponent {
      * noop).
      */
     @SuppressWarnings("unchecked")
-    protected Result prepare(ShardId shardId, UpdateRequest request, final GetResult getResult, LongSupplier nowInMillis) {
+    public Result prepare(ShardId shardId, UpdateRequest request, final GetResult getResult, LongSupplier nowInMillis) {
         if (getResult.isExists() == false) {
             // If the document didn't exist, execute the update request as an upsert
             return prepareUpsert(shardId, request, getResult, nowInMillis);
@@ -168,7 +168,7 @@ public class UpdateHelper extends AbstractComponent {
      * Calculate the version to use for the update request, using either the existing version if internal versioning is used, or the get
      * result document's version if the version type is "FORCE".
      */
-    static long calculateUpdateVersion(UpdateRequest request, GetResult getResult) {
+    public static long calculateUpdateVersion(UpdateRequest request, GetResult getResult) {
         if (request.versionType() != VersionType.INTERNAL) {
             assert request.versionType() == VersionType.FORCE;
             return request.version(); // remember, match_any is excluded by the conflict test
@@ -181,7 +181,7 @@ public class UpdateHelper extends AbstractComponent {
      * Calculate a routing value to be used, either the included index request's routing, or retrieved document's routing when defined.
      */
     @Nullable
-    static String calculateRouting(GetResult getResult, @Nullable IndexRequest updateIndexRequest) {
+    public static String calculateRouting(GetResult getResult, @Nullable IndexRequest updateIndexRequest) {
         if (updateIndexRequest != null && updateIndexRequest.routing() != null) {
             return updateIndexRequest.routing();
         } else if (getResult.getFields().containsKey(RoutingFieldMapper.NAME)) {
@@ -195,7 +195,7 @@ public class UpdateHelper extends AbstractComponent {
      * Calculate a parent value to be used, either the included index request's parent, or retrieved document's parent when defined.
      */
     @Nullable
-    static String calculateParent(GetResult getResult, @Nullable IndexRequest updateIndexRequest) {
+    public static String calculateParent(GetResult getResult, @Nullable IndexRequest updateIndexRequest) {
         if (updateIndexRequest != null && updateIndexRequest.parent() != null) {
             return updateIndexRequest.parent();
         } else if (getResult.getFields().containsKey(ParentFieldMapper.NAME)) {
@@ -209,7 +209,7 @@ public class UpdateHelper extends AbstractComponent {
      * Prepare the request for merging the existing document with a new one, can optionally detect a noop change. Returns a {@code Result}
      * containing a new {@code IndexRequest} to be executed on the primary and replicas.
      */
-    Result prepareUpdateIndexRequest(ShardId shardId, UpdateRequest request, GetResult getResult, boolean detectNoop) {
+    public Result prepareUpdateIndexRequest(ShardId shardId, UpdateRequest request, GetResult getResult, boolean detectNoop) {
         final long updateVersion = calculateUpdateVersion(request, getResult);
         final IndexRequest currentRequest = request.doc();
         final String routing = calculateRouting(getResult, currentRequest);
@@ -243,7 +243,7 @@ public class UpdateHelper extends AbstractComponent {
      * either a new {@code IndexRequest} or {@code DeleteRequest} (depending on the script's returned "op" value) to be executed on the
      * primary and replicas.
      */
-    Result prepareUpdateScriptRequest(ShardId shardId, UpdateRequest request, GetResult getResult, LongSupplier nowInMillis) {
+    public Result prepareUpdateScriptRequest(ShardId shardId, UpdateRequest request, GetResult getResult, LongSupplier nowInMillis) {
         final long updateVersion = calculateUpdateVersion(request, getResult);
         final IndexRequest currentRequest = request.doc();
         final String routing = calculateRouting(getResult, currentRequest);

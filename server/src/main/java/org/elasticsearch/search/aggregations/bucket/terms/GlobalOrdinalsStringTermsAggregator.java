@@ -43,7 +43,7 @@ import org.elasticsearch.search.aggregations.LeafBucketCollectorBase;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.support.ValuesSource;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -103,7 +103,7 @@ public class GlobalOrdinalsStringTermsAggregator extends AbstractStringTermsAggr
         this.bucketOrds = remapGlobalOrds ? new LongHash(1, context.bigArrays()) : null;
     }
 
-    boolean remapGlobalOrds() {
+    public boolean remapGlobalOrds() {
         return bucketOrds != null;
     }
 

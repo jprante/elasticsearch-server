@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.composite;
+package org.elasticsearch.test.search.aggregations.bucket.composite;
 
 import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.IndexReader;
@@ -30,7 +30,12 @@ import org.elasticsearch.index.mapper.KeywordFieldMapper;
 import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.NumberFieldMapper;
 import org.elasticsearch.search.DocValueFormat;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.aggregations.bucket.composite.BinaryValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.DoubleValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.GlobalOrdinalValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.LongValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.SingleDimensionValuesSource;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

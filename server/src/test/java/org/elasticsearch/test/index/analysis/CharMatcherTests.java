@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.analysis.CharMatcher;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class CharMatcherTests extends ESTestCase {
 

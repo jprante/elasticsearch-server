@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.persistent.decider;
+package org.elasticsearch.test.persistent.decider;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.persistent.decider.AssignmentDecision;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class AssignmentDecisionTests extends ESTestCase {
 

@@ -78,7 +78,7 @@ public class FsProbe extends AbstractComponent {
         return new FsInfo(System.currentTimeMillis(), ioStats, paths, leastDiskEstimate, mostDiskEstimate);
     }
 
-    final FsInfo.IoStats ioStats(final Set<Tuple<Integer, Integer>> devicesNumbers, final FsInfo previous) {
+    public final FsInfo.IoStats ioStats(final Set<Tuple<Integer, Integer>> devicesNumbers, final FsInfo previous) {
         try {
             final Map<Tuple<Integer, Integer>, FsInfo.DeviceStats> deviceMap = new HashMap<>();
             if (previous != null && previous.getIoStats() != null && previous.getIoStats().devicesStats != null) {
@@ -129,7 +129,7 @@ public class FsProbe extends AbstractComponent {
     }
 
     @SuppressForbidden(reason = "read /proc/diskstats")
-    List<String> readProcDiskStats() throws IOException {
+    public List<String> readProcDiskStats() throws IOException {
         return Files.readAllLines(PathUtils.get("/proc/diskstats"));
     }
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search;
+package org.elasticsearch.test.search;
 
 import org.apache.lucene.document.InetAddressPoint;
 import org.apache.lucene.util.BytesRef;
@@ -28,7 +28,8 @@ import org.elasticsearch.common.io.stream.NamedWriteableRegistry.Entry;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.joda.Joda;
 import org.elasticsearch.common.network.InetAddresses;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.DocValueFormat;
+import org.elasticsearch.testframework.ESTestCase;
 import org.joda.time.DateTimeZone;
 
 import java.util.ArrayList;

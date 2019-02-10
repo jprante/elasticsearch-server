@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.indices.memory.breaker;
+package org.elasticsearch.test.indices.memory.breaker;
 
 import org.elasticsearch.common.breaker.CircuitBreaker;
 import org.elasticsearch.common.settings.ClusterSettings;
@@ -25,7 +25,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.indices.breaker.BreakerSettings;
 import org.elasticsearch.indices.breaker.CircuitBreakerService;
 import org.elasticsearch.indices.breaker.HierarchyCircuitBreakerService;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;

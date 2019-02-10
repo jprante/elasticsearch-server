@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class InternalScriptedMetric extends InternalAggregation implements ScriptedMetric {
-    final Script reduceScript;
+    public final Script reduceScript;
     private final List<Object> aggregation;
 
     public InternalScriptedMetric(String name, Object aggregation, Script reduceScript, List<PipelineAggregator> pipelineAggregators,

@@ -61,12 +61,12 @@ public class TransportVerifyRepositoryAction extends TransportMasterNodeAction<V
     }
 
     @Override
-    protected ClusterBlockException checkBlock(VerifyRepositoryRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(VerifyRepositoryRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 
     @Override
-    protected void masterOperation(final VerifyRepositoryRequest request, ClusterState state, final ActionListener<VerifyRepositoryResponse> listener) {
+    public void masterOperation(final VerifyRepositoryRequest request, ClusterState state, final ActionListener<VerifyRepositoryResponse> listener) {
         repositoriesService.verifyRepository(request.name(), new  ActionListener<RepositoriesService.VerifyResponse>() {
             @Override
             public void onResponse(RepositoriesService.VerifyResponse verifyResponse) {

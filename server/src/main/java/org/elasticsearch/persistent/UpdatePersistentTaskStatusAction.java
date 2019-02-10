@@ -183,13 +183,13 @@ public class UpdatePersistentTaskStatusAction extends Action<UpdatePersistentTas
         }
 
         @Override
-        protected ClusterBlockException checkBlock(Request request, ClusterState state) {
+        public ClusterBlockException checkBlock(Request request, ClusterState state) {
             // Cluster is not affected but we look up repositories in metadata
             return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
         }
 
         @Override
-        protected final void masterOperation(final Request request, ClusterState state,
+        public final void masterOperation(final Request request, ClusterState state,
                                              final ActionListener<PersistentTaskResponse> listener) {
             persistentTasksClusterService.updatePersistentTaskStatus(request.taskId, request.allocationId, request.status,
                     new ActionListener<PersistentTask<?>>() {

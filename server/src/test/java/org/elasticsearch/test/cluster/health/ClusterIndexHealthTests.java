@@ -16,13 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.cluster.health;
+package org.elasticsearch.test.cluster.health;
 
 import org.elasticsearch.Version;
+import org.elasticsearch.cluster.health.ClusterIndexHealth;
+import org.elasticsearch.cluster.health.ClusterShardHealth;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.cluster.routing.IndexRoutingTable;
-import org.elasticsearch.cluster.routing.RoutingTableGenerator;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.test.cluster.routing.RoutingTableGenerator;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 

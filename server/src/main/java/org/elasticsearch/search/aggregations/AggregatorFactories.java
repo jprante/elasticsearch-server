@@ -32,7 +32,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 import org.elasticsearch.search.aggregations.support.AggregationPath;
 import org.elasticsearch.search.aggregations.support.AggregationPath.PathElement;
-import org.elasticsearch.search.internal.SearchContext;
+import org.elasticsearch.search.SearchContext;
 import org.elasticsearch.search.profile.Profilers;
 import org.elasticsearch.search.profile.aggregation.ProfilingAggregator;
 
@@ -305,10 +305,7 @@ public class AggregatorFactories {
             return this;
         }
 
-        /**
-         * FOR TESTING ONLY
-         */
-        Builder skipResolveOrder() {
+        public Builder skipResolveOrder() {
             this.skipResolveOrder = true;
             return this;
         }

@@ -50,12 +50,12 @@ import static org.elasticsearch.common.xcontent.XContentParserUtils.ensureExpect
  */
 public final class ProfileResult implements Writeable, ToXContentObject {
 
-    static final ParseField TYPE = new ParseField("type");
-    static final ParseField DESCRIPTION = new ParseField("description");
-    static final ParseField NODE_TIME = new ParseField("time");
-    static final ParseField NODE_TIME_RAW = new ParseField("time_in_nanos");
-    static final ParseField CHILDREN = new ParseField("children");
-    static final ParseField BREAKDOWN = new ParseField("breakdown");
+    public static final ParseField TYPE = new ParseField("type");
+    public static final ParseField DESCRIPTION = new ParseField("description");
+    public static final ParseField NODE_TIME = new ParseField("time");
+    public static final ParseField NODE_TIME_RAW = new ParseField("time_in_nanos");
+    public static final ParseField CHILDREN = new ParseField("children");
+    public static final ParseField BREAKDOWN = new ParseField("breakdown");
 
     private final String type;
     private final String description;

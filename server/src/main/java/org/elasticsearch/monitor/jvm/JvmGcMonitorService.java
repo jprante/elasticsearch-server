@@ -66,12 +66,12 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
     public static final Setting<Integer> GC_OVERHEAD_DEBUG_SETTING =
         Setting.intSetting("monitor.jvm.gc.overhead.debug", 10, 0, 100, Property.NodeScope);
 
-    static class GcOverheadThreshold {
+    public static class GcOverheadThreshold {
         final int warnThreshold;
         final int infoThreshold;
         final int debugThreshold;
 
-        GcOverheadThreshold(final int warnThreshold, final int infoThreshold, final int debugThreshold) {
+        public GcOverheadThreshold(final int warnThreshold, final int infoThreshold, final int debugThreshold) {
             this.warnThreshold = warnThreshold;
             this.infoThreshold = infoThreshold;
             this.debugThreshold = debugThreshold;
@@ -80,13 +80,13 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
 
 
 
-    static class GcThreshold {
+    public static class GcThreshold {
         public final String name;
         public final long warnThreshold;
         public final long infoThreshold;
         public final long debugThreshold;
 
-        GcThreshold(String name, long warnThreshold, long infoThreshold, long debugThreshold) {
+        public GcThreshold(String name, long warnThreshold, long infoThreshold, long debugThreshold) {
             this.name = name;
             this.warnThreshold = warnThreshold;
             this.infoThreshold = infoThreshold;
@@ -179,23 +179,23 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
     }
 
     @Override
-    protected void doStart() {
+    public void doStart() {
         if (!enabled) {
             return;
         }
         scheduledFuture = threadPool.scheduleWithFixedDelay(new JvmMonitor(gcThresholds, gcOverheadThreshold) {
             @Override
-            void onMonitorFailure(Exception e) {
+            public void onMonitorFailure(Exception e) {
                 logger.debug("failed to monitor", e);
             }
 
             @Override
-            void onSlowGc(final Threshold threshold, final long seq, final SlowGcEvent slowGcEvent) {
+            public void onSlowGc(final Threshold threshold, final long seq, final SlowGcEvent slowGcEvent) {
                 logSlowGc(logger, threshold, seq, slowGcEvent, JvmGcMonitorService::buildPools);
             }
 
             @Override
-            void onGcOverhead(final Threshold threshold, final long current, final long elapsed, final long seq) {
+            public void onGcOverhead(final Threshold threshold, final long current, final long elapsed, final long seq) {
                 logGcOverhead(logger, threshold, current, elapsed, seq);
             }
         }, interval, Names.SAME);
@@ -204,7 +204,7 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
     private static final String SLOW_GC_LOG_MESSAGE =
         "[gc][{}][{}][{}] duration [{}], collections [{}]/[{}], total [{}]/[{}], memory [{}]->[{}]/[{}], all_pools {}";
 
-    static void logSlowGc(
+    public static void logSlowGc(
         final Logger logger,
         final JvmMonitor.Threshold threshold,
         final long seq,
@@ -304,7 +304,7 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
 
     private static final String OVERHEAD_LOG_MESSAGE = "[gc][{}] overhead, spent [{}] collecting in the last [{}]";
 
-    static void logGcOverhead(
+    public static void logGcOverhead(
         final Logger logger,
         final JvmMonitor.Threshold threshold,
         final long current,
@@ -330,7 +330,7 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
     }
 
     @Override
-    protected void doStop() {
+    public void doStop() {
         if (!enabled) {
             return;
         }
@@ -341,21 +341,21 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
     protected void doClose() {
     }
 
-    abstract static class JvmMonitor implements Runnable {
+    public abstract static class JvmMonitor implements Runnable {
 
-        enum Threshold { DEBUG, INFO, WARN }
+        public enum Threshold { DEBUG, INFO, WARN }
 
-        static class SlowGcEvent {
+        public static class SlowGcEvent {
 
-            final GarbageCollector currentGc;
-            final long collectionCount;
-            final TimeValue collectionTime;
-            final long elapsed;
-            final JvmStats lastJvmStats;
-            final JvmStats currentJvmStats;
-            final ByteSizeValue maxHeapUsed;
+            public final GarbageCollector currentGc;
+            public final long collectionCount;
+            public final TimeValue collectionTime;
+            public final long elapsed;
+            public final JvmStats lastJvmStats;
+            public final JvmStats currentJvmStats;
+            public final ByteSizeValue maxHeapUsed;
 
-            SlowGcEvent(
+            public SlowGcEvent(
                 final GarbageCollector currentGc,
                 final long collectionCount,
                 final TimeValue collectionTime,
@@ -380,7 +380,7 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
         private final Map<String, JvmGcMonitorService.GcThreshold> gcThresholds;
         final GcOverheadThreshold gcOverheadThreshold;
 
-        JvmMonitor(final Map<String, GcThreshold> gcThresholds, final GcOverheadThreshold gcOverheadThreshold) {
+        public JvmMonitor(final Map<String, GcThreshold> gcThresholds, final GcOverheadThreshold gcOverheadThreshold) {
             this.gcThresholds = Objects.requireNonNull(gcThresholds);
             this.gcOverheadThreshold = Objects.requireNonNull(gcOverheadThreshold);
         }
@@ -394,9 +394,9 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
             }
         }
 
-        abstract void onMonitorFailure(Exception e);
+        public abstract void onMonitorFailure(Exception e);
 
-        synchronized void monitorGc() {
+        public synchronized void monitorGc() {
             seq++;
             final long currentTime = now();
             JvmStats currentJvmStats = jvmStats();
@@ -410,7 +410,7 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
             lastJvmStats = currentJvmStats;
         }
 
-        final void monitorSlowGc(JvmStats currentJvmStats, long elapsed) {
+        public final void monitorSlowGc(JvmStats currentJvmStats, long elapsed) {
             for (int i = 0; i < currentJvmStats.getGc().getCollectors().length; i++) {
                 GarbageCollector gc = currentJvmStats.getGc().getCollectors()[i];
                 GarbageCollector prevGc = lastJvmStats.getGc().getCollectors()[i];
@@ -453,7 +453,7 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
             }
         }
 
-        final void monitorGcOverhead(final JvmStats currentJvmStats, final long elapsed) {
+        public final void monitorGcOverhead(final JvmStats currentJvmStats, final long elapsed) {
             long current = 0;
             for (int i = 0; i < currentJvmStats.getGc().getCollectors().length; i++) {
                 GarbageCollector gc = currentJvmStats.getGc().getCollectors()[i];
@@ -463,7 +463,7 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
             checkGcOverhead(current, elapsed, seq);
         }
 
-        void checkGcOverhead(final long current, final long elapsed, final long seq) {
+        public void checkGcOverhead(final long current, final long elapsed, final long seq) {
             final int fraction = (int) ((100 * current) / (double) elapsed);
             Threshold overheadThreshold = null;
             if (fraction >= gcOverheadThreshold.warnThreshold) {
@@ -478,17 +478,17 @@ public class JvmGcMonitorService extends AbstractLifecycleComponent {
             }
         }
 
-        JvmStats jvmStats() {
+        public JvmStats jvmStats() {
             return JvmStats.jvmStats();
         }
 
-        long now() {
+        public long now() {
             return System.nanoTime();
         }
 
-        abstract void onSlowGc(Threshold threshold, long seq, SlowGcEvent slowGcEvent);
+        public abstract void onSlowGc(Threshold threshold, long seq, SlowGcEvent slowGcEvent);
 
-        abstract void onGcOverhead(Threshold threshold, long total, long elapsed, long seq);
+        public abstract void onGcOverhead(Threshold threshold, long total, long elapsed, long seq);
 
     }
 

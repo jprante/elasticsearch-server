@@ -92,7 +92,7 @@ public final class Cidrs {
         return new long[] { accumulator, accumulator + blockSize };
     }
 
-    static int[] longToOctets(long value) {
+    public static int[] longToOctets(long value) {
         assert value >= 0 && value <= (1L << 32) : value;
         int[] octets = new int[4];
         octets[0] = (int)((value >> 24) & 0xFF);
@@ -102,13 +102,13 @@ public final class Cidrs {
         return octets;
     }
 
-    static String octetsToString(int[] octets) {
+    public static String octetsToString(int[] octets) {
         assert octets != null;
         assert octets.length == 4;
         return String.format(Locale.ROOT, "%d.%d.%d.%d", octets[0], octets[1], octets[2], octets[3]);
     }
 
-    static String octetsToCIDR(int[] octets, int networkMask) {
+    public static String octetsToCIDR(int[] octets, int networkMask) {
         assert octets != null;
         assert octets.length == 4;
         return octetsToString(octets) + "/" + networkMask;

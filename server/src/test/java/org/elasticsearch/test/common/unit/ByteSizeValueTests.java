@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.common.unit;
+package org.elasticsearch.test.common.unit;
 
 import org.elasticsearch.ElasticsearchParseException;
 import org.elasticsearch.Version;
 import org.elasticsearch.common.io.stream.Writeable.Reader;
 import org.elasticsearch.common.settings.Setting;
-import org.elasticsearch.test.AbstractWireSerializingTestCase;
+import org.elasticsearch.common.unit.ByteSizeUnit;
+import org.elasticsearch.common.unit.ByteSizeValue;
+import org.elasticsearch.testframework.AbstractWireSerializingTestCase;
 import org.hamcrest.MatcherAssert;
 
 import java.io.IOException;

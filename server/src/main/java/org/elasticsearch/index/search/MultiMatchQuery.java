@@ -242,12 +242,12 @@ public class MultiMatchQuery extends MatchQuery {
         }
     }
 
-    static Query blendTerm(QueryShardContext context, BytesRef value, Float commonTermsCutoff, float tieBreaker,
+    public static Query blendTerm(QueryShardContext context, BytesRef value, Float commonTermsCutoff, float tieBreaker,
                            FieldAndFieldType... blendedFields) {
         return blendTerms(context, new BytesRef[] {value}, commonTermsCutoff, tieBreaker, blendedFields);
     }
 
-    static Query blendTerms(QueryShardContext context, BytesRef[] values, Float commonTermsCutoff, float tieBreaker,
+    public static Query blendTerms(QueryShardContext context, BytesRef[] values, Float commonTermsCutoff, float tieBreaker,
                             FieldAndFieldType... blendedFields) {
         List<Query> queries = new ArrayList<>();
         Term[] terms = new Term[blendedFields.length * values.length];
@@ -355,11 +355,11 @@ public class MultiMatchQuery extends MatchQuery {
         return queryBuilder.blendPhrase(query, fieldType);
     }
 
-    static final class FieldAndFieldType {
+    public static final class FieldAndFieldType {
         final MappedFieldType fieldType;
         final float boost;
 
-        FieldAndFieldType(MappedFieldType fieldType, float boost) {
+        public FieldAndFieldType(MappedFieldType fieldType, float boost) {
             this.fieldType = Objects.requireNonNull(fieldType);
             this.boost = boost;
         }

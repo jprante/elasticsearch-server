@@ -207,7 +207,7 @@ public class RestController extends AbstractComponent implements HttpServerTrans
     /**
      * Dispatch the request, if possible, returning true if a response was sent or false otherwise.
      */
-    boolean dispatchRequest(final RestRequest request, final RestChannel channel, final NodeClient client,
+    public boolean dispatchRequest(final RestRequest request, final RestChannel channel, final NodeClient client,
                             final Optional<RestHandler> mHandler) throws Exception {
         final int contentLength = request.hasContent() ? request.content().length() : 0;
 
@@ -344,7 +344,7 @@ public class RestController extends AbstractComponent implements HttpServerTrans
         }
     }
 
-    Iterator<MethodHandlers> getAllHandlers(final RestRequest request) {
+    public Iterator<MethodHandlers> getAllHandlers(final RestRequest request) {
         // Between retrieving the correct path, we need to reset the parameters,
         // otherwise parameters are parsed out of the URI that aren't actually handled.
         final Map<String, String> originalParams = new HashMap<>(request.params());

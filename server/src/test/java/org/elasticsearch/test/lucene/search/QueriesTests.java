@@ -17,13 +17,17 @@
  * under the License.
  */
 
-package org.apache.lucene.search;
+package org.elasticsearch.test.lucene.search;
 
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.DocValuesFieldExistsQuery;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.elasticsearch.Version;
 import org.elasticsearch.common.lucene.search.Queries;
 import org.elasticsearch.index.mapper.SeqNoFieldMapper;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 
 public class QueriesTests extends ESTestCase {
 

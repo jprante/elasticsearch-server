@@ -80,7 +80,7 @@ public class TransportSnapshotsStatusAction extends TransportMasterNodeAction<Sn
     }
 
     @Override
-    protected ClusterBlockException checkBlock(SnapshotsStatusRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(SnapshotsStatusRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 
@@ -90,7 +90,7 @@ public class TransportSnapshotsStatusAction extends TransportMasterNodeAction<Sn
     }
 
     @Override
-    protected void masterOperation(final SnapshotsStatusRequest request,
+    public void masterOperation(final SnapshotsStatusRequest request,
                                    final ClusterState state,
                                    final ActionListener<SnapshotsStatusResponse> listener) throws Exception {
         List<SnapshotsInProgress.Entry> currentSnapshots =

@@ -274,12 +274,12 @@ public abstract class BlobStoreRepository extends AbstractLifecycleComponent imp
     /**
      * Returns the BlobStore to read and write data.
      */
-    protected abstract BlobStore blobStore();
+    public abstract BlobStore blobStore();
 
     /**
      * Returns base path of the repository
      */
-    protected abstract BlobPath basePath();
+    public abstract BlobPath basePath();
 
     /**
      * Returns true if metadata and snapshot files should be compressed
@@ -654,12 +654,11 @@ public abstract class BlobStoreRepository extends AbstractLifecycleComponent imp
         return readOnly;
     }
 
-    // package private, only use for testing
-    BlobContainer blobContainer() {
+    public BlobContainer blobContainer() {
         return snapshotsBlobContainer;
     }
 
-    protected void writeIndexGen(final RepositoryData repositoryData, final long repositoryStateId) throws IOException {
+    public void writeIndexGen(final RepositoryData repositoryData, final long repositoryStateId) throws IOException {
         assert isReadOnly() == false; // can not write to a read only repository
         final long currentGen = latestIndexBlobId();
         if (repositoryStateId != SnapshotsInProgress.UNDEFINED_REPOSITORY_STATE_ID && currentGen != repositoryStateId) {
@@ -709,7 +708,7 @@ public abstract class BlobStoreRepository extends AbstractLifecycleComponent imp
      *
      * Package private for testing.
      */
-    void writeIncompatibleSnapshots(RepositoryData repositoryData) throws IOException {
+    public void writeIncompatibleSnapshots(RepositoryData repositoryData) throws IOException {
         assert isReadOnly() == false; // can not write to a read only repository
         final BytesReference bytes;
         try (BytesStreamOutput bStream = new BytesStreamOutput()) {
@@ -735,7 +734,7 @@ public abstract class BlobStoreRepository extends AbstractLifecycleComponent imp
      *
      * Package private for testing
      */
-    long latestIndexBlobId() throws IOException {
+    public long latestIndexBlobId() throws IOException {
         try {
             // First, try listing all index-N blobs (there should only be two index-N blobs at any given
             // time in a repository if cleanup is happening properly) and pick the index-N blob with the
@@ -760,8 +759,7 @@ public abstract class BlobStoreRepository extends AbstractLifecycleComponent imp
         }
     }
 
-    // package private for testing
-    long readSnapshotIndexLatestBlob() throws IOException {
+    public long readSnapshotIndexLatestBlob() throws IOException {
         try (InputStream blob = snapshotsBlobContainer.readBlob(INDEX_LATEST_BLOB)) {
             BytesStreamOutput out = new BytesStreamOutput();
             Streams.copy(blob, out);

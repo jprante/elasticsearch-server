@@ -740,7 +740,7 @@ public class Suggest implements Iterable<Suggest.Suggestion<? extends Entry<? ex
                     return PARSER.apply(parser, null);
                 }
 
-                protected void mergeInto(Option otherOption) {
+                public void mergeInto(Option otherOption) {
                     score = Math.max(score, otherOption.score);
                     if (otherOption.collateMatch != null) {
                         if (collateMatch == null) {

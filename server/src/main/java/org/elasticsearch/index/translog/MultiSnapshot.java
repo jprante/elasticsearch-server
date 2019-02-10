@@ -30,7 +30,7 @@ import java.util.Arrays;
 /**
  * A snapshot composed out of multiple snapshots
  */
-final class MultiSnapshot implements Translog.Snapshot {
+public final class MultiSnapshot implements Translog.Snapshot {
 
     private final TranslogSnapshot[] translogs;
     private final int totalOperations;
@@ -42,7 +42,7 @@ final class MultiSnapshot implements Translog.Snapshot {
     /**
      * Creates a new point in time snapshot of the given snapshots. Those snapshots are always iterated in-order.
      */
-    MultiSnapshot(TranslogSnapshot[] translogs, Closeable onClose) {
+    public MultiSnapshot(TranslogSnapshot[] translogs, Closeable onClose) {
         this.translogs = translogs;
         this.totalOperations = Arrays.stream(translogs).mapToInt(TranslogSnapshot::totalOperations).sum();
         this.overriddenOperations = 0;
@@ -82,14 +82,14 @@ final class MultiSnapshot implements Translog.Snapshot {
         onClose.close();
     }
 
-    static final class SeqNoSet {
+    public static final class SeqNoSet {
         static final short BIT_SET_SIZE = 1024;
         private final LongObjectHashMap<CountedBitSet> bitSets = new LongObjectHashMap<>();
 
         /**
          * Marks this sequence number and returns <tt>true</tt> if it is seen before.
          */
-        boolean getAndSet(long value) {
+        public boolean getAndSet(long value) {
             assert value >= 0;
             final long key = value / BIT_SET_SIZE;
             CountedBitSet bitset = bitSets.get(key);

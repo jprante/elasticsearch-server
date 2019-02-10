@@ -16,9 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.unit;
+package org.elasticsearch.test.common.unit;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.unit.SizeUnit;
+import org.elasticsearch.common.unit.SizeValue;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;

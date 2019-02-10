@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.composite;
+package org.elasticsearch.test.search.aggregations.bucket.composite;
 
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.io.stream.Writeable;
@@ -27,8 +27,11 @@ import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.InternalAggregation;
 import org.elasticsearch.search.aggregations.InternalAggregations;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeKey;
+import org.elasticsearch.search.aggregations.bucket.composite.InternalComposite;
+import org.elasticsearch.search.aggregations.bucket.composite.ParsedComposite;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.test.InternalMultiBucketAggregationTestCase;
+import org.elasticsearch.testframework.InternalMultiBucketAggregationTestCase;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
 

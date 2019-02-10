@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.create;
+package org.elasticsearch.test.action.admin.indices.create;
 
 import org.elasticsearch.action.admin.indices.alias.Alias;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
@@ -30,9 +31,9 @@ import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.index.RandomCreateIndexGenerator;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.hamcrest.ElasticsearchAssertions;
+import org.elasticsearch.testframework.index.RandomCreateIndexGenerator;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions;
 
 import java.io.IOException;
 import java.util.Map;

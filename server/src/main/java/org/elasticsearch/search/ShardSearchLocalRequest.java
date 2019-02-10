@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.search;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.search.SearchRequest;
@@ -76,10 +76,10 @@ public class ShardSearchLocalRequest implements ShardSearchRequest {
 
     private boolean profile;
 
-    ShardSearchLocalRequest() {
+    public ShardSearchLocalRequest() {
     }
 
-    ShardSearchLocalRequest(SearchRequest searchRequest, ShardId shardId, int numberOfShards,
+    public ShardSearchLocalRequest(SearchRequest searchRequest, ShardId shardId, int numberOfShards,
                             AliasFilter aliasFilter, float indexBoost, long nowInMillis, String clusterAlias) {
         this(shardId, numberOfShards, searchRequest.searchType(),
                 searchRequest.source(), searchRequest.types(), searchRequest.requestCache(), aliasFilter, indexBoost, 

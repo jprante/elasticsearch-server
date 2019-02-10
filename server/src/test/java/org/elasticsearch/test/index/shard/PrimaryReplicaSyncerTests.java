@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.shard;
+package org.elasticsearch.test.index.shard;
 
 import org.apache.lucene.store.AlreadyClosedException;
 import org.elasticsearch.action.index.IndexRequest;
@@ -36,7 +36,11 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.mapper.SourceToParse;
+import org.elasticsearch.index.shard.IndexShard;
+import org.elasticsearch.index.shard.IndexShardClosedException;
+import org.elasticsearch.index.shard.PrimaryReplicaSyncer;
 import org.elasticsearch.tasks.TaskManager;
+import org.elasticsearch.testframework.index.shard.IndexShardTestCase;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

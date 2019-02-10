@@ -571,7 +571,7 @@ public class RecoveryState implements ToXContentFragment, Streamable {
             this.reused = reused;
         }
 
-        void addRecoveredBytes(long bytes) {
+        public void addRecoveredBytes(long bytes) {
             assert reused == false : "file is marked as reused, can't update recovered bytes";
             assert bytes >= 0 : "can't recovered negative bytes. got [" + bytes + "]";
             recovered += bytes;
@@ -605,7 +605,7 @@ public class RecoveryState implements ToXContentFragment, Streamable {
             return reused;
         }
 
-        boolean fullyRecovered() {
+        public boolean fullyRecovered() {
             return reused == false && length == recovered;
         }
 

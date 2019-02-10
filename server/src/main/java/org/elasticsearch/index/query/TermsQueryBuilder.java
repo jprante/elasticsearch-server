@@ -245,7 +245,7 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
      * list is returned where all {@link String}/{@link CharBuffer}s have been
      * replaced with {@link BytesRef}s.
      */
-    static List<?> convert(List<?> list) {
+    public static List<?> convert(List<?> list) {
         if (list.isEmpty()) {
             return Collections.emptyList();
         }
@@ -314,7 +314,7 @@ public class TermsQueryBuilder extends AbstractQueryBuilder<TermsQueryBuilder> {
      * between {@link Integer}s and {@link Long}s, but {@link BytesRef}s are
      * converted back to {@link String}s.
      */
-    static List<Object> convertBack(List<?> list) {
+    public static List<Object> convertBack(List<?> list) {
         return new AbstractList<Object>() {
             @Override
             public int size() {

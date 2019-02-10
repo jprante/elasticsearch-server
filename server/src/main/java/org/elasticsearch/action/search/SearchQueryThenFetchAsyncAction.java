@@ -24,7 +24,7 @@ import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.cluster.routing.GroupShardsIterator;
 import org.elasticsearch.cluster.routing.ShardRouting;
 import org.elasticsearch.search.SearchPhaseResult;
-import org.elasticsearch.search.internal.AliasFilter;
+import org.elasticsearch.search.AliasFilter;
 import org.elasticsearch.transport.Transport;
 
 import java.util.Map;

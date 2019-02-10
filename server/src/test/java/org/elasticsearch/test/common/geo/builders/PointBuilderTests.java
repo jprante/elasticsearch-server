@@ -17,8 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.common.geo.builders;
+package org.elasticsearch.test.common.geo.builders;
 
+import org.elasticsearch.common.geo.builders.PointBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.elasticsearch.test.geo.RandomShapeGenerator;
 import org.elasticsearch.test.geo.RandomShapeGenerator.ShapeType;

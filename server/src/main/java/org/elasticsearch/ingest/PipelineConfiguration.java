@@ -97,13 +97,11 @@ public final class PipelineConfiguration extends AbstractDiffable<PipelineConfig
         return XContentHelper.convertToMap(config, true, xContentType).v2();
     }
 
-    // pkg-private for tests
-    XContentType getXContentType() {
+    public XContentType getXContentType() {
         return xContentType;
     }
 
-    // pkg-private for tests
-    BytesReference getConfig() {
+    public BytesReference getConfig() {
         return config;
     }
 

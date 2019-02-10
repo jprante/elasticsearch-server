@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index;
+package org.elasticsearch.test.index;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.search.SearchType;
@@ -26,16 +26,20 @@ import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.util.BigArrays;
+import org.elasticsearch.index.IndexService;
+import org.elasticsearch.index.IndexSettings;
+import org.elasticsearch.index.SearchSlowLog;
+import org.elasticsearch.index.SlowLogLevel;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.Rewriteable;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.internal.AliasFilter;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.search.internal.ShardSearchRequest;
-import org.elasticsearch.test.ESSingleNodeTestCase;
-import org.elasticsearch.test.TestSearchContext;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.ShardSearchRequest;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.TestSearchContext;
 import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.IOException;

@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.completion;
+package org.elasticsearch.test.search.suggest.completion;
 
 import org.elasticsearch.common.io.stream.NamedWriteableRegistry;
 import org.elasticsearch.index.query.RegexpFlag;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.suggest.completion.RegexOptions;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Collections;

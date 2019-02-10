@@ -41,7 +41,7 @@ public abstract class InstanceShardOperationRequest<Request extends InstanceShar
 
     protected String index;
     // null means its not set, allows to explicitly direct a request to a specific shard
-    protected ShardId shardId = null;
+    public ShardId shardId = null;
 
     private String concreteIndex;
 

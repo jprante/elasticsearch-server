@@ -38,8 +38,8 @@ public class FieldDataStats implements Streamable, ToXContentFragment {
     private static final String MEMORY_SIZE_IN_BYTES = "memory_size_in_bytes";
     private static final String EVICTIONS = "evictions";
     private static final String FIELDS = "fields";
-    long memorySize;
-    long evictions;
+    public long memorySize;
+    public long evictions;
     @Nullable
     FieldMemoryStats fields;
 

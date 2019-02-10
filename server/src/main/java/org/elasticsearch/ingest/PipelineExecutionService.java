@@ -108,7 +108,7 @@ public class PipelineExecutionService implements ClusterStateApplier {
         }
     }
 
-    void updatePipelineStats(IngestMetadata ingestMetadata) {
+    public void updatePipelineStats(IngestMetadata ingestMetadata) {
         boolean changed = false;
         Map<String, StatsHolder> newStatsPerPipeline = new HashMap<>(statsHolderPerPipeline);
         Iterator<String> iterator = newStatsPerPipeline.keySet().iterator();

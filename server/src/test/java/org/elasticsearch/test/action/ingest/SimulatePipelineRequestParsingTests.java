@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.action.ingest;
+package org.elasticsearch.test.action.ingest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,14 +28,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.ingest.SimulatePipelineRequest;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.ingest.CompoundProcessor;
 import org.elasticsearch.ingest.IngestDocument;
 import org.elasticsearch.ingest.Pipeline;
 import org.elasticsearch.ingest.PipelineStore;
 import org.elasticsearch.ingest.Processor;
-import org.elasticsearch.ingest.TestProcessor;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ingest.TestProcessor;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import static org.elasticsearch.action.ingest.SimulatePipelineRequest.Fields;

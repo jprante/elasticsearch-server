@@ -102,7 +102,7 @@ public final class RemoteClusterService extends RemoteClusterAware implements Cl
     private final int numRemoteConnections;
     private volatile Map<String, RemoteClusterConnection> remoteClusters = Collections.emptyMap();
 
-    RemoteClusterService(Settings settings, TransportService transportService) {
+    public RemoteClusterService(Settings settings, TransportService transportService) {
         super(settings);
         this.transportService = transportService;
         numRemoteConnections = REMOTE_CONNECTIONS_PER_CLUSTER.get(settings);
@@ -176,7 +176,7 @@ public final class RemoteClusterService extends RemoteClusterAware implements Cl
         return remoteClusters.isEmpty() == false;
     }
 
-    boolean isRemoteNodeConnected(final String remoteCluster, final DiscoveryNode node) {
+    public boolean isRemoteNodeConnected(final String remoteCluster, final DiscoveryNode node) {
         return remoteClusters.get(remoteCluster).isNodeConnected(node);
     }
 
@@ -202,7 +202,7 @@ public final class RemoteClusterService extends RemoteClusterAware implements Cl
     /**
      * Returns <code>true</code> iff the given cluster is configured as a remote cluster. Otherwise <code>false</code>
      */
-    boolean isRemoteClusterRegistered(String clusterName) {
+    public boolean isRemoteClusterRegistered(String clusterName) {
         return remoteClusters.containsKey(clusterName);
     }
 
@@ -299,18 +299,18 @@ public final class RemoteClusterService extends RemoteClusterAware implements Cl
                 (clusterAlias, value) -> {});
     }
 
-    synchronized void updateSkipUnavailable(String clusterAlias, Boolean skipUnavailable) {
+    public synchronized void updateSkipUnavailable(String clusterAlias, Boolean skipUnavailable) {
         RemoteClusterConnection remote = this.remoteClusters.get(clusterAlias);
         if (remote != null) {
             remote.updateSkipUnavailable(skipUnavailable);
         }
     }
 
-    protected void updateRemoteCluster(String clusterAlias, List<InetSocketAddress> addresses) {
+    public void updateRemoteCluster(String clusterAlias, List<InetSocketAddress> addresses) {
         updateRemoteCluster(clusterAlias, addresses, ActionListener.wrap((x) -> {}, (x) -> {}));
     }
 
-    void updateRemoteCluster(
+    public void updateRemoteCluster(
             final String clusterAlias,
             final List<InetSocketAddress> addresses,
             final ActionListener<Void> connectionListener) {
@@ -327,7 +327,7 @@ public final class RemoteClusterService extends RemoteClusterAware implements Cl
      * Connects to all remote clusters in a blocking fashion. This should be called on node startup to establish an initial connection
      * to all configured seed nodes.
      */
-    void initializeRemoteClusters() {
+    public void initializeRemoteClusters() {
         final TimeValue timeValue = REMOTE_INITIAL_CONNECTION_TIMEOUT_SETTING.get(settings);
         final PlainActionFuture<Void> future = new PlainActionFuture<>();
         Map<String, List<DiscoveryNode>> seeds = RemoteClusterAware.buildRemoteClustersSeeds(settings);

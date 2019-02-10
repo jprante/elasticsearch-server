@@ -39,10 +39,10 @@ public abstract class InternalMappedSignificantTerms<
             B extends InternalSignificantTerms.Bucket<B>>
         extends InternalSignificantTerms<A, B> {
 
-    protected final DocValueFormat format;
+    public final DocValueFormat format;
     protected final long subsetSize;
     protected final long supersetSize;
-    protected final SignificanceHeuristic significanceHeuristic;
+    public final SignificanceHeuristic significanceHeuristic;
     protected final List<B> buckets;
     protected Map<String, B> bucketMap;
 
@@ -94,12 +94,12 @@ public abstract class InternalMappedSignificantTerms<
     }
 
     @Override
-    protected long getSubsetSize() {
+    public long getSubsetSize() {
         return subsetSize;
     }
 
     @Override
-    protected long getSupersetSize() {
+    public long getSupersetSize() {
         return supersetSize;
     }
 

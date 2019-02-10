@@ -44,14 +44,14 @@ import java.util.function.ToLongFunction;
 /**
  * A {@link SingleDimensionValuesSource} for longs.
  */
-class LongValuesSource extends SingleDimensionValuesSource<Long> {
+public class LongValuesSource extends SingleDimensionValuesSource<Long> {
     private final CheckedFunction<LeafReaderContext, SortedNumericDocValues, IOException> docValuesFunc;
     private final LongUnaryOperator rounding;
 
     private final LongArray values;
     private long currentValue;
 
-    LongValuesSource(BigArrays bigArrays, MappedFieldType fieldType,
+    public LongValuesSource(BigArrays bigArrays, MappedFieldType fieldType,
                      CheckedFunction<LeafReaderContext, SortedNumericDocValues, IOException> docValuesFunc,
                      LongUnaryOperator rounding, DocValueFormat format, Object missing, int size, int reverseMul) {
         super(format, fieldType, missing, size, reverseMul);
@@ -61,22 +61,22 @@ class LongValuesSource extends SingleDimensionValuesSource<Long> {
     }
 
     @Override
-    void copyCurrent(int slot) {
+    public void copyCurrent(int slot) {
         values.set(slot, currentValue);
     }
 
     @Override
-    int compare(int from, int to) {
+    public int compare(int from, int to) {
         return compareValues(values.get(from), values.get(to));
     }
 
     @Override
-    int compareCurrent(int slot) {
+    public int compareCurrent(int slot) {
         return compareValues(currentValue, values.get(slot));
     }
 
     @Override
-    int compareCurrentWithAfter() {
+    public int compareCurrentWithAfter() {
         return compareValues(currentValue, afterValue);
     }
 
@@ -85,7 +85,7 @@ class LongValuesSource extends SingleDimensionValuesSource<Long> {
     }
 
     @Override
-    void setAfter(Comparable<?> value) {
+    public void setAfter(Comparable<?> value) {
         if (value instanceof Number) {
             afterValue = ((Number) value).longValue();
         } else {
@@ -98,12 +98,12 @@ class LongValuesSource extends SingleDimensionValuesSource<Long> {
     }
 
     @Override
-    Long toComparable(int slot) {
+    public Long toComparable(int slot) {
         return values.get(slot);
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
+    public LeafBucketCollector getLeafCollector(LeafReaderContext context, LeafBucketCollector next) throws IOException {
         final SortedNumericDocValues dvs = docValuesFunc.apply(context);
         return new LeafBucketCollector() {
             @Override
@@ -120,7 +120,7 @@ class LongValuesSource extends SingleDimensionValuesSource<Long> {
     }
 
     @Override
-    LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next) {
+    public LeafBucketCollector getLeafCollector(Comparable<?> value, LeafReaderContext context, LeafBucketCollector next) {
         if (value.getClass() != Long.class) {
             throw new IllegalArgumentException("Expected Long, got " + value.getClass());
         }
@@ -134,7 +134,7 @@ class LongValuesSource extends SingleDimensionValuesSource<Long> {
     }
 
     @Override
-    SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
+    public SortedDocsProducer createSortedDocsProducerOrNull(IndexReader reader, Query query) {
         if (checkIfSortedDocsIsApplicable(reader, fieldType) == false ||
                 (query != null &&
                     query.getClass() != MatchAllDocsQuery.class &&

@@ -206,7 +206,7 @@ public class ReplicationOperation<
      * Checks whether we can perform a write based on the required active shard count setting.
      * Returns **null* if OK to proceed, or a string describing the reason to stop
      */
-    protected String checkActiveShardCount() {
+    public String checkActiveShardCount() {
         final ShardId shardId = primary.routingEntry().shardId();
         final ActiveShardCount waitForActiveShards = request.waitForActiveShards();
         if (waitForActiveShards == ActiveShardCount.NONE) {

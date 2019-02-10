@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query.plugin;
+package org.elasticsearch.test.index.query.plugin;
 
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.MatchAllDocsQuery;

@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.snapshots.blobstore;
+package org.elasticsearch.test.index.snapshots.blobstore;
 
 import com.carrotsearch.randomizedtesting.generators.RandomNumbers;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.snapshots.blobstore.SlicedInputStream;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

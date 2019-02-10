@@ -28,8 +28,8 @@ import org.elasticsearch.search.fetch.subphase.DocValueFieldsContext;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 import org.elasticsearch.search.fetch.subphase.ScriptFieldsContext;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.search.internal.SubSearchContext;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.SubSearchContext;
 import org.elasticsearch.search.sort.SortAndFormats;
 
 import java.io.IOException;

@@ -19,9 +19,11 @@
 
 package org.elasticsearch.bootstrap;
 
+import org.apache.logging.log4j.Logger;
 import org.elasticsearch.cli.Command;
 import org.elasticsearch.common.SuppressForbidden;
 import org.elasticsearch.common.io.PathUtils;
+import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.common.network.NetworkModule;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
@@ -32,29 +34,32 @@ import org.elasticsearch.secure_sm.SecureSM;
 import org.elasticsearch.transport.TcpTransport;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.lang.module.ModuleReference;
+import java.lang.module.ResolvedModule;
 import java.net.SocketPermission;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.AccessMode;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
 import java.security.Permissions;
 import java.security.Policy;
-import java.security.URIParameter;
+import java.util.AbstractMap;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.elasticsearch.bootstrap.FilePermissionUtils.addDirectoryPath;
@@ -107,7 +112,10 @@ import static org.elasticsearch.bootstrap.FilePermissionUtils.addSingleFilePath;
  * See <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/security/troubleshooting-security.html">
  * Troubleshooting Security</a> for information.
  */
-final class Security {
+public final class Security {
+
+    private static final Logger logger = ESLoggerFactory.getLogger(Security.class);
+
     /** no instantiation */
     private Security() {}
 
@@ -117,43 +125,90 @@ final class Security {
      * @param environment configuration for generating dynamic permissions
      * @param filterBadDefaults true if we should filter out bad java defaults in the system policy.
      */
-    static void configure(Environment environment, boolean filterBadDefaults)
+    public static void configure(Environment environment, boolean filterBadDefaults)
             throws IOException, URISyntaxException {
 
         // enable security policy: union of template and environment-based paths, and possibly plugin permissions
-        Set<URI> uris = new LinkedHashSet<>();
-        uris.addAll(JarHell.parseModulePath());
-        uris.addAll(JarHell.parseClassPath());
-        Policy.setPolicy(new ESPolicy(getCodebaseJarMap(uris), createPermissions(environment),
-                getPluginPermissions(environment), filterBadDefaults));
-
-        // enable security manager
-        final String[] classesThatCanExit =
-                new String[]{
+        Set<URI> modulePath = parseModulePath();
+        Map<String, URI> codebase = createCodebase(modulePath);
+        Map<String, String> systemProperties = createSystemProperties(codebase);
+        setSystemProperties(systemProperties);
+        Permissions permissions = createPermissions(modulePath, environment);
+        Map<String, Policy> pluginPolicies = getPluginPermissions(environment);
+        // restore system properties, might be cleared while plugin security policy setup
+        setSystemProperties(systemProperties);
+        try {
+            ESPolicy policy = createPolicy(permissions, pluginPolicies, filterBadDefaults);
+            Policy.setPolicy(policy);
+        } finally {
+            clearSystemProperties(systemProperties);
+        }
+        final String[] classesThatCanExit = new String[]{
                         // SecureSM matches class names as regular expressions so we escape the $ that arises from the nested class name
                         ElasticsearchUncaughtExceptionHandler.PrivilegedHaltAction.class.getName().replace("$", "\\$"),
                         Command.class.getName()};
-        System.setSecurityManager(new SecureSM(classesThatCanExit));
-
-        // do some basic tests
+        SecureSM secureSM = new SecureSM(classesThatCanExit);
+        // enable security manager
+        System.setSecurityManager(secureSM);
         selfTest();
     }
 
-    /**
-     * Return a map from codebase name to codebase url of jar codebases used by ES core.
-     */
-    @SuppressForbidden(reason = "find URI path")
-    static Map<String, URI> getCodebaseJarMap(Set<URI> uris) {
-        Map<String, URI> codebases = new LinkedHashMap<>(); // maintain order
+    public static Map<String, URI> createCodebase(Set<URI> uris) throws IOException {
+        Map<String, URI> map = new LinkedHashMap<>();
         for (URI uri : uris) {
-            String fileName = PathUtils.get(uri).getFileName().toString();
-            if (fileName.endsWith(".jar") == false) {
-                // tests :(
+            String name = PathUtils.get(uri).getFileName().toString();
+            if (name.endsWith(".jar")) {
+                map.put(name, uri);
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Jar files listed in {@code codebases} location will be provided to the policy file via
+     * a system property of the short name: e.g. <code>${codebase.joda-convert-1.2.jar}</code>
+     * would map to full URL.
+     * @param codebase the code base
+     * @return a system property map
+     */
+    public static Map<String, String> createSystemProperties(Map<String, URI> codebase) {
+        Map<String, String> propertiesSet = new LinkedHashMap<>();
+        for (Map.Entry<String, URI> entry : codebase.entrySet()) {
+            String name = entry.getKey();
+            URI uri = entry.getValue();
+            if (name.indexOf("-linux-x86_64.jar") > 0) {
                 continue;
             }
-            codebases.put(fileName, uri);
+            String property = "codebase." + name;
+            String aliasProperty = name.endsWith("-tests.jar") ?
+                    "codebase." + name.replaceFirst("-\\d+\\.\\d+.*-tests\\.jar", "-tests") :
+                    "codebase." + name.replaceFirst("-\\d+\\.\\d+.*\\.jar", "");
+            if (!aliasProperty.equals(property)) {
+                propertiesSet.put(aliasProperty, uri.toString());
+            }
+            propertiesSet.put(property, uri.toString());
         }
-        return codebases;
+        return propertiesSet;
+    }
+
+    public static void setSystemProperties(Map<String, String> properties) {
+        for (Map.Entry<String, String> entry : properties.entrySet()) {
+            if (System.getProperty(entry.getKey()) == null) {
+                System.setProperty(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    public static void clearSystemProperties(Map<String, String> properties) {
+        for (Map.Entry<String, String> entry : properties.entrySet()) {
+            System.clearProperty(entry.getKey());
+        }
+    }
+
+    public static ESPolicy createPolicy(Permissions permissions,
+                                         Map<String, Policy> pluginPolicies, boolean filterBadDefaults)
+            throws URISyntaxException {
+       return new ESPolicy(permissions, pluginPolicies, filterBadDefaults);
     }
 
     /**
@@ -161,7 +216,7 @@ final class Security {
      * we look for matching plugins and set URLs to fit
      */
     @SuppressForbidden(reason = "proper use of URL")
-    static Map<String,Policy> getPluginPermissions(Environment environment) throws IOException {
+    public static Map<String,Policy> getPluginPermissions(Environment environment) throws IOException {
         Map<String,Policy> map = new HashMap<>();
         // collect up set of plugins and modules by listing directories.
         Set<Path> pluginsAndModules = new LinkedHashSet<>(PluginsService.findPluginDirs(environment.pluginsFile()));
@@ -173,102 +228,49 @@ final class Security {
             if (Files.exists(policyFile)) {
                 // first get a list of URLs for the plugins' jars:
                 // we resolve symlinks so map is keyed on the normalize codebase name
-                Set<URI> codebases = new LinkedHashSet<>(); // order is already lost, but some filesystems have it
+                Set<URI> pluginCodebase = new LinkedHashSet<>(); // order is already lost, but some filesystems have it
                 try (DirectoryStream<Path> jarStream = Files.newDirectoryStream(plugin, "*.jar")) {
                     for (Path jar : jarStream) {
                         URI uri = jar.toRealPath().toUri();
-                        if (codebases.add(uri) == false) {
-                            throw new IllegalStateException("duplicate module/plugin: " + uri);
+                        if (!pluginCodebase.add(uri)) {
+                            throw new IllegalStateException("duplicate module in plugin " + plugin + " uri = " + uri);
                         }
                     }
                 }
-
+                Map<String, String> systemProperties = createSystemProperties(createCodebase(pluginCodebase));
+                setSystemProperties(systemProperties);
                 // parse the plugin's policy file into a set of permissions
-                Policy policy = readPolicy(policyFile.toUri(), getCodebaseJarMap(codebases));
-
-                // consult this policy for each of the plugin's jars:
-                for (URI uri : codebases) {
-                    if (map.put(uri.getPath(), policy) != null) {
-                        // just be paranoid ok?
-                        throw new IllegalStateException("per-plugin permissions already granted for jar file: " + uri);
+                logger.info("reading plugin policy: " + policyFile);
+                try {
+                    Policy policy = ESPolicy.readPolicy(policyFile.toUri());
+                    // consult this policy for each of the plugin's jars
+                    for (URI uri : pluginCodebase) {
+                        if (map.put(uri.getPath(), policy) != null) {
+                            // just be paranoid ok?
+                            throw new IllegalStateException("per-plugin permissions already granted for jar file: " + uri);
+                        }
                     }
+                } finally {
+                    clearSystemProperties(systemProperties);
                 }
             }
         }
-
         return Collections.unmodifiableMap(map);
     }
 
-    /**
-     * Reads and returns the specified {@code policyFile}.
-     * <p>
-     * Jar files listed in {@code codebases} location will be provided to the policy file via
-     * a system property of the short name: e.g. <code>${codebase.joda-convert-1.2.jar}</code>
-     * would map to full URL.
-     */
-    @SuppressForbidden(reason = "accesses fully qualified URIs to configure security")
-    static Policy readPolicy(URI policyFile, Map<String, URI> codebases) {
-        try {
-            List<String> propertiesSet = new ArrayList<>();
-            try {
-                // set codebase properties
-                for (Map.Entry<String, URI> codebase : codebases.entrySet()) {
-                    String name = codebase.getKey();
-                    // skip if OS classifiers in name (e.g. netty-transport-native-epoll-n.n.n.Final-linux-x86_64.jar)
-                    if (name.indexOf("-linux-x86_64.jar") > 0) {
-                        continue;
-                    }
-                    URL url = codebase.getValue().toURL();
-                    // We attempt to use a versionless identifier for each codebase. This assumes a specific version
-                    // format in the jar filename. While we cannot ensure all jars in all plugins use this format, nonconformity
-                    // only means policy grants would need to include the entire jar filename as they always have before.
-                    String property = "codebase." + name;
-                    String aliasProperty = "codebase." + name.replaceFirst("-\\d+\\.\\d+.*\\.jar", "");
-                    if (aliasProperty.equals(property) == false) {
-                        propertiesSet.add(aliasProperty);
-                        String previous = System.setProperty(aliasProperty, url.toString());
-                        if (previous != null) {
-                            throw new IllegalStateException("codebase property already set: " + aliasProperty + " -> " + previous +
-                                    ", cannot set to " + url.toString());
-                        }
-                    }
-                    propertiesSet.add(property);
-                    String previous = System.setProperty(property, url.toString());
-                    if (previous != null) {
-                        throw new IllegalStateException("codebase property already set: " + property + " -> " + previous +
-                                ", cannot set to " + url.toString());
-                    }
-                }
-                return Policy.getInstance("JavaPolicy", new URIParameter(policyFile));
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e); // should never happen
-            } finally {
-                // clear codebase properties
-                for (String property : propertiesSet) {
-                    System.clearProperty(property);
-                }
-            }
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException("unable to parse policy file `" + policyFile + "`", e);
-        }
-    }
-
     /** returns dynamic Permissions to configured paths and bind ports */
-    static Permissions createPermissions(Environment environment) throws IOException {
+    public static Permissions createPermissions(Set<URI> modulePath, Environment environment) throws IOException {
         Permissions policy = new Permissions();
-        addClasspathPermissions(policy);
+        addModulePathPermissions(modulePath, policy);
         addFilePermissions(policy, environment);
         addBindPermissions(policy, environment.settings());
         return policy;
     }
 
-    /** Adds access to classpath jars/classes for jar hell scan, etc */
     @SuppressForbidden(reason = "accesses fully qualified URIs to configure security")
-    static void addClasspathPermissions(Permissions policy) throws IOException {
-        // add permissions to everything in classpath
-        // really it should be covered by lib/, but there could be e.g. agents or similar configured)
-        for (URI uri : JarHell.parseClassPath()) {
-            Path path = PathUtils.get(uri);
+    public static void addModulePathPermissions(Set<URI> modulePath, Permissions policy) throws IOException {
+        for (URI module : modulePath) {
+            Path path = PathUtils.get(module);
             // resource itself
             if (Files.isDirectory(path)) {
                 addDirectoryPath(policy, "class.path", path, "read,readlink");
@@ -281,7 +283,7 @@ final class Security {
     /**
      * Adds access to all configurable paths.
      */
-    static void addFilePermissions(Permissions policy, Environment environment) throws IOException {
+    private static void addFilePermissions(Permissions policy, Environment environment) throws IOException {
         // read-only dirs
         addDirectoryPath(policy, Environment.PATH_HOME_SETTING.getKey(), environment.binFile(), "read,readlink");
         addDirectoryPath(policy, Environment.PATH_HOME_SETTING.getKey(), environment.libFile(), "read,readlink");
@@ -402,7 +404,7 @@ final class Security {
      * Ensures configured directory {@code path} exists.
      * @throws IOException if {@code path} exists, but is not a directory, not accessible, or broken symbolic link.
      */
-    static void ensureDirectoryExists(Path path) throws IOException {
+    public static void ensureDirectoryExists(Path path) throws IOException {
         // this isn't atomic, but neither is createDirectories.
         if (Files.isDirectory(path)) {
             // verify access, following links (throws exception if something is wrong)
@@ -423,7 +425,7 @@ final class Security {
 
     /** Simple checks that everything is ok */
     @SuppressForbidden(reason = "accesses jvm default tempdir as a self-test")
-    static void selfTest() throws IOException {
+    public static void selfTest() throws IOException {
         // check we can manipulate temporary files
         try {
             Path p = Files.createTempFile(null, null);
@@ -434,6 +436,68 @@ final class Security {
             }
         } catch (SecurityException problem) {
             throw new SecurityException("Security misconfiguration: cannot access java.io.tmpdir", problem);
+        }
+    }
+
+    public static Set<URI> parseModulePath() {
+        Deque<ModuleLayer> layerOrder = new ArrayDeque<>();
+        Set<ModuleLayer> layerVisited = new HashSet<>();
+        CallerResolver callerResolver = new CallerResolver();
+        Class<?>[] callStack = callerResolver.getClassContext();
+        for (Class<?> cl : callStack) {
+            ModuleLayer layer = cl.getModule().getLayer();
+            if (layer != null) {
+                findLayerOrder(layer, layerVisited, layerOrder);
+            }
+        }
+        ModuleLayer bootLayer = ModuleLayer.boot();
+        findLayerOrder(bootLayer, layerVisited, layerOrder);
+        Set<ModuleReference> addedModules = new HashSet<>();
+        List<Map.Entry<ModuleReference, ModuleLayer>> nonSystemModuleRefs = new ArrayList<>();
+        for (ModuleLayer layer : layerOrder) {
+            List<ResolvedModule> modulesInLayer = new ArrayList<>(layer.configuration().modules());
+            modulesInLayer.sort(Comparator.comparing(e -> e.reference().descriptor().name()));
+            for (ResolvedModule module : modulesInLayer) {
+                ModuleReference moduleReference = module.reference();
+                if (addedModules.add(moduleReference)) {
+                    String moduleName = moduleReference.descriptor().name();
+                    if (!isSystemModule(moduleName)) {
+                        nonSystemModuleRefs.add(new AbstractMap.SimpleEntry<>(moduleReference, layer));
+                    }
+                }
+            }
+        }
+        Set<URI> uriElements = new LinkedHashSet<>();
+        for (Map.Entry<ModuleReference, ModuleLayer> e : nonSystemModuleRefs) {
+            ModuleReference ref = e.getKey();
+            Optional<URI> location = ref.location();
+            location.ifPresent(uriElements::add);
+        }
+        return Collections.unmodifiableSet(uriElements);
+    }
+
+    private static void findLayerOrder(ModuleLayer layer, Set<ModuleLayer> layerVisited, Deque<ModuleLayer> layersOut) {
+        if (layerVisited.add(layer)) {
+            List<ModuleLayer> parents = layer.parents();
+            for (ModuleLayer parent : parents) {
+                findLayerOrder(parent, layerVisited, layersOut);
+            }
+            layersOut.push(layer);
+        }
+    }
+
+    private static boolean isSystemModule(final String moduleName) {
+        return moduleName.startsWith("java.")
+                || moduleName.startsWith("javax.")
+                || moduleName.startsWith("javafx.")
+                || moduleName.startsWith("jdk.")
+                || moduleName.startsWith("oracle.");
+    }
+
+    private static final class CallerResolver extends SecurityManager {
+        @Override
+        protected Class<?>[] getClassContext() {
+            return super.getClassContext();
         }
     }
 }

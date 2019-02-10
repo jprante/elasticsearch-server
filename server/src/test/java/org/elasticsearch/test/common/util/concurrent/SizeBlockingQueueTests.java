@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.util.concurrent;
+package org.elasticsearch.test.common.util.concurrent;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.concurrent.SizeBlockingQueue;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

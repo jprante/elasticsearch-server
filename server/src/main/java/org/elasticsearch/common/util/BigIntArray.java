@@ -30,7 +30,7 @@ import static org.elasticsearch.common.util.BigArrays.INT_PAGE_SIZE;
  * Int array abstraction able to support more than 2B values. This implementation slices data into fixed-sized blocks of
  * configurable length.
  */
-final class BigIntArray extends AbstractBigArray implements IntArray {
+public final class BigIntArray extends AbstractBigArray implements IntArray {
 
     private static final BigIntArray ESTIMATOR = new BigIntArray(0, BigArrays.NON_RECYCLING_INSTANCE, false);
 

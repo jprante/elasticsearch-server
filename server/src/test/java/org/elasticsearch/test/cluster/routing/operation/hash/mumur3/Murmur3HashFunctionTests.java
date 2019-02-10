@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.routing.operation.hash.murmur3;
+package org.elasticsearch.test.cluster.routing.operation.hash.mumur3;
 
 import org.elasticsearch.cluster.routing.Murmur3HashFunction;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class Murmur3HashFunctionTests extends ESTestCase {
 

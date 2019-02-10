@@ -17,15 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.index.reindex;
+package org.elasticsearch.test.index.reindex;
 
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.Version;
 import org.elasticsearch.common.Randomness;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.reindex.BulkByScrollTask;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ import java.util.stream.IntStream;
 import static java.lang.Math.abs;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
-import static org.apache.lucene.util.TestUtil.randomSimpleString;
+import static org.apache.lucene.testframework.util.TestUtil.randomSimpleString;
 import static org.elasticsearch.common.unit.TimeValue.parseTimeValue;
 import static org.hamcrest.Matchers.hasSize;
 

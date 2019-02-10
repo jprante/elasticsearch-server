@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.alias;
+package org.elasticsearch.test.action.admin.indices.aliases;
 
 import org.elasticsearch.action.admin.indices.alias.IndicesAliasesRequest.AliasActions;
 import org.elasticsearch.common.ParsingException;
@@ -31,15 +31,15 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParseException;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.elasticsearch.index.alias.RandomAliasActionsGenerator.randomAliasAction;
-import static org.elasticsearch.index.alias.RandomAliasActionsGenerator.randomMap;
-import static org.elasticsearch.index.alias.RandomAliasActionsGenerator.randomRouting;
+import static org.elasticsearch.testframework.index.alias.RandomAliasActionsGenerator.randomAliasAction;
+import static org.elasticsearch.testframework.index.alias.RandomAliasActionsGenerator.randomMap;
+import static org.elasticsearch.testframework.index.alias.RandomAliasActionsGenerator.randomRouting;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.hamcrest.Matchers.arrayWithSize;

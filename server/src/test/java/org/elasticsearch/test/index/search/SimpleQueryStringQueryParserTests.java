@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.index.search;
+package org.elasticsearch.test.index.search;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.search.SimpleQueryStringQueryParser;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class SimpleQueryStringQueryParserTests extends ESTestCase {
 

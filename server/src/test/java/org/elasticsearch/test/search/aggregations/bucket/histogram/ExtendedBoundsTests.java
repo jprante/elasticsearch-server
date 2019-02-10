@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.bucket.histogram;
+package org.elasticsearch.test.search.aggregations.bucket.histogram;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
@@ -35,8 +35,9 @@ import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.query.QueryShardContext;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.SearchParseException;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.ESTestCase;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
 

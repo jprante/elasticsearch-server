@@ -17,13 +17,15 @@
  * under the License.
  */
 
-package org.elasticsearch.action.ingest;
+package org.elasticsearch.test.action.ingest;
 
 import org.elasticsearch.ElasticsearchException;
-import org.elasticsearch.ingest.TestProcessor;
+import org.elasticsearch.action.ingest.SimulateProcessorResult;
+import org.elasticsearch.action.ingest.TrackingResultProcessor;
+import org.elasticsearch.testframework.ingest.TestProcessor;
 import org.elasticsearch.ingest.CompoundProcessor;
 import org.elasticsearch.ingest.IngestDocument;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import java.util.ArrayList;

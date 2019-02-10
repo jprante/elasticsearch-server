@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.node;
+package org.elasticsearch.test.cluster.node;
 
 import org.elasticsearch.Version;
+import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.net.InetAddress;
 

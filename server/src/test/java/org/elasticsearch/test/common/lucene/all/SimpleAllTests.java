@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.lucene.all;
+package org.elasticsearch.test.common.lucene.all;
 
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.FieldType;
@@ -38,7 +38,9 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.elasticsearch.common.lucene.Lucene;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.lucene.all.AllField;
+import org.elasticsearch.common.lucene.all.AllTermQuery;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

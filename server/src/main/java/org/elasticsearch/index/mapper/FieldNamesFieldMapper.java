@@ -231,7 +231,7 @@ public class FieldNamesFieldMapper extends MetadataFieldMapper {
         return null;
     }
 
-    static Iterable<String> extractFieldNames(final String fullPath) {
+    public static Iterable<String> extractFieldNames(final String fullPath) {
         return new Iterable<String>() {
             @Override
             public Iterator<String> iterator() {

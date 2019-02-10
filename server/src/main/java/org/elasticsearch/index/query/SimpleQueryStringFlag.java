@@ -42,7 +42,7 @@ public enum SimpleQueryStringFlag {
     NEAR(SimpleQueryStringQueryParser.NEAR_OPERATOR),
     SLOP(SimpleQueryStringQueryParser.NEAR_OPERATOR);
 
-    final int value;
+    public final int value;
 
     SimpleQueryStringFlag(int value) {
         this.value = value;

@@ -157,12 +157,12 @@ public class MembershipAction extends AbstractComponent {
         }
     }
 
-    static class ValidateJoinRequest extends TransportRequest {
+    public static class ValidateJoinRequest extends TransportRequest {
         private ClusterState state;
 
-        ValidateJoinRequest() {}
+        public ValidateJoinRequest() {}
 
-        ValidateJoinRequest(ClusterState state) {
+        public ValidateJoinRequest(ClusterState state) {
             this.state = state;
         }
 
@@ -179,11 +179,11 @@ public class MembershipAction extends AbstractComponent {
         }
     }
 
-    static class ValidateJoinRequestRequestHandler implements TransportRequestHandler<ValidateJoinRequest> {
+    public static class ValidateJoinRequestRequestHandler implements TransportRequestHandler<ValidateJoinRequest> {
         private final Supplier<DiscoveryNode> localNodeSupplier;
         private final Collection<BiConsumer<DiscoveryNode, ClusterState>> joinValidators;
 
-        ValidateJoinRequestRequestHandler(Supplier<DiscoveryNode> localNodeSupplier,
+        public ValidateJoinRequestRequestHandler(Supplier<DiscoveryNode> localNodeSupplier,
                                           Collection<BiConsumer<DiscoveryNode, ClusterState>> joinValidators) {
             this.localNodeSupplier = localNodeSupplier;
             this.joinValidators = joinValidators;
@@ -205,7 +205,7 @@ public class MembershipAction extends AbstractComponent {
      * @see Version#minimumIndexCompatibilityVersion()
      * @throws IllegalStateException if any index is incompatible with the given version
      */
-    static void ensureIndexCompatibility(final Version nodeVersion, MetaData metaData) {
+    public static void ensureIndexCompatibility(final Version nodeVersion, MetaData metaData) {
         Version supportedIndexVersion = nodeVersion.minimumIndexCompatibilityVersion();
         // we ensure that all indices in the cluster we join are compatible with us no matter if they are
         // closed or not we can't read mappings of these indices so we need to reject the join...
@@ -222,14 +222,14 @@ public class MembershipAction extends AbstractComponent {
     }
 
     /** ensures that the joining node has a version that's compatible with all current nodes*/
-    static void ensureNodesCompatibility(final Version joiningNodeVersion, DiscoveryNodes currentNodes) {
+    public static void ensureNodesCompatibility(final Version joiningNodeVersion, DiscoveryNodes currentNodes) {
         final Version minNodeVersion = currentNodes.getMinNodeVersion();
         final Version maxNodeVersion = currentNodes.getMaxNodeVersion();
         ensureNodesCompatibility(joiningNodeVersion, minNodeVersion, maxNodeVersion);
     }
 
     /** ensures that the joining node has a version that's compatible with a given version range */
-    static void ensureNodesCompatibility(Version joiningNodeVersion, Version minClusterNodeVersion, Version maxClusterNodeVersion) {
+    public static void ensureNodesCompatibility(Version joiningNodeVersion, Version minClusterNodeVersion, Version maxClusterNodeVersion) {
         assert minClusterNodeVersion.onOrBefore(maxClusterNodeVersion) : minClusterNodeVersion + " > " + maxClusterNodeVersion;
         if (joiningNodeVersion.isCompatible(maxClusterNodeVersion) == false) {
             throw new IllegalStateException("node version [" + joiningNodeVersion + "] is not supported. " +
@@ -246,7 +246,7 @@ public class MembershipAction extends AbstractComponent {
      * to ensure that if the master is already fully operating under the new major version, it doesn't go back to mixed
      * version mode
      **/
-    static void ensureMajorVersionBarrier(Version joiningNodeVersion, Version minClusterNodeVersion) {
+    public static void ensureMajorVersionBarrier(Version joiningNodeVersion, Version minClusterNodeVersion) {
         final byte clusterMajor = minClusterNodeVersion.major;
         if (joiningNodeVersion.major < clusterMajor) {
             throw new IllegalStateException("node version [" + joiningNodeVersion + "] is not supported. " +

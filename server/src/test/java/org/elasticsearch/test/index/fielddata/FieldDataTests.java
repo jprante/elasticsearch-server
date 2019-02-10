@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.fielddata;
+package org.elasticsearch.test.index.fielddata;
 
 import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.NumericDocValues;
@@ -25,7 +25,10 @@ import org.apache.lucene.index.SortedNumericDocValues;
 import org.apache.lucene.search.AbstractNumericDocValues;
 import org.apache.lucene.search.AbstractSortedNumericDocValues;
 import org.apache.lucene.util.NumericUtils;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.fielddata.FieldData;
+import org.elasticsearch.index.fielddata.NumericDoubleValues;
+import org.elasticsearch.index.fielddata.SortedNumericDoubleValues;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.discovery.zen;
+package org.elasticsearch.test.discovery.zen;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.ClusterName;
@@ -26,7 +26,9 @@ import org.elasticsearch.cluster.ClusterStateTaskExecutor;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.cluster.routing.allocation.AllocationService;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.discovery.zen.ElectMasterService;
+import org.elasticsearch.discovery.zen.ZenDiscovery;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +86,7 @@ public class NodeRemovalClusterStateTaskExecutorTests extends ESTestCase {
         final ZenDiscovery.NodeRemovalClusterStateTaskExecutor executor =
                 new ZenDiscovery.NodeRemovalClusterStateTaskExecutor(allocationService, electMasterService, submitRejoin, logger) {
                     @Override
-                    ClusterState remainingNodesClusterState(ClusterState currentState, DiscoveryNodes.Builder remainingNodesBuilder) {
+                    public ClusterState remainingNodesClusterState(ClusterState currentState, DiscoveryNodes.Builder remainingNodesBuilder) {
                         remainingNodesClusterState.set(super.remainingNodesClusterState(currentState, remainingNodesBuilder));
                         return remainingNodesClusterState.get();
                     }
@@ -136,7 +138,7 @@ public class NodeRemovalClusterStateTaskExecutorTests extends ESTestCase {
         final ZenDiscovery.NodeRemovalClusterStateTaskExecutor executor =
                 new ZenDiscovery.NodeRemovalClusterStateTaskExecutor(allocationService, electMasterService, submitRejoin, logger) {
                     @Override
-                    ClusterState remainingNodesClusterState(ClusterState currentState, DiscoveryNodes.Builder remainingNodesBuilder) {
+                    public ClusterState remainingNodesClusterState(ClusterState currentState, DiscoveryNodes.Builder remainingNodesBuilder) {
                         remainingNodesClusterState.set(super.remainingNodesClusterState(currentState, remainingNodesBuilder));
                         return remainingNodesClusterState.get();
                     }

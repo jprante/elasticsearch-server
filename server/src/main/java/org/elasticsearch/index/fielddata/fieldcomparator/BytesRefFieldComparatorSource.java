@@ -137,14 +137,14 @@ public class BytesRefFieldComparatorSource extends IndexFieldData.XFieldComparat
      * are replaced with the specified term
      */
     // TODO: move this out if we need it for other reasons
-    static class ReplaceMissing extends AbstractSortedDocValues {
+    public static class ReplaceMissing extends AbstractSortedDocValues {
         final SortedDocValues in;
         final int substituteOrd;
         final BytesRef substituteTerm;
         final boolean exists;
         boolean hasValue;
 
-        ReplaceMissing(SortedDocValues in, BytesRef term) throws IOException {
+        public ReplaceMissing(SortedDocValues in, BytesRef term) throws IOException {
             this.in = in;
             this.substituteTerm = term;
             int sub = in.lookupTerm(term);

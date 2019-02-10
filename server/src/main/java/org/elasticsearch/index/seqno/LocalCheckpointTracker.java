@@ -32,18 +32,18 @@ public class LocalCheckpointTracker {
      * We keep a bit for each sequence number that is still pending. To optimize allocation, we do so in multiple sets allocating them on
      * demand and cleaning up while completed. This constant controls the size of the sets.
      */
-    static final short BIT_SET_SIZE = 1024;
+    public static final short BIT_SET_SIZE = 1024;
 
     /**
      * A collection of bit sets representing pending sequence numbers. Each sequence number is mapped to a bit set by dividing by the
      * bit set size.
      */
-    final LongObjectHashMap<CountedBitSet> processedSeqNo = new LongObjectHashMap<>();
+    public final LongObjectHashMap<CountedBitSet> processedSeqNo = new LongObjectHashMap<>();
 
     /**
      * The current local checkpoint, i.e., all sequence numbers no more than this number have been completed.
      */
-    volatile long checkpoint;
+    public volatile long checkpoint;
 
     /**
      * The next available sequence number.

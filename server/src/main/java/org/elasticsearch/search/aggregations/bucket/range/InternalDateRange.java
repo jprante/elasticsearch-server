@@ -113,7 +113,7 @@ public class InternalDateRange extends InternalRange<InternalDateRange.Bucket, I
         }
     }
 
-    InternalDateRange(String name, List<InternalDateRange.Bucket> ranges, DocValueFormat formatter, boolean keyed,
+    public InternalDateRange(String name, List<InternalDateRange.Bucket> ranges, DocValueFormat formatter, boolean keyed,
             List<PipelineAggregator> pipelineAggregators, Map<String, Object> metaData) {
         super(name, ranges, formatter, keyed, pipelineAggregators, metaData);
     }

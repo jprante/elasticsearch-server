@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.codec;
+package org.elasticsearch.test.index.codec;
 
 import org.apache.lucene.codecs.Codec;
 import org.apache.lucene.codecs.lucene50.Lucene50StoredFieldsFormat;
@@ -30,18 +30,20 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.SegmentReader;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.util.LuceneTestCase.SuppressCodecs;
+import org.apache.lucene.testframework.util.LuceneTestCase.SuppressCodecs;
 import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.analysis.IndexAnalyzers;
+import org.elasticsearch.index.codec.CodecService;
+import org.elasticsearch.index.codec.PerFieldMappingPostingFormatCodec;
 import org.elasticsearch.index.mapper.MapperService;
 import org.elasticsearch.index.similarity.SimilarityService;
 import org.elasticsearch.indices.mapper.MapperRegistry;
 import org.elasticsearch.plugins.MapperPlugin;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IndexSettingsModule;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -55,7 +57,8 @@ public class CodecTests extends ESTestCase {
         CodecService codecService = createCodecService();
         assertThat(codecService.codec("default"), instanceOf(PerFieldMappingPostingFormatCodec.class));
         assertThat(codecService.codec("default"), instanceOf(Lucene70Codec.class));
-        assertThat(codecService.codec("Lucene62"), instanceOf(Lucene62Codec.class));
+        // we do not support Lucene62!
+        //assertThat(codecService.codec("Lucene62"), instanceOf(Lucene62Codec.class));
     }
 
     public void testDefault() throws Exception {

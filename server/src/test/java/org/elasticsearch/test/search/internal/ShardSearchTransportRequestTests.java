@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.test.search.internal;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.OriginalIndices;
@@ -39,10 +39,13 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RandomQueryBuilder;
+import org.elasticsearch.search.ShardSearchRequest;
+import org.elasticsearch.test.index.query.RandomQueryBuilder;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.InvalidAliasNameException;
-import org.elasticsearch.search.AbstractSearchTestCase;
+import org.elasticsearch.test.search.AbstractSearchTestCase;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.search.ShardSearchTransportRequest;
 
 import java.io.IOException;
 

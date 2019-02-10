@@ -58,13 +58,13 @@ public class TransportDeleteStoredScriptAction extends TransportMasterNodeAction
     }
 
     @Override
-    protected void masterOperation(DeleteStoredScriptRequest request, ClusterState state,
+    public void masterOperation(DeleteStoredScriptRequest request, ClusterState state,
                                    ActionListener<DeleteStoredScriptResponse> listener) throws Exception {
         scriptService.deleteStoredScript(clusterService, request, listener);
     }
 
     @Override
-    protected ClusterBlockException checkBlock(DeleteStoredScriptRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(DeleteStoredScriptRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_WRITE);
     }
 

@@ -1,4 +1,4 @@
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
 /*
  * Licensed to Elasticsearch under one or more contributor
@@ -21,7 +21,8 @@ package org.elasticsearch.index.analysis;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
-import org.elasticsearch.test.ESTokenStreamTestCase;
+import org.elasticsearch.index.analysis.FingerprintAnalyzer;
+import org.elasticsearch.testframework.ESTokenStreamTestCase;
 
 public class FingerprintAnalyzerTests extends ESTokenStreamTestCase {
 

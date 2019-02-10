@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.allocation;
+package org.elasticsearch.test.cluster.allocation;
 
 import com.carrotsearch.hppc.ObjectIntHashMap;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +31,8 @@ import org.elasticsearch.common.Priority;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.discovery.zen.ZenDiscovery;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

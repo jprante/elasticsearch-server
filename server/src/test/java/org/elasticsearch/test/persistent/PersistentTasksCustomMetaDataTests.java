@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.persistent;
+package org.elasticsearch.test.persistent;
 
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.Version;
@@ -39,14 +39,16 @@ import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.persistent.PersistentTaskParams;
+import org.elasticsearch.persistent.PersistentTasksCustomMetaData;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData.Assignment;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData.Builder;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData.PersistentTask;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.Status;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.TestParams;
-import org.elasticsearch.persistent.TestPersistentTasksPlugin.TestPersistentTasksExecutor;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.Status;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.TestParams;
+import org.elasticsearch.test.persistent.TestPersistentTasksPlugin.TestPersistentTasksExecutor;
 import org.elasticsearch.tasks.Task;
-import org.elasticsearch.test.AbstractDiffableSerializationTestCase;
+import org.elasticsearch.testframework.AbstractDiffableSerializationTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,11 +62,11 @@ import java.util.Set;
 import static org.elasticsearch.cluster.metadata.MetaData.CONTEXT_MODE_GATEWAY;
 import static org.elasticsearch.cluster.metadata.MetaData.CONTEXT_MODE_SNAPSHOT;
 import static org.elasticsearch.persistent.PersistentTasksExecutor.NO_NODE_FOUND;
-import static org.elasticsearch.test.VersionUtils.allReleasedVersions;
-import static org.elasticsearch.test.VersionUtils.compatibleFutureVersion;
-import static org.elasticsearch.test.VersionUtils.getFirstVersion;
-import static org.elasticsearch.test.VersionUtils.getPreviousVersion;
-import static org.elasticsearch.test.VersionUtils.randomVersionBetween;
+import static org.elasticsearch.testframework.VersionUtils.allReleasedVersions;
+import static org.elasticsearch.testframework.VersionUtils.compatibleFutureVersion;
+import static org.elasticsearch.testframework.VersionUtils.getFirstVersion;
+import static org.elasticsearch.testframework.VersionUtils.getPreviousVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersionBetween;
 import static org.hamcrest.Matchers.equalTo;
 
 public class PersistentTasksCustomMetaDataTests extends AbstractDiffableSerializationTestCase<Custom> {

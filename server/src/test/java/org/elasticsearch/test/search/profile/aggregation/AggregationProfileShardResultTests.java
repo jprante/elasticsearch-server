@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.profile.aggregation;
+package org.elasticsearch.test.search.profile.aggregation;
 
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.ToXContent;
@@ -25,8 +25,9 @@ import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentParserUtils;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.search.profile.ProfileResult;
-import org.elasticsearch.search.profile.ProfileResultTests;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.profile.aggregation.AggregationProfileShardResult;
+import org.elasticsearch.test.search.profile.ProfileResultTests;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.elasticsearch.common.xcontent.XContentHelper.toXContent;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 
 public class AggregationProfileShardResultTests extends ESTestCase {
 

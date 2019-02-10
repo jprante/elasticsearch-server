@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
-import org.elasticsearch.indices.analysis.AnalysisFactoryTestCase;
+import org.elasticsearch.testframework.indices.analysis.AnalysisFactoryTestCase;
 import org.elasticsearch.plugins.AnalysisPlugin;
 
 /**

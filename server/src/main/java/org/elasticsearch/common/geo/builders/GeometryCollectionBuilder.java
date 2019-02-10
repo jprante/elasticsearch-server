@@ -42,7 +42,7 @@ public class GeometryCollectionBuilder extends ShapeBuilder {
     /**
      * List of shapes. Package scope for testing.
      */
-    final List<ShapeBuilder> shapes = new ArrayList<>();
+    public final List<ShapeBuilder> shapes = new ArrayList<>();
 
     /**
      * Build and empty GeometryCollectionBuilder.

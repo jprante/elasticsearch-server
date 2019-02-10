@@ -64,7 +64,7 @@ public final class SearchShardIterator extends PlainShardIterator {
      * Reset the iterator and mark it as skippable
      * @see #skip()
      */
-    void resetAndSkip() {
+    public void resetAndSkip() {
         reset();
         skip = true;
     }
@@ -72,7 +72,7 @@ public final class SearchShardIterator extends PlainShardIterator {
     /**
      * Returns <code>true</code> if the search execution should skip this shard since it can not match any documents given the query.
      */
-    boolean skip() {
+    public boolean skip() {
         return skip;
     }
 }

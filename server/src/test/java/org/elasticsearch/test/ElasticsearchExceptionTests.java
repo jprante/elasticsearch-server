@@ -17,9 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch;
+package org.elasticsearch.test;
 
 import org.apache.lucene.util.Constants;
+import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.ResourceAlreadyExistsException;
+import org.elasticsearch.ResourceNotFoundException;
+import org.elasticsearch.Version;
 import org.elasticsearch.action.NoShardAvailableActionException;
 import org.elasticsearch.action.OriginalIndices;
 import org.elasticsearch.action.RoutingMissingException;
@@ -57,8 +61,8 @@ import org.elasticsearch.script.ScriptException;
 import org.elasticsearch.search.SearchContextMissingException;
 import org.elasticsearch.search.SearchParseException;
 import org.elasticsearch.search.SearchShardTarget;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.TestSearchContext;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.TestSearchContext;
 import org.elasticsearch.transport.RemoteTransportException;
 
 import java.io.EOFException;
@@ -74,7 +78,7 @@ import java.util.Map;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.Matchers.equalTo;
@@ -331,7 +335,7 @@ public class ElasticsearchExceptionTests extends ESTestCase {
                     "\"caused_by\":{\"type\":\"illegal_state_exception\",\"reason\":\"bar\"," +
                     "\"stack_trace\":\"java.lang.IllegalStateException: bar" +
                     (Constants.WINDOWS ? "\\r\\n" : "\\n") +
-                    "\\tat org.elasticsearch."));
+                    "\\tat org.xbib.elasticsearch."));
         }
     }
 

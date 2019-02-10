@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import java.net.InetAddress;
 import java.util.Arrays;
@@ -29,6 +29,9 @@ import org.apache.lucene.search.MatchNoDocsQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.network.InetAddresses;
+import org.elasticsearch.index.mapper.IpFieldMapper;
+import org.elasticsearch.index.mapper.MappedFieldType;
+import org.elasticsearch.testframework.index.mapper.FieldTypeTestCase;
 
 public class IpFieldTypeTests extends FieldTypeTestCase {
     @Override

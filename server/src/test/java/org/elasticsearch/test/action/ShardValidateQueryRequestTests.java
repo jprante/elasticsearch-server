@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.action;
+package org.elasticsearch.test.action;
 
 import org.elasticsearch.action.admin.indices.validate.query.ShardValidateQueryRequest;
 import org.elasticsearch.action.admin.indices.validate.query.ValidateQueryRequest;
@@ -29,8 +29,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.IndicesModule;
 import org.elasticsearch.search.SearchModule;
-import org.elasticsearch.search.internal.AliasFilter;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.AliasFilter;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;

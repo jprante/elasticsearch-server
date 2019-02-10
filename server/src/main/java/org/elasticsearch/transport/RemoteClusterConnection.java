@@ -81,7 +81,7 @@ import java.util.stream.Collectors;
  * {@link RemoteClusterService#REMOTE_CONNECTIONS_PER_CLUSTER} until either all eligible nodes are exhausted or the maximum number of
  * connections per cluster has been reached.
  */
-final class RemoteClusterConnection extends AbstractComponent implements TransportConnectionListener, Closeable {
+public final class RemoteClusterConnection extends AbstractComponent implements TransportConnectionListener, Closeable {
 
     private final TransportService transportService;
     private final ConnectionProfile remoteProfile;
@@ -104,7 +104,7 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
      * @param maxNumRemoteConnections the maximum number of connections to the remote cluster
      * @param nodePredicate a predicate to filter eligible remote nodes to connect to
      */
-    RemoteClusterConnection(Settings settings, String clusterAlias, List<DiscoveryNode> seedNodes,
+    public RemoteClusterConnection(Settings settings, String clusterAlias, List<DiscoveryNode> seedNodes,
                             TransportService transportService, int maxNumRemoteConnections, Predicate<DiscoveryNode> nodePredicate) {
         super(settings);
         this.localClusterName = ClusterName.CLUSTER_NAME_SETTING.get(settings);
@@ -132,7 +132,7 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
     /**
      * Updates the list of seed nodes for this cluster connection
      */
-    synchronized void updateSeedNodes(List<DiscoveryNode> seedNodes, ActionListener<Void> connectListener) {
+    public synchronized void updateSeedNodes(List<DiscoveryNode> seedNodes, ActionListener<Void> connectListener) {
         this.seedNodes = Collections.unmodifiableList(new ArrayList<>(seedNodes));
         connectHandler.connect(connectListener);
     }
@@ -140,7 +140,7 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
     /**
      * Updates the skipUnavailable flag that can be dynamically set for each remote cluster
      */
-    void updateSkipUnavailable(boolean skipUnavailable) {
+    public void updateSkipUnavailable(boolean skipUnavailable) {
         this.skipUnavailable = skipUnavailable;
     }
 
@@ -217,7 +217,7 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
      * Collects all nodes on the connected cluster and returns / passes a nodeID to {@link DiscoveryNode} lookup function
      * that returns <code>null</code> if the node ID is not found.
      */
-    void collectNodes(ActionListener<Function<String, DiscoveryNode>> listener) {
+    public void collectNodes(ActionListener<Function<String, DiscoveryNode>> listener) {
         Runnable runnable = () -> {
             final ClusterStateRequest request = new ClusterStateRequest();
             request.clear();
@@ -264,7 +264,7 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
      * Returns a connection to the remote cluster. This connection might be a proxy connection that redirects internally to the
      * given node.
      */
-    Transport.Connection getConnection(DiscoveryNode remoteClusterNode) {
+    public Transport.Connection getConnection(DiscoveryNode remoteClusterNode) {
         DiscoveryNode discoveryNode = connectedNodes.get();
         Transport.Connection connection = transportService.getConnection(discoveryNode);
         return new Transport.Connection() {
@@ -292,7 +292,7 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
         };
     }
 
-    Transport.Connection getConnection() {
+    public Transport.Connection getConnection() {
         DiscoveryNode discoveryNode = connectedNodes.get();
         return transportService.getConnection(discoveryNode);
     }
@@ -610,20 +610,20 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
         }
     }
 
-    boolean assertNoRunningConnections() { // for testing only
+    public boolean assertNoRunningConnections() { // for testing only
         assert connectHandler.running.availablePermits() == 1;
         return true;
     }
 
-    boolean isNodeConnected(final DiscoveryNode node) {
+    public boolean isNodeConnected(final DiscoveryNode node) {
         return connectedNodes.contains(node);
     }
 
-    DiscoveryNode getConnectedNode() {
+    public DiscoveryNode getConnectedNode() {
         return connectedNodes.get();
     }
 
-    void addConnectedNode(DiscoveryNode node) {
+    public void addConnectedNode(DiscoveryNode node) {
         connectedNodes.add(node);
     }
 
@@ -690,7 +690,7 @@ final class RemoteClusterConnection extends AbstractComponent implements Transpo
 
     }
 
-    int getNumNodesConnected() {
+    public int getNumNodesConnected() {
         return connectedNodes.size();
     }
 

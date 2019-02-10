@@ -35,7 +35,7 @@ import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.IndicesService;
-import org.elasticsearch.search.internal.AliasFilter;
+import org.elasticsearch.search.AliasFilter;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportService;
 
@@ -65,7 +65,7 @@ public class TransportClusterSearchShardsAction extends
     }
 
     @Override
-    protected ClusterBlockException checkBlock(ClusterSearchShardsRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(ClusterSearchShardsRequest request, ClusterState state) {
         return state.blocks().indicesBlockedException(ClusterBlockLevel.METADATA_READ,
                 indexNameExpressionResolver.concreteIndexNames(state, request));
     }
@@ -76,7 +76,7 @@ public class TransportClusterSearchShardsAction extends
     }
 
     @Override
-    protected void masterOperation(final ClusterSearchShardsRequest request, final ClusterState state,
+    public void masterOperation(final ClusterSearchShardsRequest request, final ClusterState state,
                                    final ActionListener<ClusterSearchShardsResponse> listener) {
         ClusterState clusterState = clusterService.state();
         String[] concreteIndices = indexNameExpressionResolver.concreteIndexNames(clusterState, request);

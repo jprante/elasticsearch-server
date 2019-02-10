@@ -29,7 +29,7 @@ public abstract class AbstractIndexShardComponent implements IndexShardComponent
     protected final Logger logger;
     protected final DeprecationLogger deprecationLogger;
     protected final ShardId shardId;
-    protected final IndexSettings indexSettings;
+    public final IndexSettings indexSettings;
 
     protected AbstractIndexShardComponent(ShardId shardId, IndexSettings indexSettings) {
         this.shardId = shardId;

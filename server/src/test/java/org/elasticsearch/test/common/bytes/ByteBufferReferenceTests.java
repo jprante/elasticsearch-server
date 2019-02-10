@@ -17,7 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.bytes;
+package org.elasticsearch.test.common.bytes;
+
+import org.elasticsearch.common.bytes.ByteBufferReference;
+import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.testframework.common.bytes.AbstractBytesReferenceTestCase;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

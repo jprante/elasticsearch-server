@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.settings.put;
+package org.elasticsearch.test.action.admin.indices.settings.put;
 
+import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsResponse;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 public class UpdateSettingsResponseTests extends AbstractStreamableXContentTestCase<UpdateSettingsResponse> {
 

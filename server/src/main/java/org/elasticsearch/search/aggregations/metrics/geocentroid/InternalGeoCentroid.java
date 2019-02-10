@@ -52,7 +52,7 @@ public class InternalGeoCentroid extends InternalAggregation implements GeoCentr
         return GeoEncodingUtils.decodeLongitude((int) (encodedLatLon & 0xFFFFFFFFL));
     }
 
-    InternalGeoCentroid(String name, GeoPoint centroid, long count, List<PipelineAggregator>
+    public InternalGeoCentroid(String name, GeoPoint centroid, long count, List<PipelineAggregator>
             pipelineAggregators, Map<String, Object> metaData) {
         super(name, pipelineAggregators, metaData);
         assert (centroid == null) == (count == 0);

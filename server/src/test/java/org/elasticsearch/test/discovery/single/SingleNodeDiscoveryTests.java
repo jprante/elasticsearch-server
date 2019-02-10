@@ -17,9 +17,8 @@
  * under the License.
  */
 
-package org.elasticsearch.discovery.single;
+package org.elasticsearch.test.discovery.single;
 
-import org.elasticsearch.core.internal.io.IOUtils;
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.cluster.ClusterState;
@@ -29,9 +28,11 @@ import org.elasticsearch.cluster.node.DiscoveryNodes;
 import org.elasticsearch.cluster.service.ClusterApplier;
 import org.elasticsearch.cluster.service.MasterService;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.transport.MockTransportService;
-import org.elasticsearch.threadpool.TestThreadPool;
+import org.elasticsearch.discovery.single.SingleNodeDiscovery;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
+import org.elasticsearch.testframework.transport.MockTransportService;
+import org.elasticsearch.testframework.threadpool.TestThreadPool;
 import org.elasticsearch.threadpool.ThreadPool;
 
 import java.io.Closeable;
@@ -39,7 +40,7 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import static org.elasticsearch.test.ClusterServiceUtils.createMasterService;
+import static org.elasticsearch.testframework.ClusterServiceUtils.createMasterService;
 import static org.hamcrest.Matchers.equalTo;
 
 public class SingleNodeDiscoveryTests extends ESTestCase {

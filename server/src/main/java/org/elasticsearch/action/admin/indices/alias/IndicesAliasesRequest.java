@@ -248,7 +248,7 @@ public class IndicesAliasesRequest extends AcknowledgedRequest<IndicesAliasesReq
          * Validate that the action is sane. Called when the action is added to the request because actions can be invalid while being
          * built.
          */
-        void validate() {
+        public void validate() {
             if (indices == null) {
                 throw new IllegalArgumentException("One of [index] or [indices] is required");
             }

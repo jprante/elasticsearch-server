@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.profile;
+package org.elasticsearch.test.search.profile;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.profile.Timer;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -30,7 +31,7 @@ public class TimerTests extends ESTestCase {
         Timer t = new Timer() {
             long time = 50;
             @Override
-            long nanoTime() {
+            public long nanoTime() {
                 nanoTimeCallCounter.incrementAndGet();
                 return time += 1;
             }
@@ -52,7 +53,7 @@ public class TimerTests extends ESTestCase {
         Timer t = new Timer() {
             long time = 50;
             @Override
-            long nanoTime() {
+            public long nanoTime() {
                 return time += 42;
             }
         };

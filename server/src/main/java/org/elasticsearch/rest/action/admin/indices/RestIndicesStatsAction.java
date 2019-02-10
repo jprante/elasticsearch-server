@@ -54,7 +54,7 @@ public class RestIndicesStatsAction extends BaseRestHandler {
         return "indices_stats_action";
     }
 
-    static final Map<String, Consumer<IndicesStatsRequest>> METRICS;
+    public static final Map<String, Consumer<IndicesStatsRequest>> METRICS;
 
     static {
         final Map<String, Consumer<IndicesStatsRequest>> metrics = new HashMap<>();

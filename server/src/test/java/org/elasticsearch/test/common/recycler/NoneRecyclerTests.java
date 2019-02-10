@@ -17,7 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.recycler;
+package org.elasticsearch.test.common.recycler;
+
+import org.elasticsearch.common.recycler.Recycler;
+import org.elasticsearch.common.recycler.Recyclers;
 
 public class NoneRecyclerTests extends AbstractRecyclerTestCase {
 

@@ -329,7 +329,7 @@ public final class ThreadContext implements Closeable, Writeable {
     /**
      * Returns true if the current context is the default context.
      */
-    boolean isDefaultContext() {
+    public boolean isDefaultContext() {
         return threadLocal.get() == DEFAULT_CONTEXT;
     }
 

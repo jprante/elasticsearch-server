@@ -17,16 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.segments;
+package org.elasticsearch.test.action.admin.indices.segments;
 
+import org.elasticsearch.action.admin.indices.segments.IndicesSegmentResponse;
+import org.elasticsearch.action.admin.indices.segments.IndicesSegmentsRequest;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.index.engine.Segment;
 import org.elasticsearch.index.MergePolicyConfig;
 import org.elasticsearch.indices.IndexClosedException;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESSingleNodeTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.InternalSettingsPlugin;
 import org.junit.Before;
 
 import java.util.Collection;

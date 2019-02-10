@@ -17,12 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.cardinality;
+package org.elasticsearch.test.search.aggregations.metrics.cardinality;
 
 import com.carrotsearch.hppc.BitMixer;
 import com.carrotsearch.hppc.IntHashSet;
 import org.elasticsearch.common.util.BigArrays;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.aggregations.metrics.cardinality.HyperLogLogPlusPlus;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.elasticsearch.search.aggregations.metrics.cardinality.HyperLogLogPlusPlus.MAX_PRECISION;
 import static org.elasticsearch.search.aggregations.metrics.cardinality.HyperLogLogPlusPlus.MIN_PRECISION;

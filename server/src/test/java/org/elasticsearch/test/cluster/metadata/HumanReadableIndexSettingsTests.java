@@ -17,15 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster.metadata;
+package org.elasticsearch.test.cluster.metadata;
 
 import org.elasticsearch.Version;
+import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-import static org.elasticsearch.test.VersionUtils.randomVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersion;
 
 public class HumanReadableIndexSettingsTests extends ESTestCase {
     public void testHumanReadableSettings() {

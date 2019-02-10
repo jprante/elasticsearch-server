@@ -32,8 +32,8 @@ import org.apache.lucene.search.Weight;
 import org.apache.lucene.util.Bits;
 import org.elasticsearch.index.mapper.Uid;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.search.internal.SubSearchContext;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.SubSearchContext;
 
 import java.io.IOException;
 import java.util.Arrays;

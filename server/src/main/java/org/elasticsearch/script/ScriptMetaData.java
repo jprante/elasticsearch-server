@@ -98,15 +98,15 @@ public final class ScriptMetaData implements MetaData.Custom, Writeable, ToXCont
         }
     }
 
-    static final class ScriptMetadataDiff implements NamedDiff<MetaData.Custom> {
+    public static final class ScriptMetadataDiff implements NamedDiff<MetaData.Custom> {
 
-        final Diff<Map<String, StoredScriptSource>> pipelines;
+        public final Diff<Map<String, StoredScriptSource>> pipelines;
 
-        ScriptMetadataDiff(ScriptMetaData before, ScriptMetaData after) {
+        public ScriptMetadataDiff(ScriptMetaData before, ScriptMetaData after) {
             this.pipelines = DiffableUtils.diff(before.scripts, after.scripts, DiffableUtils.getStringKeySerializer());
         }
 
-        ScriptMetadataDiff(StreamInput in) throws IOException {
+        public ScriptMetadataDiff(StreamInput in) throws IOException {
             pipelines = DiffableUtils.readJdkMapDiff(in, DiffableUtils.getStringKeySerializer(),
                 StoredScriptSource::new, StoredScriptSource::readDiffFrom);
         }
@@ -131,7 +131,7 @@ public final class ScriptMetaData implements MetaData.Custom, Writeable, ToXCont
      * Convenience method to build and return a new
      * {@link ScriptMetaData} adding the specified stored script.
      */
-    static ScriptMetaData putStoredScript(ScriptMetaData previous, String id, StoredScriptSource source) {
+    public static ScriptMetaData putStoredScript(ScriptMetaData previous, String id, StoredScriptSource source) {
         Builder builder = new Builder(previous);
         builder.storeScript(id, source);
 
@@ -142,7 +142,7 @@ public final class ScriptMetaData implements MetaData.Custom, Writeable, ToXCont
      * Convenience method to build and return a new
      * {@link ScriptMetaData} deleting the specified stored script.
      */
-    static ScriptMetaData deleteStoredScript(ScriptMetaData previous, String id) {
+    public static ScriptMetaData deleteStoredScript(ScriptMetaData previous, String id) {
         Builder builder = new ScriptMetaData.Builder(previous);
         builder.deleteScript(id);
 
@@ -381,7 +381,7 @@ public final class ScriptMetaData implements MetaData.Custom, Writeable, ToXCont
     /**
      * Retrieves a stored script based on a user-specified id.
      */
-    StoredScriptSource getStoredScript(String id) {
+    public StoredScriptSource getStoredScript(String id) {
         return scripts.get(id);
     }
 

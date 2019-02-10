@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.index.translog;
+package org.elasticsearch.test.index.translog;
 
 import com.carrotsearch.hppc.LongHashSet;
 import com.carrotsearch.hppc.LongSet;
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.index.translog.Translog;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

@@ -91,9 +91,9 @@ public class UidFieldMapper extends MetadataFieldMapper {
         }
     }
 
-    static final class UidFieldType extends TermBasedFieldType {
+    public static final class UidFieldType extends TermBasedFieldType {
 
-        UidFieldType() {
+        public UidFieldType() {
         }
 
         protected UidFieldType(UidFieldType ref) {
@@ -176,7 +176,7 @@ public class UidFieldMapper extends MetadataFieldMapper {
         }
     }
 
-    static MappedFieldType defaultFieldType(IndexSettings indexSettings) {
+    public static MappedFieldType defaultFieldType(IndexSettings indexSettings) {
         MappedFieldType defaultFieldType = Defaults.FIELD_TYPE.clone();
         if (indexSettings.isSingleType()) {
             defaultFieldType.setIndexOptions(IndexOptions.NONE);

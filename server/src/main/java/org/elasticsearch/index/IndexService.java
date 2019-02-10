@@ -512,11 +512,11 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
         return scriptService;
     }
 
-    List<IndexingOperationListener> getIndexOperationListeners() { // pkg private for testing
+    public List<IndexingOperationListener> getIndexOperationListeners() { // pkg private for testing
         return indexingOperationListeners;
     }
 
-    List<SearchOperationListener> getSearchOperationListener() { // pkg private for testing
+    public List<SearchOperationListener> getSearchOperationListener() { // pkg private for testing
         return searchOperationListeners;
     }
 
@@ -659,15 +659,15 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
         void addPendingDelete(ShardId shardId, IndexSettings indexSettings);
     }
 
-    final EngineFactory getEngineFactory() {
+    public final EngineFactory getEngineFactory() {
         return engineFactory;
     } // pkg private for testing
 
-    final IndexSearcherWrapper getSearcherWrapper() {
+    public final IndexSearcherWrapper getSearcherWrapper() {
         return searcherWrapper;
     } // pkg private for testing
 
-    final IndexStore getIndexStore() {
+    public final IndexStore getIndexStore() {
         return indexStore;
     } // pkg private for testing
 
@@ -765,7 +765,7 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
         }
     }
 
-    abstract static class BaseAsyncTask implements Runnable, Closeable {
+    public abstract static class BaseAsyncTask implements Runnable, Closeable {
         protected final IndexService indexService;
         protected final ThreadPool threadPool;
         private final TimeValue interval;
@@ -773,14 +773,14 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
         private final AtomicBoolean closed = new AtomicBoolean(false);
         private volatile Exception lastThrownException;
 
-        BaseAsyncTask(IndexService indexService, TimeValue interval) {
+        public BaseAsyncTask(IndexService indexService, TimeValue interval) {
             this.indexService = indexService;
             this.threadPool = indexService.getThreadPool();
             this.interval = interval;
             onTaskCompletion();
         }
 
-        boolean mustReschedule() {
+        public boolean mustReschedule() {
             // don't re-schedule if its closed or if we don't have a single shard here..., we are done
             return indexService.closed.get() == false
                 && closed.get() == false && interval.millis() > 0;
@@ -798,7 +798,7 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
             }
         }
 
-        boolean isScheduled() {
+        public boolean isScheduled() {
             return scheduledFuture != null;
         }
 
@@ -853,11 +853,11 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
             }
         }
 
-        TimeValue getInterval() {
+        public TimeValue getInterval() {
             return interval;
         }
 
-        boolean isClosed() {
+        public boolean isClosed() {
             return this.closed.get();
         }
     }
@@ -865,9 +865,9 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
     /**
      * FSyncs the translog for all shards of this index in a defined interval.
      */
-    static final class AsyncTranslogFSync extends BaseAsyncTask {
+    public static final class AsyncTranslogFSync extends BaseAsyncTask {
 
-        AsyncTranslogFSync(IndexService indexService) {
+        public AsyncTranslogFSync(IndexService indexService) {
             super(indexService, indexService.getIndexSettings().getTranslogSyncInterval());
         }
 
@@ -887,7 +887,7 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
         }
     }
 
-    final class AsyncRefreshTask extends BaseAsyncTask {
+    public final class AsyncRefreshTask extends BaseAsyncTask {
 
         AsyncRefreshTask(IndexService indexService) {
             super(indexService, indexService.getIndexSettings().getRefreshInterval());
@@ -967,15 +967,15 @@ public class IndexService extends AbstractIndexComponent implements IndicesClust
         }
     }
 
-    AsyncRefreshTask getRefreshTask() { // for tests
+    public AsyncRefreshTask getRefreshTask() { // for tests
         return refreshTask;
     }
 
-    AsyncTranslogFSync getFsyncTask() { // for tests
+    public AsyncTranslogFSync getFsyncTask() { // for tests
         return fsyncTask;
     }
 
-    AsyncGlobalCheckpointTask getGlobalCheckpointTask() {
+    public AsyncGlobalCheckpointTask getGlobalCheckpointTask() {
         return globalCheckpointTask;
     }
 

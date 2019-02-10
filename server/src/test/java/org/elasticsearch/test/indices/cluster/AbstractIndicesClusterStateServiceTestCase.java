@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.indices.cluster;
+package org.elasticsearch.test.indices.cluster;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.cluster.ClusterState;
@@ -37,13 +37,14 @@ import org.elasticsearch.index.shard.IndexShardState;
 import org.elasticsearch.index.shard.PrimaryReplicaSyncer.ResyncTask;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.indices.IndicesService;
+import org.elasticsearch.indices.cluster.IndicesClusterStateService;
 import org.elasticsearch.indices.cluster.IndicesClusterStateService.AllocatedIndex;
 import org.elasticsearch.indices.cluster.IndicesClusterStateService.AllocatedIndices;
 import org.elasticsearch.indices.cluster.IndicesClusterStateService.Shard;
 import org.elasticsearch.indices.recovery.PeerRecoveryTargetService;
 import org.elasticsearch.indices.recovery.RecoveryState;
 import org.elasticsearch.repositories.RepositoriesService;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import java.io.IOException;

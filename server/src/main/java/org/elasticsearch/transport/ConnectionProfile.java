@@ -185,20 +185,20 @@ public final class ConnectionProfile {
     /**
      * Returns the type handles for this connection profile
      */
-    List<ConnectionTypeHandle> getHandles() {
+    public List<ConnectionTypeHandle> getHandles() {
         return Collections.unmodifiableList(handles);
     }
 
     /**
      * Connection type handle encapsulates the logic which connection
      */
-    static final class ConnectionTypeHandle {
+    public static final class ConnectionTypeHandle {
         public final int length;
         public final int offset;
         private final Set<TransportRequestOptions.Type> types;
         private final AtomicInteger counter = new AtomicInteger();
 
-        private ConnectionTypeHandle(int offset, int length, Set<TransportRequestOptions.Type> types) {
+        public ConnectionTypeHandle(int offset, int length, Set<TransportRequestOptions.Type> types) {
             this.length = length;
             this.offset = offset;
             this.types = types;
@@ -208,7 +208,7 @@ public final class ConnectionProfile {
          * Returns one of the channels out configured for this handle. The channel is selected in a round-robin
          * fashion.
          */
-        <T> T getChannel(List<T> channels) {
+        public <T> T getChannel(List<T> channels) {
             if (length == 0) {
                 throw new IllegalStateException("can't select channel size is 0 for types: " + types);
             }
@@ -219,7 +219,7 @@ public final class ConnectionProfile {
         /**
          * Returns all types for this handle
          */
-        Set<TransportRequestOptions.Type> getTypes() {
+        public Set<TransportRequestOptions.Type> getTypes() {
             return types;
         }
     }

@@ -235,7 +235,7 @@ public class GatewayMetaState extends AbstractComponent implements ClusterStateA
      *
      * @return input <code>metaData</code> if no upgrade is needed or an upgraded metaData
      */
-    static MetaData upgradeMetaData(MetaData metaData,
+    public static MetaData upgradeMetaData(MetaData metaData,
                                     MetaDataIndexUpgradeService metaDataIndexUpgradeService,
                                     MetaDataUpgrader metaDataUpgrader) throws IOException {
         // upgrade index meta data

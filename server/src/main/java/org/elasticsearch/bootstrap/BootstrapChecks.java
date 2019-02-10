@@ -55,7 +55,7 @@ import java.util.function.Predicate;
  *   - Client JVM (there is no client VM in Java 10)
  *   - G1GC (works on Java 10)
  */
-final class BootstrapChecks {
+public final class BootstrapChecks {
 
     private BootstrapChecks() {
     }
@@ -70,7 +70,7 @@ final class BootstrapChecks {
      * @param context              the current node bootstrap context
      * @param boundTransportAddress the node network bindings
      */
-    static void check(final BootstrapContext context, final BoundTransportAddress boundTransportAddress,
+    public static void check(final BootstrapContext context, final BoundTransportAddress boundTransportAddress,
                       List<BootstrapCheck> additionalChecks) throws NodeValidationException {
         final List<BootstrapCheck> builtInChecks = checks();
         final List<BootstrapCheck> combinedChecks = new ArrayList<>(builtInChecks);
@@ -91,7 +91,7 @@ final class BootstrapChecks {
      * @param checks        the checks to execute
      * @param nodeName      the node name to be used as a logging prefix
      */
-    static void check(
+    public static void check(
         final BootstrapContext context,
         final boolean enforceLimits,
         final List<BootstrapCheck> checks,
@@ -109,7 +109,7 @@ final class BootstrapChecks {
      * @param checks        the checks to execute
      * @param logger        the logger to
      */
-    static void check(
+    public static void check(
             final BootstrapContext context,
             final boolean enforceLimits,
             final List<BootstrapCheck> checks,
@@ -166,7 +166,7 @@ final class BootstrapChecks {
         }
     }
 
-    static void log(final Logger logger, final String error) {
+    public static void log(final Logger logger, final String error) {
         logger.warn(error);
     }
 
@@ -177,7 +177,7 @@ final class BootstrapChecks {
      * @param discoveryType the discovery type
      * @return {@code true} if the checks should be enforced
      */
-    static boolean enforceLimits(final BoundTransportAddress boundTransportAddress, final String discoveryType) {
+    public static boolean enforceLimits(final BoundTransportAddress boundTransportAddress, final String discoveryType) {
         final Predicate<TransportAddress> isLoopbackAddress = t -> t.address().getAddress().isLoopbackAddress();
         final boolean bound =
                 !(Arrays.stream(boundTransportAddress.boundAddresses()).allMatch(isLoopbackAddress) &&
@@ -186,7 +186,7 @@ final class BootstrapChecks {
     }
 
     // the list of checks to execute
-    static List<BootstrapCheck> checks() {
+    public static List<BootstrapCheck> checks() {
         final List<BootstrapCheck> checks = new ArrayList<>();
         final FileDescriptorCheck fileDescriptorCheck
             = Constants.MAC_OS_X ? new OsXFileDescriptorCheck() : new FileDescriptorCheck();
@@ -212,9 +212,9 @@ final class BootstrapChecks {
         return Collections.unmodifiableList(checks);
     }
 
-    static class OsXFileDescriptorCheck extends FileDescriptorCheck {
+    public static class OsXFileDescriptorCheck extends FileDescriptorCheck {
 
-        OsXFileDescriptorCheck() {
+        public OsXFileDescriptorCheck() {
             // see constant OPEN_MAX defined in
             // /usr/include/sys/syslimits.h on OS X and its use in JVM
             // initialization in int os:init_2(void) defined in the JVM
@@ -224,15 +224,15 @@ final class BootstrapChecks {
 
     }
 
-    static class FileDescriptorCheck implements BootstrapCheck {
+    public static class FileDescriptorCheck implements BootstrapCheck {
 
         private final int limit;
 
-        FileDescriptorCheck() {
+        public FileDescriptorCheck() {
             this(1 << 16);
         }
 
-        protected FileDescriptorCheck(final int limit) {
+        public FileDescriptorCheck(final int limit) {
             if (limit <= 0) {
                 throw new IllegalArgumentException("limit must be positive but was [" + limit + "]");
             }
@@ -253,14 +253,13 @@ final class BootstrapChecks {
             }
         }
 
-        // visible for testing
-        long getMaxFileDescriptorCount() {
+        public long getMaxFileDescriptorCount() {
             return ProcessProbe.getInstance().getMaxFileDescriptorCount();
         }
 
     }
 
-    static class MlockallCheck implements BootstrapCheck {
+    public static class MlockallCheck implements BootstrapCheck {
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {
@@ -271,14 +270,13 @@ final class BootstrapChecks {
             }
         }
 
-        // visible for testing
-        boolean isMemoryLocked() {
+        public boolean isMemoryLocked() {
             return Natives.isMemoryLocked();
         }
 
     }
 
-    static class MaxNumberOfThreadsCheck implements BootstrapCheck {
+    public static class MaxNumberOfThreadsCheck implements BootstrapCheck {
 
         // this should be plenty for machines up to 256 cores
         private static final long MAX_NUMBER_OF_THREADS_THRESHOLD = 1 << 12;
@@ -298,14 +296,13 @@ final class BootstrapChecks {
             }
         }
 
-        // visible for testing
-        long getMaxNumberOfThreads() {
+        public long getMaxNumberOfThreads() {
             return JNANatives.MAX_NUMBER_OF_THREADS;
         }
 
     }
 
-    static class MaxSizeVirtualMemoryCheck implements BootstrapCheck {
+    public static class MaxSizeVirtualMemoryCheck implements BootstrapCheck {
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {
@@ -321,13 +318,11 @@ final class BootstrapChecks {
             }
         }
 
-        // visible for testing
-        long getRlimInfinity() {
+        public long getRlimInfinity() {
             return JNACLibrary.RLIM_INFINITY;
         }
 
-        // visible for testing
-        long getMaxSizeVirtualMemory() {
+        public long getMaxSizeVirtualMemory() {
             return JNANatives.MAX_SIZE_VIRTUAL_MEMORY;
         }
 
@@ -336,7 +331,7 @@ final class BootstrapChecks {
     /**
      * Bootstrap check that the maximum file size is unlimited (otherwise Elasticsearch could run in to an I/O exception writing files).
      */
-    static class MaxFileSizeCheck implements BootstrapCheck {
+    public static class MaxFileSizeCheck implements BootstrapCheck {
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {
@@ -353,17 +348,17 @@ final class BootstrapChecks {
             }
         }
 
-        long getRlimInfinity() {
+        public long getRlimInfinity() {
             return JNACLibrary.RLIM_INFINITY;
         }
 
-        long getMaxFileSize() {
+        public long getMaxFileSize() {
             return JNANatives.MAX_FILE_SIZE;
         }
 
     }
 
-    static class MaxMapCountCheck implements BootstrapCheck {
+    public static class MaxMapCountCheck implements BootstrapCheck {
 
         private static final long LIMIT = 65530;
 
@@ -381,13 +376,11 @@ final class BootstrapChecks {
             }
         }
 
-        // visible for testing
-        long getMaxMapCount() {
+        public long getMaxMapCount() {
             return getMaxMapCount(Loggers.getLogger(BootstrapChecks.class));
         }
 
-        // visible for testing
-        long getMaxMapCount(Logger logger) {
+        public long getMaxMapCount(Logger logger) {
             final Path path = getProcSysVmMaxMapCountPath();
             try (BufferedReader bufferedReader = getBufferedReader(path)) {
                 final String rawProcSysVmMaxMapCount = readProcSysVmMaxMapCount(bufferedReader);
@@ -409,18 +402,15 @@ final class BootstrapChecks {
             return PathUtils.get("/proc/sys/vm/max_map_count");
         }
 
-        // visible for testing
-        BufferedReader getBufferedReader(final Path path) throws IOException {
+        public BufferedReader getBufferedReader(final Path path) throws IOException {
             return Files.newBufferedReader(path);
         }
 
-        // visible for testing
-        String readProcSysVmMaxMapCount(final BufferedReader bufferedReader) throws IOException {
+        public String readProcSysVmMaxMapCount(final BufferedReader bufferedReader) throws IOException {
             return bufferedReader.readLine();
         }
 
-        // visible for testing
-        long parseProcSysVmMaxMapCount(final String procSysVmMaxMapCount) throws NumberFormatException {
+        public long parseProcSysVmMaxMapCount(final String procSysVmMaxMapCount) throws NumberFormatException {
             return Long.parseLong(procSysVmMaxMapCount);
         }
 
@@ -430,7 +420,7 @@ final class BootstrapChecks {
      * Checks if the serial collector is in use. This collector is single-threaded and devastating
      * for performance and should not be used for a server application like Elasticsearch.
      */
-    static class UseSerialGCCheck implements BootstrapCheck {
+    public static class UseSerialGCCheck implements BootstrapCheck {
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {
@@ -446,8 +436,7 @@ final class BootstrapChecks {
             }
         }
 
-        // visible for testing
-        String getUseSerialGC() {
+        public String getUseSerialGC() {
             return JvmInfo.jvmInfo().useSerialGC();
         }
 
@@ -456,7 +445,7 @@ final class BootstrapChecks {
     /**
      * Bootstrap check that if system call filters are enabled, then system call filters must have installed successfully.
      */
-    static class SystemCallFilterCheck implements BootstrapCheck {
+    public static class SystemCallFilterCheck implements BootstrapCheck {
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {
@@ -469,14 +458,13 @@ final class BootstrapChecks {
             }
         }
 
-        // visible for testing
-        boolean isSystemCallFilterInstalled() {
+        public boolean isSystemCallFilterInstalled() {
             return Natives.isSystemCallFilterInstalled();
         }
 
     }
 
-    abstract static class MightForkCheck implements BootstrapCheck {
+    public abstract static class MightForkCheck implements BootstrapCheck {
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {
@@ -487,15 +475,13 @@ final class BootstrapChecks {
             }
         }
 
-        abstract String message(BootstrapContext context);
+        public abstract String message(BootstrapContext context);
 
-        // visible for testing
-        boolean isSystemCallFilterInstalled() {
+        public boolean isSystemCallFilterInstalled() {
             return Natives.isSystemCallFilterInstalled();
         }
 
-        // visible for testing
-        abstract boolean mightFork();
+        public abstract boolean mightFork();
 
         @Override
         public final boolean alwaysEnforce() {
@@ -504,21 +490,20 @@ final class BootstrapChecks {
 
     }
 
-    static class OnErrorCheck extends MightForkCheck {
+    public static class OnErrorCheck extends MightForkCheck {
 
         @Override
-        boolean mightFork() {
+        public boolean mightFork() {
             final String onError = onError();
             return onError != null && !onError.equals("");
         }
 
-        // visible for testing
-        String onError() {
+        public String onError() {
             return JvmInfo.jvmInfo().onError();
         }
 
         @Override
-        String message(BootstrapContext context) {
+        public String message(BootstrapContext context) {
             return String.format(
                 Locale.ROOT,
                 "OnError [%s] requires forking but is prevented by system call filters ([%s=true]);" +
@@ -529,20 +514,19 @@ final class BootstrapChecks {
 
     }
 
-    static class OnOutOfMemoryErrorCheck extends MightForkCheck {
+    public static class OnOutOfMemoryErrorCheck extends MightForkCheck {
 
         @Override
-        boolean mightFork() {
+        public boolean mightFork() {
             final String onOutOfMemoryError = onOutOfMemoryError();
             return onOutOfMemoryError != null && !onOutOfMemoryError.equals("");
         }
 
-        // visible for testing
-        String onOutOfMemoryError() {
+        public String onOutOfMemoryError() {
             return JvmInfo.jvmInfo().onOutOfMemoryError();
         }
 
-        String message(BootstrapContext context) {
+        public String message(BootstrapContext context) {
             return String.format(
                 Locale.ROOT,
                 "OnOutOfMemoryError [%s] requires forking but is prevented by system call filters ([%s=true]);" +
@@ -553,7 +537,7 @@ final class BootstrapChecks {
 
     }
 
-    static class AllPermissionCheck implements BootstrapCheck {
+    public static class AllPermissionCheck implements BootstrapCheck {
 
         @Override
         public final BootstrapCheckResult check(BootstrapContext context) {
@@ -563,15 +547,18 @@ final class BootstrapChecks {
             return BootstrapCheckResult.success();
         }
 
-        boolean isAllPermissionGranted() {
+        public boolean isAllPermissionGranted() {
             final SecurityManager sm = System.getSecurityManager();
-            assert sm != null;
-            try {
-                sm.checkPermission(new AllPermission());
-            } catch (final SecurityException e) {
+            if (sm != null) {
+                try {
+                    sm.checkPermission(new AllPermission());
+                } catch (final SecurityException e) {
+                    return false;
+                }
+                return true;
+            } else {
                 return false;
             }
-            return true;
         }
 
     }

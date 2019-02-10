@@ -103,7 +103,7 @@ public class FsRepository extends BlobStoreRepository {
     }
 
     @Override
-    protected BlobStore blobStore() {
+    public BlobStore blobStore() {
         return blobStore;
     }
 
@@ -118,7 +118,7 @@ public class FsRepository extends BlobStoreRepository {
     }
 
     @Override
-    protected BlobPath basePath() {
+    public BlobPath basePath() {
         return basePath;
     }
 }

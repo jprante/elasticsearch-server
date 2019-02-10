@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.common.unit;
+package org.elasticsearch.test.common.unit;
 
 import org.elasticsearch.ElasticsearchParseException;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.unit.RatioValue;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.is;
 

@@ -74,7 +74,7 @@ public abstract class SortBuilder<T extends SortBuilder<T>> implements NamedWrit
     /**
      * Create a @link {@link SortFieldAndFormat} from this builder.
      */
-    protected abstract SortFieldAndFormat build(QueryShardContext context) throws IOException;
+    public abstract SortFieldAndFormat build(QueryShardContext context) throws IOException;
 
     /**
      * Set the order of sorting.

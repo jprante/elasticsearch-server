@@ -77,7 +77,7 @@ public class TermVectorsService  {
         return getTermVectors(indexShard, request, System::nanoTime);
     }
 
-    static TermVectorsResponse getTermVectors(IndexShard indexShard, TermVectorsRequest request, LongSupplier nanoTimeSupplier) {
+    public static TermVectorsResponse getTermVectors(IndexShard indexShard, TermVectorsRequest request, LongSupplier nanoTimeSupplier) {
         final long startTime = nanoTimeSupplier.getAsLong();
         final TermVectorsResponse termVectorsResponse = new TermVectorsResponse(indexShard.shardId().getIndex().getName(), request.type(), request.id());
         final Term uidTerm = indexShard.mapperService().createUidTerm(request.type(), request.id());

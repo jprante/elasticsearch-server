@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.action.support;
+package org.elasticsearch.test.action.support;
 
+import org.elasticsearch.action.support.AdapterActionFuture;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Objects;
 import java.util.concurrent.BrokenBarrierException;

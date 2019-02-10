@@ -46,11 +46,11 @@ public abstract class ParsedSignificantTerms extends ParsedMultiBucketAggregatio
     protected long subsetSize;
     protected long supersetSize;
 
-    protected long getSubsetSize() {
+    public long getSubsetSize() {
         return subsetSize;
     }
 
-    protected long getSupersetSize() {
+    public long getSupersetSize() {
         return supersetSize;
     }
 

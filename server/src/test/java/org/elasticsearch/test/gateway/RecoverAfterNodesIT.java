@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.gateway;
+package org.elasticsearch.test.gateway;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.cluster.block.ClusterBlock;
@@ -25,10 +25,12 @@ import org.elasticsearch.cluster.block.ClusterBlockLevel;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.discovery.zen.ElectMasterService;
+import org.elasticsearch.gateway.GatewayService;
 import org.elasticsearch.node.Node;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.ESIntegTestCase.ClusterScope;
-import org.elasticsearch.test.ESIntegTestCase.Scope;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase.ClusterScope;
+import org.elasticsearch.testframework.ESIntegTestCase.Scope;
+import org.hamcrest.Matchers;
 
 import java.util.Set;
 
@@ -62,7 +64,7 @@ public class RecoverAfterNodesIT extends ESIntegTestCase {
         Client clientNode1 = startNode(Settings.builder().put("gateway.recover_after_nodes", 3), 1);
         assertThat(clientNode1.admin().cluster().prepareState().setLocal(true).execute().actionGet()
                 .getState().blocks().global(ClusterBlockLevel.METADATA_WRITE),
-                hasItem(GatewayService.STATE_NOT_RECOVERED_BLOCK));
+                Matchers.hasItem(GatewayService.STATE_NOT_RECOVERED_BLOCK));
 
         logger.info("--> start node (2)");
         Client clientNode2 = startNode(Settings.builder().put("gateway.recover_after_nodes", 3), 1);

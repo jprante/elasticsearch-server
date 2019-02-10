@@ -17,9 +17,9 @@
  * under the License.
  */
 
-package org.elasticsearch.search.profile.query;
+package org.elasticsearch.test.search.profile.query;
 
-import org.apache.lucene.util.English;
+import org.apache.lucene.testframework.util.English;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -31,14 +31,16 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.profile.ProfileResult;
 import org.elasticsearch.search.profile.ProfileShardResult;
+import org.elasticsearch.search.profile.query.CollectorResult;
+import org.elasticsearch.search.profile.query.QueryProfileShardResult;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.search.profile.query.RandomQueryGenerator.randomQueryBuilder;
+import static org.elasticsearch.test.search.profile.query.RandomQueryGenerator.randomQueryBuilder;
 import static org.elasticsearch.test.hamcrest.DoubleMatcher.nearlyEqual;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;

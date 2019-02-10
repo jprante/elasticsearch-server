@@ -59,7 +59,7 @@ public final class QueueResizingEsThreadPoolExecutor extends EsThreadPoolExecuto
 
     private long startNs;
 
-    QueueResizingEsThreadPoolExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
+    public QueueResizingEsThreadPoolExecutor(String name, int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
                                       ResizableBlockingQueue<Runnable> workQueue, int minQueueSize, int maxQueueSize,
                                       Function<Runnable, Runnable> runnableWrapper, final int tasksPerFrame,
                                       TimeValue targetedResponseTime, ThreadFactory threadFactory, XRejectedExecutionHandler handler,

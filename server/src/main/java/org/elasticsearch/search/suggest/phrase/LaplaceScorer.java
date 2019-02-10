@@ -25,16 +25,16 @@ import org.elasticsearch.search.suggest.phrase.DirectCandidateGenerator.Candidat
 
 import java.io.IOException;
 
-final class LaplaceScorer extends WordScorer {
+public final class LaplaceScorer extends WordScorer {
     private double alpha;
 
-    LaplaceScorer(IndexReader reader, Terms terms, String field,
+    public LaplaceScorer(IndexReader reader, Terms terms, String field,
             double realWordLikelyhood, BytesRef separator, double alpha) throws IOException {
         super(reader, terms, field, realWordLikelyhood, separator);
         this.alpha = alpha;
     }
 
-    double alpha() {
+    public double alpha() {
         return this.alpha;
     }
 

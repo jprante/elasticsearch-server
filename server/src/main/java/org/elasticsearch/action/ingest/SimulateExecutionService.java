@@ -31,17 +31,17 @@ import java.util.List;
 
 import static org.elasticsearch.action.ingest.TrackingResultProcessor.decorate;
 
-class SimulateExecutionService {
+public class SimulateExecutionService {
 
     private static final String THREAD_POOL_NAME = ThreadPool.Names.MANAGEMENT;
 
     private final ThreadPool threadPool;
 
-    SimulateExecutionService(ThreadPool threadPool) {
+    public SimulateExecutionService(ThreadPool threadPool) {
         this.threadPool = threadPool;
     }
 
-    SimulateDocumentResult executeDocument(Pipeline pipeline, IngestDocument ingestDocument, boolean verbose) {
+    public SimulateDocumentResult executeDocument(Pipeline pipeline, IngestDocument ingestDocument, boolean verbose) {
         if (verbose) {
             List<SimulateProcessorResult> processorResultList = new ArrayList<>();
             CompoundProcessor verbosePipelineProcessor = decorate(pipeline.getCompoundProcessor(), processorResultList);

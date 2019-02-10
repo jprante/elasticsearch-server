@@ -170,7 +170,7 @@ public class TransportShardBulkAction extends TransportWriteAction<BulkShardRequ
         }
     }
 
-    static Translog.Location calculateTranslogLocation(final Translog.Location originalLocation,
+    public static Translog.Location calculateTranslogLocation(final Translog.Location originalLocation,
                                                        final BulkItemResultHolder bulkItemResult) {
         final Engine.Result operationResult = bulkItemResult.operationResult;
         if (operationResult != null && operationResult.getResultType() == Engine.Result.Type.SUCCESS) {
@@ -185,7 +185,7 @@ public class TransportShardBulkAction extends TransportWriteAction<BulkShardRequ
      * Creates a BulkItemResponse for the primary operation and returns it. If no bulk response is
      * needed (because one already exists and the operation failed), then return null.
      */
-    static BulkItemResponse createPrimaryResponse(BulkItemResultHolder bulkItemResult,
+    public static BulkItemResponse createPrimaryResponse(BulkItemResultHolder bulkItemResult,
                                                   final DocWriteRequest.OpType opType,
                                                   BulkShardRequest request) {
         final Engine.Result operationResult = bulkItemResult.operationResult;
@@ -233,7 +233,7 @@ public class TransportShardBulkAction extends TransportWriteAction<BulkShardRequ
     }
 
     /** Executes bulk item requests and handles request execution exceptions */
-    static Translog.Location executeBulkItemRequest(IndexMetaData metaData, IndexShard primary,
+    public static Translog.Location executeBulkItemRequest(IndexMetaData metaData, IndexShard primary,
                                                     BulkShardRequest request, Translog.Location location,
                                                     int requestIndex, UpdateHelper updateHelper,
                                                     LongSupplier nowInMillisSupplier,
@@ -283,7 +283,7 @@ public class TransportShardBulkAction extends TransportWriteAction<BulkShardRequ
     /**
      * Creates a new bulk item result from the given requests and result of performing the update operation on the shard.
      */
-    static BulkItemResultHolder processUpdateResponse(final UpdateRequest updateRequest, final String concreteIndex,
+    public static BulkItemResultHolder processUpdateResponse(final UpdateRequest updateRequest, final String concreteIndex,
                                                       final Engine.Result result, final UpdateHelper.Result translate,
                                                       final IndexShard primary, final int bulkReqId) {
         assert result.getSeqNo() != SequenceNumbers.UNASSIGNED_SEQ_NO : "failed result should not have a sequence number";
@@ -343,7 +343,7 @@ public class TransportShardBulkAction extends TransportWriteAction<BulkShardRequ
      * Executes update request once, delegating to a index or delete operation after translation.
      * NOOP updates are indicated by returning a <code>null</code> operation in {@link BulkItemResultHolder}
      */
-    static BulkItemResultHolder executeUpdateRequestOnce(UpdateRequest updateRequest, IndexShard primary,
+    public static BulkItemResultHolder executeUpdateRequestOnce(UpdateRequest updateRequest, IndexShard primary,
                                                          IndexMetaData metaData, String concreteIndex,
                                                          UpdateHelper updateHelper, LongSupplier nowInMillis,
                                                          BulkItemRequest primaryItemRequest, int bulkReqId,
@@ -455,7 +455,7 @@ public class TransportShardBulkAction extends TransportWriteAction<BulkShardRequ
      * {@link ReplicaItemExecutionMode#NOOP} upon primary execution failure before sequence no generation or
      * when primary execution resulted in noop (only possible for write requests from pre-6.0 nodes)
      */
-    static ReplicaItemExecutionMode replicaItemExecutionMode(final BulkItemRequest request, final int index) {
+    public static ReplicaItemExecutionMode replicaItemExecutionMode(final BulkItemRequest request, final int index) {
         final BulkItemResponse primaryResponse = request.getPrimaryResponse();
         assert primaryResponse != null : "expected primary response to be set for item [" + index + "] request [" + request.request() + "]";
         if (primaryResponse.isFailed()) {
@@ -542,7 +542,7 @@ public class TransportShardBulkAction extends TransportWriteAction<BulkShardRequ
     }
 
     /** Executes index operation on primary shard after updates mapping if dynamic mappings are found */
-    static Engine.IndexResult executeIndexRequestOnPrimary(IndexRequest request, IndexShard primary,
+    public static Engine.IndexResult executeIndexRequestOnPrimary(IndexRequest request, IndexShard primary,
                                                            MappingUpdatePerformer mappingUpdater) throws Exception {
         final SourceToParse sourceToParse =
             SourceToParse.source(request.index(), request.type(), request.id(), request.source(), request.getContentType())

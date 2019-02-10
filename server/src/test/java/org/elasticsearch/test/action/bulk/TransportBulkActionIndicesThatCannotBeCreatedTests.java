@@ -17,10 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.action.bulk;
+package org.elasticsearch.test.action.bulk;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.bulk.BulkItemResponse;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.bulk.TransportBulkAction;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.ActionFilters;
@@ -33,7 +37,7 @@ import org.elasticsearch.common.util.concurrent.AtomicArray;
 import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.tasks.Task;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.elasticsearch.transport.TransportService;
 
 import java.util.Arrays;
@@ -100,23 +104,23 @@ public class TransportBulkActionIndicesThatCannotBeCreatedTests extends ESTestCa
         TransportBulkAction action = new TransportBulkAction(Settings.EMPTY, null, mock(TransportService.class), mock(ClusterService.class),
                 null, null, null, mock(ActionFilters.class), null, null) {
             @Override
-            void executeBulk(Task task, BulkRequest bulkRequest, long startTimeNanos, ActionListener<BulkResponse> listener,
-                    AtomicArray<BulkItemResponse> responses, Map<String, IndexNotFoundException> indicesThatCannotBeCreated) {
+            public void executeBulk(Task task, BulkRequest bulkRequest, long startTimeNanos, ActionListener<BulkResponse> listener,
+                             AtomicArray<BulkItemResponse> responses, Map<String, IndexNotFoundException> indicesThatCannotBeCreated) {
                 assertEquals(expected, indicesThatCannotBeCreated.keySet());
             }
 
             @Override
-            boolean needToCheck() {
+            public boolean needToCheck() {
                 return null != shouldAutoCreate; // Use "null" to mean "no indices can be created so don't bother checking"
             }
 
             @Override
-            boolean shouldAutoCreate(String index, ClusterState state) {
+            public boolean shouldAutoCreate(String index, ClusterState state) {
                 return shouldAutoCreate.apply(index);
             }
 
             @Override
-            void createIndex(String index, TimeValue timeout, ActionListener<CreateIndexResponse> listener) {
+            public void createIndex(String index, TimeValue timeout, ActionListener<CreateIndexResponse> listener) {
                 // If we try to create an index just immediately assume it worked
                 listener.onResponse(new CreateIndexResponse(true, true, index) {});
             }

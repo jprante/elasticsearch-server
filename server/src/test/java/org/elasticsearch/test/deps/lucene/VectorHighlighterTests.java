@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.deps.lucene;
+package org.elasticsearch.test.deps.lucene;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -38,7 +38,7 @@ import org.apache.lucene.search.vectorhighlight.FastVectorHighlighter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.elasticsearch.common.lucene.Lucene;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;

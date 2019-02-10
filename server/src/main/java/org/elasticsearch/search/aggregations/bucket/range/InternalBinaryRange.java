@@ -189,8 +189,8 @@ public final class InternalBinaryRange
         }
     }
 
-    protected final DocValueFormat format;
-    protected final boolean keyed;
+    public final DocValueFormat format;
+    public final boolean keyed;
     private final List<Bucket> buckets;
 
     public InternalBinaryRange(String name, DocValueFormat format, boolean keyed, List<Bucket> buckets,

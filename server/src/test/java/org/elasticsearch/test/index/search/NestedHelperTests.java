@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.search;
+package org.elasticsearch.test.index.search;
 
 import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.index.Term;
@@ -37,7 +37,9 @@ import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryShardContext;
 import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.search.ESToParentBlockJoinQuery;
+import org.elasticsearch.index.search.NestedHelper;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 import java.io.IOException;
 

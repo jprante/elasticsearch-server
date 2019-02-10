@@ -29,8 +29,8 @@ import org.elasticsearch.ExceptionsHelper;
 import org.elasticsearch.common.lucene.Lucene;
 import org.elasticsearch.search.fetch.FetchSubPhase;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.search.internal.SearchContext.Lifetime;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.SearchContext.Lifetime;
 
 import java.io.IOException;
 import java.util.ArrayList;

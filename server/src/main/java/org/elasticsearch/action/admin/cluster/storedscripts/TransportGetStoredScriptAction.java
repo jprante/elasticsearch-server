@@ -58,13 +58,13 @@ public class TransportGetStoredScriptAction extends TransportMasterNodeReadActio
     }
 
     @Override
-    protected void masterOperation(GetStoredScriptRequest request, ClusterState state,
+    public void masterOperation(GetStoredScriptRequest request, ClusterState state,
                                    ActionListener<GetStoredScriptResponse> listener) throws Exception {
         listener.onResponse(new GetStoredScriptResponse(scriptService.getStoredScript(state, request)));
     }
 
     @Override
-    protected ClusterBlockException checkBlock(GetStoredScriptRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(GetStoredScriptRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 

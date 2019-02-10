@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.index.refresh;
+package org.elasticsearch.test.index.refresh;
 
-import org.elasticsearch.test.AbstractStreamableTestCase;
+import org.elasticsearch.index.refresh.RefreshStats;
+import org.elasticsearch.testframework.AbstractStreamableTestCase;
 
 public class RefreshStatsTests extends AbstractStreamableTestCase<RefreshStats> {
     @Override

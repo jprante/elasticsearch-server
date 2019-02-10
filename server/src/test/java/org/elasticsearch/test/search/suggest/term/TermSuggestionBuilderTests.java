@@ -17,13 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.term;
+package org.elasticsearch.test.search.suggest.term;
 
 import com.carrotsearch.randomizedtesting.generators.RandomStrings;
 
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.search.suggest.AbstractSuggestionBuilderTestCase;
+import org.elasticsearch.search.suggest.term.TermSuggester;
+import org.elasticsearch.search.suggest.term.TermSuggestionBuilder;
+import org.elasticsearch.search.suggest.term.TermSuggestionContext;
+import org.elasticsearch.test.search.suggest.AbstractSuggestionBuilderTestCase;
 import org.elasticsearch.search.suggest.SortBy;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.SuggestionSearchContext.SuggestionContext;

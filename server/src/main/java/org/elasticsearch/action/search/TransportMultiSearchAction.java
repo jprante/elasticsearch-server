@@ -55,7 +55,7 @@ public class TransportMultiSearchAction extends HandledTransportAction<MultiSear
         this.availableProcessors = EsExecutors.numberOfProcessors(settings);
     }
 
-    TransportMultiSearchAction(ThreadPool threadPool, ActionFilters actionFilters, TransportService transportService,
+    public TransportMultiSearchAction(ThreadPool threadPool, ActionFilters actionFilters, TransportService transportService,
                                ClusterService clusterService, TransportAction<SearchRequest, SearchResponse> searchAction,
                                IndexNameExpressionResolver resolver, int availableProcessors) {
         super(Settings.EMPTY, MultiSearchAction.NAME, threadPool, transportService, actionFilters, resolver, MultiSearchRequest::new);
@@ -94,7 +94,7 @@ public class TransportMultiSearchAction extends HandledTransportAction<MultiSear
      * that shard of the indices the search requests go to are more or less evenly distributed across all nodes in the cluster. But I think
      * it is a good enough default for most cases, if not then the default should be overwritten in the request itself.
      */
-    static int defaultMaxConcurrentSearches(int availableProcessors, ClusterState state) {
+    public static int defaultMaxConcurrentSearches(int availableProcessors, ClusterState state) {
         int numDateNodes = state.getNodes().getDataNodes().size();
         // availableProcessors will never be larger than 32, so max defaultMaxConcurrentSearches will never be larger than 49,
         // but we don't know about about other search requests that are being executed so lets cap at 10 per node

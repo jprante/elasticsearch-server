@@ -166,7 +166,7 @@ public class Build {
      *
      * @return the location of the code source for Elasticsearch which may be null
      */
-    static URL getElasticsearchCodeSourceLocation() {
+    public static URL getElasticsearchCodeSourceLocation() {
         final CodeSource codeSource = Build.class.getProtectionDomain().getCodeSource();
         return codeSource == null ? null : codeSource.getLocation();
     }

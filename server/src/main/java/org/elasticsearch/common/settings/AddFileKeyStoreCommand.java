@@ -37,12 +37,12 @@ import org.elasticsearch.env.Environment;
 /**
  * A subcommand for the keystore cli which adds a file setting.
  */
-class AddFileKeyStoreCommand extends EnvironmentAwareCommand {
+public class AddFileKeyStoreCommand extends EnvironmentAwareCommand {
 
     private final OptionSpec<Void> forceOption;
     private final OptionSpec<String> arguments;
 
-    AddFileKeyStoreCommand() {
+    public AddFileKeyStoreCommand() {
         super("Add a file setting to the keystore");
         this.forceOption = parser.acceptsAll(Arrays.asList("f", "force"), "Overwrite existing setting without prompting");
         // jopt simple has issue with multiple non options, so we just get one set of them here

@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Library for Windows/Kernel32
  */
-final class JNAKernel32Library {
+public final class JNAKernel32Library {
 
     private static final Logger logger = Loggers.getLogger(JNAKernel32Library.class);
 
@@ -65,7 +65,7 @@ final class JNAKernel32Library {
         }
     }
 
-    static JNAKernel32Library getInstance() {
+    public static JNAKernel32Library getInstance() {
         return Holder.instance;
     }
 
@@ -88,7 +88,7 @@ final class JNAKernel32Library {
         return result;
     }
 
-    List<Object> getCallbacks() {
+    public List<Object> getCallbacks() {
         return Collections.<Object>unmodifiableList(callbacks);
     }
 

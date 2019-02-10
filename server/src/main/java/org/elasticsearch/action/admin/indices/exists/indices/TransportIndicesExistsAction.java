@@ -57,14 +57,14 @@ public class TransportIndicesExistsAction extends TransportMasterNodeReadAction<
     }
 
     @Override
-    protected ClusterBlockException checkBlock(IndicesExistsRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(IndicesExistsRequest request, ClusterState state) {
         //make sure through indices options that the concrete indices call never throws IndexMissingException
         IndicesOptions indicesOptions = IndicesOptions.fromOptions(true, true, request.indicesOptions().expandWildcardsOpen(), request.indicesOptions().expandWildcardsClosed());
         return state.blocks().indicesBlockedException(ClusterBlockLevel.METADATA_READ, indexNameExpressionResolver.concreteIndexNames(state, indicesOptions, request.indices()));
     }
 
     @Override
-    protected void masterOperation(final IndicesExistsRequest request, final ClusterState state, final ActionListener<IndicesExistsResponse> listener) {
+    public void masterOperation(final IndicesExistsRequest request, final ClusterState state, final ActionListener<IndicesExistsResponse> listener) {
         boolean exists;
         try {
             // Similar as the previous behaviour, but now also aliases and wildcards are supported.

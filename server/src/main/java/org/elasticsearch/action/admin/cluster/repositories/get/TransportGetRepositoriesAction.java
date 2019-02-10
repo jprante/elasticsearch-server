@@ -65,12 +65,12 @@ public class TransportGetRepositoriesAction extends TransportMasterNodeReadActio
     }
 
     @Override
-    protected ClusterBlockException checkBlock(GetRepositoriesRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(GetRepositoriesRequest request, ClusterState state) {
         return state.blocks().globalBlockedException(ClusterBlockLevel.METADATA_READ);
     }
 
     @Override
-    protected void masterOperation(final GetRepositoriesRequest request, ClusterState state, final ActionListener<GetRepositoriesResponse> listener) {
+    public void masterOperation(final GetRepositoriesRequest request, ClusterState state, final ActionListener<GetRepositoriesResponse> listener) {
         MetaData metaData = state.metaData();
         RepositoriesMetaData repositories = metaData.custom(RepositoriesMetaData.TYPE);
         if (request.repositories().length == 0 || (request.repositories().length == 1 && "_all".equals(request.repositories()[0]))) {

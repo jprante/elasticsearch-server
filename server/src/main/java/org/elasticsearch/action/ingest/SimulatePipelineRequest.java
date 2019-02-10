@@ -66,7 +66,7 @@ public class SimulatePipelineRequest extends ActionRequest {
         this.xContentType = Objects.requireNonNull(xContentType);
     }
 
-    SimulatePipelineRequest() {
+    public SimulatePipelineRequest() {
     }
 
     @Override
@@ -123,17 +123,17 @@ public class SimulatePipelineRequest extends ActionRequest {
     }
 
     public static final class Fields {
-        static final String PIPELINE = "pipeline";
-        static final String DOCS = "docs";
-        static final String SOURCE = "_source";
+        public static final String PIPELINE = "pipeline";
+        public static final String DOCS = "docs";
+        public static final String SOURCE = "_source";
     }
 
-    static class Parsed {
+    public static class Parsed {
         private final List<IngestDocument> documents;
         private final Pipeline pipeline;
         private final boolean verbose;
 
-        Parsed(Pipeline pipeline, List<IngestDocument> documents, boolean verbose) {
+        public Parsed(Pipeline pipeline, List<IngestDocument> documents, boolean verbose) {
             this.pipeline = pipeline;
             this.documents = Collections.unmodifiableList(documents);
             this.verbose = verbose;
@@ -153,9 +153,9 @@ public class SimulatePipelineRequest extends ActionRequest {
     }
 
     private static final Pipeline.Factory PIPELINE_FACTORY = new Pipeline.Factory();
-    static final String SIMULATED_PIPELINE_ID = "_simulate_pipeline";
+    public static final String SIMULATED_PIPELINE_ID = "_simulate_pipeline";
 
-    static Parsed parseWithPipelineId(String pipelineId, Map<String, Object> config, boolean verbose, PipelineStore pipelineStore) {
+    public static Parsed parseWithPipelineId(String pipelineId, Map<String, Object> config, boolean verbose, PipelineStore pipelineStore) {
         if (pipelineId == null) {
             throw new IllegalArgumentException("param [pipeline] is null");
         }
@@ -167,7 +167,7 @@ public class SimulatePipelineRequest extends ActionRequest {
         return new Parsed(pipeline, ingestDocumentList, verbose);
     }
 
-    static Parsed parse(Map<String, Object> config, boolean verbose, PipelineStore pipelineStore) throws Exception {
+    public static Parsed parse(Map<String, Object> config, boolean verbose, PipelineStore pipelineStore) throws Exception {
         Map<String, Object> pipelineConfig = ConfigurationUtils.readMap(null, null, config, Fields.PIPELINE);
         Pipeline pipeline = PIPELINE_FACTORY.create(SIMULATED_PIPELINE_ID, pipelineConfig, pipelineStore.getProcessorFactories());
         List<IngestDocument> ingestDocumentList = parseDocs(config);

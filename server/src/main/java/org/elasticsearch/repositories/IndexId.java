@@ -34,8 +34,8 @@ import java.util.Objects;
  * Represents a single snapshotted index in the repository.
  */
 public final class IndexId implements Writeable, ToXContentObject {
-    protected static final String NAME = "name";
-    protected static final String ID = "id";
+    public static final String NAME = "name";
+    public static final String ID = "id";
 
     private final String name;
     private final String id;

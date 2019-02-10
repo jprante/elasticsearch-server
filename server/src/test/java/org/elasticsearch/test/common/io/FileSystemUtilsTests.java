@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.common.io;
+package org.elasticsearch.test.common.io;
 
 import org.apache.lucene.util.Constants;
-import org.apache.lucene.util.LuceneTestCase.SuppressFileSystems;
-import org.elasticsearch.test.ESTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase.SuppressFileSystems;
+import org.elasticsearch.common.io.FileSystemUtils;
+import org.elasticsearch.common.io.PathUtils;
+import org.elasticsearch.testframework.ESTestCase;
 import org.junit.Before;
 
 import java.io.IOException;

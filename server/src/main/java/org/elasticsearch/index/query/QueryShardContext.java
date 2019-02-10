@@ -246,7 +246,7 @@ public class QueryShardContext extends QueryRewriteContext {
         this.mapUnmappedFieldAsString = mapUnmappedFieldAsString;
     }
 
-    MappedFieldType failIfFieldMappingNotFound(String name, MappedFieldType fieldMapping) {
+    public MappedFieldType failIfFieldMappingNotFound(String name, MappedFieldType fieldMapping) {
         if (fieldMapping != null || allowUnmappedFields) {
             return fieldMapping;
         } else if (mapUnmappedFieldAsString) {

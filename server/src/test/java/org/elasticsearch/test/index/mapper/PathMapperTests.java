@@ -21,17 +21,18 @@ package org.elasticsearch.test.index.mapper;
 
 import org.elasticsearch.common.compress.CompressedXContent;
 import org.elasticsearch.index.mapper.DocumentMapper;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 
 import java.io.IOException;
 
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 public class PathMapperTests extends ESSingleNodeTestCase {
     public void testPathMapping() throws IOException {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/path/test-mapping.json");
+        String mapping = copyToStringFromClasspath(PathMapperTests.class,
+                "/org/elasticsearch/test/index/mapper/path/test-mapping.json");
         DocumentMapper docMapper = createIndex("test").mapperService().documentMapperParser().parse("person", new CompressedXContent(mapping));
 
         // test full name

@@ -64,17 +64,15 @@ public final class CountedBitSet {
         }
     }
 
-    // Below methods are pkg-private for testing
-
-    int cardinality() {
+    public int cardinality() {
         return onBits;
     }
 
-    int length() {
+    public int length() {
         return bitset == null ? onBits : bitset.length();
     }
 
-    boolean isInternalBitsetReleased() {
+    public boolean isInternalBitsetReleased() {
         return bitset == null;
     }
 }

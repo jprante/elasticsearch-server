@@ -17,17 +17,18 @@
  * under the License.
  */
 
-package org.elasticsearch.cluster;
+package org.elasticsearch.test.cluster;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.ClusterState.FeatureAware;
+import org.elasticsearch.cluster.Diff;
 import org.elasticsearch.cluster.metadata.MetaData;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Optional;
 
-import static org.elasticsearch.test.VersionUtils.randomVersionBetween;
+import static org.elasticsearch.testframework.VersionUtils.randomVersionBetween;
 
 public class FeatureAwareTests extends ESTestCase {
 

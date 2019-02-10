@@ -1,4 +1,4 @@
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
 /*
  * Licensed to Elasticsearch under one or more contributor
@@ -22,7 +22,8 @@ package org.elasticsearch.index.analysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.test.ESTokenStreamTestCase;
+import org.elasticsearch.index.analysis.PatternAnalyzer;
+import org.elasticsearch.testframework.ESTokenStreamTestCase;
 
 import java.io.IOException;
 import java.util.Arrays;

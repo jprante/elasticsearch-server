@@ -97,9 +97,9 @@ public class IdFieldMapper extends MetadataFieldMapper {
         }
     }
 
-    static final class IdFieldType extends TermBasedFieldType {
+    public static final class IdFieldType extends TermBasedFieldType {
 
-        IdFieldType() {
+        public IdFieldType() {
         }
 
         protected IdFieldType(IdFieldType ref) {
@@ -263,7 +263,7 @@ public class IdFieldMapper extends MetadataFieldMapper {
         };
     }
 
-    static MappedFieldType defaultFieldType(IndexSettings indexSettings) {
+    public static MappedFieldType defaultFieldType(IndexSettings indexSettings) {
         MappedFieldType defaultFieldType = Defaults.FIELD_TYPE.clone();
         if (indexSettings.isSingleType()) {
             defaultFieldType.setIndexOptions(IndexOptions.DOCS);

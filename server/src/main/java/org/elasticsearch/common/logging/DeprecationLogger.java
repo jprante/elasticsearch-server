@@ -349,7 +349,7 @@ public class DeprecationLogger {
      * @param s the string to escape
      * @return the escaped string
      */
-    static String escapeBackslashesAndQuotes(final String s) {
+    public static String escapeBackslashesAndQuotes(final String s) {
         return s.replaceAll("([\"\\\\])", "\\\\$1");
     }
 
@@ -386,7 +386,7 @@ public class DeprecationLogger {
      * @param s the string to encode
      * @return the encoded string
      */
-    static String encode(final String s) {
+    public static String encode(final String s) {
         final StringBuilder sb = new StringBuilder(s.length());
         boolean encodingNeeded = false;
         for (int i = 0; i < s.length();) {

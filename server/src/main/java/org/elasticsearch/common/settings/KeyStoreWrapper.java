@@ -549,7 +549,7 @@ public class KeyStoreWrapper implements SecureSettings {
     }
 
     /** Set a string setting. */
-    synchronized void setString(String setting, char[] value) {
+    public synchronized void setString(String setting, char[] value) {
         ensureOpen();
         validateSettingName(setting);
 
@@ -562,7 +562,7 @@ public class KeyStoreWrapper implements SecureSettings {
     }
 
     /** Set a file setting. */
-    synchronized void setFile(String setting, byte[] bytes) {
+    public synchronized void setFile(String setting, byte[] bytes) {
         ensureOpen();
         validateSettingName(setting);
 
@@ -573,7 +573,7 @@ public class KeyStoreWrapper implements SecureSettings {
     }
 
     /** Remove the given setting from the keystore. */
-    void remove(String setting) {
+    public void remove(String setting) {
         ensureOpen();
         Entry oldEntry = entries.get().remove(setting);
         if (oldEntry != null) {

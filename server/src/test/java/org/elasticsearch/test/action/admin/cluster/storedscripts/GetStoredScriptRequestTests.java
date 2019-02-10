@@ -17,15 +17,16 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.cluster.storedscripts;
+package org.elasticsearch.test.action.admin.cluster.storedscripts;
 
+import org.elasticsearch.action.admin.cluster.storedscripts.GetStoredScriptRequest;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 
-import static org.elasticsearch.test.VersionUtils.randomVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersion;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 public class GetStoredScriptRequestTests extends ESTestCase {

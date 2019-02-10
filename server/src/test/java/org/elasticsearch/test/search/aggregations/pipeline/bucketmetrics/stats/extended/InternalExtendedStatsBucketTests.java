@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.pipeline.bucketmetrics.stats.extended;
+package org.elasticsearch.test.search.aggregations.pipeline.bucketmetrics.stats.extended;
 
 import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.ParsedAggregation;
+import org.elasticsearch.search.aggregations.pipeline.bucketmetrics.stats.extended.InternalExtendedStatsBucket;
+import org.elasticsearch.search.aggregations.pipeline.bucketmetrics.stats.extended.ParsedExtendedStatsBucket;
 import org.elasticsearch.test.search.aggregations.metrics.InternalExtendedStatsTests;
 import org.elasticsearch.search.aggregations.metrics.stats.extended.InternalExtendedStats;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
@@ -34,7 +36,7 @@ public class InternalExtendedStatsBucketTests extends InternalExtendedStatsTests
 
     @Override
     protected InternalExtendedStatsBucket createInstance(String name, long count, double sum, double min, double max, double sumOfSqrs,
-            double sigma, DocValueFormat formatter, List<PipelineAggregator> pipelineAggregators, Map<String, Object> metaData) {
+                                                         double sigma, DocValueFormat formatter, List<PipelineAggregator> pipelineAggregators, Map<String, Object> metaData) {
         return new InternalExtendedStatsBucket(name, count, sum, min, max, sumOfSqrs, sigma, formatter, pipelineAggregators,
                 Collections.emptyMap());
     }

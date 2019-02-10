@@ -88,7 +88,7 @@ public abstract class AbstractHighlighterBuilder<HB extends AbstractHighlighterB
 
     protected String fragmenter;
 
-    protected QueryBuilder highlightQuery;
+    public QueryBuilder highlightQuery;
 
     protected Order order;
 

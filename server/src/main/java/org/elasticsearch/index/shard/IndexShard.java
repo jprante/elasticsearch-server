@@ -184,23 +184,22 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
     private final IndexEventListener indexEventListener;
     private final QueryCachingPolicy cachingPolicy;
     private final Supplier<Sort> indexSortSupplier;
-    // Package visible for testing
-    final CircuitBreakerService circuitBreakerService;
+    public final CircuitBreakerService circuitBreakerService;
 
     private final SearchOperationListener searchOperationListener;
 
     private final ReplicationTracker replicationTracker;
 
-    protected volatile ShardRouting shardRouting;
-    protected volatile IndexShardState state;
-    protected volatile long primaryTerm;
+    public volatile ShardRouting shardRouting;
+    public volatile IndexShardState state;
+    public volatile long primaryTerm;
     protected final AtomicReference<Engine> currentEngineReference = new AtomicReference<>();
-    protected final EngineFactory engineFactory;
+    public final EngineFactory engineFactory;
 
     private final IndexingOperationListener indexingOperationListeners;
     private final Runnable globalCheckpointSyncer;
 
-    Runnable getGlobalCheckpointSyncer() {
+    public Runnable getGlobalCheckpointSyncer() {
         return globalCheckpointSyncer;
     }
 
@@ -1261,8 +1260,7 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
         return result;
     }
 
-    // package-private for testing
-    int runTranslogRecovery(Engine engine, Translog.Snapshot snapshot) throws IOException {
+    public int runTranslogRecovery(Engine engine, Translog.Snapshot snapshot) throws IOException {
         recoveryState.getTranslog().totalOperations(snapshot.totalOperations());
         recoveryState.getTranslog().totalOperationsOnStart(snapshot.totalOperations());
         int opsRecovered = 0;
@@ -1588,7 +1586,7 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
      *
      * @return {@code true} if the engine should be flushed
      */
-    boolean shouldPeriodicallyFlush() {
+    public boolean shouldPeriodicallyFlush() {
         final Engine engine = getEngineOrNull();
         if (engine != null) {
             try {
@@ -1606,7 +1604,7 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
      *
      * @return {@code true} if the current generation should be rolled to a new generation
      */
-    boolean shouldRollTranslogGeneration() {
+    public boolean shouldRollTranslogGeneration() {
         final Engine engine = getEngineOrNull();
         if (engine != null) {
             try {
@@ -1913,7 +1911,7 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
         internalIndexingStats.noopUpdate(type);
     }
 
-    void checkIndex() throws IOException {
+    public void checkIndex() throws IOException {
         if (store.tryIncRef()) {
             try {
                 doCheckIndex();
@@ -1982,7 +1980,7 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
         recoveryState.getVerifyIndex().checkIndexTime(Math.max(0, TimeValue.nsecToMSec(System.nanoTime() - timeNS)));
     }
 
-    Engine getEngine() {
+    public Engine getEngine() {
         Engine engine = getEngineOrNull();
         if (engine == null) {
             throw new AlreadyClosedException("engine is closed");
@@ -1994,7 +1992,7 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
      * NOTE: returns null if engine is not yet started (e.g. recovery phase 1, copying over index files, is still running), or if engine is
      * closed.
      */
-    protected Engine getEngineOrNull() {
+    public Engine getEngineOrNull() {
         return this.currentEngineReference.get();
     }
 
@@ -2487,12 +2485,12 @@ public class IndexShard extends AbstractIndexShardComponent implements IndicesCl
         }
     }
 
-    EngineFactory getEngineFactory() {
+    public EngineFactory getEngineFactory() {
         return engineFactory;
     }
 
     // for tests
-    ReplicationTracker getReplicationTracker() {
+    public ReplicationTracker getReplicationTracker() {
         return replicationTracker;
     }
 

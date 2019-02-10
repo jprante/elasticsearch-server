@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.action.update;
+package org.elasticsearch.test.action.update;
 
 import org.elasticsearch.action.DocWriteResponse;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.test.action.index.IndexResponseTests;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
 import org.elasticsearch.common.Strings;
@@ -31,10 +32,10 @@ import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.get.GetResult;
-import org.elasticsearch.index.get.GetResultTests;
+import org.elasticsearch.test.index.get.GetResultTests;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.RandomObjects;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.RandomObjects;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -47,8 +48,8 @@ import static org.elasticsearch.action.DocWriteResponse.Result.NOT_FOUND;
 import static org.elasticsearch.action.DocWriteResponse.Result.UPDATED;
 import static org.elasticsearch.cluster.metadata.IndexMetaData.INDEX_UUID_NA_VALUE;
 import static org.elasticsearch.common.xcontent.XContentHelper.toXContent;
-import static org.elasticsearch.test.XContentTestUtils.insertRandomFields;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
+import static org.elasticsearch.testframework.XContentTestUtils.insertRandomFields;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertToXContentEquivalent;
 
 public class UpdateResponseTests extends ESTestCase {
 

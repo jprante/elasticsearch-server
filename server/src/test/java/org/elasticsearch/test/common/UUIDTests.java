@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common;
+package org.elasticsearch.test.common;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 
@@ -28,10 +28,13 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.SerialMergeScheduler;
 import org.apache.lucene.store.Directory;
+import org.elasticsearch.common.RandomBasedUUIDGenerator;
+import org.elasticsearch.common.TimeBasedUUIDGenerator;
+import org.elasticsearch.common.UUIDGenerator;
 import org.elasticsearch.common.logging.Loggers;
 import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 import org.hamcrest.Matchers;
 
 import java.util.HashSet;

@@ -17,18 +17,19 @@
  * under the License.
  */
 
-package org.elasticsearch.action.main;
+package org.elasticsearch.test.action.main;
 
 import org.elasticsearch.Build;
 import org.elasticsearch.Version;
+import org.elasticsearch.action.main.MainResponse;
 import org.elasticsearch.cluster.ClusterName;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
-import org.elasticsearch.test.VersionUtils;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.VersionUtils;
 
 import java.io.IOException;
 import java.util.Date;

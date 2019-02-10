@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.common.lucene.store;
+package org.elasticsearch.test.common.lucene.store;
 
 import org.apache.lucene.store.IOContext;
 import org.apache.lucene.store.IndexInput;
 import org.apache.lucene.store.IndexOutput;
 import org.apache.lucene.store.RAMDirectory;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.lucene.store.InputStreamIndexInput;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 

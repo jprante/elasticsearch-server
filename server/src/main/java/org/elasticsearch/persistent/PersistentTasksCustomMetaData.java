@@ -651,7 +651,7 @@ public final class PersistentTasksCustomMetaData extends AbstractNamedDiffable<M
             return false;
         }
 
-        Set<String> getCurrentTaskIds() {
+        public Set<String> getCurrentTaskIds() {
             return tasks.keySet();
         }
 

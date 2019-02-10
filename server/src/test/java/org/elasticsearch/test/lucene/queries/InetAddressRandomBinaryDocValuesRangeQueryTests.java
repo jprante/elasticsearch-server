@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.lucene.queries;
+package org.elasticsearch.test.lucene.queries;
 
 import org.apache.lucene.document.InetAddressPoint;
 import org.apache.lucene.util.StringHelper;

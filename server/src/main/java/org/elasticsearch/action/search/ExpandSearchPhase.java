@@ -28,7 +28,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.collapse.CollapseBuilder;
-import org.elasticsearch.search.internal.InternalSearchResponse;
+import org.elasticsearch.search.InternalSearchResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,12 +41,12 @@ import java.util.function.Function;
  * field-collapsing on the inner hits. This phase only executes if field collapsing is requested in the search request and otherwise
  * forwards to the next phase immediately.
  */
-final class ExpandSearchPhase extends SearchPhase {
+public final class ExpandSearchPhase extends SearchPhase {
     private final SearchPhaseContext context;
     private final InternalSearchResponse searchResponse;
     private final Function<InternalSearchResponse, SearchPhase> nextPhaseFactory;
 
-    ExpandSearchPhase(SearchPhaseContext context, InternalSearchResponse searchResponse,
+    public ExpandSearchPhase(SearchPhaseContext context, InternalSearchResponse searchResponse,
                       Function<InternalSearchResponse, SearchPhase> nextPhaseFactory) {
         super("expand");
         this.context = context;

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent.support.filtering;
+package org.elasticsearch.test.common.xcontent.support.filtering;
 
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.bytes.BytesReference;
@@ -28,7 +28,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.common.xcontent.support.AbstractFilteringTestCase;
+import org.elasticsearch.test.common.xcontent.support.AbstractFilteringTestCase;
 
 import java.io.IOException;
 import java.util.Set;

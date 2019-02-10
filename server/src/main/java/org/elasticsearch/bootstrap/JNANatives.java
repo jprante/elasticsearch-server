@@ -35,7 +35,7 @@ import static org.elasticsearch.bootstrap.JNAKernel32Library.SizeT;
  * This class performs the actual work with JNA and library bindings to call native methods. It should only be used after
  * we are sure that the JNA classes are available to the JVM
  */
-class JNANatives {
+public class JNANatives {
 
     /** no instantiation */
     private JNANatives() {}
@@ -43,7 +43,7 @@ class JNANatives {
     private static final Logger logger = Loggers.getLogger(JNANatives.class);
 
     // Set to true, in case native mlockall call was successful
-    static boolean LOCAL_MLOCKALL = false;
+    public static boolean LOCAL_MLOCKALL = false;
     // Set to true, in case native system call filter install was successful
     static boolean LOCAL_SYSTEM_CALL_FILTER = false;
     // Set to true, in case policy can be applied to all threads of the process (even existing ones)
@@ -57,7 +57,7 @@ class JNANatives {
 
     static long MAX_FILE_SIZE = Long.MIN_VALUE;
 
-    static void tryMlockall() {
+    public static void tryMlockall() {
         int errno = Integer.MIN_VALUE;
         String errMsg = null;
         boolean rlimitSuccess = false;
@@ -115,7 +115,7 @@ class JNANatives {
         }
     }
 
-    static void trySetMaxNumberOfThreads() {
+    public static void trySetMaxNumberOfThreads() {
         if (Constants.LINUX) {
             // this is only valid on Linux and the value *is* different on OS X
             // see /usr/include/sys/resource.h on OS X
@@ -132,7 +132,7 @@ class JNANatives {
         }
     }
 
-    static void trySetMaxSizeVirtualMemory() {
+    public static void trySetMaxSizeVirtualMemory() {
         if (Constants.LINUX || Constants.MAC_OS_X) {
             final JNACLibrary.Rlimit rlimit = new JNACLibrary.Rlimit();
             if (JNACLibrary.getrlimit(JNACLibrary.RLIMIT_AS, rlimit) == 0) {
@@ -143,7 +143,7 @@ class JNANatives {
         }
     }
 
-    static void trySetMaxFileSize() {
+    public static void trySetMaxFileSize() {
         if (Constants.LINUX || Constants.MAC_OS_X) {
             final JNACLibrary.Rlimit rlimit = new JNACLibrary.Rlimit();
             if (JNACLibrary.getrlimit(JNACLibrary.RLIMIT_FSIZE, rlimit) == 0) {
@@ -154,7 +154,7 @@ class JNANatives {
         }
     }
 
-    static String rlimitToString(long value) {
+    public static String rlimitToString(long value) {
         assert Constants.LINUX || Constants.MAC_OS_X;
         if (value == JNACLibrary.RLIM_INFINITY) {
             return "unlimited";
@@ -164,7 +164,7 @@ class JNANatives {
     }
 
     /** Returns true if user is root, false if not, or if we don't know */
-    static boolean definitelyRunningAsRoot() {
+    public static boolean definitelyRunningAsRoot() {
         if (Constants.WINDOWS) {
             return false; // don't know
         }
@@ -176,7 +176,7 @@ class JNANatives {
         }
     }
 
-    static void tryVirtualLock() {
+    public static void tryVirtualLock() {
         JNAKernel32Library kernel = JNAKernel32Library.getInstance();
         Pointer process = null;
         try {
@@ -217,7 +217,7 @@ class JNANatives {
      * @param path the path
      * @return the short path name (or the original path if getting the short path name fails for any reason)
      */
-    static String getShortPathName(String path) {
+    public static String getShortPathName(String path) {
         assert Constants.WINDOWS;
         try {
             final WString longPath = new WString("\\\\?\\" + path);
@@ -240,7 +240,7 @@ class JNANatives {
         }
     }
 
-    static void addConsoleCtrlHandler(ConsoleCtrlHandler handler) {
+    public static void addConsoleCtrlHandler(ConsoleCtrlHandler handler) {
         // The console Ctrl handler is necessary on Windows platforms only.
         if (Constants.WINDOWS) {
             try {
@@ -256,7 +256,7 @@ class JNANatives {
         }
     }
 
-    static void tryInstallSystemCallFilter(Path tmpFile) {
+    public static void tryInstallSystemCallFilter(Path tmpFile) {
         try {
             int ret = SystemCallFilter.init(tmpFile);
             LOCAL_SYSTEM_CALL_FILTER = true;

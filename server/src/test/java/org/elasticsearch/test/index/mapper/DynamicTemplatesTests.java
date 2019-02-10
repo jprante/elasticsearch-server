@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexableField;
@@ -28,12 +28,17 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.IndexService;
+import org.elasticsearch.index.mapper.DocumentFieldMappers;
+import org.elasticsearch.index.mapper.DocumentMapper;
+import org.elasticsearch.index.mapper.FieldMapper;
 import org.elasticsearch.index.mapper.ParseContext.Document;
-import org.elasticsearch.test.ESSingleNodeTestCase;
+import org.elasticsearch.index.mapper.ParsedDocument;
+import org.elasticsearch.index.mapper.SourceToParse;
+import org.elasticsearch.testframework.ESSingleNodeTestCase;
 import org.hamcrest.Matchers;
 
-import static org.elasticsearch.test.StreamsUtils.copyToBytesFromClasspath;
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToBytesFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.Matchers.equalTo;
 
 public class DynamicTemplatesTests extends ESSingleNodeTestCase {
@@ -66,11 +71,13 @@ public class DynamicTemplatesTests extends ESSingleNodeTestCase {
     }
 
     public void testSimple() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/dynamictemplate/simple/test-mapping.json");
+        String mapping = copyToStringFromClasspath(DynamicTemplatesTests.class,
+                "/org/elasticsearch/test/index/mapper/dynamictemplate/simple/test-mapping.json");
         IndexService index = createIndex("test");
         client().admin().indices().preparePutMapping("test").setType("person").setSource(mapping, XContentType.JSON).get();
         DocumentMapper docMapper = index.mapperService().documentMapper("person");
-        byte[] json = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/dynamictemplate/simple/test-data.json");
+        byte[] json = copyToBytesFromClasspath(DynamicTemplatesTests.class,
+                "/org/elasticsearch/test/index/mapper/dynamictemplate/simple/test-data.json");
         ParsedDocument parsedDoc = docMapper.parse(SourceToParse.source("test", "person", "1", new BytesArray(json),
                 XContentType.JSON));
         client().admin().indices().preparePutMapping("test").setType("person")
@@ -125,11 +132,13 @@ public class DynamicTemplatesTests extends ESSingleNodeTestCase {
     }
 
     public void testSimpleWithXContentTraverse() throws Exception {
-        String mapping = copyToStringFromClasspath("/org/elasticsearch/index/mapper/dynamictemplate/simple/test-mapping.json");
+        String mapping = copyToStringFromClasspath(DynamicTemplatesTests.class,
+                "/org/elasticsearch/test/index/mapper/dynamictemplate/simple/test-mapping.json");
         IndexService index = createIndex("test");
         client().admin().indices().preparePutMapping("test").setType("person").setSource(mapping, XContentType.JSON).get();
         DocumentMapper docMapper = index.mapperService().documentMapper("person");
-        byte[] json = copyToBytesFromClasspath("/org/elasticsearch/index/mapper/dynamictemplate/simple/test-data.json");
+        byte[] json = copyToBytesFromClasspath(DynamicTemplatesTests.class,
+                "/org/elasticsearch/test/index/mapper/dynamictemplate/simple/test-data.json");
         ParsedDocument parsedDoc = docMapper.parse(SourceToParse.source("test", "person", "1", new BytesArray(json),
                 XContentType.JSON));
         client().admin().indices().preparePutMapping("test").setType("person")

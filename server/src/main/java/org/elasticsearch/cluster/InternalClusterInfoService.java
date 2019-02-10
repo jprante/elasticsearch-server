@@ -119,7 +119,7 @@ public class InternalClusterInfoService extends AbstractComponent
         this.fetchTimeout = fetchTimeout;
     }
 
-    void setUpdateFrequency(TimeValue updateFrequency) {
+    public void setUpdateFrequency(TimeValue updateFrequency) {
         this.updateFrequency = updateFrequency;
     }
 
@@ -365,7 +365,7 @@ public class InternalClusterInfoService extends AbstractComponent
         return clusterInfo;
     }
 
-    static void buildShardLevelInfo(Logger logger, ShardStats[] stats, ImmutableOpenMap.Builder<String, Long> newShardSizes,
+    public static void buildShardLevelInfo(Logger logger, ShardStats[] stats, ImmutableOpenMap.Builder<String, Long> newShardSizes,
                                     ImmutableOpenMap.Builder<ShardRouting, String> newShardRoutingToDataPath, ClusterState state) {
         for (ShardStats s : stats) {
             newShardRoutingToDataPath.put(s.getShardRouting(), s.getDataPath());
@@ -378,7 +378,7 @@ public class InternalClusterInfoService extends AbstractComponent
         }
     }
 
-    static void fillDiskUsagePerNode(Logger logger, List<NodeStats> nodeStatsArray,
+    public static void fillDiskUsagePerNode(Logger logger, List<NodeStats> nodeStatsArray,
             ImmutableOpenMap.Builder<String, DiskUsage> newLeastAvaiableUsages,
             ImmutableOpenMap.Builder<String, DiskUsage> newMostAvaiableUsages) {
         for (NodeStats nodeStats : nodeStatsArray) {

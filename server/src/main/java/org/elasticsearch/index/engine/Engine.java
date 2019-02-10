@@ -101,16 +101,16 @@ public abstract class Engine implements Closeable {
     protected final ShardId shardId;
     protected final String allocationId;
     protected final Logger logger;
-    protected final EngineConfig engineConfig;
-    protected final Store store;
-    protected final AtomicBoolean isClosed = new AtomicBoolean(false);
+    public final EngineConfig engineConfig;
+    public final Store store;
+    public final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final CountDownLatch closedLatch = new CountDownLatch(1);
     protected final EventListener eventListener;
     protected final ReentrantLock failEngineLock = new ReentrantLock();
     protected final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
     protected final ReleasableLock readLock = new ReleasableLock(rwl.readLock());
     protected final ReleasableLock writeLock = new ReleasableLock(rwl.writeLock());
-    protected final SetOnce<Exception> failedEngine = new SetOnce<>();
+    public final SetOnce<Exception> failedEngine = new SetOnce<>();
     /*
      * on <tt>lastWriteNanos</tt> we use System.nanoTime() to initialize this since:
      *  - we use the value for figuring out if the shard / engine is active so if we startup and no write has happened yet we still consider it active
@@ -160,7 +160,7 @@ public abstract class Engine implements Closeable {
         return engineConfig;
     }
 
-    protected abstract SegmentInfos getLastCommittedSegmentInfos();
+    public abstract SegmentInfos getLastCommittedSegmentInfos();
 
     public MergeStats getMergeStats() {
         return new MergeStats();
@@ -563,7 +563,7 @@ public abstract class Engine implements Closeable {
      * Returns the translog associated with this engine.
      * Prefer to keep the translog package-private, so that an engine can control all accesses to the translog.
      */
-    abstract Translog getTranslog();
+    public abstract Translog getTranslog();
 
     /**
      * Checks if the underlying storage sync is required.
@@ -1176,7 +1176,7 @@ public abstract class Engine implements Closeable {
             this(uid, primaryTerm, doc, Versions.MATCH_ANY);
         } // TEST ONLY
 
-        Index(Term uid, long primaryTerm, ParsedDocument doc, long version) {
+        public Index(Term uid, long primaryTerm, ParsedDocument doc, long version) {
             this(uid, doc, SequenceNumbers.UNASSIGNED_SEQ_NO, primaryTerm, version, VersionType.INTERNAL,
                 Origin.PRIMARY, System.nanoTime(), -1, false);
         } // TEST ONLY

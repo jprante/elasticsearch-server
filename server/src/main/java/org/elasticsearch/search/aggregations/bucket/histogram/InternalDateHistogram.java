@@ -221,7 +221,7 @@ public final class InternalDateHistogram extends InternalMultiBucketAggregation<
     private final long offset;
     private final EmptyBucketInfo emptyBucketInfo;
 
-    InternalDateHistogram(String name, List<Bucket> buckets, BucketOrder order, long minDocCount, long offset,
+    public InternalDateHistogram(String name, List<Bucket> buckets, BucketOrder order, long minDocCount, long offset,
             EmptyBucketInfo emptyBucketInfo,
             DocValueFormat formatter, boolean keyed, List<PipelineAggregator> pipelineAggregators,
             Map<String, Object> metaData) {
@@ -277,19 +277,19 @@ public final class InternalDateHistogram extends InternalMultiBucketAggregation<
         return Collections.unmodifiableList(buckets);
     }
 
-    DocValueFormat getFormatter() {
+    public DocValueFormat getFormatter() {
         return format;
     }
 
-    long getMinDocCount() {
+    public long getMinDocCount() {
         return minDocCount;
     }
 
-    long getOffset() {
+    public long getOffset() {
         return offset;
     }
 
-    BucketOrder getOrder() {
+    public BucketOrder getOrder() {
         return order;
     }
 

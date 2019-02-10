@@ -38,7 +38,7 @@ public abstract class PrioritizedRunnable implements Runnable, Comparable<Priori
     }
 
     // package visible for testing
-    PrioritizedRunnable(Priority priority, LongSupplier relativeTimeProvider) {
+    public PrioritizedRunnable(Priority priority, LongSupplier relativeTimeProvider) {
         this.priority = priority;
         this.creationDate = relativeTimeProvider.getAsLong();
         this.relativeTimeProvider = relativeTimeProvider;

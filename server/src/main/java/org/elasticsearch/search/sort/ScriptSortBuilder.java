@@ -101,7 +101,7 @@ public class ScriptSortBuilder extends SortBuilder<ScriptSortBuilder> {
         this.type = type;
     }
 
-    ScriptSortBuilder(ScriptSortBuilder original) {
+    public ScriptSortBuilder(ScriptSortBuilder original) {
         this.script = original.script;
         this.type = original.type;
         this.order = original.order;

@@ -17,13 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.common.lucene.search.function;
+package org.elasticsearch.test.common.lucene.search.function;
 
 import org.apache.lucene.search.DocIdSetIterator;
 import org.apache.lucene.search.Scorer;
 import org.apache.lucene.search.TwoPhaseIterator;
-import org.apache.lucene.util.LuceneTestCase;
-import org.apache.lucene.util.TestUtil;
+import org.apache.lucene.testframework.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.TestUtil;
+import org.elasticsearch.common.lucene.search.function.MinScoreScorer;
 
 import java.io.IOException;
 import java.util.Arrays;

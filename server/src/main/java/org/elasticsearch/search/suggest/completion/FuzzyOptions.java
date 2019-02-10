@@ -94,7 +94,7 @@ public class FuzzyOptions implements ToXContentFragment, Writeable {
     /**
      * Read from a stream.
      */
-    FuzzyOptions(StreamInput in) throws IOException {
+    public FuzzyOptions(StreamInput in) throws IOException {
         transpositions = in.readBoolean();
         unicodeAware = in.readBoolean();
         editDistance = in.readVInt();

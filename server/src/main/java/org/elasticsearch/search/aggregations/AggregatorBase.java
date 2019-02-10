@@ -23,8 +23,8 @@ import org.elasticsearch.common.breaker.CircuitBreaker;
 import org.elasticsearch.common.breaker.CircuitBreakingException;
 import org.elasticsearch.indices.breaker.CircuitBreakerService;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.search.internal.SearchContext.Lifetime;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.search.SearchContext.Lifetime;
 import org.elasticsearch.search.query.QueryPhaseExecutionException;
 
 import java.io.IOException;

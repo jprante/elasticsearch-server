@@ -48,8 +48,8 @@ public abstract class SuggestionBuilder<T extends SuggestionBuilder<T>> implemen
     protected String prefix;
     protected String regex;
     protected String analyzer;
-    protected Integer size;
-    protected Integer shardSize;
+    public Integer size;
+    public Integer shardSize;
 
     protected static final ParseField TEXT_FIELD = new ParseField("text");
     protected static final ParseField PREFIX_FIELD = new ParseField("prefix");
@@ -129,7 +129,7 @@ public abstract class SuggestionBuilder<T extends SuggestionBuilder<T>> implemen
     }
 
     @SuppressWarnings("unchecked")
-    protected T prefix(String prefix) {
+    public T prefix(String prefix) {
         this.prefix = prefix;
         return (T) this;
     }
@@ -142,7 +142,7 @@ public abstract class SuggestionBuilder<T extends SuggestionBuilder<T>> implemen
     }
 
     @SuppressWarnings("unchecked")
-    protected T regex(String regex) {
+    public T regex(String regex) {
         this.regex = regex;
         return (T) this;
     }
@@ -252,7 +252,7 @@ public abstract class SuggestionBuilder<T extends SuggestionBuilder<T>> implemen
 
     protected abstract XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException;
 
-    static SuggestionBuilder<?> fromXContent(XContentParser parser) throws IOException {
+    public static SuggestionBuilder<?> fromXContent(XContentParser parser) throws IOException {
         XContentParser.Token token;
         String currentFieldName = null;
         String suggestText = null;
@@ -292,7 +292,7 @@ public abstract class SuggestionBuilder<T extends SuggestionBuilder<T>> implemen
         return suggestionBuilder;
     }
 
-    protected abstract SuggestionContext build(QueryShardContext context) throws IOException;
+    public abstract SuggestionContext build(QueryShardContext context) throws IOException;
 
     /**
      * Transfers the text, prefix, regex, analyzer, field, size and shard size settings from the

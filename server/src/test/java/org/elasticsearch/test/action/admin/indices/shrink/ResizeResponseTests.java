@@ -17,11 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.action.admin.indices.shrink;
+package org.elasticsearch.test.action.admin.indices.shrink;
 
+import org.elasticsearch.action.admin.indices.shrink.ResizeResponse;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.test.AbstractStreamableXContentTestCase;
+import org.elasticsearch.testframework.AbstractStreamableXContentTestCase;
 
 public class ResizeResponseTests extends AbstractStreamableXContentTestCase<ResizeResponse> {
 

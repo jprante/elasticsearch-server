@@ -16,16 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.bootstrap;
+package org.elasticsearch.test.bootstrap;
 
-import org.elasticsearch.core.internal.io.IOUtils;
-import org.elasticsearch.common.settings.KeyStoreCommandTestCase;
+import org.elasticsearch.bootstrap.Bootstrap;
+import org.elasticsearch.test.common.settings.KeyStoreCommandTestCase;
 import org.elasticsearch.common.settings.KeyStoreWrapper;
 import org.elasticsearch.common.settings.SecureSettings;
 import org.elasticsearch.common.settings.SecureString;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.client;
+package org.elasticsearch.test.client;
 
 import org.elasticsearch.action.Action;
 import org.elasticsearch.action.ActionListener;
@@ -27,9 +27,10 @@ import org.elasticsearch.action.ActionResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.search.ClearScrollRequest;
 import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.client.ParentTaskAssigningClient;
 import org.elasticsearch.tasks.TaskId;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.client.NoOpClient;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.client.NoOpClient;
 
 public class ParentTaskAssigningClientTests extends ESTestCase {
     public void testSetsParentId() {

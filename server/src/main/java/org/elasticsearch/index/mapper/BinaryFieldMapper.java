@@ -85,9 +85,9 @@ public class BinaryFieldMapper extends FieldMapper {
         }
     }
 
-    static final class BinaryFieldType extends MappedFieldType {
+    public static final class BinaryFieldType extends MappedFieldType {
 
-        BinaryFieldType() {}
+        public BinaryFieldType() {}
 
         protected BinaryFieldType(BinaryFieldType ref) {
             super(ref);

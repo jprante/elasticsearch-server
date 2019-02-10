@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.store;
+package org.elasticsearch.test.index.store;
 
 import com.carrotsearch.randomizedtesting.generators.RandomPicks;
 import org.elasticsearch.action.admin.cluster.node.stats.NodesStatsResponse;
@@ -35,13 +35,13 @@ import org.elasticsearch.common.unit.ByteSizeValue;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.Index;
 import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.index.MockEngineFactoryPlugin;
-import org.elasticsearch.index.translog.TestTranslog;
+import org.elasticsearch.testframework.index.MockEngineFactoryPlugin;
+import org.elasticsearch.test.index.translog.TestTranslog;
 import org.elasticsearch.monitor.fs.FsInfo;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
-import org.elasticsearch.test.engine.MockEngineSupport;
-import org.elasticsearch.test.transport.MockTransportService;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.engine.MockEngineSupport;
+import org.elasticsearch.testframework.transport.MockTransportService;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.elasticsearch.common.util.CollectionUtils.iterableAsArrayList;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.test.hamcrest.ElasticsearchAssertions.assertAcked;
+import static org.elasticsearch.testframework.hamcrest.ElasticsearchAssertions.assertAcked;
 
 /**
  * Integration test for corrupted translog files

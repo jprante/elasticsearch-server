@@ -32,7 +32,7 @@ import java.nio.file.Path;
  */
 public abstract class BaseTranslogReader implements Comparable<BaseTranslogReader> {
 
-    protected final long generation;
+    public final long generation;
     protected final FileChannel channel;
     protected final Path path;
     protected final TranslogHeader header;
@@ -54,7 +54,7 @@ public abstract class BaseTranslogReader implements Comparable<BaseTranslogReade
 
     public abstract int totalOperations();
 
-    abstract Checkpoint getCheckpoint();
+    public abstract Checkpoint getCheckpoint();
 
     public final long getFirstOperationOffset() {
         return header.sizeInBytes();
@@ -118,7 +118,7 @@ public abstract class BaseTranslogReader implements Comparable<BaseTranslogReade
     /**
      * reads bytes at position into the given buffer, filling it.
      */
-    protected abstract void readBytes(ByteBuffer buffer, long position) throws IOException;
+    public abstract void readBytes(ByteBuffer buffer, long position) throws IOException;
 
     @Override
     public String toString() {

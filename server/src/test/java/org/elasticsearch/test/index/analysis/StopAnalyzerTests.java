@@ -17,21 +17,23 @@
  * under the License.
  */
 
-package org.elasticsearch.index.analysis;
+package org.elasticsearch.test.index.analysis;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.metadata.IndexMetaData;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
-import org.elasticsearch.test.ESTokenStreamTestCase;
-import org.elasticsearch.test.IndexSettingsModule;
+import org.elasticsearch.index.analysis.IndexAnalyzers;
+import org.elasticsearch.index.analysis.NamedAnalyzer;
+import org.elasticsearch.testframework.ESTokenStreamTestCase;
+import org.elasticsearch.testframework.IndexSettingsModule;
 
-import static org.elasticsearch.test.ESTestCase.createTestAnalysis;
+import static org.elasticsearch.testframework.ESTestCase.createTestAnalysis;
 
 public class StopAnalyzerTests extends ESTokenStreamTestCase {
     public void testDefaultsCompoundAnalysis() throws Exception {
-        String json = "/org/elasticsearch/index/analysis/stop.json";
+        String json = "/org/elasticsearch/test/index/analysis/stop.json";
         Settings settings = Settings.builder()
             .loadFromStream(json, getClass().getResourceAsStream(json), false)
                 .put(Environment.PATH_HOME_SETTING.getKey(), createTempDir().toString())

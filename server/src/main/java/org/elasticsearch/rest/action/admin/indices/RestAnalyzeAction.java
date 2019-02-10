@@ -76,7 +76,7 @@ public class RestAnalyzeAction extends BaseRestHandler {
         return channel -> client.admin().indices().analyze(analyzeRequest, new RestToXContentListener<>(channel));
     }
 
-    static void buildFromContent(XContentParser parser, AnalyzeRequest analyzeRequest)
+    public static void buildFromContent(XContentParser parser, AnalyzeRequest analyzeRequest)
             throws IOException {
         if (parser.nextToken() != XContentParser.Token.START_OBJECT) {
             throw new IllegalArgumentException("Malformed content, must start with an object");

@@ -190,7 +190,7 @@ public class BulkProcessor implements Closeable {
 
     private volatile boolean closed = false;
 
-    BulkProcessor(BiConsumer<BulkRequest, ActionListener<BulkResponse>> consumer, BackoffPolicy backoffPolicy, Listener listener,
+    public BulkProcessor(BiConsumer<BulkRequest, ActionListener<BulkResponse>> consumer, BackoffPolicy backoffPolicy, Listener listener,
                   int concurrentRequests, int bulkActions, ByteSizeValue bulkSize, @Nullable TimeValue flushInterval,
                   Scheduler scheduler, Runnable onClose) {
         this.bulkActions = bulkActions;
@@ -272,7 +272,7 @@ public class BulkProcessor implements Closeable {
         return this;
     }
 
-    boolean isOpen() {
+    public boolean isOpen() {
         return closed == false;
     }
 

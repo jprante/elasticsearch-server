@@ -64,7 +64,7 @@ public class TransportClusterUpdateSettingsAction extends
     }
 
     @Override
-    protected ClusterBlockException checkBlock(ClusterUpdateSettingsRequest request, ClusterState state) {
+    public ClusterBlockException checkBlock(ClusterUpdateSettingsRequest request, ClusterState state) {
         // allow for dedicated changes to the metadata blocks, so we don't block those to allow to "re-enable" it
         if (request.transientSettings().size() + request.persistentSettings().size() == 1) {
             // only one setting
@@ -86,7 +86,7 @@ public class TransportClusterUpdateSettingsAction extends
     }
 
     @Override
-    protected void masterOperation(final ClusterUpdateSettingsRequest request, final ClusterState state,
+    public void masterOperation(final ClusterUpdateSettingsRequest request, final ClusterState state,
                                    final ActionListener<ClusterUpdateSettingsResponse> listener) {
         final SettingsUpdater updater = new SettingsUpdater(clusterSettings);
         clusterService.submitStateUpdateTask("cluster_update_settings",

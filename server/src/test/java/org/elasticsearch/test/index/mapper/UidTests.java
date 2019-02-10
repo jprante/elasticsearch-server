@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.mapper;
+package org.elasticsearch.test.index.mapper;
 
 import org.apache.lucene.util.BytesRef;
-import org.apache.lucene.util.TestUtil;
-import org.elasticsearch.test.ESTestCase;
+import org.apache.lucene.testframework.util.TestUtil;
+import org.elasticsearch.index.mapper.Uid;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Arrays;
 import java.util.Base64;

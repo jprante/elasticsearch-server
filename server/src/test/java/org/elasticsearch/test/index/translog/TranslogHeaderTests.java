@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.index.translog;
+package org.elasticsearch.test.index.translog;
 
 import org.apache.lucene.codecs.CodecUtil;
 import org.apache.lucene.store.OutputStreamDataOutput;
@@ -25,7 +25,13 @@ import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.UUIDs;
 import org.elasticsearch.common.io.stream.OutputStreamStreamOutput;
 import org.elasticsearch.index.seqno.SequenceNumbers;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.translog.Checkpoint;
+import org.elasticsearch.index.translog.Translog;
+import org.elasticsearch.index.translog.TranslogCorruptedException;
+import org.elasticsearch.index.translog.TranslogHeader;
+import org.elasticsearch.index.translog.TranslogReader;
+import org.elasticsearch.testframework.ESTestCase;
+import org.junit.Ignore;
 
 import java.io.IOException;
 import java.nio.channels.Channels;
@@ -103,18 +109,20 @@ public class TranslogHeaderTests extends ESTestCase {
         assertThat(channel.position(), equalTo(43L));
     }
 
+    @Ignore // we do not support legacy translog
     public void testLegacyTranslogVersions() throws Exception {
-        checkFailsToOpen("/org/elasticsearch/index/translog/translog-v0.binary", IllegalStateException.class, "pre-1.4 translog");
-        checkFailsToOpen("/org/elasticsearch/index/translog/translog-v1.binary", IllegalStateException.class, "pre-2.0 translog");
-        checkFailsToOpen("/org/elasticsearch/index/translog/translog-v1-truncated.binary", IllegalStateException.class, "pre-2.0 translog");
-        checkFailsToOpen("/org/elasticsearch/index/translog/translog-v1-corrupted-magic.binary",
+        checkFailsToOpen("/org/elasticsearch/test/index/translog/translog-v0.binary", IllegalStateException.class, "pre-1.4 translog");
+        checkFailsToOpen("/org/elasticsearch/test/index/translog/translog-v1.binary", IllegalStateException.class, "pre-2.0 translog");
+        checkFailsToOpen("/org/elasticsearch/test/index/translog/translog-v1-truncated.binary", IllegalStateException.class, "pre-2.0 translog");
+        checkFailsToOpen("/org/elasticsearch/test/index/translog/translog-v1-corrupted-magic.binary",
             TranslogCorruptedException.class, "translog looks like version 1 or later, but has corrupted header");
-        checkFailsToOpen("/org/elasticsearch/index/translog/translog-v1-corrupted-body.binary",
+        checkFailsToOpen("/org/elasticsearch/test/index/translog/translog-v1-corrupted-body.binary",
             IllegalStateException.class, "pre-2.0 translog");
     }
 
+    // when pah is in zip archive, there are problems with security, no write permission
     private <E extends Exception> void checkFailsToOpen(String file, Class<E> expectedErrorType, String expectedMessage) {
-        final Path translogFile = getDataPath(file);
+        final Path translogFile = getDataPath(TranslogHeaderTests.class, file);
         assertThat("test file [" + translogFile + "] should exist", Files.exists(translogFile), equalTo(true));
         final E error = expectThrows(expectedErrorType, () -> {
             final Checkpoint checkpoint = new Checkpoint(Files.size(translogFile), 1, 1,

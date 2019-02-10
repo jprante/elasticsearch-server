@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.settings;
+package org.elasticsearch.test.common.settings;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.settings.SecureString;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.util.Arrays;
 

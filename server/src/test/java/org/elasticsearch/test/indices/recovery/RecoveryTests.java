@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.indices.recovery;
+package org.elasticsearch.test.indices.recovery;
 
 import com.carrotsearch.randomizedtesting.generators.RandomNumbers;
 import org.apache.lucene.index.DirectoryReader;
@@ -37,10 +37,11 @@ import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.mapper.SourceToParse;
-import org.elasticsearch.index.replication.ESIndexLevelReplicationTestCase;
-import org.elasticsearch.index.replication.RecoveryDuringReplicationTests;
+import org.elasticsearch.test.index.replication.RecoveryDuringReplicationTests;
 import org.elasticsearch.index.seqno.SequenceNumbers;
 import org.elasticsearch.index.shard.IndexShard;
+import org.elasticsearch.indices.recovery.RecoveryState;
+import org.elasticsearch.test.index.replication.ESIndexLevelReplicationTestCase;
 import org.elasticsearch.test.index.translog.SnapshotMatchers;
 import org.elasticsearch.index.translog.Translog;
 

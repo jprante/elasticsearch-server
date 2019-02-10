@@ -33,7 +33,7 @@ public class GetStoredScriptRequest extends MasterNodeReadRequest<GetStoredScrip
 
     protected String id;
 
-    GetStoredScriptRequest() {
+    public GetStoredScriptRequest() {
         super();
     }
 

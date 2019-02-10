@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.persistent;
+package org.elasticsearch.test.persistent;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.action.Action;
@@ -50,8 +50,11 @@ import org.elasticsearch.common.xcontent.ConstructingObjectParser;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentParser;
+import org.elasticsearch.persistent.AllocatedPersistentTask;
+import org.elasticsearch.persistent.PersistentTaskParams;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData.Assignment;
 import org.elasticsearch.persistent.PersistentTasksCustomMetaData.PersistentTask;
+import org.elasticsearch.persistent.PersistentTasksExecutor;
 import org.elasticsearch.plugins.ActionPlugin;
 import org.elasticsearch.plugins.PersistentTaskPlugin;
 import org.elasticsearch.plugins.Plugin;
@@ -75,8 +78,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.Objects.requireNonNull;
 import static org.elasticsearch.common.xcontent.ConstructingObjectParser.constructorArg;
-import static org.elasticsearch.test.ESTestCase.awaitBusy;
-import static org.elasticsearch.test.ESTestCase.randomBoolean;
+import static org.elasticsearch.testframework.ESTestCase.awaitBusy;
+import static org.elasticsearch.testframework.ESTestCase.randomBoolean;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -379,7 +382,7 @@ public class TestPersistentTasksPlugin extends Plugin implements ActionPlugin, P
         }
 
         @Override
-        protected AllocatedPersistentTask createTask(long id, String type, String action, TaskId parentTaskId,
+        public AllocatedPersistentTask createTask(long id, String type, String action, TaskId parentTaskId,
                                                      PersistentTask<TestParams> task, Map<String, String> headers) {
             return new TestTask(id, type, action, getDescription(task), parentTaskId, headers);
         }

@@ -17,15 +17,17 @@
  * under the License.
  */
 
-package org.elasticsearch.ingest;
+package org.elasticsearch.test.ingest;
 
 import org.elasticsearch.ElasticsearchParseException;
 import org.elasticsearch.action.ingest.WritePipelineResponse;
 import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.ingest.Pipeline;
 import org.elasticsearch.node.NodeService;
 import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESIntegTestCase;
+import org.elasticsearch.testframework.ESIntegTestCase;
+import org.elasticsearch.testframework.ingest.IngestTestPlugin;
 
 import java.io.IOException;
 import java.util.Arrays;

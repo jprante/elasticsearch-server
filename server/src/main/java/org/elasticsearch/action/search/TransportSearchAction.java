@@ -43,7 +43,7 @@ import org.elasticsearch.index.query.Rewriteable;
 import org.elasticsearch.index.shard.ShardId;
 import org.elasticsearch.search.SearchService;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.internal.AliasFilter;
+import org.elasticsearch.search.AliasFilter;
 import org.elasticsearch.tasks.Task;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.RemoteClusterAware;
@@ -134,7 +134,7 @@ public class TransportSearchAction extends HandledTransportAction<SearchRequest,
      * to moving backwards due to NTP and other such complexities, etc.). There are also issues with
      * using a relative clock for reporting real time. Thus, we simply separate these two uses.
      */
-    static class SearchTimeProvider {
+    public static class SearchTimeProvider {
 
         private final long absoluteStartMillis;
         private final long relativeStartNanos;
@@ -151,7 +151,7 @@ public class TransportSearchAction extends HandledTransportAction<SearchRequest,
          * @param relativeStartNanos the relative start time in nanoseconds
          * @param relativeCurrentNanosProvider provides the current relative time
          */
-        SearchTimeProvider(
+        public SearchTimeProvider(
                 final long absoluteStartMillis,
                 final long relativeStartNanos,
                 final LongSupplier relativeCurrentNanosProvider) {
@@ -160,15 +160,15 @@ public class TransportSearchAction extends HandledTransportAction<SearchRequest,
             this.relativeCurrentNanosProvider = relativeCurrentNanosProvider;
         }
 
-        long getAbsoluteStartMillis() {
+        public long getAbsoluteStartMillis() {
             return absoluteStartMillis;
         }
 
-        long getRelativeStartNanos() {
+        public long getRelativeStartNanos() {
             return relativeStartNanos;
         }
 
-        long getRelativeCurrentNanos() {
+        public long getRelativeCurrentNanos() {
             return relativeCurrentNanosProvider.getAsLong();
         }
     }
@@ -217,7 +217,7 @@ public class TransportSearchAction extends HandledTransportAction<SearchRequest,
         }
     }
 
-    static SearchResponse.Clusters buildClusters(OriginalIndices localIndices, Map<String, OriginalIndices> remoteIndices,
+    public static SearchResponse.Clusters buildClusters(OriginalIndices localIndices, Map<String, OriginalIndices> remoteIndices,
                                                  Map<String, ClusterSearchShardsResponse> searchShardsResponses) {
         int localClusters = Math.min(localIndices.indices().length, 1);
         int totalClusters = remoteIndices.size() + localClusters;
@@ -231,10 +231,11 @@ public class TransportSearchAction extends HandledTransportAction<SearchRequest,
         return new SearchResponse.Clusters(totalClusters, successfulClusters, skippedClusters);
     }
 
-    static BiFunction<String, String, DiscoveryNode> processRemoteShards(Map<String, ClusterSearchShardsResponse> searchShardsResponses,
-                                                                      Map<String, OriginalIndices> remoteIndicesByCluster,
-                                                                      List<SearchShardIterator> remoteShardIterators,
-                                                                      Map<String, AliasFilter> aliasFilterMap) {
+    public static BiFunction<String, String, DiscoveryNode>
+        processRemoteShards(Map<String, ClusterSearchShardsResponse> searchShardsResponses,
+                            Map<String, OriginalIndices> remoteIndicesByCluster,
+                            List<SearchShardIterator> remoteShardIterators,
+                            Map<String, AliasFilter> aliasFilterMap) {
         Map<String, Map<String, DiscoveryNode>> clusterToNode = new HashMap<>();
         for (Map.Entry<String, ClusterSearchShardsResponse> entry : searchShardsResponses.entrySet()) {
             String clusterAlias = entry.getKey();
@@ -360,7 +361,7 @@ public class TransportSearchAction extends HandledTransportAction<SearchRequest,
                 searchRequest.getPreFilterShardSize() < shardIterators.size();
     }
 
-    static GroupShardsIterator<SearchShardIterator> mergeShardsIterators(GroupShardsIterator<ShardIterator> localShardsIterator,
+    public static GroupShardsIterator<SearchShardIterator> mergeShardsIterators(GroupShardsIterator<ShardIterator> localShardsIterator,
                                                              OriginalIndices localIndices,
                                                              List<SearchShardIterator> remoteShardIterators) {
         List<SearchShardIterator> shards = new ArrayList<>();

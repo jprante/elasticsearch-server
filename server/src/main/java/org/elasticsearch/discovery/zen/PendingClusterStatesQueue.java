@@ -50,14 +50,14 @@ import java.util.Objects;
  */
 public class PendingClusterStatesQueue {
 
-    interface StateProcessedListener {
+    public interface StateProcessedListener {
 
         void onNewClusterStateProcessed();
 
         void onNewClusterStateFailed(Exception e);
     }
 
-    final ArrayList<ClusterStateContext> pendingStates = new ArrayList<>();
+    public final ArrayList<ClusterStateContext> pendingStates = new ArrayList<>();
     final Logger logger;
     final int maxQueueSize;
 
@@ -191,7 +191,7 @@ public class PendingClusterStatesQueue {
 
     }
 
-    ClusterStateContext findState(String stateUUID) {
+    public ClusterStateContext findState(String stateUUID) {
         for (int i = 0; i < pendingStates.size(); i++) {
             final ClusterStateContext context = pendingStates.get(i);
             if (context.stateUUID().equals(stateUUID)) {
@@ -258,11 +258,11 @@ public class PendingClusterStatesQueue {
         return states.toArray(new ClusterState[states.size()]);
     }
 
-    static class ClusterStateContext {
-        final ClusterState state;
-        StateProcessedListener listener;
+    public static class ClusterStateContext {
+        public final ClusterState state;
+        public StateProcessedListener listener;
 
-        ClusterStateContext(ClusterState clusterState) {
+        public ClusterStateContext(ClusterState clusterState) {
             this.state = clusterState;
         }
 
@@ -273,7 +273,7 @@ public class PendingClusterStatesQueue {
             this.listener = listener;
         }
 
-        boolean committed() {
+        public boolean committed() {
             return listener != null;
         }
 

@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.collapse;
+package org.elasticsearch.test.search.collapse;
 
-import org.apache.lucene.analysis.MockAnalyzer;
+import org.apache.lucene.testframework.analysis.MockAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexReader;
@@ -35,12 +35,14 @@ import org.elasticsearch.index.mapper.KeywordFieldMapper;
 import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.NumberFieldMapper;
 import org.elasticsearch.index.query.InnerHitBuilder;
-import org.elasticsearch.index.query.InnerHitBuilderTests;
+import org.elasticsearch.test.index.query.InnerHitBuilderTests;
 import org.elasticsearch.index.query.QueryShardContext;
 import org.elasticsearch.search.SearchContextException;
 import org.elasticsearch.search.SearchModule;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.AbstractSerializingTestCase;
+import org.elasticsearch.search.collapse.CollapseBuilder;
+import org.elasticsearch.search.collapse.CollapseContext;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.AbstractSerializingTestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

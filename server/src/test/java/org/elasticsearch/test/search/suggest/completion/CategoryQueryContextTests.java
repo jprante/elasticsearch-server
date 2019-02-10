@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.suggest.completion;
+package org.elasticsearch.test.search.suggest.completion;
 
 import org.elasticsearch.common.xcontent.XContentParser;
 import org.elasticsearch.search.suggest.completion.context.CategoryQueryContext;

@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.script;
+package org.elasticsearch.test.script;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.script.ScriptContext;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class ScriptContextTests extends ESTestCase {
 

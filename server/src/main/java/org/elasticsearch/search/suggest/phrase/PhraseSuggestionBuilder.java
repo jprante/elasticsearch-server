@@ -314,7 +314,7 @@ public class PhraseSuggestionBuilder extends SuggestionBuilder<PhraseSuggestionB
     /**
      * get the candidate generators.
      */
-    Map<String, List<CandidateGenerator>> getCandidateGenerators() {
+    public Map<String, List<CandidateGenerator>> getCandidateGenerators() {
         return this.generators;
     }
 

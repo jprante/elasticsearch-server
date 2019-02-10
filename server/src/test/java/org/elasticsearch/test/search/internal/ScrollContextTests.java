@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.test.search.internal;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.search.ScrollContext;
+import org.elasticsearch.testframework.ESTestCase;
 
 public class ScrollContextTests extends ESTestCase {
 

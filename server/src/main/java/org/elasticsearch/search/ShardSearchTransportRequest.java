@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.search.internal;
+package org.elasticsearch.search;
 
 import org.elasticsearch.action.IndicesRequest;
 import org.elasticsearch.action.OriginalIndices;
@@ -30,9 +30,6 @@ import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.StreamOutput;
 import org.elasticsearch.index.query.Rewriteable;
 import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.search.AliasFilter;
-import org.elasticsearch.search.Scroll;
-import org.elasticsearch.search.ShardSearchRequest;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.tasks.Task;
 import org.elasticsearch.tasks.TaskId;
@@ -43,8 +40,9 @@ import java.util.Map;
 
 /**
  * Shard level search request that represents an actual search sent from the coordinating node to the nodes holding
- * the shards where the query needs to be executed. Holds the same info as {@link org.elasticsearch.search.internal.ShardSearchLocalRequest}
- * but gets sent over the transport and holds also the indices coming from the original request that generated it, plus its headers and context.
+ * the shards where the query needs to be executed. Holds the same info as {@link ShardSearchLocalRequest}
+ * but gets sent over the transport and holds also the indices coming from the original request that generated it,
+ * plus its headers and context.
  */
 public class ShardSearchTransportRequest extends TransportRequest implements ShardSearchRequest, IndicesRequest {
 

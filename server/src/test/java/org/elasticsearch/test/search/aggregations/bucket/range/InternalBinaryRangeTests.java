@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.aggregations.bucket.range;
+package org.elasticsearch.test.search.aggregations.bucket.range;
 
 import org.apache.lucene.util.BytesRef;
 import org.elasticsearch.common.collect.Tuple;
@@ -25,6 +25,9 @@ import org.elasticsearch.search.DocValueFormat;
 import org.elasticsearch.search.aggregations.InternalAggregations;
 import org.elasticsearch.search.aggregations.InternalMultiBucketAggregation;
 import org.elasticsearch.search.aggregations.ParsedMultiBucketAggregation;
+import org.elasticsearch.search.aggregations.bucket.range.InternalBinaryRange;
+import org.elasticsearch.search.aggregations.bucket.range.ParsedBinaryRange;
+import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;
 
 import java.util.ArrayList;

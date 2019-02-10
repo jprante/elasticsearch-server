@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.index.shard;
+package org.elasticsearch.test.index.shard;
 
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.TestSearchContext;
+import org.elasticsearch.index.shard.SearchOperationListener;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.TestSearchContext;
 import org.elasticsearch.transport.TransportRequest;
 import org.elasticsearch.transport.TransportRequest.Empty;
 

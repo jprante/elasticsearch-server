@@ -187,7 +187,7 @@ public class TermSuggestion extends Suggestion<TermSuggestion.Entry> {
             }
 
             @Override
-            protected void mergeInto(Suggestion.Entry.Option otherOption) {
+            public void mergeInto(Suggestion.Entry.Option otherOption) {
                 super.mergeInto(otherOption);
                 freq += ((Option) otherOption).freq;
             }

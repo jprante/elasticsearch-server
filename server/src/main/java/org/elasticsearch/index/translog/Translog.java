@@ -108,14 +108,14 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
     public static final String CHECKPOINT_SUFFIX = ".ckp";
     public static final String CHECKPOINT_FILE_NAME = "translog" + CHECKPOINT_SUFFIX;
 
-    static final Pattern PARSE_STRICT_ID_PATTERN = Pattern.compile("^" + TRANSLOG_FILE_PREFIX + "(\\d+)(\\.tlog)$");
+    public static final Pattern PARSE_STRICT_ID_PATTERN = Pattern.compile("^" + TRANSLOG_FILE_PREFIX + "(\\d+)(\\.tlog)$");
     public static final int DEFAULT_HEADER_SIZE_IN_BYTES = TranslogHeader.headerSizeInBytes(UUIDs.randomBase64UUID());
 
     // the list of translog readers is guaranteed to be in order of translog generation
     private final List<TranslogReader> readers = new ArrayList<>();
     private BigArrays bigArrays;
     protected final ReleasableLock readLock;
-    protected final ReleasableLock writeLock;
+    public final ReleasableLock writeLock;
     private final Path location;
     private TranslogWriter current;
 
@@ -277,7 +277,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
         return foundTranslogs;
     }
 
-    TranslogReader openReader(Path path, Checkpoint checkpoint) throws IOException {
+    public TranslogReader openReader(Path path, Checkpoint checkpoint) throws IOException {
         FileChannel channel = FileChannel.open(path, StandardOpenOption.READ);
         try {
             assert Translog.parseIdFromFileName(path) == checkpoint.generation : "expected generation: " + Translog.parseIdFromFileName(path) + " but got: " + checkpoint.generation;
@@ -374,7 +374,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
         return sizeInBytesByMinGen(-1);
     }
 
-    long earliestLastModifiedAge() {
+    public long earliestLastModifiedAge() {
         try (ReleasableLock ignored = readLock.acquire()) {
             ensureOpen();
             return findEarliestLastModifiedAge(System.currentTimeMillis(), readers, current);
@@ -386,7 +386,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
     /**
      * Returns the age of the oldest entry in the translog files in seconds
      */
-    static long findEarliestLastModifiedAge(long currentTime, Iterable<TranslogReader> readers, TranslogWriter writer) throws IOException {
+    public static long findEarliestLastModifiedAge(long currentTime, Iterable<TranslogReader> readers, TranslogWriter writer) throws IOException {
         long earliestTime = currentTime;
         for (BaseTranslogReader r : readers) {
             earliestTime = Math.min(r.getLastModifiedTime(), earliestTime);
@@ -437,7 +437,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
      * @return a writer for the new translog
      * @throws IOException if creating the translog failed
      */
-    TranslogWriter createWriter(long fileGeneration) throws IOException {
+    public TranslogWriter createWriter(long fileGeneration) throws IOException {
         final TranslogWriter writer = createWriter(fileGeneration, getMinFileGeneration(), globalCheckpointSupplier.getAsLong());
         assert writer.sizeInBytes() == DEFAULT_HEADER_SIZE_IN_BYTES : "Mismatch translog header size; " +
             "empty translog size [" + writer.sizeInBytes() + ", header size [" + DEFAULT_HEADER_SIZE_IN_BYTES + "]";
@@ -453,7 +453,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
      *                                With no readers and no current, a call to  {@link #getMinFileGeneration()} would not work.
      * @param initialGlobalCheckpoint the global checkpoint to be written in the first checkpoint.
      */
-    TranslogWriter createWriter(long fileGeneration, long initialMinTranslogGen, long initialGlobalCheckpoint) throws IOException {
+    public TranslogWriter createWriter(long fileGeneration, long initialMinTranslogGen, long initialGlobalCheckpoint) throws IOException {
         final TranslogWriter newFile;
         try {
             newFile = TranslogWriter.create(
@@ -494,7 +494,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
                 ensureOpen();
                 if (operation.primaryTerm() > current.getPrimaryTerm()) {
                     throw new IllegalArgumentException("Operation term is newer than the current term;"
-                        + "current term[" + current.getPrimaryTerm() + "], operation term[" + operation + "]");
+                        + "current=" + current + ", operation=" + operation);
                 }
                 return current.add(bytes, operation.seqNo());
             }
@@ -694,7 +694,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
         return TRANSLOG_FILE_PREFIX + generation + TRANSLOG_FILE_SUFFIX;
     }
 
-    static String getCommitCheckpointFileName(long generation) {
+    public static String getCommitCheckpointFileName(long generation) {
         return TRANSLOG_FILE_PREFIX + generation + CHECKPOINT_SUFFIX;
     }
 
@@ -1618,12 +1618,12 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
     /**
      * deletes all files associated with a reader. package-private to be able to simulate node failures at this point
      */
-    void deleteReaderFiles(TranslogReader reader) {
+    public void deleteReaderFiles(TranslogReader reader) {
         IOUtils.deleteFilesIgnoringExceptions(reader.path(),
             reader.path().resolveSibling(getCommitCheckpointFileName(reader.getGeneration())));
     }
 
-    void closeFilesIfNoPendingRetentionLocks() throws IOException {
+    public void closeFilesIfNoPendingRetentionLocks() throws IOException {
         try (ReleasableLock ignored = writeLock.acquire()) {
             if (closed.get() && deletionPolicy.pendingTranslogRefCount() == 0) {
                 logger.trace("closing files. translog is closed and there are no pending retention locks");
@@ -1672,7 +1672,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
         return false;
     }
 
-    long getFirstOperationPosition() { // for testing
+    public long getFirstOperationPosition() { // for testing
         return current.getFirstOperationOffset();
     }
 
@@ -1682,7 +1682,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
         }
     }
 
-    ChannelFactory getChannelFactory() {
+    public ChannelFactory getChannelFactory() {
         return FileChannel::open;
     }
 
@@ -1696,7 +1696,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
     }
 
     /** Reads and returns the current checkpoint */
-    static Checkpoint readCheckpoint(final Path location) throws IOException {
+    public static Checkpoint readCheckpoint(final Path location) throws IOException {
         return Checkpoint.read(location.resolve(CHECKPOINT_FILE_NAME));
     }
 
@@ -1750,11 +1750,11 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
     }
 
 
-    TranslogWriter getCurrent() {
+    public TranslogWriter getCurrent() {
         return current;
     }
 
-    List<TranslogReader> getReaders() {
+    public List<TranslogReader> getReaders() {
         return readers;
     }
 
@@ -1764,7 +1764,7 @@ public class Translog extends AbstractIndexShardComponent implements IndexShardC
         return createEmptyTranslog(location, initialGlobalCheckpoint, shardId, channelFactory, primaryTerm);
     }
 
-    static String createEmptyTranslog(Path location, long initialGlobalCheckpoint, ShardId shardId,
+    public static String createEmptyTranslog(Path location, long initialGlobalCheckpoint, ShardId shardId,
                                       ChannelFactory channelFactory, long primaryTerm) throws IOException {
         IOUtils.rm(location);
         Files.createDirectories(location);

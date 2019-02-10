@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.client.node;
+package org.elasticsearch.test.client.node;
 
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.ActionRequest;
@@ -25,7 +25,8 @@ import org.elasticsearch.action.GenericAction;
 import org.elasticsearch.action.support.ActionFilter;
 import org.elasticsearch.action.support.ActionFilters;
 import org.elasticsearch.action.support.TransportAction;
-import org.elasticsearch.client.AbstractClientHeadersTestCase;
+import org.elasticsearch.client.node.NodeClient;
+import org.elasticsearch.test.client.AbstractClientHeadersTestCase;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.tasks.TaskManager;

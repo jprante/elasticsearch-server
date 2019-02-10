@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.search.aggregations.bucket.composite;
+package org.elasticsearch.test.search.aggregations.bucket.composite;
 
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.document.Document;
@@ -30,7 +30,7 @@ import org.apache.lucene.index.DocValues;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.LeafReaderContext;
-import org.apache.lucene.index.RandomIndexWriter;
+import org.apache.lucene.testframework.index.RandomIndexWriter;
 import org.apache.lucene.search.DocIdSet;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.store.Directory;
@@ -43,8 +43,16 @@ import org.elasticsearch.index.mapper.KeywordFieldMapper;
 import org.elasticsearch.index.mapper.MappedFieldType;
 import org.elasticsearch.index.mapper.NumberFieldMapper;
 import org.elasticsearch.search.DocValueFormat;
-import org.elasticsearch.search.aggregations.AggregatorTestCase;
+import org.elasticsearch.testframework.search.aggregations.AggregatorTestCase;
 import org.elasticsearch.search.aggregations.LeafBucketCollector;
+import org.elasticsearch.search.aggregations.bucket.composite.BinaryValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeKey;
+import org.elasticsearch.search.aggregations.bucket.composite.CompositeValuesCollectorQueue;
+import org.elasticsearch.search.aggregations.bucket.composite.DoubleValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.GlobalOrdinalValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.LongValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.SingleDimensionValuesSource;
+import org.elasticsearch.search.aggregations.bucket.composite.SortedDocsProducer;
 
 import java.io.IOException;
 import java.util.ArrayList;

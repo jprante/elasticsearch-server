@@ -17,12 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.percentiles.hdr;
+package org.elasticsearch.test.search.aggregations.metrics.percentiles.hdr;
 
 import org.HdrHistogram.DoubleHistogram;
 import org.elasticsearch.common.io.stream.Writeable;
 import org.elasticsearch.search.DocValueFormat;
-import org.elasticsearch.search.aggregations.metrics.percentiles.InternalPercentilesTestCase;
+import org.elasticsearch.search.aggregations.metrics.percentiles.hdr.InternalHDRPercentiles;
+import org.elasticsearch.search.aggregations.metrics.percentiles.hdr.ParsedHDRPercentiles;
+import org.elasticsearch.test.search.aggregations.metrics.percentiles.InternalPercentilesTestCase;
 import org.elasticsearch.search.aggregations.metrics.percentiles.ParsedPercentiles;
 import org.elasticsearch.search.aggregations.metrics.percentiles.Percentile;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregator;

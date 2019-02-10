@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.hashing;
+package org.elasticsearch.test.common.hashing;
 
 import org.elasticsearch.common.hash.MurmurHash3;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;

@@ -17,9 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.search.aggregations.metrics.cardinality;
+package org.elasticsearch.test.search.aggregations.metrics.cardinality;
 
-import org.elasticsearch.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.testframework.search.aggregations.BaseAggregationTestCase;
+import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 
 public class CardinalityTests extends BaseAggregationTestCase<CardinalityAggregationBuilder> {
 

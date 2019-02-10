@@ -66,7 +66,7 @@ public final class ResponseCollectorService extends AbstractComponent implements
         }
     }
 
-    void removeNode(String nodeId) {
+    public void removeNode(String nodeId) {
         nodeIdToStats.remove(nodeId);
     }
 

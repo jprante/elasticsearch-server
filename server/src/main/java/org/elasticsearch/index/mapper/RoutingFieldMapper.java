@@ -107,9 +107,9 @@ public class RoutingFieldMapper extends MetadataFieldMapper {
         }
     }
 
-    static final class RoutingFieldType extends TermBasedFieldType {
+    public static final class RoutingFieldType extends TermBasedFieldType {
 
-        RoutingFieldType() {
+        public RoutingFieldType() {
         }
 
         protected RoutingFieldType(RoutingFieldType ref) {

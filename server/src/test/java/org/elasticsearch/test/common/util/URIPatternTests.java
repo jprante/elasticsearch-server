@@ -16,9 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.common.util;
+package org.elasticsearch.test.common.util;
 
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.common.util.URIPattern;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.net.URI;
 

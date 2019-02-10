@@ -35,10 +35,10 @@ import java.io.IOException;
  * definition. It can be used to control which documents should be collected to produce the top composite buckets
  * without visiting all documents in an index.
  */
-abstract class SortedDocsProducer {
+public abstract class SortedDocsProducer {
     protected final String field;
 
-    SortedDocsProducer(String field) {
+    public SortedDocsProducer(String field) {
         this.field = field;
     }
 
@@ -103,6 +103,6 @@ abstract class SortedDocsProducer {
      * Returns the {@link DocIdSet} of the documents that contain a top composite bucket in this leaf or
      * {@link DocIdSet#EMPTY} if <code>fillDocIdSet</code> is false.
      */
-    abstract DocIdSet processLeaf(Query query, CompositeValuesCollectorQueue queue,
+    public abstract DocIdSet processLeaf(Query query, CompositeValuesCollectorQueue queue,
                                   LeafReaderContext context, boolean fillDocIdSet) throws IOException;
 }

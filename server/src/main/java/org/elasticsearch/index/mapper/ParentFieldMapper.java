@@ -151,11 +151,11 @@ public class ParentFieldMapper extends MetadataFieldMapper {
         return parentJoinField.build(context);
     }
 
-    static final class ParentFieldType extends MappedFieldType {
+    public static final class ParentFieldType extends MappedFieldType {
 
         final String documentType;
 
-        ParentFieldType() {
+        public ParentFieldType() {
             documentType = null;
             setEagerGlobalOrdinals(true);
         }

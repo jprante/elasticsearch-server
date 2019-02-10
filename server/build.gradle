@@ -1,5 +1,14 @@
-plugins {
-    id "com.palantir.docker" version "0.20.1"
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url 'http://xbib.org/repository'
+        }
+    }
+    dependencies {
+        classpath "org.xbib.gradle.plugin:gradle-plugin-docker:1.0.1"
+        classpath "org.xbib.gradle.plugin:gradle-plugin-git:1.0.0"
+    }
 }
 
 import java.time.ZoneOffset
@@ -7,9 +16,10 @@ import java.time.ZonedDateTime
 
 apply plugin: 'org.xbib.gradle.plugin.elasticsearch.build'
 apply plugin: 'org.xbib.gradle.plugin.rpm'
+apply plugin: 'org.xbib.gradle.plugin.docker'
+apply plugin: 'org.xbib.gradle.plugin.git'
 
 ext {
-    moduleName = 'org.xbib.elasticsearch.server'
     subst = [
             'timestamp': new Date().format('yyyyMMddHHmmss'),
             'profile': "${project.profile}"
@@ -24,35 +34,38 @@ configurations {
 }
 
 dependencies {
-    compile project(':elasticsearch-classloader')
-    compile project(':elasticsearch-hdrhistogram')
-    compile project(':elasticsearch-hppc')
-    compile project(':elasticsearch-jna')
-    compile project(':elasticsearch-joda')
-    compile project(':elasticsearch-joptsimple')
-    compile project(':elasticsearch-log4j')
-    compile project(':elasticsearch-lucene')
-    compile project(':elasticsearch-securesm')
-    compile project(':elasticsearch-tdigest')
-    compile project(':elasticsearch-snakeyaml')
 
-    testCompile "org.xbib.elasticsearch:elasticsearch-test-framework:${property('xbib-elasticsearch-test.version')}"
-    testCompile "com.google.jimfs:jimfs:${property('jimfs.version')}"
-    testCompile "com.google.guava:guava:${property('guava.version')}"
+    compile  "org.xbib.elasticsearch:classloader:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:hdrhistogram:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:hppc:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:jna:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:joda:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:joptsimple:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:log4j:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:lucene:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:securesm:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:snakeyaml:${property('elasticsearch-libs.version')}"
+    compile  "org.xbib.elasticsearch:tdigest:${property('elasticsearch-libs.version')}"
+    
+    testCompile "org.xbib.elasticsearch:elasticsearch-test-framework:${property('elasticsearch-devkit.version')}"
+    testCompile "org.xbib.elasticsearch:guava:${property('elasticsearch-libs.version')}"
+    testCompile("com.google.jimfs:jimfs:${property('jimfs.version')}") {
+        exclude module: 'guava'
+    }
 
-    esLibDist project(':elasticsearch-classloader')
-    esLibDist project(':elasticsearch-hdrhistogram')
-    esLibDist project(':elasticsearch-hppc')
-    esLibDist project(':elasticsearch-jna')
-    esLibDist project(':elasticsearch-joda')
-    esLibDist project(':elasticsearch-joptsimple')
-    esLibDist project(':elasticsearch-log4j')
-    esLibDist project(':elasticsearch-lucene')
-    esLibDist project(':elasticsearch-securesm')
-    esLibDist project(':elasticsearch-tdigest')
-    esLibDist project(':elasticsearch-snakeyaml')
+    esLibDist  "org.xbib.elasticsearch:classloader:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:hdrhistogram:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:hppc:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:jna:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:joda:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:joptsimple:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:log4j:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:lucene:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:securesm:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:snakeyaml:${property('elasticsearch-libs.version')}"
+    esLibDist  "org.xbib.elasticsearch:tdigest:${property('elasticsearch-libs.version')}"
 
-    esPatchDist(project(path: ':elasticsearch-litebeans', configuration: 'shadow')) {
+    esPatchDist("org.xbib.elasticsearch:litebeans:${property('elasticsearch-libs.version')}:patch") {
         transitive = false
     }
 
@@ -79,7 +92,7 @@ dependencies {
 
 afterEvaluate {
     compileJava {
-        inputs.property("moduleName", moduleName)
+        inputs.property("moduleName", 'org.xbib.elasticsearch.server')
         doFirst {
             options.compilerArgs = [
                     '--module-path', classpath.asPath
@@ -88,36 +101,33 @@ afterEvaluate {
         }
     }
     compileTestJava {
-        inputs.property("moduleName", moduleName)
+        inputs.property("moduleName", 'org.xbib.elasticsearch.server.test')
         doFirst {
             options.compilerArgs = [
                     "-Xlint:-cast,-deprecation,-rawtypes,-try,-unchecked",
                     "-proc:none",
-                    //'--module-path', classpath.asPath,
-                    //'--add-modules', 'junit',
-                    //'--add-reads', "$moduleName=junit",
-                    //'--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath
+                    '--module-path', classpath.asPath
             ]
-            //classpath = files()
+            classpath = files()
         }
     }
     javadoc {
         enabled = true
-        inputs.property("moduleName", moduleName)
+        inputs.property("moduleName", 'org.xbib.elasticsearch.server')
         doFirst {
             options.addStringOption('-module-path', classpath.asPath)
             classpath = files()
         }
     }
     jar {
-        inputs.property("moduleName", moduleName)
+        inputs.property("moduleName", 'org.xbib.elasticsearch.server')
         manifest {
             attributes(
                     'Implementation-Title': "${project.group}#${project.name};${project.version}",
                     'Implementation-Version': version,
                     'Implementation-Vendor': "${user}",
-                    'Change': grgit.head().abbreviatedId,
-                    'Branch': grgit.head().id,
+                    'Change': git.head().abbreviatedId,
+                    'Branch': git.head().id,
                     'Build-Date': ZonedDateTime.now(ZoneOffset.UTC),
                     'Build-Java-Version': System.getProperty("java.version"),
                     'X-Compile-Source-JDK': compileJava.targetCompatibility,
@@ -138,15 +148,18 @@ task injectGradleProperties(type: Copy) {
 }
 processResources.finalizedBy injectGradleProperties
 
+checkstyleTest.enabled = false
+
+// do not run junit tests
 test {
     enabled = false
-    inputs.property("moduleName", moduleName)
+    inputs.property("moduleName", 'org.xbib.elasticsearch.server')
     doFirst {
         jvmArgs = [
                 '--module-path', classpath.asPath,
                 '--add-modules', 'ALL-MODULE-PATH',
-                '--add-reads', "$moduleName=junit",
-                '--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+                //'--add-reads', "$moduleName=junit",
+                //'--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
         ]
         classpath = files()
     }
@@ -158,7 +171,24 @@ test {
 // do not run randomized tests
 randomizedTest.enabled = false
 // run Elasticsearch test suite
-esTest.enabled = false
+esTest {
+    enabled = true
+    systemProperty 'tests.security.manager', 'true'
+    systemProperty 'tests.security.policy', '/org/elasticsearch/test/security.policy'
+    systemProperty 'tests.logger.level', 'ALL'
+    //systemProperty 'java.security.debug', 'failure'
+
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.server'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.testframework'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.log4j'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.joda'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.hppc'
+    jvmArg '--add-reads=org.xbib.elasticsearch.randomizedtesting=org.xbib.elasticsearch.server'
+    jvmArg '--add-reads=org.xbib.elasticsearch.randomizedtesting=org.xbib.elasticsearch.server.test'
+    jvmArg '--add-reads=org.xbib.elasticsearch.server.test=org.xbib.elasticsearch.randomizedtesting'
+    jvmArg '--add-reads=org.xbib.elasticsearch.server=org.xbib.elasticsearch.server.test'
+}
 
 task generateModulesList {
     File modulesFile = new File(buildDir, 'generated-resources/modules.txt')
@@ -200,101 +230,10 @@ forbiddenPatterns {
     exclude '**/*.jmx'
 }
 
-thirdPartyAudit.excludes = [
-        // classes are missing!
-
-        // from jackson
-        'javax.activation.DataHandler',
-        'javax.activation.DataSource',
-        'javax.xml.bind.JAXBElement',
-        'javax.xml.bind.annotation.XmlAccessOrder',
-        'javax.xml.bind.annotation.XmlAccessType',
-        'javax.xml.bind.annotation.XmlAccessorOrder',
-        'javax.xml.bind.annotation.XmlAccessorType',
-        'javax.xml.bind.annotation.XmlAttribute',
-        'javax.xml.bind.annotation.XmlElement$DEFAULT',
-        'javax.xml.bind.annotation.XmlElement',
-        'javax.xml.bind.annotation.XmlElementRef',
-        'javax.xml.bind.annotation.XmlElementRefs',
-        'javax.xml.bind.annotation.XmlElementWrapper',
-        'javax.xml.bind.annotation.XmlElements',
-        'javax.xml.bind.annotation.XmlEnum',
-        'javax.xml.bind.annotation.XmlEnumValue',
-        'javax.xml.bind.annotation.XmlID',
-        'javax.xml.bind.annotation.XmlIDREF',
-        'javax.xml.bind.annotation.XmlRootElement',
-        'javax.xml.bind.annotation.XmlSeeAlso',
-        'javax.xml.bind.annotation.XmlTransient',
-        'javax.xml.bind.annotation.XmlType',
-        'javax.xml.bind.annotation.XmlValue',
-        'javax.xml.bind.annotation.adapters.XmlAdapter',
-        'javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter$DEFAULT',
-        'javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter',
-        'javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters',
-        'org.codehaus.stax2.LocationInfo',
-        'org.codehaus.stax2.XMLStreamLocation2',
-        'org.codehaus.stax2.XMLStreamReader2',
-        'org.codehaus.stax2.XMLStreamWriter2',
-        'org.codehaus.stax2.io.Stax2ByteArraySource',
-        'org.codehaus.stax2.io.Stax2CharArraySource',
-        'org.codehaus.stax2.ri.Stax2ReaderAdapter',
-        'org.codehaus.stax2.ri.Stax2WriterAdapter',
-
-        // from log4j
-        'org.fusesource.jansi.Ansi',
-        'org.fusesource.jansi.AnsiRenderer$Code',
-        'com.lmax.disruptor.BlockingWaitStrategy',
-        'com.lmax.disruptor.BusySpinWaitStrategy',
-        'com.lmax.disruptor.EventFactory',
-        'com.lmax.disruptor.EventTranslator',
-        'com.lmax.disruptor.EventTranslatorTwoArg',
-        'com.lmax.disruptor.EventTranslatorVararg',
-        'com.lmax.disruptor.ExceptionHandler',
-        'com.lmax.disruptor.LifecycleAware',
-        'com.lmax.disruptor.RingBuffer',
-        'com.lmax.disruptor.Sequence',
-        'com.lmax.disruptor.SequenceReportingEventHandler',
-        'com.lmax.disruptor.SleepingWaitStrategy',
-        'com.lmax.disruptor.TimeoutBlockingWaitStrategy',
-        'com.lmax.disruptor.WaitStrategy',
-        'com.lmax.disruptor.YieldingWaitStrategy',
-        'com.lmax.disruptor.dsl.Disruptor',
-        'com.lmax.disruptor.dsl.ProducerType',
-        'javax.jms.Connection',
-        'javax.jms.ConnectionFactory',
-        'javax.jms.Destination',
-        'javax.jms.JMSException',
-        'javax.jms.MapMessage',
-        'javax.jms.Message',
-        'javax.jms.MessageConsumer',
-        'javax.jms.MessageProducer',
-        'javax.jms.Session',
-        'org.apache.commons.compress.compressors.CompressorStreamFactory',
-        'org.apache.commons.compress.utils.IOUtils',
-        'org.apache.commons.csv.CSVFormat',
-        'org.apache.commons.csv.QuoteMode',
-        'org.jctools.queues.MessagePassingQueue$Consumer',
-        'org.jctools.queues.MpscArrayQueue',
-        'org.osgi.framework.AdaptPermission',
-        'org.osgi.framework.AdminPermission',
-        'org.osgi.framework.Bundle',
-        'org.osgi.framework.BundleActivator',
-        'org.osgi.framework.BundleContext',
-        'org.osgi.framework.BundleEvent',
-        'org.osgi.framework.BundleReference',
-        'org.osgi.framework.FrameworkUtil',
-        'org.osgi.framework.ServiceRegistration',
-        'org.osgi.framework.SynchronousBundleListener',
-        'org.osgi.framework.wiring.BundleWire',
-        'org.osgi.framework.wiring.BundleWiring',
-        'org.zeromq.ZMQ$Context',
-        'org.zeromq.ZMQ$Socket',
-        'org.zeromq.ZMQ'
-]
-
 dependencyLicenses.enabled = false
 
-// jarHell checks runtimeClasspath, but why is there log4j? must be overlay problem with older elasticsearch
+// jarHell checks test runtimeClasspath, but why is there log4j?
+// elasticsearch-test-framework?
 /*
 > Task :server:jarHell FAILED
 checking for jar hell...
@@ -326,7 +265,7 @@ def rhelDistCopySpec = copySpec {
             from configurations.esLibDist
         }
         into('lib') {
-            from distsDir
+            from file("${project.buildDir}/${project.libsDirName}") // distsDir
             include "elasticsearch-${version}.jar"
             rename { String filename -> "elasticsearch-${project.property('elasticsearch.version')}.jar" }
         }
@@ -361,7 +300,6 @@ task rhel7Copy(type: Copy) {
         }
         into("tar/java-${compileJava.targetCompatibility}/${project.profile}/conf") {
             from "src/dist/rhel7-x86_64/tar/java-${compileJava.targetCompatibility}/${project.profile}/conf"
-            expand(subst)
         }
         into("zip/java-${compileJava.targetCompatibility}/${project.profile}/bin") {
             from "src/dist/rhel7-x86_64/zip/java-${compileJava.targetCompatibility}/${project.profile}/bin"
@@ -369,7 +307,6 @@ task rhel7Copy(type: Copy) {
         }
         into("zip/java-${compileJava.targetCompatibility}/${project.profile}/conf") {
             from "src/dist/rhel7-x86_64/zip/java-${compileJava.targetCompatibility}/${project.profile}/conf"
-            expand(subst)
         }
         into("rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin") {
             from "src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/bin"
@@ -377,7 +314,6 @@ task rhel7Copy(type: Copy) {
         }
         into("rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf") {
             from "src/dist/rhel7-x86_64/rpm/java-${compileJava.targetCompatibility}/${project.profile}/conf"
-            expand(subst)
         }
     }
 }
@@ -435,7 +371,7 @@ task rhel7DistRpm(type: Rpm) {
                 from configurations.esLibDist
             }
             into('lib') {
-                from distsDir
+                from file("${project.buildDir}/${project.libsDirName}") // distsDir
                 include "elasticsearch-${version}.jar"
                 rename { String filename -> "elasticsearch-${project.property('elasticsearch.version')}.jar" }
             }

@@ -39,7 +39,7 @@ import java.util.function.Function;
  * operation.
  * @see CountedCollector#onFailure(int, SearchShardTarget, Exception)
  */
-final class DfsQueryPhase extends SearchPhase {
+public final class DfsQueryPhase extends SearchPhase {
     private final InitialSearchPhase.ArraySearchPhaseResults<SearchPhaseResult> queryResult;
     private final SearchPhaseController searchPhaseController;
     private final AtomicArray<DfsSearchResult> dfsSearchResults;
@@ -47,7 +47,7 @@ final class DfsQueryPhase extends SearchPhase {
     private final SearchPhaseContext context;
     private final SearchTransportService searchTransportService;
 
-    DfsQueryPhase(AtomicArray<DfsSearchResult> dfsSearchResults,
+    public DfsQueryPhase(AtomicArray<DfsSearchResult> dfsSearchResults,
                   SearchPhaseController searchPhaseController,
                   Function<InitialSearchPhase.ArraySearchPhaseResults<SearchPhaseResult>, SearchPhase> nextPhaseFactory,
                   SearchPhaseContext context) {

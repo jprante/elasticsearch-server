@@ -41,15 +41,15 @@ public final class LinearInterpolatingScorer extends WordScorer {
         this.trigramLambda = trigramLambda / sum;
     }
 
-    double trigramLambda() {
+    public double trigramLambda() {
         return this.trigramLambda;
     }
 
-    double bigramLambda() {
+    public double bigramLambda() {
         return this.bigramLambda;
     }
 
-    double unigramLambda() {
+    public double unigramLambda() {
         return this.unigramLambda;
     }
 

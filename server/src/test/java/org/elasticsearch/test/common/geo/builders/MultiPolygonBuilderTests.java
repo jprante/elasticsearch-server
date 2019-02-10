@@ -17,8 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.common.geo.builders;
+package org.elasticsearch.test.common.geo.builders;
 
+import org.elasticsearch.common.geo.builders.MultiPolygonBuilder;
+import org.elasticsearch.common.geo.builders.PolygonBuilder;
 import org.elasticsearch.common.geo.builders.ShapeBuilder.Orientation;
 import org.elasticsearch.test.geo.RandomShapeGenerator;
 import org.elasticsearch.test.geo.RandomShapeGenerator.ShapeType;

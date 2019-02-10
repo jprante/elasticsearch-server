@@ -38,7 +38,7 @@ public class BoundTransportAddress implements Streamable {
 
     private TransportAddress publishAddress;
 
-    BoundTransportAddress() {
+    public BoundTransportAddress() {
     }
 
     public BoundTransportAddress(TransportAddress[] boundAddresses, TransportAddress publishAddress) {

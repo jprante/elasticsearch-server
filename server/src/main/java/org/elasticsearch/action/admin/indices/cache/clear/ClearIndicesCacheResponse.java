@@ -47,7 +47,7 @@ public class ClearIndicesCacheResponse extends BroadcastResponse {
 
     }
 
-    ClearIndicesCacheResponse(int totalShards, int successfulShards, int failedShards,
+    public ClearIndicesCacheResponse(int totalShards, int successfulShards, int failedShards,
                               List<DefaultShardOperationFailedException> shardFailures) {
         super(totalShards, successfulShards, failedShards, shardFailures);
     }

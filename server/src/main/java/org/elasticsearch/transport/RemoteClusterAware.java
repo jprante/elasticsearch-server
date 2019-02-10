@@ -65,7 +65,7 @@ public abstract class RemoteClusterAware extends AbstractComponent {
         this.clusterNameResolver = new ClusterNameExpressionResolver(settings);
     }
 
-    protected static Map<String, List<DiscoveryNode>> buildRemoteClustersSeeds(Settings settings) {
+    public static Map<String, List<DiscoveryNode>> buildRemoteClustersSeeds(Settings settings) {
         Stream<Setting<List<InetSocketAddress>>> allConcreteSettings = REMOTE_CLUSTERS_SEEDS.getAllConcreteSettings(settings);
         return allConcreteSettings.collect(
             Collectors.toMap(REMOTE_CLUSTERS_SEEDS::getNamespace, concreteSetting -> {

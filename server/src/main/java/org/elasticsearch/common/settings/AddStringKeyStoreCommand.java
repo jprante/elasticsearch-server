@@ -36,13 +36,13 @@ import org.elasticsearch.env.Environment;
 /**
  * A subcommand for the keystore cli which adds a string setting.
  */
-class AddStringKeyStoreCommand extends EnvironmentAwareCommand {
+public class AddStringKeyStoreCommand extends EnvironmentAwareCommand {
 
     private final OptionSpec<Void> stdinOption;
     private final OptionSpec<Void> forceOption;
     private final OptionSpec<String> arguments;
 
-    AddStringKeyStoreCommand() {
+    public AddStringKeyStoreCommand() {
         super("Add a string setting to the keystore");
         this.stdinOption = parser.acceptsAll(Arrays.asList("x", "stdin"), "Read setting value from stdin");
         this.forceOption = parser.acceptsAll(Arrays.asList("f", "force"), "Overwrite existing setting without prompting");
@@ -50,7 +50,7 @@ class AddStringKeyStoreCommand extends EnvironmentAwareCommand {
     }
 
     // pkg private so tests can manipulate
-    InputStream getStdin() {
+    public InputStream getStdin() {
         return System.in;
     }
 

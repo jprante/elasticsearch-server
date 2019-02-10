@@ -17,8 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.index.query;
+package org.elasticsearch.test.index.query;
 
+import org.elasticsearch.index.query.GeoPolygonQueryBuilder;
+import org.elasticsearch.index.query.GeoValidationMethod;
+import org.elasticsearch.index.query.QueryShardContext;
+import org.elasticsearch.index.query.QueryShardException;
 import org.locationtech.jts.geom.Coordinate;
 import org.apache.lucene.search.MatchNoDocsQuery;
 import org.apache.lucene.search.Query;
@@ -27,8 +31,8 @@ import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.geo.builders.ShapeBuilder;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.search.internal.SearchContext;
-import org.elasticsearch.test.AbstractQueryTestCase;
+import org.elasticsearch.search.SearchContext;
+import org.elasticsearch.testframework.AbstractQueryTestCase;
 import org.elasticsearch.test.geo.RandomShapeGenerator;
 import org.elasticsearch.test.geo.RandomShapeGenerator.ShapeType;
 import org.locationtech.spatial4j.shape.jts.JtsGeometry;
@@ -38,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.elasticsearch.test.StreamsUtils.copyToStringFromClasspath;
+import static org.elasticsearch.testframework.StreamsUtils.copyToStringFromClasspath;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -126,14 +130,14 @@ public class GeoPolygonQueryBuilderTests extends AbstractQueryTestCase<GeoPolygo
 
     public void testParsingAndToQueryParsingExceptions() throws IOException {
         String[] brokenFiles = new String[]{
-                "/org/elasticsearch/index/query/geo_polygon_exception_1.json",
-                "/org/elasticsearch/index/query/geo_polygon_exception_2.json",
-                "/org/elasticsearch/index/query/geo_polygon_exception_3.json",
-                "/org/elasticsearch/index/query/geo_polygon_exception_4.json",
-                "/org/elasticsearch/index/query/geo_polygon_exception_5.json"
+                "/org/elasticsearch/test/index/query/geo_polygon_exception_1.json",
+                "/org/elasticsearch/test/index/query/geo_polygon_exception_2.json",
+                "/org/elasticsearch/test/index/query/geo_polygon_exception_3.json",
+                "/org/elasticsearch/test/index/query/geo_polygon_exception_4.json",
+                "/org/elasticsearch/test/index/query/geo_polygon_exception_5.json"
         };
         for (String brokenFile : brokenFiles) {
-            String query = copyToStringFromClasspath(brokenFile);
+            String query = copyToStringFromClasspath(GeoPolygonQueryBuilderTests.class, brokenFile);
             expectThrows(ParsingException.class, () -> parseQuery(query));
         }
     }

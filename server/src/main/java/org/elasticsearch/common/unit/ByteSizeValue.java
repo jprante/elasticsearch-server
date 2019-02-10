@@ -79,13 +79,11 @@ public class ByteSizeValue implements Writeable, Comparable<ByteSizeValue>, ToXC
         this.unit = unit;
     }
 
-    // For testing
-    long getSize() {
+    public long getSize() {
         return size;
     }
 
-    // For testing
-    ByteSizeUnit getUnit() {
+    public ByteSizeUnit getUnit() {
         return unit;
     }
 

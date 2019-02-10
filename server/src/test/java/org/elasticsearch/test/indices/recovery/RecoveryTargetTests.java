@@ -16,26 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.indices.recovery;
+package org.elasticsearch.test.indices.recovery;
 
 import org.elasticsearch.Version;
 import org.elasticsearch.cluster.node.DiscoveryNode;
 import org.elasticsearch.cluster.routing.RecoverySource;
 import org.elasticsearch.cluster.routing.ShardRouting;
 import org.elasticsearch.cluster.routing.ShardRoutingState;
-import org.elasticsearch.cluster.routing.TestShardRouting;
+import org.elasticsearch.testframework.cluster.routing.TestShardRouting;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.io.stream.BytesStreamOutput;
 import org.elasticsearch.common.io.stream.StreamInput;
 import org.elasticsearch.common.io.stream.Streamable;
 import org.elasticsearch.index.shard.ShardId;
+import org.elasticsearch.indices.recovery.RecoveryState;
 import org.elasticsearch.indices.recovery.RecoveryState.File;
 import org.elasticsearch.indices.recovery.RecoveryState.Index;
 import org.elasticsearch.indices.recovery.RecoveryState.Stage;
 import org.elasticsearch.indices.recovery.RecoveryState.Timer;
 import org.elasticsearch.indices.recovery.RecoveryState.Translog;
 import org.elasticsearch.indices.recovery.RecoveryState.VerifyIndex;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.testframework.ESTestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
-import static org.elasticsearch.test.VersionUtils.randomVersion;
+import static org.elasticsearch.testframework.VersionUtils.randomVersion;
 import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.either;
@@ -191,7 +192,7 @@ public class RecoveryTargetTests extends ESTestCase {
             final int fileLength = randomIntBetween(1, 1000);
             final boolean reused = randomBoolean();
             totalFileBytes += fileLength;
-            files[i] = new RecoveryState.File("f_" + i, fileLength, reused);
+            files[i] = new File("f_" + i, fileLength, reused);
             if (reused) {
                 totalReused++;
                 totalReusedBytes += fileLength;
@@ -201,7 +202,7 @@ public class RecoveryTargetTests extends ESTestCase {
         }
 
         Collections.shuffle(Arrays.asList(files), random());
-        final RecoveryState.Index index = new RecoveryState.Index();
+        final Index index = new Index();
 
         if (randomBoolean()) {
             // initialize with some data and then reset
@@ -254,7 +255,7 @@ public class RecoveryTargetTests extends ESTestCase {
         }
         AtomicBoolean streamShouldStop = new AtomicBoolean();
 
-        Streamer<Index> backgroundReader = new Streamer<RecoveryState.Index>(streamShouldStop, index) {
+        Streamer<Index> backgroundReader = new Streamer<Index>(streamShouldStop, index) {
             @Override
             Index createObj() {
                 return new Index();

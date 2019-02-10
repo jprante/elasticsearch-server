@@ -104,7 +104,7 @@ public final class LinearInterpolation extends SmoothingModel {
     }
 
     @Override
-    protected XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException {
+    public XContentBuilder innerToXContent(XContentBuilder builder, Params params) throws IOException {
         builder.field(TRIGRAM_FIELD.getPreferredName(), trigramLambda);
         builder.field(BIGRAM_FIELD.getPreferredName(), bigramLambda);
         builder.field(UNIGRAM_FIELD.getPreferredName(), unigramLambda);

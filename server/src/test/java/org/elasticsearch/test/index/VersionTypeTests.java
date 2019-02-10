@@ -17,10 +17,11 @@
  * under the License.
  */
 
-package org.elasticsearch.index;
+package org.elasticsearch.test.index;
 
 import org.elasticsearch.common.lucene.uid.Versions;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.index.VersionType;
+import org.elasticsearch.testframework.ESTestCase;
 
 import static org.hamcrest.Matchers.equalTo;
 

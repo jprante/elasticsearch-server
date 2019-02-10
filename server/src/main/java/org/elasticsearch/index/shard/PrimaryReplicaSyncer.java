@@ -65,14 +65,13 @@ public class PrimaryReplicaSyncer extends AbstractComponent {
         this(settings, transportService.getTaskManager(), syncAction);
     }
 
-    // for tests
     public PrimaryReplicaSyncer(Settings settings, TaskManager taskManager, SyncAction syncAction) {
         super(settings);
         this.taskManager = taskManager;
         this.syncAction = syncAction;
     }
 
-    void setChunkSize(ByteSizeValue chunkSize) { // only settable for tests
+    public void setChunkSize(ByteSizeValue chunkSize) {
         if (chunkSize.bytesAsInt() <= 0) {
             throw new IllegalArgumentException("chunkSize must be > 0");
         }

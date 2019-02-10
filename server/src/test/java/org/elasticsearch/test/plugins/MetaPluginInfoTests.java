@@ -17,11 +17,14 @@
  * under the License.
  */
 
-package org.elasticsearch.plugins;
+package org.elasticsearch.test.plugins;
 
-import org.apache.lucene.util.LuceneTestCase;
+import org.apache.lucene.testframework.util.LuceneTestCase;
 import org.elasticsearch.Version;
-import org.elasticsearch.test.ESTestCase;
+import org.elasticsearch.plugins.MetaPluginInfo;
+import org.elasticsearch.plugins.PluginsService;
+import org.elasticsearch.testframework.ESTestCase;
+import org.elasticsearch.testframework.plugins.PluginTestUtil;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
