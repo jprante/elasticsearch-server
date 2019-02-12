@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.xbib.elasticsearch:gradle-plugin-elasticsearch-build:6.3.2.4"
+        classpath "org.xbib.elasticsearch:gradle-plugin-elasticsearch-build:6.3.2.5"
         classpath "org.xbib.gradle.plugin:gradle-plugin-shadow:1.1.1"
         classpath "org.xbib.gradle.plugin:gradle-plugin-git:1.0.0"
     }
@@ -95,7 +95,7 @@ subprojects {
     tasks.withType(Javadoc) {
         options.addStringOption('Xdoclint:none', '-quiet')
     }
-
+    
     apply from: rootProject.file('gradle/publish.gradle')
     apply from: rootProject.file('gradle/sourcequality.gradle')
 }
@@ -112,3 +112,4 @@ asciidoctor {
             imagesdir: 'img',
             'source-highlighter': 'coderay'
 }
+

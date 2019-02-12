@@ -198,7 +198,7 @@ public class Netty4HttpServerTransport extends AbstractLifecycleComponent implem
 
     protected volatile ServerBootstrap serverBootstrap;
 
-    protected volatile BoundTransportAddress boundAddress;
+    public volatile BoundTransportAddress boundAddress;
 
     protected final List<Channel> serverChannels = new ArrayList<>();
 
@@ -352,8 +352,7 @@ public class Netty4HttpServerTransport extends AbstractLifecycleComponent implem
         return new BoundTransportAddress(boundAddresses.toArray(new TransportAddress[0]), new TransportAddress(publishAddress));
     }
 
-    // package private for tests
-    static int resolvePublishPort(Settings settings, List<TransportAddress> boundAddresses, InetAddress publishInetAddress) {
+    public static int resolvePublishPort(Settings settings, List<TransportAddress> boundAddresses, InetAddress publishInetAddress) {
         int publishPort = SETTING_HTTP_PUBLISH_PORT.get(settings);
 
         if (publishPort < 0) {
@@ -385,8 +384,7 @@ public class Netty4HttpServerTransport extends AbstractLifecycleComponent implem
         return publishPort;
     }
 
-    // package private for testing
-    static Netty4CorsConfig buildCorsConfig(Settings settings) {
+    public static Netty4CorsConfig buildCorsConfig(Settings settings) {
         if (SETTING_CORS_ENABLED.get(settings) == false) {
             return Netty4CorsConfigBuilder.forOrigins().disable().build();
         }
@@ -497,14 +495,14 @@ public class Netty4HttpServerTransport extends AbstractLifecycleComponent implem
         return corsConfig;
     }
 
-    void dispatchRequest(final RestRequest request, final RestChannel channel) {
+    public void dispatchRequest(final RestRequest request, final RestChannel channel) {
         final ThreadContext threadContext = threadPool.getThreadContext();
         try (ThreadContext.StoredContext ignore = threadContext.stashContext()) {
             dispatcher.dispatchRequest(request, channel, threadContext);
         }
     }
 
-    void dispatchBadRequest(final RestRequest request, final RestChannel channel, final Throwable cause) {
+    public void dispatchBadRequest(final RestRequest request, final RestChannel channel, final Throwable cause) {
         final ThreadContext threadContext = threadPool.getThreadContext();
         try (ThreadContext.StoredContext ignore = threadContext.stashContext()) {
             dispatcher.dispatchBadRequest(request, channel, threadContext, cause);
@@ -542,7 +540,7 @@ public class Netty4HttpServerTransport extends AbstractLifecycleComponent implem
         return new HttpChannelHandler(this, detailedErrorsEnabled, threadPool.getThreadContext());
     }
 
-    protected static class HttpChannelHandler extends ChannelInitializer<Channel> {
+    public static class HttpChannelHandler extends ChannelInitializer<Channel> {
 
         private final Netty4HttpServerTransport transport;
         private final Netty4HttpRequestHandler requestHandler;

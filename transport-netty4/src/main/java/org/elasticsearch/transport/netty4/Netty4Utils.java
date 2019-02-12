@@ -25,8 +25,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.NettyRuntime;
-import io.netty.util.internal.logging.InternalLogger;
-import io.netty.util.internal.logging.InternalLoggerFactory;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.BytesRefIterator;
@@ -44,17 +42,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Netty4Utils {
-
-    static {
-        InternalLoggerFactory.setDefaultFactory(new InternalLoggerFactory() {
-
-            @Override
-            public InternalLogger newInstance(final String name) {
-                return new Netty4InternalESLogger(name);
-            }
-
-        });
-    }
 
     public static void setup() {
 

@@ -1,3 +1,4 @@
+
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -9,12 +10,6 @@ dependencies {
     wagon "org.apache.maven.wagon:wagon-ssh:${property('wagon.version')}"
 }
 
-if (project.hasProperty('signing.keyId')) {
-    signing {
-        sign configurations.archives
-    }
-}
-
 task xbibUpload(type: Upload) {
     group = 'publish'
     configuration = configurations.archives
@@ -22,6 +17,12 @@ task xbibUpload(type: Upload) {
     repositories {
         if (project.hasProperty('xbibUsername')) {
             mavenDeployer {
+                beforeDeployment { MavenDeployment deployment ->
+                    println deployment.artifacts
+                    signing {
+                        signPom(deployment)
+                    }
+                }
                 configuration = configurations.wagon
                 repository(url: uri(project.property('xbibUrl'))) {
                     authentication(userName: xbibUsername, privateKey: xbibPrivateKey)
@@ -38,7 +39,11 @@ task sonatypeUpload(type: Upload) {
     repositories {
         if (project.hasProperty('ossrhUsername')) {
             mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                beforeDeployment { MavenDeployment deployment ->
+                    signing {
+                        signPom(deployment)
+                    }
+                }
                 repository(url: uri(ossrhReleaseUrl)) {
                     authentication(userName: ossrhUsername, password: ossrhPassword)
                 }
@@ -86,3 +91,4 @@ task sonatypeUpload(type: Upload) {
 nexusStaging {
     packageGroup = "org.xbib"
 }
+

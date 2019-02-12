@@ -1,20 +1,76 @@
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 esplugin {
     url 'https://github.com/jprante/elasticsearch-server'
     description 'Netty 4 based transport module'
-    classname 'org.elasticsearch.transport.Netty4Plugin'
-    hasClientJar = true
+    classname 'org.elasticsearch.transport.netty4.Netty4Plugin'
 }
 
-compileJava.options.compilerArgs << "-Xlint:-try"
-compileTestJava.options.compilerArgs << "-Xlint:-cast,-deprecation,-rawtypes,-try,-unchecked"
-
 dependencies {
-    compile "io.netty:netty-codec-http:${property('netty.version')}"
-    compile "io.netty:netty-handler:${property('netty.version')}"
-    compile "io.netty:netty-transport-native-epoll:${property('netty.version')}:linux-x86_64"
-
+    compile "org.xbib.elasticsearch:netty:${property('elasticsearch-libs.version')}"
     testCompile project(':server')
+    testCompile "org.xbib.elasticsearch:mocksocket:${property('elasticsearch-libs.version')}"
+}
+
+afterEvaluate {
+    compileJava {
+        inputs.property("moduleName", 'org.xbib.elasticsearch.transport.nettyfour')
+        doFirst {
+            options.compilerArgs = [
+                    "-Xlint:-try",
+                    '--module-path', classpath.asPath
+
+            ]
+            classpath = files()
+        }
+    }
+    compileTestJava {
+        inputs.property("moduleName", 'org.xbib.elasticsearch.transport.nettyfour.test')
+        doFirst {
+            options.compilerArgs = [
+                    "-Xlint:-cast,-deprecation,-rawtypes,-try,-unchecked",
+                    "-proc:none",
+                    '--module-path', classpath.asPath
+            ]
+            classpath = files()
+        }
+    }
+    javadoc {
+        enabled = true
+        inputs.property("moduleName", 'org.xbib.elasticsearch.transport.nettyfour')
+        doFirst {
+            options.addStringOption('-module-path', classpath.asPath)
+            classpath = files()
+        }
+    }
+    jar {
+        inputs.property("moduleName", 'org.xbib.elasticsearch.transport.nettyfour')
+        manifest {
+            attributes(
+                    'Implementation-Title': "${project.group}#${project.name};${project.version}",
+                    'Implementation-Version': version,
+                    'Implementation-Vendor': "${user}",
+                    'Build-Date': ZonedDateTime.now(ZoneOffset.UTC),
+                    'Build-Java-Version': System.getProperty("java.version"),
+                    'X-Compile-Source-JDK': compileJava.targetCompatibility,
+                    'X-Compile-Target-JDK': compileJava.sourceCompatibility,
+                    'X-Compile-Elasticsearch-Version': version,
+                    'X-Compile-Lucene-Version': project.property('lucene.version'),
+                    'X-Compile-Elasticsearch-Snapshot': false
+            )
+        }
+    }
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign jar
+    sign sourcesJar
+    sign javadocJar
 }
 
 dependencyLicenses {
@@ -48,10 +104,7 @@ integTestRunner {
     systemProperty 'es.set.netty.runtime.available.processors', 'false'
 }
 
-
 thirdPartyAudit {
-    // sun.misc.Unsafe in io.netty.util.internal.shaded.org.jctools
-    // sun.security.x509.* in io.netty.handler.ssl.util.OpenJdkSelfSignedCertGenerator
     enabled = true
     excludes = [
             // classes are missing

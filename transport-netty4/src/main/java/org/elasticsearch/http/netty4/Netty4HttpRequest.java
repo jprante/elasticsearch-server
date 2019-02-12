@@ -53,7 +53,7 @@ public class Netty4HttpRequest extends RestRequest {
      * @throws BadParameterException      if the parameters can not be decoded
      * @throws ContentTypeHeaderException if the Content-Type header can not be parsed
      */
-    Netty4HttpRequest(NamedXContentRegistry xContentRegistry, FullHttpRequest request, Channel channel) {
+    public Netty4HttpRequest(NamedXContentRegistry xContentRegistry, FullHttpRequest request, Channel channel) {
         super(xContentRegistry, request.uri(), new HttpHeadersMap(request.headers()));
         this.request = request;
         this.channel = channel;

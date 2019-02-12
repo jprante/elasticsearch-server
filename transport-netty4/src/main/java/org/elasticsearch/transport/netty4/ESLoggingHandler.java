@@ -23,7 +23,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.util.internal.StringUtil;
 import org.elasticsearch.Version;
 import org.elasticsearch.common.compress.Compressor;
 import org.elasticsearch.common.compress.CompressorFactory;
@@ -35,11 +34,10 @@ import org.elasticsearch.transport.TcpTransport;
 import org.elasticsearch.transport.TransportStatus;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
-final class ESLoggingHandler extends LoggingHandler {
+public final class ESLoggingHandler extends LoggingHandler {
 
-    ESLoggingHandler() {
+    public ESLoggingHandler() {
         super(LogLevel.TRACE);
     }
 
@@ -50,7 +48,7 @@ final class ESLoggingHandler extends LoggingHandler {
                 return format(ctx, eventName, (ByteBuf) arg);
             } catch (final Exception e) {
                 // we really do not want to allow a bug in the formatting handling to escape
-                logger.trace("an exception occurred formatting a trace message", e);
+                log("an exception occurred formatting a trace message", e);
                 // we are going to let this be formatted via the default formatting
                 return super.format(ctx, eventName, arg);
             }

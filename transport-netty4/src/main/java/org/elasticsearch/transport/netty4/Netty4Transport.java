@@ -308,7 +308,7 @@ public class Netty4Transport extends TcpTransport {
         return esChannel;
     }
 
-    ScheduledPing getPing() {
+    public ScheduledPing getPing() {
         return scheduledPing;
     }
 

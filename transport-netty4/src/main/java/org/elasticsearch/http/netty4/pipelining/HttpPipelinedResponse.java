@@ -23,13 +23,13 @@ import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.ReferenceCounted;
 
-class HttpPipelinedResponse implements Comparable<HttpPipelinedResponse>, ReferenceCounted {
+public class HttpPipelinedResponse implements Comparable<HttpPipelinedResponse>, ReferenceCounted {
 
     private final FullHttpResponse response;
     private final ChannelPromise promise;
     private final int sequence;
 
-    HttpPipelinedResponse(FullHttpResponse response, ChannelPromise promise, int sequence) {
+    public HttpPipelinedResponse(FullHttpResponse response, ChannelPromise promise, int sequence) {
         this.response = response;
         this.promise = promise;
         this.sequence = sequence;
