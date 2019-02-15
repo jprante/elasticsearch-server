@@ -195,6 +195,8 @@ public final class Security {
         for (Map.Entry<String, String> entry : properties.entrySet()) {
             if (System.getProperty(entry.getKey()) == null) {
                 System.setProperty(entry.getKey(), entry.getValue());
+            } else {
+                logger.warn("double entry: " + entry.getKey());
             }
         }
     }

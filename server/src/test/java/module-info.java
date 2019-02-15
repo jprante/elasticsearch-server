@@ -316,6 +316,8 @@ module org.xbib.elasticsearch.server.test {
     exports org.elasticsearch.test.versioning;
     exports org.elasticsearch.test.watcher;
 
+    opens org.elasticsearch.test;
+    opens org.elasticsearch.test.action.admin;
     opens org.elasticsearch.test.action.bulk;
     opens org.elasticsearch.test.action.fieldstats;
     opens org.elasticsearch.test.action.search;

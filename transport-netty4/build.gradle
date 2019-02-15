@@ -1,3 +1,5 @@
+apply plugin: 'signing'
+
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 

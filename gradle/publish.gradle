@@ -1,6 +1,5 @@
 
 apply plugin: 'maven'
-apply plugin: 'signing'
 
 configurations {
     wagon
@@ -18,7 +17,6 @@ task xbibUpload(type: Upload) {
         if (project.hasProperty('xbibUsername')) {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment ->
-                    println deployment.artifacts
                     signing {
                         signPom(deployment)
                     }

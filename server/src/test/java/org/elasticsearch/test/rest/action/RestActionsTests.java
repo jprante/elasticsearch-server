@@ -19,8 +19,9 @@
 
 package org.elasticsearch.test.rest.action;
 
-import com.fasterxml.jackson.core.io.JsonEOFException;
 import java.util.Arrays;
+
+import com.fasterxml.jackson.core.io.JsonEOFException;
 import org.elasticsearch.common.ParsingException;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
@@ -86,7 +87,7 @@ public class RestActionsTests extends ESTestCase {
                 ParsingException exception =
                     expectThrows(ParsingException.class, () -> RestActions.getQueryContent(parser));
                 assertEquals("Failed to parse", exception.getMessage());
-                assertEquals(StringIndexOutOfBoundsException.class, exception.getRootCause().getClass());
+                assertEquals(JsonEOFException.class, exception.getRootCause().getClass());
             }
         }
     }

@@ -35,7 +35,7 @@ grant codeBase "file://${codebase.lucene}" {
   // needed to allow MMapDirectory's "unmap hack" (die unmap hack, die)
   // java 8
   permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
-  // java 9
+  // java 9+
   permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.ref";
   permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
   // NOTE: also needed for RAMUsageEstimator size calculations
@@ -145,12 +145,9 @@ grant {
   permission java.io.FilePermission "/sys/fs/cgroup/memory", "read";
   permission java.io.FilePermission "/sys/fs/cgroup/memory/-", "read";
 
-  // we really do not like JMX - but log4j 2.11 does
+  // we really do not like JMX - but log4j does
   permission javax.management.MBeanTrustPermission "register";
   permission javax.management.MBeanServerPermission "createMBeanServer";
   permission javax.management.MBeanPermission "*", "queryNames";
   permission javax.management.MBeanPermission "*", "registerMBean";
-
-  // mockito mocks
-  permission java.lang.RuntimePermission "accessDeclaredMembers";
 };

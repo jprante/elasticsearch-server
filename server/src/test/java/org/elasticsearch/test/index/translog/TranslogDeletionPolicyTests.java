@@ -172,6 +172,9 @@ public class TranslogDeletionPolicyTests extends ESTestCase {
         for (long gen = 1; gen <= numberOfReaders + 1; gen++) {
             if (writer != null) {
                 final TranslogReader reader = Mockito.spy(writer.closeIntoReader());
+                if (reader == null) {
+                    throw new IllegalStateException("mock reader failed");
+                }
                 Mockito.doReturn(writer.getLastModifiedTime()).when(reader).getLastModifiedTime();
                 readers.add(reader);
             }
@@ -179,6 +182,9 @@ public class TranslogDeletionPolicyTests extends ESTestCase {
                 tempDir.resolve(Translog.getFilename(gen)), FileChannel::open, TranslogConfig.DEFAULT_BUFFER_SIZE, 1L, 1L, () -> 1L,
                 () -> 1L, randomNonNegativeLong());
             writer = Mockito.spy(writer);
+            if (writer == null) {
+                throw new IllegalStateException("mock writer failed");
+            }
             Mockito.doReturn(now - (numberOfReaders - gen + 1) * 1000).when(writer).getLastModifiedTime();
 
             byte[] bytes = new byte[4];

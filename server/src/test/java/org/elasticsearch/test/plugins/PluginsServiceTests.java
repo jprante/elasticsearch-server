@@ -662,7 +662,7 @@ public class PluginsServiceTests extends ESTestCase {
         final Settings settings =
                 Settings.builder()
                         .put("path.home", createTempDir())
-                        .put("plugin.mandatory", "org.elasticsearch.plugins.PluginsServiceTests$FakePlugin")
+                        .put("plugin.mandatory", getClass().getName() + "$FakePlugin")
                         .build();
         newPluginsService(settings, FakePlugin.class);
     }

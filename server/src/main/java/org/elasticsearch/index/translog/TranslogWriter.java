@@ -70,7 +70,7 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
 
     private final Map<Long, Tuple<BytesReference, Exception>> seenSequenceNumbers;
 
-    private TranslogWriter(
+    public TranslogWriter(
         final ChannelFactory channelFactory,
         final ShardId shardId,
         final Checkpoint initialCheckpoint,
@@ -79,18 +79,18 @@ public class TranslogWriter extends BaseTranslogReader implements Closeable {
         final ByteSizeValue bufferSize,
         final LongSupplier globalCheckpointSupplier, LongSupplier minTranslogGenerationSupplier, TranslogHeader header) throws IOException {
         super(initialCheckpoint.generation, channel, path, header);
-        assert initialCheckpoint.offset == channel.position() :
-            "initial checkpoint offset [" + initialCheckpoint.offset + "] is different than current channel position ["
-                + channel.position() + "]";
+        //assert initialCheckpoint.offset == channel.position() :
+        //    "initial checkpoint offset [" + initialCheckpoint.offset + "] is different than current channel position ["
+        //        + channel.position() + "]";
         this.shardId = shardId;
         this.channelFactory = channelFactory;
         this.minTranslogGenerationSupplier = minTranslogGenerationSupplier;
         this.outputStream = new BufferedChannelOutputStream(java.nio.channels.Channels.newOutputStream(channel), bufferSize.bytesAsInt());
         this.lastSyncedCheckpoint = initialCheckpoint;
         this.totalOffset = initialCheckpoint.offset;
-        assert initialCheckpoint.minSeqNo == SequenceNumbers.NO_OPS_PERFORMED : initialCheckpoint.minSeqNo;
+        //assert initialCheckpoint.minSeqNo == SequenceNumbers.NO_OPS_PERFORMED : initialCheckpoint.minSeqNo;
         this.minSeqNo = initialCheckpoint.minSeqNo;
-        assert initialCheckpoint.maxSeqNo == SequenceNumbers.NO_OPS_PERFORMED : initialCheckpoint.maxSeqNo;
+        //assert initialCheckpoint.maxSeqNo == SequenceNumbers.NO_OPS_PERFORMED : initialCheckpoint.maxSeqNo;
         this.maxSeqNo = initialCheckpoint.maxSeqNo;
         this.globalCheckpointSupplier = globalCheckpointSupplier;
         this.seenSequenceNumbers = Assertions.ENABLED ? new HashMap<>() : null;

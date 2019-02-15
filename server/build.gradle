@@ -18,6 +18,7 @@ apply plugin: 'org.xbib.gradle.plugin.elasticsearch.build'
 apply plugin: 'org.xbib.gradle.plugin.rpm'
 apply plugin: 'org.xbib.gradle.plugin.docker'
 apply plugin: 'org.xbib.gradle.plugin.git'
+apply plugin: 'signing'
 
 ext {
     subst = [
@@ -150,37 +151,45 @@ processResources.finalizedBy injectGradleProperties
 
 checkstyleTest.enabled = false
 
-// do not run junit tests
+// junit tests
 test {
     enabled = false
-    inputs.property("moduleName", 'org.xbib.elasticsearch.server')
-    doFirst {
-        jvmArgs = [
-                '--module-path', classpath.asPath,
-                '--add-modules', 'ALL-MODULE-PATH',
-                //'--add-reads', "$moduleName=junit",
-                //'--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
-        ]
-        classpath = files()
-    }
+    dependsOn jar, testJar
+    classpath = project.files(project.configurations.testRuntime) +
+            project.configurations.mains.artifacts.files +
+            project.configurations.tests.artifacts.files
+    jvmArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'ALL-MODULE-PATH',
+            '--add-reads', "org.xbib.elasticsearch.server=junit",
+            '--patch-module', "org.xbib.elasticsearch.server=" + files(sourceSets.test.java.outputDir).asPath,
+    ]
+
+    exclude '**/*$*.class'
+    include '**/Tests*.class'
     testLogging {
         showStandardStreams = true
         exceptionFormat = 'full'
     }
 }
 
-// do not run randomized tests
-randomizedTest.enabled = false
+// randomized tests (same as ES but no plugin task)
+randomizedTest {
+    enabled = false
+    dependsOn jar, testJar
+    modulepath = project.files(project.configurations.testRuntime) +
+            project.configurations.mains.artifacts.files +
+            project.configurations.tests.artifacts.files
+    exclude '**/*$*.class'
+    include '**/*Tests.class'
 
-// run Elasticsearch test suite
-esTest {
-    enabled = true
+    systemProperty 'tests.class', 'org.elasticsearch.test.action.bulk.TransportBulkActionIngestTests'
     systemProperty 'tests.security.manager', 'true'
-    systemProperty 'tests.security.policy', '/org/elasticsearch/test/security.policy'
-    systemProperty 'tests.logger.level', 'ALL'
-    //systemProperty 'java.security.debug', 'failure'
+    systemProperty 'tests.security.policy', '/org/elasticsearch/test/extra-security.policy'
 
+    jvmArg "--add-modules=ALL-MODULE-PATH"
     jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.server'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.server.test'
     jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.testframework'
     jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.lucene'
     jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.log4j'
@@ -190,6 +199,56 @@ esTest {
     jvmArg '--add-reads=org.xbib.elasticsearch.randomizedtesting=org.xbib.elasticsearch.server.test'
     jvmArg '--add-reads=org.xbib.elasticsearch.server.test=org.xbib.elasticsearch.randomizedtesting'
     jvmArg '--add-reads=org.xbib.elasticsearch.server=org.xbib.elasticsearch.server.test'
+    jvmArg '--add-opens=java.base/java.lang=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-opens=java.base/java.lang.reflect=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-opens=java.base/java.io=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-opens=java.base/java.nio=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-exports=jdk.unsupported/sun.misc=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-exports=java.base/sun.nio.ch=org.xbib.elasticsearch.lucene'
+
+    testLogging {
+        showNumFailuresAtEnd 25
+        outputMode 'always'
+    }
+}
+
+// run Elasticsearch test suite
+esTest {
+    enabled = true
+    systemProperty 'tests.security.manager', 'true'
+    systemProperty 'tests.security.policy', '/org/elasticsearch/test/extra-security.policy'
+    //systemProperty 'java.security.debug', 'permissions,all'
+    systemProperty 'tests.logger.level', 'INFO'
+
+    //systemProperty 'tests.class', 'org.elasticsearch.test.index.engine.InternalEngineTests'
+
+    systemProperty 'tests.class', 'org.elasticsearch.test.index.translog.TranslogDeletionPolicyTests'
+
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.server'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.server.test'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.testframework'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.log4j'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.joda'
+    jvmArg '--add-reads=org.xbib.elasticsearch.securemock=org.xbib.elasticsearch.hppc'
+    jvmArg '--add-reads=org.xbib.elasticsearch.randomizedtesting=org.xbib.elasticsearch.server'
+    jvmArg '--add-reads=org.xbib.elasticsearch.randomizedtesting=org.xbib.elasticsearch.server.test'
+    jvmArg '--add-reads=org.xbib.elasticsearch.server.test=org.xbib.elasticsearch.randomizedtesting'
+    jvmArg '--add-reads=org.xbib.elasticsearch.server=org.xbib.elasticsearch.server.test'
+    jvmArg '--add-opens=java.base/java.lang=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-opens=java.base/java.lang.reflect=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-opens=java.base/java.io=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-opens=java.base/java.nio=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-exports=jdk.unsupported/sun.misc=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-exports=java.base/sun.nio.ch=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-exports=java.base/jdk.internal.ref=org.xbib.elasticsearch.lucene'
+    jvmArg '--add-opens=org.xbib.elasticsearch.testframework/org.elasticsearch.testframework=org.xbib.elasticsearch.securemock'
+    jvmArg '--add-opens=org.xbib.elasticsearch.lucene.testframework/org.apache.lucene.testframework.util=org.xbib.elasticsearch.securemock'
+
+    testLogging {
+        showNumFailuresAtEnd 25
+        outputMode 'always'
+    }
 }
 
 task generateModulesList {

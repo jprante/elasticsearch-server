@@ -77,14 +77,10 @@ public class IndexingSlowLogTests extends ESTestCase {
         p = new SlowLogParsedDocumentPrinter(index, pd, 10, true, 3);
 
         final UncheckedIOException e = expectThrows(UncheckedIOException.class, p::toString);
-        assertThat(e, hasToString(containsString("_failed_to_convert_[Unrecognized token 'invalid':"
-            + " was expecting ('true', 'false' or 'null')\n"
-            + " at [Source: org.elasticsearch.common.bytes.BytesReference$MarkSupportingStreamInputWrapper")));
+        assertThat(e, hasToString(containsString("_failed_to_convert_[Unrecognized token 'invalid':")));
         assertNotNull(e.getCause());
         assertThat(e.getCause(), instanceOf(JsonParseException.class));
-        assertThat(e.getCause(), hasToString(containsString("Unrecognized token 'invalid':"
-                + " was expecting ('true', 'false' or 'null')\n"
-                + " at [Source: org.elasticsearch.common.bytes.BytesReference$MarkSupportingStreamInputWrapper")));
+        assertThat(e.getCause(), hasToString(containsString("Unrecognized token 'invalid':")));
     }
 
     public void testReformatSetting() {
