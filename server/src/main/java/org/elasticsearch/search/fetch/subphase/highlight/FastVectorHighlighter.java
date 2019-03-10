@@ -49,11 +49,9 @@ import java.util.Locale;
 import java.util.Map;
 
 public class FastVectorHighlighter implements Highlighter {
-    private static final BoundaryScanner DEFAULT_SIMPLE_BOUNDARY_SCANNER = new SimpleBoundaryScanner();
-    private static final BoundaryScanner DEFAULT_SENTENCE_BOUNDARY_SCANNER =
-        new BreakIteratorBoundaryScanner(BreakIterator.getSentenceInstance(Locale.ROOT));
-    private static final BoundaryScanner DEFAULT_WORD_BOUNDARY_SCANNER =
-        new BreakIteratorBoundaryScanner(BreakIterator.getWordInstance(Locale.ROOT));
+    private static BoundaryScanner DEFAULT_SIMPLE_BOUNDARY_SCANNER;
+    private static BoundaryScanner DEFAULT_SENTENCE_BOUNDARY_SCANNER;
+    private static BoundaryScanner DEFAULT_WORD_BOUNDARY_SCANNER;
 
     public static final Setting<Boolean> SETTING_TV_HIGHLIGHT_MULTI_VALUE =
         Setting.boolSetting("search.highlight.term_vector_multi_value", true, Setting.Property.NodeScope);
@@ -63,6 +61,15 @@ public class FastVectorHighlighter implements Highlighter {
 
     public FastVectorHighlighter(Settings settings) {
         this.termVectorMultiValue = SETTING_TV_HIGHLIGHT_MULTI_VALUE.get(settings);
+        if (DEFAULT_SIMPLE_BOUNDARY_SCANNER == null) {
+            DEFAULT_SIMPLE_BOUNDARY_SCANNER = new SimpleBoundaryScanner();
+        }
+        if (DEFAULT_SENTENCE_BOUNDARY_SCANNER == null) {
+            DEFAULT_SENTENCE_BOUNDARY_SCANNER = new BreakIteratorBoundaryScanner(BreakIterator.getSentenceInstance(Locale.ROOT));
+        }
+        if (DEFAULT_WORD_BOUNDARY_SCANNER == null) {
+            DEFAULT_WORD_BOUNDARY_SCANNER =  new BreakIteratorBoundaryScanner(BreakIterator.getWordInstance(Locale.ROOT));
+        }
     }
 
     @Override

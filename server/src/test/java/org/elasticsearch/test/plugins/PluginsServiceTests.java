@@ -557,6 +557,7 @@ public class PluginsServiceTests extends ESTestCase {
         assertThat(deps, containsInAnyOrder(pluginJar.toUri().toURL(), dep1Jar.toUri().toURL(), dep2Jar.toUri().toURL()));
     }
 
+    @Ignore("plugins must be modules, not just jars")
     public void testNonExtensibleDep() throws Exception {
         // This test opens a child classloader, reading a jar under the test temp
         // dir (a dummy plugin). Classloaders are closed by GC, so when test teardown
@@ -675,6 +676,7 @@ public class PluginsServiceTests extends ESTestCase {
 
     }
 
+    @Ignore("plugins mut be modules, not just jars")
     public void testExistingMandatoryInstalledPlugin() throws IOException {
         // This test opens a child classloader, reading a jar under the test temp
         // dir (a dummy plugin). Classloaders are closed by GC, so when test teardown
@@ -705,6 +707,7 @@ public class PluginsServiceTests extends ESTestCase {
         newPluginsService(settings);
     }
 
+    @Ignore("plugins mut be modules, not just jars")
     public void testExistingMandatoryMetaPlugin() throws IOException {
         // This test opens a child classloader, reading a jar under the test temp
         // dir (a dummy plugin). Classloaders are closed by GC, so when test teardown

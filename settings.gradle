@@ -1,3 +1,4 @@
 
+include 'elasticsearch-analysis-common'
 include 'transport-netty4'
 include 'server'

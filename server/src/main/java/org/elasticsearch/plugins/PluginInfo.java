@@ -262,12 +262,23 @@ public class PluginInfo implements Writeable, ToXContentObject {
     }
 
     /**
+     * The module name of the plugin.
+     *
+     * @return the module name
+     */
+    public String getModulename() {
+        int pos = classname.indexOf('/');
+        return pos >= 0 ? classname.substring(0, pos) : classname;
+    }
+
+    /**
      * The entry point to the plugin.
      *
      * @return the entry point to the plugin
      */
     public String getClassname() {
-        return classname;
+        int pos = classname.indexOf('/');
+        return pos >= 0 ? classname.substring(pos + 1) : classname;
     }
 
     /**

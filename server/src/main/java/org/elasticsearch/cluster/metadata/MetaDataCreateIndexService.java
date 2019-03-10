@@ -432,7 +432,7 @@ public class MetaDataCreateIndexService extends AbstractComponent {
                 // create the index here (on the master) to validate it can be created, as well as adding the mapping
                 final IndexService indexService = indicesService.createIndex(tmpImd, Collections.emptyList());
                 if (indexService == null) {
-                    throw new RuntimeException("index service is null, probably security/permission problem");
+                    throw new RuntimeException("index service is null, probably securemock/permission problem");
                 }
                 createdIndex = indexService.index();
                 // now add the mappings

@@ -22,7 +22,6 @@ package org.elasticsearch.bootstrap;
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.cli.Command;
 import org.elasticsearch.common.SuppressForbidden;
-import org.elasticsearch.common.io.PathUtils;
 import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.common.network.NetworkModule;
 import org.elasticsearch.common.settings.Settings;
@@ -45,6 +44,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Permissions;
 import java.security.Policy;
 import java.util.AbstractMap;
@@ -134,9 +134,7 @@ public final class Security {
         Map<String, String> systemProperties = createSystemProperties(codebase);
         setSystemProperties(systemProperties);
         Permissions permissions = createPermissions(modulePath, environment);
-        Map<String, Policy> pluginPolicies = getPluginPermissions(environment);
-        // restore system properties, might be cleared while plugin security policy setup
-        setSystemProperties(systemProperties);
+        Map<URI, Policy> pluginPolicies = getPluginPermissions(environment, systemProperties);
         try {
             ESPolicy policy = createPolicy(permissions, pluginPolicies, filterBadDefaults);
             Policy.setPolicy(policy);
@@ -153,10 +151,10 @@ public final class Security {
         selfTest();
     }
 
-    public static Map<String, URI> createCodebase(Set<URI> uris) throws IOException {
+    public static Map<String, URI> createCodebase(Set<URI> uris) {
         Map<String, URI> map = new LinkedHashMap<>();
         for (URI uri : uris) {
-            String name = PathUtils.get(uri).getFileName().toString();
+            String name = Paths.get(uri).getFileName().toString();
             if (name.endsWith(".jar")) {
                 map.put(name, uri);
             }
@@ -175,29 +173,25 @@ public final class Security {
         Map<String, String> propertiesSet = new LinkedHashMap<>();
         for (Map.Entry<String, URI> entry : codebase.entrySet()) {
             String name = entry.getKey();
-            URI uri = entry.getValue();
-            if (name.indexOf("-linux-x86_64.jar") > 0) {
+            if (name.endsWith("-linux-x86_64.jar")) {
                 continue;
             }
             String property = "codebase." + name;
             String aliasProperty = name.endsWith("-tests.jar") ?
                     "codebase." + name.replaceFirst("-\\d+\\.\\d+.*-tests\\.jar", "-tests") :
                     "codebase." + name.replaceFirst("-\\d+\\.\\d+.*\\.jar", "");
-            if (!aliasProperty.equals(property)) {
-                propertiesSet.put(aliasProperty, uri.toString());
-            }
-            propertiesSet.put(property, uri.toString());
+            String key = !aliasProperty.equals(property) ? aliasProperty : property;
+            URI uri = entry.getValue();
+            String value = uri.toString().startsWith("file") ? uri.toString() : "file://" + uri.toString();
+            propertiesSet.put(key, value);
         }
+        logger.warn("codebase=" + codebase);
         return propertiesSet;
     }
 
     public static void setSystemProperties(Map<String, String> properties) {
         for (Map.Entry<String, String> entry : properties.entrySet()) {
-            if (System.getProperty(entry.getKey()) == null) {
-                System.setProperty(entry.getKey(), entry.getValue());
-            } else {
-                logger.warn("double entry: " + entry.getKey());
-            }
+            System.setProperty(entry.getKey(), entry.getValue());
         }
     }
 
@@ -208,7 +202,7 @@ public final class Security {
     }
 
     public static ESPolicy createPolicy(Permissions permissions,
-                                         Map<String, Policy> pluginPolicies, boolean filterBadDefaults)
+                                         Map<URI, Policy> pluginPolicies, boolean filterBadDefaults)
             throws URISyntaxException {
        return new ESPolicy(permissions, pluginPolicies, filterBadDefaults);
     }
@@ -217,9 +211,9 @@ public final class Security {
      * Sets properties (codebase URLs) for policy files.
      * we look for matching plugins and set URLs to fit
      */
-    @SuppressForbidden(reason = "proper use of URL")
-    public static Map<String,Policy> getPluginPermissions(Environment environment) throws IOException {
-        Map<String,Policy> map = new HashMap<>();
+    public static Map<URI, Policy> getPluginPermissions(Environment environment,
+                                                        Map<String, String> systemProperties) throws IOException {
+        Map<URI, Policy> map = new HashMap<>();
         // collect up set of plugins and modules by listing directories.
         Set<Path> pluginsAndModules = new LinkedHashSet<>(PluginsService.findPluginDirs(environment.pluginsFile()));
         pluginsAndModules.addAll(PluginsService.findPluginDirs(environment.modulesFile()));
@@ -235,25 +229,22 @@ public final class Security {
                     for (Path jar : jarStream) {
                         URI uri = jar.toRealPath().toUri();
                         if (!pluginCodebase.add(uri)) {
-                            throw new IllegalStateException("duplicate module in plugin " + plugin + " uri = " + uri);
+                            throw new IllegalStateException("duplicate jar in plugin " + plugin + " uri = " + uri);
                         }
                     }
                 }
-                Map<String, String> systemProperties = createSystemProperties(createCodebase(pluginCodebase));
-                setSystemProperties(systemProperties);
+                Map<String, String> pluginSystemProperties = createSystemProperties(createCodebase(pluginCodebase));
+                systemProperties.putAll(pluginSystemProperties);
+                setSystemProperties(pluginSystemProperties);
                 // parse the plugin's policy file into a set of permissions
                 logger.info("reading plugin policy: " + policyFile);
-                try {
-                    Policy policy = ESPolicy.readPolicy(policyFile.toUri());
-                    // consult this policy for each of the plugin's jars
-                    for (URI uri : pluginCodebase) {
-                        if (map.put(uri.getPath(), policy) != null) {
-                            // just be paranoid ok?
-                            throw new IllegalStateException("per-plugin permissions already granted for jar file: " + uri);
-                        }
+                Policy policy = ESPolicy.readPolicy(policyFile.toUri());
+                // consult this policy for each of the plugin's jars
+                for (URI uri : pluginCodebase) {
+                    if (map.put(uri, policy) != null) {
+                        // just be paranoid ok?
+                        throw new IllegalStateException("per-plugin permissions already granted for jar file: " + uri);
                     }
-                } finally {
-                    clearSystemProperties(systemProperties);
                 }
             }
         }
@@ -272,7 +263,7 @@ public final class Security {
     @SuppressForbidden(reason = "accesses fully qualified URIs to configure security")
     public static void addModulePathPermissions(Set<URI> modulePath, Permissions policy) throws IOException {
         for (URI module : modulePath) {
-            Path path = PathUtils.get(module);
+            Path path = Paths.get(module);
             // resource itself
             if (Files.isDirectory(path)) {
                 addDirectoryPath(policy, "class.path", path, "read,readlink");

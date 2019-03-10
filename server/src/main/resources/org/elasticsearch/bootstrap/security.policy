@@ -24,37 +24,80 @@
 //// SecurityManager impl:
 //// Must have all permissions to properly perform access checks
 
-grant codeBase "file://${codebase.securesm}" {
+grant codeBase "${codebase.securesm}" {
   permission java.security.AllPermission;
 };
 
 //// Very special jar permissions:
 //// These are dangerous permissions that we don't want to grant to everything.
 
-grant codeBase "file://${codebase.lucene}" {
-  // needed to allow MMapDirectory's "unmap hack" (die unmap hack, die)
-  // java 8
+grant codeBase "${codebase.elasticsearch}" {
+  permission java.util.PropertyPermission "*", "read,write";
+
+  // java.nio.file.TempFileHelper$PosixPermissions.<clinit>(TempFileHelper.java:69)
+  permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+
+  // java.lang.BootstrapMethodError: bootstrap method initialization exception
+  // org.elasticsearch.client.Client.<clinit>(Client.java:88)
+  permission java.lang.RuntimePermission "accessDeclaredMembers";
+
+  // filesystem walks
+  // org.elasticsearch.env.Environment.getFileStore(Environment.java:324)
+  permission java.lang.RuntimePermission "loadLibrary.nio";
+
+  // for injection
+  permission java.lang.reflect.ReflectPermission "newProxyInPackage.java.lang.invoke";
+
+  // org.elasticsearch.search.fetch.subphase.highlight.FastVectorHighlighter.<clinit> (java.text.BreakIterator)
+  permission java.lang.RuntimePermission "localeServiceProvider";
+
+  // needed to create the classloader which allows plugins to extend other plugins
+  permission java.lang.RuntimePermission "createClassLoader";
+  permission java.lang.RuntimePermission "getClassLoader";
+
+  // max direct memory check in netty
   permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
-  // java 9+
+};
+
+grant codeBase "${codebase.log4j}" {
+  permission java.util.PropertyPermission "*", "read,write";
+  permission java.lang.RuntimePermission "getClassLoader";
+  permission javax.management.MBeanTrustPermission "register";
+  // org.xbib.elasticsearch.log4j/org.apache.logging.log4j.jul.LogManager.<init>(LogManager.java:46)
+  permission java.lang.RuntimePermission "shutdownHooks";
+  permission java.lang.RuntimePermission "setContextClassLoader";
+
+  // for integration tests / plugins that play with log4j2 LoggerContext start/stop and miss JVM options
+  // at java.management/java.lang.management.ManagementFactory.getPlatformMBeanServer(ManagementFactory.java:479)
+  // at org.xbib.elasticsearch.log4j/org.apache.logging.log4j.core.jmx.Server.unregisterLoggerContext(Server.java:248)
+  // at org.xbib.elasticsearch.log4j/org.apache.logging.log4j.core.LoggerContext.stop(LoggerContext.java:340)
+  // at org.xbib.elasticsearch.log4j/org.apache.logging.log4j.core.LoggerContext$1.run(LoggerContext.java:281)
+  // at org.xbib.elasticsearch.log4j/org.apache.logging.log4j.core.util.DefaultShutdownCallbackRegistry$RegisteredCancellable.run(DefaultShutdownCallbackRegistry.java:109)
+  // at org.xbib.elasticsearch.log4j/org.apache.logging.log4j.core.util.DefaultShutdownCallbackRegistry.run(DefaultShutdownCallbackRegistry.java:74)
+  permission javax.management.MBeanServerPermission "createMBeanServer";
+  permission javax.management.MBeanPermission "*", "registerMBean, unregisterMBean";
+  permission javax.management.MBeanTrustPermission "register";
+};
+
+grant codeBase "${codebase.lucene}" {
+  // needed to allow MMapDirectory's "unmap hack" (die unmap hack, die)
+  permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
   permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.ref";
   permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
   // NOTE: also needed for RAMUsageEstimator size calculations
   permission java.lang.RuntimePermission "accessDeclaredMembers";
   // needed to allow shard shrinking to use hard-links if possible via lucenes HardlinkCopyDirectoryWrapper
   permission java.nio.file.LinkPermission "hard";
-};
 
-grant codeBase "file://${codebase.classloader}" {
-  // needed to create the classloader which allows plugins to extend other plugins
-  permission java.lang.RuntimePermission "createClassLoader";
-};
-
-grant codeBase "file://${codebase.log4j}" {
+  // org.apache.lucene.util.NamedSPILoader.reload(NamedSPILoader.java:71)
   permission java.lang.RuntimePermission "getClassLoader";
-  permission javax.management.MBeanTrustPermission "register";
-};
 
-grant codeBase "file://${codebase.elasticsearch}" {
+  // java.util.logging.LogManager.<clinit> ("org.apache.logging.log4j.jul.LogManager")
+  // org.xbib.elasticsearch.lucene/org.apache.lucene.util.IOUtils.<clinit>(IOUtils.java:56)
+  permission java.lang.RuntimePermission "shutdownHooks";
+  permission java.lang.RuntimePermission "setContextClassLoader";
+
+  // org.xbib.elasticsearch.lucene/org.apache.lucene.analysis.StopwordAnalyzerBase.<clinit>(StopwordAnalyzerBase.java:36)
   permission java.util.PropertyPermission "*", "read,write";
 };
 
@@ -132,6 +175,11 @@ grant {
   // read max virtual memory areas
   permission java.io.FilePermission "/proc/sys/vm/max_map_count", "read";
 
+  // OS release on Linux
+  permission java.io.FilePermission "/etc/os-release", "read";
+  permission java.io.FilePermission "/usr/lib/os-release", "read";
+  permission java.io.FilePermission "/etc/system-release", "read";
+
   // io stats on Linux
   permission java.io.FilePermission "/proc/self/mountinfo", "read";
   permission java.io.FilePermission "/proc/diskstats", "read";
@@ -145,9 +193,15 @@ grant {
   permission java.io.FilePermission "/sys/fs/cgroup/memory", "read";
   permission java.io.FilePermission "/sys/fs/cgroup/memory/-", "read";
 
-  // we really do not like JMX - but log4j does
-  permission javax.management.MBeanTrustPermission "register";
-  permission javax.management.MBeanServerPermission "createMBeanServer";
-  permission javax.management.MBeanPermission "*", "queryNames";
-  permission javax.management.MBeanPermission "*", "registerMBean";
+  // we need libnio read permission for filesystem traversal (but why?)
+  // linux
+  permission java.io.FilePermission "/usr/lib/jvm/java-11-openjdk-11.0.1.13-3.el7_6.x86_64/lib/libnio.so", "read";
+  permission java.io.FilePermission "/usr/lib/jvm/java-11-openjdk-11.0.2.7-0.el7_6.x86_64/lib/libnio.so", "read";
+  permission java.io.FilePermission "/usr/lib/jvm/zulu-11/lib/libnio.so", "read";
+  // mac
+  permission java.io.FilePermission "/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home/lib/libnio.dylib", "read";
+  permission java.io.FilePermission "/Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/lib/libnio.dylib", "read";
+  permission java.io.FilePermission "/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/lib/libnio.dylib", "read";
+  permission java.io.FilePermission "/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home/lib/libnio.dylib", "read";
+
 };

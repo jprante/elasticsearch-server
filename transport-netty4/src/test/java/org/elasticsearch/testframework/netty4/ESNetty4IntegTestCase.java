@@ -25,8 +25,8 @@ import org.elasticsearch.testframework.ESIntegTestCase;
 import org.elasticsearch.transport.netty4.Netty4Plugin;
 import org.elasticsearch.transport.netty4.Netty4Transport;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 public abstract class ESNetty4IntegTestCase extends ESIntegTestCase {
 
@@ -56,17 +56,19 @@ public abstract class ESNetty4IntegTestCase extends ESIntegTestCase {
     protected Settings transportClientSettings() {
         Settings.Builder builder = Settings.builder().put(super.transportClientSettings());
         builder.put(NetworkModule.TRANSPORT_TYPE_KEY, Netty4Plugin.NETTY_TRANSPORT_NAME);
-        return  builder.build();
+        return builder.build();
     }
 
     @Override
     protected Collection<Class<? extends Plugin>> nodePlugins() {
-        return Arrays.asList(Netty4Plugin.class);
+        // skip plugin - we have transport-netty4 already installed as a module ;-)
+        return Collections.emptyList();
+        //return Arrays.asList(Netty4Plugin.class);
     }
 
     @Override
     protected Collection<Class<? extends Plugin>> transportClientPlugins() {
-        return Arrays.asList(Netty4Plugin.class);
+        return Collections.singletonList(Netty4Plugin.class);
     }
 
 }

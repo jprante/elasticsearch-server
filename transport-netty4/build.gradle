@@ -6,13 +6,13 @@ import java.time.ZonedDateTime
 esplugin {
     url 'https://github.com/jprante/elasticsearch-server'
     description 'Netty 4 based transport module'
-    classname 'org.elasticsearch.transport.netty4.Netty4Plugin'
+    classname 'org.xbib.elasticsearch.transport.nettyfour/org.elasticsearch.transport.netty4.Netty4Plugin'
 }
 
 dependencies {
     compile "org.xbib.elasticsearch:netty:${property('elasticsearch-libs.version')}"
-    testCompile project(':server')
-    testCompile "org.xbib.elasticsearch:mocksocket:${property('elasticsearch-libs.version')}"
+    testCompileOnly project(':server')
+    testCompileOnly "org.xbib.elasticsearch:mocksocket:${property('elasticsearch-libs.version')}"
 }
 
 afterEvaluate {
@@ -65,18 +65,22 @@ afterEvaluate {
     }
 }
 
+configurations {
+    archives
+}
+
 artifacts {
-    archives javadocJar, sourcesJar
+    archives jar, testJar, javadocJar, sourcesJar, bundlePlugin
 }
 
 signing {
-    sign jar
-    sign sourcesJar
-    sign javadocJar
+    sign jar, testJar, javadocJar, sourcesJar, bundlePlugin
 }
 
+apply from: "${rootProject.projectDir}/gradle/publish.gradle"
+
 dependencyLicenses {
-  mapping from: /netty-.*/, to: 'netty'
+    enabled = false
 }
 
 test {
@@ -97,111 +101,94 @@ esTest {
 }
 
 integTest {
-    //  plugin 'transport-netty4' cannot be installed as a plugin, it is a system module
-    enabled = false
+    enabled = true
+
 }
 
 integTestRunner {
-    enabled = false
+    enabled = true
+    systemProperty 'java.net.preferIPv4Stack', 'true'
     systemProperty 'es.set.netty.runtime.available.processors', 'false'
 }
 
 thirdPartyAudit {
     enabled = true
     excludes = [
-            // classes are missing
-
-            'com.google.protobuf.ExtensionRegistry',
-            'com.google.protobuf.ExtensionRegistryLite',
-            'com.google.protobuf.MessageLite$Builder',
-            'com.google.protobuf.MessageLite',
-            'com.google.protobuf.MessageLiteOrBuilder',
-            'com.google.protobuf.Parser',
-            'com.google.protobuf.nano.CodedOutputByteBufferNano',
-            'com.google.protobuf.nano.MessageNano',
-
-            'com.jcraft.jzlib.Deflater',
-            'com.jcraft.jzlib.Inflater',
-            'com.jcraft.jzlib.JZlib$WrapperType',
-            'com.jcraft.jzlib.JZlib',
-
-            'com.ning.compress.BufferRecycler',
-            'com.ning.compress.lzf.ChunkDecoder',
-            'com.ning.compress.lzf.ChunkEncoder',
-            'com.ning.compress.lzf.LZFEncoder',
-            'com.ning.compress.lzf.util.ChunkDecoderFactory',
-            'com.ning.compress.lzf.util.ChunkEncoderFactory',
-
-            'io.netty.internal.tcnative.Buffer',
-            'io.netty.internal.tcnative.CertificateRequestedCallback',
-            'io.netty.internal.tcnative.CertificateVerifier',
-            'io.netty.internal.tcnative.Library',
-            'io.netty.internal.tcnative.SSL',
-            'io.netty.internal.tcnative.SSLContext',
-            'io.netty.internal.tcnative.SessionTicketKey',
-            'io.netty.internal.tcnative.SniHostNameMatcher',
-
-            'lzma.sdk.lzma.Encoder',
-            'net.jpountz.lz4.LZ4Compressor',
-            'net.jpountz.lz4.LZ4Factory',
-            'net.jpountz.lz4.LZ4FastDecompressor',
-            'net.jpountz.xxhash.StreamingXXHash32',
-            'net.jpountz.xxhash.XXHashFactory',
-
-            'org.apache.commons.logging.Log',
-            'org.apache.commons.logging.LogFactory',
-            'org.apache.log4j.Level',
-            'org.apache.log4j.Logger',
-            'org.apache.logging.log4j.Level',
-            'org.apache.logging.log4j.LogManager',
-            'org.apache.logging.log4j.Logger',
-            'org.apache.logging.log4j.spi.ExtendedLoggerWrapper',
-
-            'org.bouncycastle.asn1.x500.X500Name',
-            'org.bouncycastle.cert.X509v3CertificateBuilder',
-            'org.bouncycastle.cert.jcajce.JcaX509CertificateConverter',
-            'org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder',
-            'org.bouncycastle.jce.provider.BouncyCastleProvider',
-            'org.bouncycastle.operator.jcajce.JcaContentSignerBuilder',
-
-            'org.conscrypt.AllocatedBuffer',
-            'org.conscrypt.BufferAllocator',
-            'org.conscrypt.Conscrypt',
-            'org.conscrypt.HandshakeListener',
-
-            'org.eclipse.jetty.alpn.ALPN$ClientProvider',
-            'org.eclipse.jetty.alpn.ALPN$ServerProvider',
-            'org.eclipse.jetty.alpn.ALPN',
-            'org.eclipse.jetty.npn.NextProtoNego$ClientProvider',
-            'org.eclipse.jetty.npn.NextProtoNego$ServerProvider',
-            'org.eclipse.jetty.npn.NextProtoNego',
-
-            'org.jboss.marshalling.ByteInput',
-            'org.jboss.marshalling.ByteOutput',
-            'org.jboss.marshalling.Marshaller',
-            'org.jboss.marshalling.MarshallerFactory',
-            'org.jboss.marshalling.MarshallingConfiguration',
-            'org.jboss.marshalling.Unmarshaller',
-
-            'org.slf4j.Logger',
-            'org.slf4j.LoggerFactory',
-
-            // violations
-            'io.netty.handler.ssl.util.OpenJdkSelfSignedCertGenerator',
             'io.netty.util.internal.PlatformDependent0',
             'io.netty.util.internal.PlatformDependent0$1',
             'io.netty.util.internal.PlatformDependent0$2',
             'io.netty.util.internal.PlatformDependent0$3',
-            'io.netty.util.internal.shaded.org.jctools.queues.BaseLinkedQueueConsumerNodeRef',
-            'io.netty.util.internal.shaded.org.jctools.queues.BaseLinkedQueueProducerNodeRef',
-            'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueColdProducerFields',
-            'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueConsumerFields',
-            'io.netty.util.internal.shaded.org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields',
-            'io.netty.util.internal.shaded.org.jctools.queues.LinkedQueueNode',
-            'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueConsumerIndexField',
-            'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerIndexField',
-            'io.netty.util.internal.shaded.org.jctools.queues.MpscArrayQueueProducerLimitField',
-            'io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess',
-            'io.netty.util.internal.shaded.org.jctools.util.UnsafeRefArrayAccess'
+            'io.netty.util.internal.PlatformDependent0$5',
+            'org.jctools.maps.ConcurrentAutoTable$CAT',
+            'org.jctools.maps.NonBlockingHashMap',
+            'org.jctools.maps.NonBlockingHashMapLong$CHM',
+            'org.jctools.maps.NonBlockingHashMapLong',
+            'org.jctools.maps.NonBlockingIdentityHashMap',
+            'org.jctools.maps.NonBlockingSetInt',
+            'org.jctools.maps.NonBlockingSetInt$NBSI',
+            'org.jctools.queues.BaseLinkedQueueConsumerNodeRef',
+            'org.jctools.queues.BaseLinkedQueueProducerNodeRef',
+            'org.jctools.queues.BaseMpscLinkedArrayQueueConsumerFields',
+            'org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields',
+            'org.jctools.queues.BaseMpscLinkedArrayQueueColdProducerFields',
+            'org.jctools.queues.BaseSpscLinkedArrayQueueConsumerField',
+            'org.jctools.queues.BaseSpscLinkedArrayQueueProducerFields',
+            'org.jctools.queues.ConcurrentSequencedCircularArrayQueue',
+            'org.jctools.queues.LinkedQueueNode',
+            'org.jctools.queues.MpmcArrayQueueConsumerIndexField',
+            'org.jctools.queues.MpmcArrayQueueProducerIndexField',
+            'org.jctools.queues.MpscArrayQueueProducerIndexField',
+            'org.jctools.queues.MpscArrayQueueConsumerIndexField',
+            'org.jctools.queues.MpscArrayQueueProducerLimitField',
+            'org.jctools.queues.MpscLinkedQueue7',
+            'org.jctools.queues.MpscLinkedQueue8',
+            'org.jctools.queues.SpmcArrayQueueConsumerIndexField',
+            'org.jctools.queues.SpmcArrayQueueProducerIndexField',
+            'org.jctools.queues.SpscArrayQueueConsumerIndexField',
+            'org.jctools.queues.SpscArrayQueueProducerIndexFields',
+            'org.jctools.util.UnsafeRefArrayAccess',
+            'org.jctools.util.UnsafeAccess',
+            'org.jctools.util.UnsafeJvmInfo'
+    ]
+}
+
+forbiddenApis {
+    enabled = true
+    excludes = [
+            'io.netty.util.internal.PlatformDependent0',
+            'io.netty.util.internal.PlatformDependent0$1',
+            'io.netty.util.internal.PlatformDependent0$2',
+            'io.netty.util.internal.PlatformDependent0$3',
+            'io.netty.util.internal.PlatformDependent0$5',
+            'org.jctools.maps.ConcurrentAutoTable$CAT',
+            'org.jctools.maps.NonBlockingHashMap',
+            'org.jctools.maps.NonBlockingHashMapLong$CHM',
+            'org.jctools.maps.NonBlockingHashMapLong',
+            'org.jctools.maps.NonBlockingIdentityHashMap',
+            'org.jctools.maps.NonBlockingSetInt',
+            'org.jctools.maps.NonBlockingSetInt$NBSI',
+            'org.jctools.queues.BaseLinkedQueueConsumerNodeRef',
+            'org.jctools.queues.BaseLinkedQueueProducerNodeRef',
+            'org.jctools.queues.BaseMpscLinkedArrayQueueConsumerFields',
+            'org.jctools.queues.BaseMpscLinkedArrayQueueProducerFields',
+            'org.jctools.queues.BaseMpscLinkedArrayQueueColdProducerFields',
+            'org.jctools.queues.BaseSpscLinkedArrayQueueConsumerField',
+            'org.jctools.queues.BaseSpscLinkedArrayQueueProducerFields',
+            'org.jctools.queues.ConcurrentSequencedCircularArrayQueue',
+            'org.jctools.queues.LinkedQueueNode',
+            'org.jctools.queues.MpmcArrayQueueConsumerIndexField',
+            'org.jctools.queues.MpmcArrayQueueProducerIndexField',
+            'org.jctools.queues.MpscArrayQueueProducerIndexField',
+            'org.jctools.queues.MpscArrayQueueConsumerIndexField',
+            'org.jctools.queues.MpscArrayQueueProducerLimitField',
+            'org.jctools.queues.MpscLinkedQueue7',
+            'org.jctools.queues.MpscLinkedQueue8',
+            'org.jctools.queues.SpmcArrayQueueConsumerIndexField',
+            'org.jctools.queues.SpmcArrayQueueProducerIndexField',
+            'org.jctools.queues.SpscArrayQueueConsumerIndexField',
+            'org.jctools.queues.SpscArrayQueueProducerIndexFields',
+            'org.jctools.util.UnsafeRefArrayAccess',
+            'org.jctools.util.UnsafeAccess',
+            'org.jctools.util.UnsafeJvmInfo'
     ]
 }

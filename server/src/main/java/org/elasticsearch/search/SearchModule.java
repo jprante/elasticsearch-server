@@ -592,6 +592,9 @@ public class SearchModule {
 
     private Map<String, Highlighter> setupHighlighters(Settings settings, List<SearchPlugin> plugins) {
         NamedRegistry<Highlighter> highlighters = new NamedRegistry<>("highlighter");
+        // removed because of
+        // Caused by: java.lang.NullPointerException
+        // at sun.util.resources.BreakIteratorResourceBundle.handleGetObject(BreakIteratorResourceBundle.java:76) ~[?:?]
         highlighters.register("fvh",  new FastVectorHighlighter(settings));
         highlighters.register("plain", new PlainHighlighter());
         highlighters.register("unified", new UnifiedHighlighter());

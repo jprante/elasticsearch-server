@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import org.apache.logging.log4j.LogManager;
 import org.elasticsearch.Version;
 import org.elasticsearch.cli.Terminal;
 import org.elasticsearch.cluster.ClusterName;
@@ -43,6 +44,9 @@ import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.io.PathUtils;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.settings.SettingsException;
+import org.elasticsearch.common.xcontent.ToXContent;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.env.Environment;
 
 public class InternalSettingsPreparer {
@@ -98,7 +102,7 @@ public class InternalSettingsPreparer {
         try {
             final Set<FileVisitOption> options = EnumSet.of(FileVisitOption.FOLLOW_LINKS);
             PathMatcher pathMatcher = PathUtils.getDefaultFileSystem()
-                    .getPathMatcher("glob:**/elasticsearch*config.{json,yml,yaml}");
+                    .getPathMatcher("glob:**/elasticsearch.{json,yml,yaml}");
             Files.walkFileTree(environment.configFile(), options, 2, new SimpleFileVisitor<Path>() {
 
                 @Override
@@ -140,7 +144,17 @@ public class InternalSettingsPreparer {
 
         // we put back the path.logs so we can use it in the logging configuration file
         builder.put(Environment.PATH_LOGS_SETTING.getKey(), environment.logsFile().toAbsolutePath().normalize().toString());
-        return new Environment(builder.build(), configPath);
+
+        Settings settings = builder.build();
+        try {
+            XContentBuilder xContentBuilder = JsonXContent.contentBuilder();
+            settings.toXContent(xContentBuilder, ToXContent.EMPTY_PARAMS);
+            LogManager.getLogger("internal").info("settings = " + Strings.toString(xContentBuilder));
+        } catch (IOException e) {
+            // ignore
+        }
+
+        return new Environment(settings, configPath);
     }
 
     /**

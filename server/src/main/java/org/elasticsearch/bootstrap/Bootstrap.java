@@ -74,14 +74,11 @@ public final class Bootstrap {
 
     /** creates a new instance */
     public Bootstrap() {
-        keepAliveThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    keepAliveLatch.await();
-                } catch (InterruptedException e) {
-                    // bail out
-                }
+        keepAliveThread = new Thread(() -> {
+            try {
+                keepAliveLatch.await();
+            } catch (InterruptedException e) {
+                // bail out
             }
         }, "elasticsearch[keepAlive/" + Version.CURRENT + "]");
         keepAliveThread.setDaemon(false);
@@ -206,12 +203,14 @@ public final class Bootstrap {
         IfConfig.logIfNecessary();
 
         // install SM after natives, shutdown hooks, etc.
-        try {
-            final Logger logger = ESLoggerFactory.getLogger(Bootstrap.class);
-            logger.info("configuring security manager");
-            Security.configure(environment, BootstrapSettings.SECURITY_FILTER_BAD_DEFAULTS_SETTING.get(settings));
-        } catch (IOException | URISyntaxException e) {
-            throw new BootstrapException(e);
+        if ("true".equals(System.getProperty("java.security.manager", "true"))) {
+            try {
+                final Logger logger = ESLoggerFactory.getLogger(Bootstrap.class);
+                logger.info("configuring Elasticsearch security manager");
+                Security.configure(environment, BootstrapSettings.SECURITY_FILTER_BAD_DEFAULTS_SETTING.get(settings));
+            } catch (IOException | URISyntaxException e) {
+                throw new BootstrapException(e);
+            }
         }
 
         node = new Node(environment) {
@@ -279,7 +278,7 @@ public final class Bootstrap {
     }
 
     /**
-     * This method is invoked by {@link Elasticsearch#main(String[])} to startup elasticsearch.
+     * This method is invoked to startup elasticsearch.
      */
     public static void init(
             final boolean foreground,

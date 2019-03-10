@@ -8,3 +8,8 @@
 -Dio.netty.recycler.maxCapacity=0
 -Dio.netty.noKeySetOptimization=true
 -Djna.nosys=true
+--add-modules=jdk.unsupported
+--add-exports=jdk.unsupported/sun.misc=org.xbib.elasticsearch.lucene
+--add-exports=java.base/jdk.internal.ref=org.xbib.elasticsearch.lucene
+--add-exports=java.base/jdk.internal.misc=org.xbib.elasticsearch.lucene
+--add-exports=java.base/sun.nio.ch=org.xbib.elasticsearch.lucene

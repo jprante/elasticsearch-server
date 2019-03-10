@@ -34,7 +34,6 @@ import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.component.AbstractComponent;
 import org.elasticsearch.common.component.LifecycleComponent;
-import org.elasticsearch.common.inject.Module;
 import org.elasticsearch.common.io.FileSystemUtils;
 import org.elasticsearch.common.logging.ESLoggerFactory;
 import org.elasticsearch.common.logging.Loggers;
@@ -46,13 +45,15 @@ import org.elasticsearch.threadpool.ExecutorBuilder;
 import org.elasticsearch.transport.TcpTransport;
 
 import java.io.IOException;
+import java.lang.module.Configuration;
+import java.lang.module.ModuleFinder;
+import java.lang.module.ModuleReference;
 import java.lang.reflect.Constructor;
 import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -101,7 +102,8 @@ public class PluginsService extends AbstractComponent {
      * @param pluginsDirectory The directory plugins exist in, or null if plugins should not be loaded from the filesystem
      * @param classpathPlugins Plugins that exist in the classpath which should be loaded
      */
-    public PluginsService(Settings settings, Path configPath, Path modulesDirectory, Path pluginsDirectory, Collection<Class<? extends Plugin>> classpathPlugins) {
+    public PluginsService(Settings settings, Path configPath, Path modulesDirectory, Path pluginsDirectory,
+                          Collection<Class<? extends Plugin>> classpathPlugins) {
         super(settings);
 
         this.configPath = configPath;
@@ -237,8 +239,8 @@ public class PluginsService extends AbstractComponent {
         return builder.put(this.settings).build();
     }
 
-    public Collection<Module> createGuiceModules() {
-        List<Module> modules = new ArrayList<>();
+    public Collection<org.elasticsearch.common.inject.Module> createGuiceModules() {
+        List<org.elasticsearch.common.inject.Module> modules = new ArrayList<>();
         for (Tuple<PluginInfo, Plugin> plugin : plugins) {
             modules.addAll(plugin.v2().createGuiceModules());
         }
@@ -287,22 +289,22 @@ public class PluginsService extends AbstractComponent {
     // really should be 1-1, but we are not so fortunate
     public static class Bundle implements BundleCollection {
         final PluginInfo plugin;
-        final Set<URL> urls;
+        final Set<URI> uris;
 
         public Bundle(PluginInfo plugin, Path dir) throws IOException {
             this.plugin = Objects.requireNonNull(plugin);
-            Set<URL> urls = new LinkedHashSet<>();
+            Set<URI> uris = new LinkedHashSet<>();
             // gather urls for jar files
             try (DirectoryStream<Path> jarStream = Files.newDirectoryStream(dir, "*.jar")) {
                 for (Path jar : jarStream) {
                     // normalize with toRealPath to get symlinks out of our hair
-                    URL url = jar.toRealPath().toUri().toURL();
-                    if (urls.add(url) == false) {
-                        throw new IllegalStateException("duplicate codebase: " + url);
+                    URI uri = jar.toRealPath().toUri();
+                    if (uris.add(uri) == false) {
+                        throw new IllegalStateException("duplicate codebase: " + uri);
                     }
                 }
             }
-            this.urls = Objects.requireNonNull(urls);
+            this.uris = Objects.requireNonNull(uris);
         }
 
         @Override
@@ -547,14 +549,13 @@ public class PluginsService extends AbstractComponent {
 
     private List<Tuple<PluginInfo,Plugin>> loadBundles(Set<Bundle> bundles) {
         List<Tuple<PluginInfo, Plugin>> plugins = new ArrayList<>();
-        Map<String, Plugin> loaded = new HashMap<>();
         Map<String, Set<URI>> transitiveUris = new HashMap<>();
         List<Bundle> sortedBundles = sortBundles(bundles);
-
+        Map<String, Plugin> loadedPlugins = new HashMap<>();
+        Map<String, Bundle> loadedBundles = new HashMap<>();
         for (Bundle bundle : sortedBundles) {
             checkBundleJarHell(bundle, transitiveUris);
-
-            final Plugin plugin = loadBundle(bundle, loaded);
+            final Plugin plugin = loadBundle(bundle, loadedPlugins, loadedBundles);
             plugins.add(new Tuple<>(bundle.plugin, plugin));
         }
 
@@ -582,8 +583,8 @@ public class PluginsService extends AbstractComponent {
                 }
 
                 intersection = new HashSet<>();
-                for (URL url : bundle.urls) {
-                    intersection.add(url.toURI());
+                for (URI uri : bundle.uris) {
+                    intersection.add(uri);
                 }
                 intersection.retainAll(pluginUris);
                 if (intersection.isEmpty() == false) {
@@ -595,8 +596,8 @@ public class PluginsService extends AbstractComponent {
                 JarHell.checkJarHell(uris, logger::debug); // check jarhell as we add each extended plugin's urls
             }
 
-            for (URL url : bundle.urls) {
-                uris.add(url.toURI());
+            for (URI uri : bundle.uris) {
+                uris.add(uri);
             }
             JarHell.checkJarHell(uris, logger::debug); // check jarhell of each extended plugin against this plugin
             transitiveUris.put(bundle.plugin.getName(), uris);
@@ -604,14 +605,14 @@ public class PluginsService extends AbstractComponent {
             Set<URI> classpath = JarHell.parseClassPath();
             // check we don't have conflicting codebases with core
             Set<URI> intersection = new HashSet<>(classpath);
-            intersection.retainAll(bundle.urls);
+            intersection.retainAll(bundle.uris);
             if (intersection.isEmpty() == false) {
                 throw new IllegalStateException("jar hell! duplicate codebases between plugin and core: " + intersection);
             }
             // check we don't have conflicting classes
             Set<URI> union = new HashSet<>(classpath);
-            for (URL url : bundle.urls) {
-                union.add(url.toURI());
+            for (URI uri : bundle.uris) {
+                union.add(uri);
             }
             JarHell.checkJarHell(union, logger::debug);
         } catch (Exception e) {
@@ -619,37 +620,61 @@ public class PluginsService extends AbstractComponent {
         }
     }
 
-    private Plugin loadBundle(Bundle bundle, Map<String, Plugin> loaded) {
+    private Plugin loadBundle(Bundle bundle, Map<String, Plugin> loadedPlugins, Map<String, Bundle> loadedBundles) {
         String name = bundle.plugin.getName();
-
         verifyCompatibility(bundle.plugin);
-
-        // collect loaders of extended plugins
-        List<ClassLoader> extendedLoaders = new ArrayList<>();
+        List<URI> uris = new ArrayList<>(bundle.uris);
         for (String extendedPluginName : bundle.plugin.getExtendedPlugins()) {
-            Plugin extendedPlugin = loaded.get(extendedPluginName);
-            assert extendedPlugin != null;
+            Plugin extendedPlugin = loadedPlugins.get(extendedPluginName);
             if (ExtensiblePlugin.class.isInstance(extendedPlugin) == false) {
                 throw new IllegalStateException("Plugin [" + name + "] cannot extend non-extensible plugin [" + extendedPluginName + "]");
             }
-            extendedLoaders.add(extendedPlugin.getClass().getClassLoader());
+            Bundle extendedPluginBundle = loadedBundles.get(extendedPluginName);
+            uris.addAll(extendedPluginBundle.uris);
         }
 
         // create a child to load the plugin in this bundle
-        ClassLoader parentLoader = PluginLoaderIndirection.createLoader(getClass().getClassLoader(), extendedLoaders);
-        ClassLoader loader = URLClassLoader.newInstance(bundle.urls.toArray(new URL[0]), parentLoader);
+        //ClassLoader parentLoader = PluginLoaderIndirection.createLoader(getClass().getClassLoader(), extendedLoaders);
+        //ClassLoader loader = URLClassLoader.newInstance(bundle.urls.toArray(new URL[0]), parentLoader);
+        ClassLoader loader = createClassLoader(bundle.plugin.getModulename(), uris);
 
         // reload SPI with any new services from the plugin
         reloadLuceneSPI(loader);
         for (String extendedPluginName : bundle.plugin.getExtendedPlugins()) {
             // note: already asserted above that extended plugins are loaded and extensible
-            ExtensiblePlugin.class.cast(loaded.get(extendedPluginName)).reloadSPI(loader);
+            ((ExtensiblePlugin) loadedPlugins.get(extendedPluginName)).reloadSPI(loader);
         }
+        try {
+            Class<? extends Plugin> pluginClass = loader.loadClass(bundle.plugin.getClassname()).asSubclass(Plugin.class);
+            Plugin plugin = loadPlugin(pluginClass, settings, configPath);
+            loadedBundles.put(name, bundle);
+            loadedPlugins.put(name, plugin);
+            return plugin;
+        } catch (ClassNotFoundException e) {
+            throw new ElasticsearchException("Could not find plugin class [" + bundle.plugin.getClassname() + "]", e);
+        }
+    }
 
-        Class<? extends Plugin> pluginClass = loadPluginClass(bundle.plugin.getClassname(), loader);
-        Plugin plugin = loadPlugin(pluginClass, settings, configPath);
-        loaded.put(name, plugin);
-        return plugin;
+    private ClassLoader createClassLoader(String name, Collection<URI> uris) {
+        Path[] entries = uris.stream().map(Paths::get).toArray(Path[]::new);
+        ModuleFinder moduleFinder = ModuleFinder.of(entries);
+        Set<ModuleReference> moduleReferences = moduleFinder.findAll();
+        Set<String> moduleNames = moduleReferences.stream()
+                .map(ref -> ref.descriptor().name())
+                .collect(Collectors.toSet());
+        logger.info("plugin module name = {} uris = {} module names = {}", name, uris, moduleNames);
+        if (moduleNames.isEmpty()) {
+            throw new IllegalArgumentException("no module found in " + uris); // no module found, no classloader
+        }
+        if (!moduleNames.contains(name)) {
+            throw new IllegalArgumentException("module name " + name + " not found in " + moduleNames); // no module found, no classloader
+        }
+        ModuleLayer boot = ModuleLayer.boot();
+        Configuration configuration = boot.configuration().resolve(moduleFinder, ModuleFinder.of(), moduleNames);
+        ModuleLayer moduleLayer = boot.defineModulesWithOneLoader(configuration, getClass().getClassLoader());
+        //ModuleLayer.Controller controller =
+        //        ModuleLayer.defineModulesWithOneLoader(configuration, List.of(boot), getClass().getClassLoader());
+        return moduleLayer.findLoader(name);
     }
 
     /**
@@ -657,7 +682,7 @@ public class PluginsService extends AbstractComponent {
      * This method must be called after the new classloader has been created to
      * register the services for use.
      */
-    static void reloadLuceneSPI(ClassLoader loader) {
+    private static void reloadLuceneSPI(ClassLoader loader) {
         // do NOT change the order of these method calls!
 
         // Codecs:
@@ -668,14 +693,6 @@ public class PluginsService extends AbstractComponent {
         CharFilterFactory.reloadCharFilters(loader);
         TokenFilterFactory.reloadTokenFilters(loader);
         TokenizerFactory.reloadTokenizers(loader);
-    }
-
-    private Class<? extends Plugin> loadPluginClass(String className, ClassLoader loader) {
-        try {
-            return loader.loadClass(className).asSubclass(Plugin.class);
-        } catch (ClassNotFoundException e) {
-            throw new ElasticsearchException("Could not find plugin class [" + className + "]", e);
-        }
     }
 
     private Plugin loadPlugin(Class<? extends Plugin> pluginClass, Settings settings, Path configPath) {

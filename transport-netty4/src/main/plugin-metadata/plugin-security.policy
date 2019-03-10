@@ -17,34 +17,42 @@
  * under the License.
  */
 
-grant codeBase "${codebase.netty-common}" {
+grant codeBase "${codebase.transport-netty4}" {
+  // for detecting max direct memory
+  // org.xbib.elasticsearch.transport.nettyfour/org.elasticsearch.transport.netty4.Netty4Transport.<clinit>(Netty4Transport.java:263)
+  permission java.lang.RuntimePermission "accessDeclaredMembers";
+  permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
+};
+
+grant codeBase "${codebase.netty}" {
    // for reading the system-wide configuration for the backlog of established sockets
    permission java.io.FilePermission "/proc/sys/net/core/somaxconn", "read";
 
    // netty makes and accepts socket connections
-   permission java.net.SocketPermission "*", "accept,connect";
+   permission java.net.SocketPermission "*", "accept,connect,listen,resolve";
 
-   // GlobalEventExecutor (4.1.28) uses class loader get/set
+   // Netty GlobalEventExecutor uses class loader get/set
    permission java.lang.RuntimePermission "getClassLoader";
    permission java.lang.RuntimePermission "setContextClassLoader";
 
-   // allow native epoll library loading by io.netty.util.internal.NativeLibraryLoader
-   //permission java.lang.RuntimePermission "loadLibrary.*";
-   //permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
-   //permission java.lang.RuntimePermission "accessClassInPackage.sun.nio.ch";
-   // Java 10: allow sun.misc.Unsafe
-   //permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
-   //permission java.lang.RuntimePermission "accessDeclaredMembers";
-   //permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.misc";
-};
+   permission java.lang.RuntimePermission "accessDeclaredMembers";
+   permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.misc";
 
-grant codeBase "${codebase.netty-transport}" {
    // Netty NioEventLoop wants to change this, because of https://bugs.openjdk.java.net/browse/JDK-6427854
    // the bug says it only happened rarely, and that its fixed, but apparently it still happens rarely!
    permission java.util.PropertyPermission "sun.nio.ch.bugLevel", "write";
-};
 
-grant codeBase "${codebase.netty-transport-native-epoll}" {
    permission java.lang.RuntimePermission "loadLibrary.*";
    permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+
+   // io.netty.channel.nio.NioEventLoopGroup.<init>(NioEventLoopGroup.java:59)
+   // org.elasticsearch.transport.netty4.Netty4Transport.createBootstrap(Netty4Transport.java:170
+   permission java.lang.RuntimePermission "selectorProvider";
+
+   // io.netty.bootstrap.AbstractBootstrap.bind(AbstractBootstrap.java:278)
+   // org.elasticsearch.transport.netty4.Netty4Transport.bind(Netty4Transport.java:305)
+   permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.reflect";
+
+   // org.xbib.elasticsearch.netty/io.netty.util.internal.PlatformDependent.maxDirectMemory0(PlatformDependent.java:1017)
+   permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
 };

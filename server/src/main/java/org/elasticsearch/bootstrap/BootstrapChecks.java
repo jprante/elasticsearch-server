@@ -51,9 +51,12 @@ import java.util.function.Predicate;
  * pass.
  *
  * Removed checks:
- *   - heap min/max (is managed by Java 10)
- *   - Client JVM (there is no client VM in Java 10)
- *   - G1GC (works on Java 10)
+ *   - heap min/max (is managed by Java 11)
+ *   - Client JVM (there is no client VM in Java 11)
+ *   - G1GC (default on Java 11)
+ *
+ * Modified checks:
+ *   - minimum number of threads to 2048 (on a 32 core machine, it results in 64 threads per core)
  */
 public final class BootstrapChecks {
 
@@ -278,8 +281,8 @@ public final class BootstrapChecks {
 
     public static class MaxNumberOfThreadsCheck implements BootstrapCheck {
 
-        // this should be plenty for machines up to 256 cores
-        private static final long MAX_NUMBER_OF_THREADS_THRESHOLD = 1 << 12;
+        // maximum is 2048 threads, should be enough on 36 core machines
+        private static final long MAX_NUMBER_OF_THREADS_THRESHOLD = 2048L;
 
         @Override
         public BootstrapCheckResult check(BootstrapContext context) {

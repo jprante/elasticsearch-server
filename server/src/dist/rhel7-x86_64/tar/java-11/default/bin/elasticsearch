@@ -8,7 +8,7 @@ profile="${profile}"
 # declare JDKs here (for early exit to avoid ugly class file error message)
 
 jdk_versions=(
-  "11-ea" "11.0.1"
+  "11-ea" "11.0.1" "11.0.2"
 )
 
 parse_jvm_options() {

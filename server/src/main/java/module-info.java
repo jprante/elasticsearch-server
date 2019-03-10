@@ -330,7 +330,6 @@ module org.xbib.elasticsearch.server {
 
     requires org.xbib.elasticsearch.jna;
     requires org.xbib.elasticsearch.log4j;
-    requires org.xbib.elasticsearch.classloader;
     requires org.xbib.elasticsearch.securesm;
     requires org.xbib.elasticsearch.joda;
     requires org.xbib.elasticsearch.jts;

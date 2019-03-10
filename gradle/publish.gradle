@@ -1,5 +1,5 @@
-
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 configurations {
     wagon

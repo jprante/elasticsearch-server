@@ -1,22 +1,22 @@
 
-grant codeBase "file://${codebase.elasticsearch}" {
+grant codeBase "${codebase.elasticsearch}" {
     // needed by mockito/bytebuddy for creating mocks with the protection domain
     permission java.lang.RuntimePermission "accessDeclaredMembers";
     permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 };
 
-grant codeBase "file://${codebase.elasticsearch-tests}" {
+grant codeBase "${codebase.elasticsearch-tests}" {
     permission java.lang.RuntimePermission "accessDeclaredMembers";
     permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 };
 
-grant codeBase "file://${codebase.elasticsearch-test-framework}" {
+grant codeBase "${codebase.elasticsearch-test-framework}" {
     permission java.lang.RuntimePermission "accessDeclaredMembers";
     permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
     permission java.io.FilePermission "*", "read";
 };
 
-grant codeBase "file://${codebase.lucene}" {
+grant codeBase "${codebase.lucene}" {
     // needed for RAMUsageTester
     // org.apache.lucene.util.RamUsageEstimator$1.run
     permission java.lang.RuntimePermission "accessDeclaredMembers";
@@ -24,7 +24,7 @@ grant codeBase "file://${codebase.lucene}" {
     permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 };
 
-grant codeBase "file://${codebase.lucene-test-framework}" {
+grant codeBase "${codebase.lucene-test-framework}" {
     // needed by RamUsageTester
     permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
     permission java.lang.RuntimePermission "accessDeclaredMembers";
@@ -34,12 +34,12 @@ grant codeBase "file://${codebase.lucene-test-framework}" {
     permission java.io.FilePermission "*", "read";
 };
 
-grant codeBase "file://${codebase.randomizedtesting-junit4-ant}" {
+grant codeBase "${codebase.randomizedtesting-junit4-ant}" {
     permission java.lang.RuntimePermission "accessDeclaredMembers";
     permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 };
 
-grant codeBase "file://${codebase.randomizedtesting}" {
+grant codeBase "${codebase.randomizedtesting}" {
     permission org.elasticsearch.secure_sm.ThreadPermission "modifyArbitraryThreadGroup";
     // needed to fail tests on uncaught exceptions from other threads
     permission java.lang.RuntimePermission "setDefaultUncaughtExceptionHandler";
@@ -49,12 +49,12 @@ grant codeBase "file://${codebase.randomizedtesting}" {
     permission java.lang.RuntimePermission "accessDeclaredMembers";
 };
 
-grant codeBase "file://${codebase.junit}" {
+grant codeBase "${codebase.junit}" {
     // needed for TestClass creation
     permission java.lang.RuntimePermission "accessDeclaredMembers";
 };
 
-grant codeBase "file://${codebase.securemock}" {
+grant codeBase "${codebase.securemock}" {
     // needed to access ReflectionFactory
     permission java.lang.RuntimePermission "accessClassInPackage.sun.reflect";
     // needed to define classes
@@ -70,24 +70,24 @@ grant codeBase "file://${codebase.securemock}" {
     permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.ref";
 };
 
-grant codeBase "file://${codebase.mocksocket}" {
+grant codeBase "${codebase.mocksocket}" {
     // mocksocket makes and accepts socket connections
     permission java.net.SocketPermission "*", "accept,connect";
 };
 
-grant codeBase "file://${codebase.elasticsearch-rest-client}" {
+grant codeBase "${codebase.elasticsearch-rest-client}" {
     // rest makes socket connections for rest tests
     permission java.net.SocketPermission "*", "connect";
     // rest client uses system properties which gets the default proxy
     permission java.net.NetPermission "getProxySelector";
 };
 
-grant codeBase "file://${codebase.httpcore-nio}" {
+grant codeBase "${codebase.httpcore-nio}" {
     // httpcore makes socket connections for rest tests
     permission java.net.SocketPermission "*", "connect";
 };
 
-grant codeBase "file://${codebase.httpasyncclient}" {
+grant codeBase "${codebase.httpasyncclient}" {
     // httpasyncclient makes socket connections for rest tests
     permission java.net.SocketPermission "*", "connect";
     // rest client uses system properties which gets the default proxy

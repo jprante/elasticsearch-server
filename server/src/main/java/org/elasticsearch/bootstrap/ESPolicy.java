@@ -23,12 +23,9 @@ import org.apache.logging.log4j.Logger;
 import org.elasticsearch.common.SuppressForbidden;
 import org.elasticsearch.common.logging.ESLoggerFactory;
 
-import java.io.FilePermission;
-import java.io.IOException;
 import java.net.SocketPermission;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.CodeSource;
 import java.security.NoSuchAlgorithmException;
 import java.security.Permission;
@@ -40,23 +37,30 @@ import java.security.URIParameter;
 import java.util.Map;
 import java.util.function.Predicate;
 
-/** custom policy for union of static and dynamic permissions */
+/**
+ * Custom policy for union of static and dynamic permissions.
+ */
 public final class ESPolicy extends Policy {
 
     private static final Logger logger = ESLoggerFactory.getLogger(ESPolicy.class);
 
-    /** template policy file, the one used in tests */
-    static final String POLICY_RESOURCE = "security.policy";
+    /** template policy file */
+    private static final String POLICY_RESOURCE = "security.policy";
+
     /** limited policy for scripts */
-    static final String UNTRUSTED_RESOURCE = "untrusted.policy";
+    private static final String UNTRUSTED_RESOURCE = "untrusted.policy";
 
-    final Policy template;
-    final Policy untrusted;
-    final Policy system;
-    final PermissionCollection dynamic;
-    final Map<String,Policy> plugins;
+    private final Policy template;
 
-    public ESPolicy(PermissionCollection dynamic, Map<String,Policy> plugins, boolean filterBadDefaults)
+    private final Policy untrusted;
+
+    private final Policy system;
+
+    private final PermissionCollection dynamic;
+
+    private final Map<URI, Policy> plugins;
+
+    public ESPolicy(PermissionCollection dynamic, Map<URI, Policy> plugins, boolean filterBadDefaults)
             throws URISyntaxException {
         logger.info("reading policy: " + POLICY_RESOURCE);
         this.template = readPolicy(getClass().getResource(POLICY_RESOURCE).toURI());
@@ -83,45 +87,40 @@ public final class ESPolicy extends Policy {
         }
     }
 
-    @Override @SuppressForbidden(reason = "fast equals check is desired")
+    @Override
+    @SuppressForbidden(reason = "fast equals check is desired")
     public boolean implies(ProtectionDomain domain, Permission permission) {
         CodeSource codeSource = domain.getCodeSource();
         // codesource can be null when reducing privileges via doPrivileged()
         if (codeSource == null) {
             return false;
         }
-
-        URL location = codeSource.getLocation();
-        // location can be null... ??? nobody knows
-        // https://bugs.openjdk.java.net/browse/JDK-8129972
-        if (location != null) {
-            // run scripts with limited permissions
-            if (BootstrapInfo.UNTRUSTED_CODEBASE.equals(location.getFile())) {
-                return untrusted.implies(domain, permission);
-            }
-            // check for an additional plugin permission: plugin policy is
-            // only consulted for its codesources.
-            Policy plugin = plugins.get(location.getFile());
-            if (plugin != null && plugin.implies(domain, permission)) {
-                return true;
-            }
-        }
-
-        // Special handling for broken Hadoop code: "let me execute or my classes will not load"
-        // yeah right, REMOVE THIS when hadoop is fixed
-        if (permission instanceof FilePermission && "<<ALL FILES>>".equals(permission.getName())) {
-            for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                if ("org.apache.hadoop.util.Shell".equals(element.getClassName()) &&
-                      "runCommand".equals(element.getMethodName())) {
-                    // we found the horrible method: the hack begins!
-                    // force the hadoop code to back down, by throwing an exception that it catches.
-                    rethrow(new IOException("no hadoop, you cannot do this."));
+        try {
+            // location can be null... ??? nobody knows
+            // https://bugs.openjdk.java.net/browse/JDK-8129972
+            if (codeSource.getLocation() != null) {
+                URI location = codeSource.getLocation().toURI();
+                // run scripts with limited permissions
+                if (BootstrapInfo.UNTRUSTED_CODEBASE.equals(location.getPath())) {
+                    return untrusted.implies(domain, permission);
                 }
+                // check for an additional plugin permission
+                Policy pluginPolicy = plugins.get(location);
+                if (pluginPolicy != null) {
+                    return pluginPolicy.implies(domain, permission) ||
+                            template.implies(domain, permission) ||
+                            dynamic.implies(permission) ||
+                            system.implies(domain, permission);
+                }
+            } else {
+                logger.warn("location is null for code source " + codeSource);
             }
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("location URI fails for " + codeSource);
         }
-
-        // otherwise defer to template + dynamic file permissions
-        return template.implies(domain, permission) || dynamic.implies(permission) || system.implies(domain, permission);
+        return template.implies(domain, permission) ||
+                dynamic.implies(permission) ||
+                system.implies(domain, permission);
     }
 
     /**
@@ -131,13 +130,6 @@ public final class ESPolicy extends Policy {
         private void rethrow(Throwable t) throws T {
             throw (T) t;
         }
-    }
-
-    /**
-     * Rethrows <code>t</code> (identical object).
-     */
-    private void rethrow(Throwable t) {
-        new Rethrower<Error>().rethrow(t);
     }
 
     @Override
@@ -206,7 +198,8 @@ public final class ESPolicy extends Policy {
     //  from this policy file or further restrict it to code sources
     //  that you specify, because Thread.stop() is potentially unsafe."
     // not even sure this method still works...
-    private static final Permission BAD_DEFAULT_NUMBER_ONE = new BadDefaultPermission(new RuntimePermission("stopThread"), p -> true);
+    private static final Permission BAD_DEFAULT_NUMBER_ONE =
+            new BadDefaultPermission(new RuntimePermission("stopThread"), p -> true);
 
     // default policy file states:
     // "allows anyone to listen on dynamic ports"

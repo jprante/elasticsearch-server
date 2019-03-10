@@ -7,7 +7,7 @@ profile="${profile}"
 # declare valid JDKs here
 
 jdk_versions=(
-  "11-ea" "11.0.1"
+  "11-ea" "11.0.1" "11.0.2"
 )
 
 parse_jvm_options() {
