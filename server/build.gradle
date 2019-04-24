@@ -163,7 +163,7 @@ test {
             '--module-path', classpath.asPath,
             '--add-modules', 'ALL-MODULE-PATH',
             '--add-reads', "org.xbib.elasticsearch.server=junit",
-            '--patch-module', "org.xbib.elasticsearch.server=" + files(sourceSets.test.java.outputDir).asPath,
+            //'--patch-module', "org.xbib.elasticsearch.server=" + files(sourceSets.test.java.outputDir).asPath,
     ]
 
     exclude '**/*$*.class'

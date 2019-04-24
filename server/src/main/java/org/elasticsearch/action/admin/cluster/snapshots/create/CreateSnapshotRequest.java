@@ -42,7 +42,7 @@ import static org.elasticsearch.common.Strings.EMPTY_ARRAY;
 import static org.elasticsearch.common.settings.Settings.readSettingsFromStream;
 import static org.elasticsearch.common.settings.Settings.writeSettingsToStream;
 import static org.elasticsearch.common.settings.Settings.Builder.EMPTY_SETTINGS;
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeBooleanValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeBooleanValue;
 
 /**
  * Create snapshot request

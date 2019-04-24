@@ -38,7 +38,7 @@ import org.elasticsearch.common.document.DocumentField;
 import org.elasticsearch.common.lucene.uid.VersionsAndSeqNoResolver.DocIdAndVersion;
 import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.common.xcontent.XContentMapValues;
+import org.elasticsearch.common.xcontent.support.XContentMapValues;
 import org.elasticsearch.index.engine.Engine;
 import org.elasticsearch.index.get.GetResult;
 import org.elasticsearch.index.mapper.DocumentMapperForType;

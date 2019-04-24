@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeBooleanValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeBooleanValue;
 import static org.elasticsearch.index.mapper.TypeParsers.parseDateTimeFormatter;
 
 public class RootObjectMapper extends ObjectMapper {

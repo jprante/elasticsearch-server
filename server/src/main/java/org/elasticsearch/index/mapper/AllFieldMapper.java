@@ -43,7 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeMapValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeMapValue;
 import static org.elasticsearch.index.mapper.TypeParsers.parseTextField;
 
 public class AllFieldMapper extends MetadataFieldMapper {

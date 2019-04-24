@@ -36,7 +36,7 @@ import org.elasticsearch.index.mapper.DocumentMapper;
 import java.io.IOException;
 import java.util.Map;
 
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeBooleanValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeBooleanValue;
 
 /**
  * Mapping configuration for a type.

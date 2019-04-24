@@ -25,7 +25,7 @@ import org.elasticsearch.common.bytes.BytesReference;
 import org.elasticsearch.common.collect.Tuple;
 import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.common.xcontent.XContentMapValues;
+import org.elasticsearch.common.xcontent.support.XContentMapValues;
 import org.elasticsearch.index.fieldvisitor.FieldsVisitor;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 

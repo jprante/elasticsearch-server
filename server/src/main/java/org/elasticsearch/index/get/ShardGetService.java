@@ -32,7 +32,7 @@ import org.elasticsearch.common.util.set.Sets;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.common.xcontent.XContentMapValues;
+import org.elasticsearch.common.xcontent.support.XContentMapValues;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.engine.Engine;

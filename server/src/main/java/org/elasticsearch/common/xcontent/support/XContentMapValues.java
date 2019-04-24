@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.common.xcontent;
+package org.elasticsearch.common.xcontent.support;
 
 import org.apache.lucene.util.automaton.Automata;
 import org.apache.lucene.util.automaton.Automaton;

@@ -176,6 +176,7 @@ module org.xbib.elasticsearch.server {
     exports org.elasticsearch.common.xcontent.json;
     exports org.elasticsearch.common.xcontent.smile;
     exports org.elasticsearch.common.xcontent.yaml;
+    exports org.elasticsearch.common.xcontent.support;
     exports org.elasticsearch.common.xcontent.support.filtering;
     exports org.elasticsearch.discovery;
     exports org.elasticsearch.discovery.single;

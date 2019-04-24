@@ -26,7 +26,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.bytes.BytesArray;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.common.xcontent.XContentMapValues;
+import org.elasticsearch.common.xcontent.support.XContentMapValues;
 import org.elasticsearch.plugins.Plugin;
 import org.elasticsearch.testframework.script.MockScriptPlugin;
 import org.elasticsearch.script.Script;

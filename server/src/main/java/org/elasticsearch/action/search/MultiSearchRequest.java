@@ -44,9 +44,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.elasticsearch.action.ValidateActions.addValidationError;
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeBooleanValue;
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeStringArrayValue;
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeStringValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeBooleanValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeStringArrayValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeStringValue;
 
 /**
  * A multi search API request.

@@ -36,7 +36,7 @@ import org.elasticsearch.common.lucene.BytesRefs;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.LoggingDeprecationHandler;
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentMapValues;
+import org.elasticsearch.common.xcontent.support.XContentMapValues;
 import org.elasticsearch.index.fielddata.IndexFieldData;
 import org.elasticsearch.index.fielddata.plain.DocValuesIndexFieldData;
 import org.elasticsearch.index.query.QueryShardContext;
@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.elasticsearch.common.xcontent.XContentMapValues.nodeMapValue;
+import static org.elasticsearch.common.xcontent.support.XContentMapValues.nodeMapValue;
 
 public class ParentFieldMapper extends MetadataFieldMapper {
 
