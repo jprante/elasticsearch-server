@@ -1,11 +1,11 @@
 FROM fl.hbz-nrw.de/jprante/alpine-glibc-openjdk11-min
 
-COPY elasticsearch*.tar.gz /
+COPY elasticsearch*.tgz /
 
 ARG version
 
 RUN adduser -D -u 1000 elasticsearch && \
-    tar -zxf /elasticsearch*.tar.gz && \
+    tar -zxf /elasticsearch*.tgz && \
     mv /elasticsearch-${version} /elasticsearch && \
     chown -R elasticsearch /elasticsearch && \
-    rm -f /elasticsearch*.tar.gz
+    rm -f /elasticsearch*.tgz

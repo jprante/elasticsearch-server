@@ -1,25 +1,27 @@
-FROM fl.hbz-nrw.de/jprante/alpine-glibc-openjdk11 AS builder
+FROM fl.hbz-nrw.de/jprante/alpine-glibc-zulu11-jdk AS builder
 
-COPY elasticsearch*.tar.gz /
+COPY elasticsearch*.tgz /
 
 ARG version
 
-RUN tar -zxf /elasticsearch*.tar.gz && \
+RUN tar -zxf /elasticsearch*.tgz && \
     jlink \
       --module-path $JAVA_HOME/jmods:/elasticsearch-${version}/lib \
-      --add-modules org.xbib.elasticsearch.server \
+      --add-modules=org.xbib.elasticsearch.server \
+      --add-modules=jdk.unsupported \
       --compress 2 \
       --no-header-files \
       --no-man-pages \
       --output /elasticsearch && \
-    rm -f /elasticsearch/lib/jrt-fs.jar && \
     mkdir -p /elasticsearch/conf/ && \
     cp -a /elasticsearch-${version}/conf/elasticsearch.json /elasticsearch/conf/ && \
-    cp -a /elasticsearch-${version}/conf/log4j2-docker.json /elasticsearch/conf/log4j2.json && \
+    cp -a /elasticsearch-${version}/conf/log4j2.json /elasticsearch/conf/log4j2.json && \
     mkdir -p /elasticsearch/logs/ && \
+    mkdir -p /elasticsearch-${version}/modules/ && \
     cp -a /elasticsearch-${version}/modules /elasticsearch/ && \
+    mkdir -p /elasticsearch-${version}/plugins/ && \
     cp -a /elasticsearch-${version}/plugins /elasticsearch/ && \
-    rm -rf /elasticsearch-${version} /elasticsearch*.tar.gz
+    rm -rf /elasticsearch-${version} /elasticsearch*.tgz
 
 FROM fl.hbz-nrw.de/jprante/alpine-glibc
 

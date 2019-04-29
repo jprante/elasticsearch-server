@@ -1,0 +1,153 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: elasticsearch
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: elasticsearch
+  labels:
+    component: elasticsearch
+    role: full
+spec:
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: full
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        component: elasticsearch
+        role: full
+    spec:
+      securityContext:
+        runAsUser: 1000
+      volumes:
+        - name: elasticsearch-data
+          persistentVolumeClaim:
+            claimName: elasticsearch-data-volume-claim
+      containers:
+        - name: es
+          image: fl.hbz-nrw.de/jprante/elasticsearch-server-extended:6.3.2.3
+          resources:
+            limits:
+              memory: 24Gi
+            requests:
+              memory: 24Gi
+          command:
+            - "java"
+            - "-XX:+UseG1GC"
+            - "-Dfile.encoding=UTF-8"
+            - "-Djava.awt.headless=true"
+            - "-Dlog4j2.debug=false"
+            - "-Dlog4j2.disable.jmx=true"
+            - "-Dlog4j.shutdownHookEnabled=false"
+            - "-Dio.netty.allocator.type=pooled"
+            - "-Dio.netty.noUnsafe=true"
+            - "-Dio.netty.recycler.maxCapacity=0"
+            - "-Dio.netty.noKeySetOptimization=true"
+            - "-Djna.nosys=true"
+            - "-Des.path.home=/elasticsearch"
+            - "-Des.path.conf=/elasticsearch/conf"
+            - "-Des.distribution.flavor=oss"
+            - "-Des.distribution.type=tar"
+            - "--patch-module=java.base=/elasticsearch/lib/patch/java.beans"
+            - "--add-exports=java.base/java.beans=org.xbib.elasticsearch.log4j"
+            - "--add-modules=jdk.unsupported"
+            - "--add-exports=jdk.unsupported/sun.misc=org.xbib.elasticsearch.lucene"
+            - "--add-exports=java.base/jdk.internal.ref=org.xbib.elasticsearch.lucene"
+            - "--add-exports=java.base/jdk.internal.misc=org.xbib.elasticsearch.lucene"
+            - "--add-exports=java.base/sun.nio.ch=org.xbib.elasticsearch.lucene"
+            - "--module-path"
+            - "/elasticsearch/lib"
+            - "--module"
+            - "org.xbib.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch"
+            - "-Ebootstrap.memory_lock=false"
+            - "-Enetwork.host=_site_,_local_"
+            - "-Ecluster.name=joerg"
+            - "-Eprocessors=32"
+            - "-Ediscovery.zen.minimum_master_nodes=2"
+            - "-Ediscovery.zen.ping.unicast.hosts=elasticsearch"
+          ports:
+            - containerPort: 9300
+              name: transport
+            - containerPort: 9200
+              name: http
+          volumeMounts:
+            - name: elasticsearch-data
+              mountPath: /elasticsearch/data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: elasticsearch
+  labels:
+    component: elasticsearch
+    role: full
+spec:
+  selector:
+    component: elasticsearch
+    role: full
+  ports:
+    - name: transport
+      port: 9300
+      protocol: TCP
+  clusterIP: None
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: elasticsearch
+  name: elasticsearch-data-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1500Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/kubernetes/elasticsearch"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: elasticsearch
+  name: elasticsearch-data-volume-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1500Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: expose
+  namespace: elasticsearch
+  labels:
+    component: elasticsearch
+    role: full
+spec:
+  selector:
+    component: elasticsearch
+    role: full
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9200
+      targetPort: 9200
+    - name: transport
+      protocol: TCP
+      port: 9300
+      targetPort: 9300
+  externalIPs:
+    - 10.3.2.1
+  type: NodePort

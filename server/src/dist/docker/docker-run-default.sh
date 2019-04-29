@@ -4,9 +4,8 @@ docker run --rm \
   --user elasticsearch \
   -p 9200:9200 -p 9300:9300 \
   --name elasticsearch \
-  fl.hbz-nrw.de/jprante/elasticsearch-server:6.3.2.0 \
+  fl.hbz-nrw.de/jprante/elasticsearch-server:6.3.2.3 \
   java \
-  -XX:UseAVX=2 \
   -Dfile.encoding=UTF-8 \
   -Djava.awt.headless=true \
   -Dlog4j2.debug=false \
@@ -23,6 +22,11 @@ docker run --rm \
   -Des.distribution.type="tar" \
   --patch-module java.base=/elasticsearch/lib/patch/java.beans \
   --add-exports java.base/java.beans=org.xbib.elasticsearch.log4j \
+  --add-modules=jdk.unsupported \
+  --add-exports=jdk.unsupported/sun.misc=org.xbib.elasticsearch.lucene \
+  --add-exports=java.base/jdk.internal.ref=org.xbib.elasticsearch.lucene \
+  --add-exports=java.base/jdk.internal.misc=org.xbib.elasticsearch.lucene \
+  --add-exports=java.base/sun.nio.ch=org.xbib.elasticsearch.lucene \
   --module-path /elasticsearch/lib \
   --module org.xbib.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch \
   -Ebootstrap.memory_lock=false \

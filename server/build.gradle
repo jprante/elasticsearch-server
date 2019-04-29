@@ -85,9 +85,9 @@ dependencies {
     //esModuleDist group: "org.xbib.elasticsearch", name: "elasticsearch-analysis-common",
     //        version: "${property('elasticsearch-analysis-common.version')}", ext:"zip"
     
-    // our plugins
+    // modularized xbib plugins are in group org.xbib.elasticsearch
     if (profile == 'extended') {
-        esPluginDist group: "org.xbib.elasticsearch.plugin", name: "elasticsearch-plugin-bundle",
+        esPluginDist group: "org.xbib.elasticsearch", name: "elasticsearch-plugin-bundle",
                 version: "${property('elasticsearch-plugin-bundle.version')}", ext: "zip"
     }
 }
@@ -508,27 +508,31 @@ signing {
 apply from: "${rootProject.projectDir}/gradle/publish.gradle"
 
 docker {
+    group = 'docker'
     dependsOn rhel7DistTar
     name "fl.hbz-nrw.de/jprante/elasticsearch-server-${project.profile}:${project.version}"
-    dockerfile file('Dockerfile.alpine-glibc-openjdk11')
+    // Azul Zulu provides dockerable tar.gz downloads of the latest OpenJDK 11 releases
+    dockerfile file('src/dist/docker/Dockerfile.alpine-glibc-zulu11')
     buildArgs(['version': "${project.version}"])
     files tasks.rhel7DistTar.outputs
 }
 
+// trick to build docker image including the bundle plugin
 task dockerBuildExtended(type: GradleBuild) {
     group = 'docker'
     tasks = ['docker']
     startParameter.projectProperties = ['profile': 'extended']
 }
 
-/*
+/* 
+// Example for running docker container
 dockerRun {
     name 'elasticsearch'
     user 'elasticsearch'
     ports '9200:9200', '9300:9300'
     image "fl.hbz-nrw.de/jprante/elasticsearch-server-${project.profile}:${project.version}"
     command 'java',
-            '-XX:UseAVX=2',
+            '-XX:+UseG1GC',
             '-Dfile.encoding=UTF-8',
             '-Djava.awt.headless=true',
             '-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager',
@@ -544,11 +548,20 @@ dockerRun {
             '-Des.path.conf=/elasticsearch/conf',
             '-Des.distribution.flavor=oss',
             '-Des.distribution.type=tar',
-            '--patch-module', 'java.base=/elasticsearch/lib/patch/java.beans',
-            '--add-exports', 'java.base/java.beans=org.xbib.elasticsearch.log4j',
+            '--patch-module=java.base=/elasticsearch/lib/patch/java.beans',
+            '--add-exports=java.base/java.beans=org.xbib.elasticsearch.log4j',
+            '--add-modules=jdk.unsupported',
+            '--add-exports=jdk.unsupported/sun.misc=org.xbib.elasticsearch.lucene',
+            '--add-exports=java.base/jdk.internal.ref=org.xbib.elasticsearch.lucene',
+            '--add-exports=java.base/jdk.internal.misc=org.xbib.elasticsearch.lucene',
+            '--add-exports=java.base/sun.nio.ch=org.xbib.elasticsearch.lucene',
             '--module-path', '/elasticsearch/lib',
             '--module','org.xbib.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch',
             '-Ebootstrap.memory_lock=false',
-            '-Enetwork.host=0.0.0.0'
+            '-Enetwork.host=_site_,_local_',
+            '-Ecluster.name=joerg',
+            '-Eprocessors=32',
+            '-Ediscovery.zen.minimum_master_nodes=2',
+            '-Ediscovery.zen.ping.unicast.hosts=elasticsearch'
 }
 */
