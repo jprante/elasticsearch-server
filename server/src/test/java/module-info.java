@@ -373,5 +373,4 @@ module org.xbib.elasticsearch.server.test {
     requires org.xbib.elasticsearch.mocksocket;
     requires org.xbib.elasticsearch.spatial4j;
     requires org.xbib.elasticsearch.securemock;
-
 }

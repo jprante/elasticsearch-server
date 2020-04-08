@@ -2,7 +2,7 @@ buildscript {
     repositories {
         jcenter()
         maven {
-            url 'http://xbib.org/repository'
+            url 'https://xbib.org/repository'
         }
     }
     dependencies {
@@ -22,6 +22,13 @@ plugins {
 apply plugin: "java"
 apply plugin: "io.codearte.nexus-staging"
 apply plugin: 'org.xbib.gradle.plugin.asciidoctor'
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://xbib.org/repository'
+    }
+}
 
 task banner {
     doFirst {

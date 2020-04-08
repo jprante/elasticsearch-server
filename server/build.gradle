@@ -2,7 +2,7 @@ buildscript {
     repositories {
         jcenter()
         maven {
-            url 'http://xbib.org/repository'
+            url 'https://xbib.org/repository'
         }
     }
     dependencies {
@@ -311,11 +311,21 @@ forbiddenPatterns {
     exclude '**/*.jmx'
 }
 
-dependencyLicenses.enabled = false
+dependencyLicenses {
+    enabled = false
+}
 
-jarHell.enabled = false
+jarHell {
+    enabled = false
+}
 
-loggerUsageCheck.enabled = true
+loggerUsageCheck {
+    enabled = true
+}
+
+namingConventions {
+    enabled = false
+}
 
 archivesBaseName = 'elasticsearch'
 
@@ -508,7 +518,6 @@ signing {
 apply from: "${rootProject.projectDir}/gradle/publish.gradle"
 
 docker {
-    group = 'docker'
     dependsOn rhel7DistTar
     name "fl.hbz-nrw.de/jprante/elasticsearch-server-${project.profile}:${project.version}"
     // Azul Zulu provides dockerable tar.gz downloads of the latest OpenJDK 11 releases
@@ -519,7 +528,6 @@ docker {
 
 // trick to build docker image including the bundle plugin
 task dockerBuildExtended(type: GradleBuild) {
-    group = 'docker'
     tasks = ['docker']
     startParameter.projectProperties = ['profile': 'extended']
 }

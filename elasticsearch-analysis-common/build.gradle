@@ -71,8 +71,7 @@ artifacts {
 }
 
 signing {
-    sign bundlePlugin
-    sign testJar
+    sign bundlePlugin, testJar
 }
 
 apply from: "${rootProject.projectDir}/gradle/publish.gradle"

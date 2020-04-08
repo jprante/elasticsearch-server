@@ -26,6 +26,7 @@ import org.elasticsearch.testframework.ESTestCase;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.CodeSource;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +35,8 @@ public class BuildTests extends ESTestCase {
 
     /** Asking for the jar metadata should not throw exception in tests, no matter how configured */
     public void testJarMetadata() throws IOException {
-        URL url = Build.getElasticsearchCodeSourceLocation();
+        CodeSource codeSource = Build.class.getProtectionDomain().getCodeSource();
+        URL url = codeSource.getLocation();
         // throws exception if does not exist, or we cannot access it
         try (InputStream ignored = FileSystemUtils.openFileURLStream(url)) {}
         // these should never be null
