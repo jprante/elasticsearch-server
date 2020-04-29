@@ -88,9 +88,29 @@ public class RestNodesAction extends AbstractCatAction {
         final ClusterStateRequest clusterStateRequest = new ClusterStateRequest();
         clusterStateRequest.clear().nodes(true);
         clusterStateRequest.local(request.paramAsBoolean("local", clusterStateRequest.local()));
+        final boolean fullId = request.paramAsBoolean("full_id", false);
         clusterStateRequest.masterNodeTimeout(request.paramAsTime("master_timeout", clusterStateRequest.masterNodeTimeout()));
-        return channel -> client.admin().cluster().state(clusterStateRequest,
-                new MyRestActionListener(channel, client, request));
+        return channel -> client.admin().cluster().state(clusterStateRequest, new RestActionListener<ClusterStateResponse>(channel) {
+            @Override
+            public void processResponse(final ClusterStateResponse clusterStateResponse) {
+                NodesInfoRequest nodesInfoRequest = new NodesInfoRequest();
+                nodesInfoRequest.clear().jvm(true).os(true).process(true).http(true);
+                client.admin().cluster().nodesInfo(nodesInfoRequest, new RestActionListener<NodesInfoResponse>(channel) {
+                    @Override
+                    public void processResponse(final NodesInfoResponse nodesInfoResponse) {
+                        NodesStatsRequest nodesStatsRequest = new NodesStatsRequest();
+                        nodesStatsRequest.clear().jvm(true).os(true).fs(true).indices(true).process(true).script(true);
+                        client.admin().cluster().nodesStats(nodesStatsRequest, new RestResponseListener<NodesStatsResponse>(channel) {
+                            @Override
+                            public RestResponse buildResponse(NodesStatsResponse nodesStatsResponse) throws Exception {
+                                return RestTable.buildResponse(buildTable(fullId, request, clusterStateResponse, nodesInfoResponse,
+                                        nodesStatsResponse), channel);
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -400,39 +420,5 @@ public class RestNodesAction extends AbstractCatAction {
      */
     private short calculatePercentage(long used, long max) {
         return max <= 0 ? 0 : (short)((100d * used) / max);
-    }
-
-    private class MyRestActionListener extends RestActionListener<ClusterStateResponse> {
-
-        private final NodeClient client;
-
-        private final RestRequest request;
-
-        MyRestActionListener(RestChannel channel, final NodeClient client, final RestRequest request) {
-            super(channel);
-            this.client = client;
-            this.request = request;
-        }
-
-        @Override
-        protected void processResponse(ClusterStateResponse clusterStateResponse) {
-            final boolean fullId = request.paramAsBoolean("full_id", false);
-            NodesInfoRequest nodesInfoRequest = new NodesInfoRequest();
-            nodesInfoRequest.clear().jvm(true).os(true).process(true).http(true);
-            client.admin().cluster().nodesInfo(nodesInfoRequest, new RestActionListener<>(channel) {
-                @Override
-                public void processResponse(final NodesInfoResponse nodesInfoResponse) {
-                    NodesStatsRequest nodesStatsRequest = new NodesStatsRequest();
-                    nodesStatsRequest.clear().jvm(true).os(true).fs(true).indices(true).process(true).script(true);
-                    client.admin().cluster().nodesStats(nodesStatsRequest, new RestResponseListener<>(channel) {
-                        @Override
-                        public RestResponse buildResponse(NodesStatsResponse nodesStatsResponse) throws Exception {
-                            return RestTable.buildResponse(buildTable(fullId, request, clusterStateResponse, nodesInfoResponse,
-                                    nodesStatsResponse), channel);
-                        }
-                    });
-                }
-            });
-        }
     }
 }

@@ -527,7 +527,7 @@ docker {
 }
 
 // trick to build docker image including the bundle plugin
-task dockerBuildExtended(type: GradleBuild) {
+task dockerBuildExtended(type: GradleBuild, group: 'docker') {
     tasks = ['docker']
     startParameter.projectProperties = ['profile': 'extended']
 }
