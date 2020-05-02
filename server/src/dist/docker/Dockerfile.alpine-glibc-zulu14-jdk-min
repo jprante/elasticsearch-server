@@ -1,4 +1,4 @@
-FROM fl.hbz-nrw.de/jprante/alpine-glibc-openjdk11-min
+FROM fl.hbz-nrw.de/jprante/alpine-glibc-zulu14-jdk-min
 
 COPY elasticsearch*.tgz /
 

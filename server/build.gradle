@@ -520,8 +520,7 @@ apply from: "${rootProject.projectDir}/gradle/publish.gradle"
 docker {
     dependsOn rhel7DistTar
     name "fl.hbz-nrw.de/jprante/elasticsearch-server-${project.profile}:${project.version}"
-    // Azul Zulu provides dockerable tar.gz downloads of the latest OpenJDK 11 releases
-    dockerfile file('src/dist/docker/Dockerfile.alpine-glibc-zulu11')
+    dockerfile file('src/dist/docker/Dockerfile.alpine-glibc-zulu14-jdk-min')
     buildArgs(['version': "${project.version}"])
     files tasks.rhel7DistTar.outputs
 }

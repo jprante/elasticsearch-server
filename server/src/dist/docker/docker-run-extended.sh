@@ -2,9 +2,10 @@
 
 docker run --rm \
   --user elasticsearch \
-  -p 9200:9200 -p 9300:9300 \
   --name elasticsearch \
-  fl.hbz-nrw.de/jprante/elasticsearch-server-extended:6.3.2.3 \
+  -p 9200:9200 \
+  -p 9300:9300 \
+  fl.hbz-nrw.de/jprante/elasticsearch-server-extended:6.3.2.4 \
   java \
   -XX:UseAVX=2 \
   -Dfile.encoding=UTF-8 \

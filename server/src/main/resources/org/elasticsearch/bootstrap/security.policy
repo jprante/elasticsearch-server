@@ -57,6 +57,9 @@ grant codeBase "${codebase.elasticsearch}" {
 
   // max direct memory check in netty
   permission java.lang.RuntimePermission "accessClassInPackage.sun.misc";
+
+  // for injection on Java 12+
+  permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.vm.annotation";
 };
 
 grant codeBase "${codebase.log4j}" {
@@ -195,9 +198,10 @@ grant {
 
   // we need libnio read permission for filesystem traversal (but why?)
   // linux
-  permission java.io.FilePermission "/usr/lib/jvm/java-11-openjdk-11.0.1.13-3.el7_6.x86_64/lib/libnio.so", "read";
-  permission java.io.FilePermission "/usr/lib/jvm/java-11-openjdk-11.0.2.7-0.el7_6.x86_64/lib/libnio.so", "read";
   permission java.io.FilePermission "/usr/lib/jvm/zulu-11/lib/libnio.so", "read";
+  permission java.io.FilePermission "/usr/lib/jvm/zulu-12/lib/libnio.so", "read";
+  permission java.io.FilePermission "/usr/lib/jvm/zulu-13/lib/libnio.so", "read";
+  permission java.io.FilePermission "/usr/lib/jvm/zulu-14/lib/libnio.so", "read";
   // mac
   permission java.io.FilePermission "/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home/lib/libnio.dylib", "read";
   permission java.io.FilePermission "/Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/lib/libnio.dylib", "read";
